@@ -12,9 +12,12 @@
   "npmScope": "adc-frontend",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "accessToken": "YTEyMmY2ZjYtMmE3ZS00MmMwLWIxZDQtNDY1YWMxMGRjOGQ3fHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
       }
     }
   },
@@ -22,9 +25,8 @@
     "admin": {
       "tags": []
     },
-    "admin-e2e": {
-      "tags": [],
-      "implicitDependencies": ["admin"]
+    "mobile": {
+      "tags": []
     }
   }
 }
