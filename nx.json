@@ -27,6 +27,9 @@
     },
     "mobile": {
       "tags": []
+    },
+    "shared-language": {
+      "tags": ["scope:shared"]
     }
   }
 }

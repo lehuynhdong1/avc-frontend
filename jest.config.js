@@ -1,3 +1,7 @@
 module.exports = {
-  projects: ['<rootDir>/apps/admin', '<rootDir>/apps/mobile'],
+  projects: [
+    '<rootDir>/apps/admin',
+    '<rootDir>/apps/mobile',
+    '<rootDir>/libs/shared/language',
+  ],
 };
