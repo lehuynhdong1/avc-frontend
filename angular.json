@@ -49,7 +49,11 @@
             "tsConfig": "apps/admin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
-            "styles": ["apps/admin/src/styles.scss"],
+            "styles": [
+              "apps/admin/src/styles.scss",
+              "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -339,6 +343,86 @@
             "lintFilePatterns": [
               "libs/shared/language/src/**/*.ts",
               "libs/shared/language/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "shared-state-management": {
+      "projectType": "library",
+      "root": "libs/shared/state-management",
+      "sourceRoot": "libs/shared/state-management/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/shared/state-management/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/state-management/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/shared/state-management/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/state-management"],
+          "options": {
+            "jestConfig": "libs/shared/state-management/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/state-management/src/**/*.ts",
+              "libs/shared/state-management/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "shared-app-config": {
+      "projectType": "library",
+      "root": "libs/shared/app-config",
+      "sourceRoot": "libs/shared/app-config/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/shared/app-config/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/app-config/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/shared/app-config/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/app-config"],
+          "options": {
+            "jestConfig": "libs/shared/app-config/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/app-config/src/**/*.ts",
+              "libs/shared/app-config/src/**/*.html"
             ]
           }
         }

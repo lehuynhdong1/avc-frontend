@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/language": ["libs/shared/language/src/index.ts"]
+      "@shared/language": ["libs/shared/language/src/index.ts"],
+      "@shared/state-management": ["libs/shared/state-management/src/index.ts"],
+      "@shared/app-config": ["libs/shared/app-config/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

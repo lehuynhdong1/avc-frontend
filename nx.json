@@ -30,6 +30,12 @@
     },
     "shared-language": {
       "tags": ["scope:shared"]
+    },
+    "shared-state-management": {
+      "tags": ["scope:shared"]
+    },
+    "shared-app-config": {
+      "tags": ["scope:shared"]
     }
   }
 }
