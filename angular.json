@@ -640,6 +640,86 @@
           }
         }
       }
+    },
+    "admin-auth-login-feature": {
+      "projectType": "library",
+      "root": "libs/admin/auth/login/feature",
+      "sourceRoot": "libs/admin/auth/login/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/admin/auth/login/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/auth/login/feature/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/admin/auth/login/feature/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/auth/login/feature"],
+          "options": {
+            "jestConfig": "libs/admin/auth/login/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/auth/login/feature/src/**/*.ts",
+              "libs/admin/auth/login/feature/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "admin-core-feature": {
+      "projectType": "library",
+      "root": "libs/admin/core/feature",
+      "sourceRoot": "libs/admin/core/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/admin/core/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/core/feature/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/admin/core/feature/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/core/feature"],
+          "options": {
+            "jestConfig": "libs/admin/core/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/core/feature/src/**/*.ts",
+              "libs/admin/core/feature/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }

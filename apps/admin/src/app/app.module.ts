@@ -8,6 +8,7 @@ import { LanguageModule } from '@shared/language';
 import { StateManagementModule } from '@shared/state-management';
 import { environment } from '../environments/environment';
 import { TuiModule } from './tui.module';
+import { FeatureModule as CoreModule } from '@admin/core/feature';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -15,10 +16,11 @@ import { TuiModule } from './tui.module';
     HttpClientModule,
     BrowserAnimationsModule,
     TuiModule,
+    CoreModule,
     StateManagementModule.forRoot(environment),
     LanguageModule.forRoot({ prodMode: environment.production }),
-    LayoutModule,
+    LayoutModule
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

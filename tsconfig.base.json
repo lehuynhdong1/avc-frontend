@@ -22,7 +22,9 @@
       "@admin/auth/login/ui": ["libs/admin/auth/login/ui/src/index.ts"],
       "@shared/auth/login/ui": ["libs/shared/auth/login/ui/src/index.ts"],
       "@shared/auth/forgot-password/ui": ["libs/shared/auth/forgot-password/ui/src/index.ts"],
-      "@shared/auth/reset-password/ui": ["libs/shared/auth/reset-password/ui/src/index.ts"]
+      "@shared/auth/reset-password/ui": ["libs/shared/auth/reset-password/ui/src/index.ts"],
+      "@admin/auth/login/feature": ["libs/admin/auth/login/feature/src/index.ts"],
+      "@admin/core/feature": ["libs/admin/core/feature/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

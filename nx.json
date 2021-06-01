@@ -51,6 +51,12 @@
     },
     "shared-auth-reset-password-ui": {
       "tags": ["scope:shared"]
+    },
+    "admin-auth-login-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-core-feature": {
+      "tags": ["scope:admin"]
     }
   }
 }

@@ -1,1 +1,2 @@
-export * from './lib/ui.module';
+export * from './lib/login.component';
+export * from './lib/login.module';
