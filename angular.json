@@ -26,10 +26,19 @@
     "@nrwl/angular:library": {
       "style": "scss",
       "linter": "eslint",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "jest",
+      "strict": true,
+      "buildable": true,
+      "enableIvy": true,
+      "simpleModuleName": true,
+      "skipPackageJson": true
     },
     "@nrwl/angular:component": {
-      "style": "scss"
+      "style": "scss",
+      "changeDetection": "OnPush",
+      "skipTests": true,
+      "export": true,
+      "displayBlock": true
     }
   },
   "projects": {
@@ -37,7 +46,7 @@
       "projectType": "application",
       "root": "apps/admin",
       "sourceRoot": "apps/admin/src",
-      "prefix": "adc-frontend",
+      "prefix": "adca",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -48,7 +57,15 @@
             "polyfills": "apps/admin/src/polyfills.ts",
             "tsConfig": "apps/admin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
+            "assets": [
+              "apps/admin/src/favicon.ico",
+              "apps/admin/src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              }
+            ],
             "styles": [
               "apps/admin/src/styles.scss",
               "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
@@ -110,10 +127,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/admin/src/**/*.ts",
-              "apps/admin/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/admin/src/**/*.ts", "apps/admin/src/**/*.html"]
           }
         },
         "test": {
@@ -130,7 +144,7 @@
       "projectType": "application",
       "root": "apps/mobile",
       "sourceRoot": "apps/mobile/src",
-      "prefix": "adc-frontend",
+      "prefix": "adcm",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -211,10 +225,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/mobile/src/**/*.ts",
-              "apps/mobile/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/mobile/src/**/*.ts", "apps/mobile/src/**/*.html"]
           }
         },
         "test": {
@@ -423,6 +434,46 @@
             "lintFilePatterns": [
               "libs/shared/app-config/src/**/*.ts",
               "libs/shared/app-config/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "admin-core-ui": {
+      "projectType": "library",
+      "root": "libs/admin/core/ui",
+      "sourceRoot": "libs/admin/core/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/admin/core/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/core/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/admin/core/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/core/ui"],
+          "options": {
+            "jestConfig": "libs/admin/core/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/core/ui/src/**/*.ts",
+              "libs/admin/core/ui/src/**/*.html"
             ]
           }
         }

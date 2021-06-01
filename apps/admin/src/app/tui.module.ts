@@ -7,10 +7,12 @@ import {
   TuiSvgModule,
   TuiThemeNightModule,
   TuiModeModule,
+  TuiButtonModule,
 } from '@taiga-ui/core';
 import { TuiAccordionModule } from '@taiga-ui/kit';
 
 const modules = [
+  TuiRootModule,
   TuiScrollbarModule,
   TuiScrollControlsModule,
   TuiAccordionModule,
@@ -18,10 +20,8 @@ const modules = [
   TuiSvgModule,
   TuiThemeNightModule,
   TuiModeModule,
+  TuiButtonModule,
 ];
 
-@NgModule({
-  imports: [TuiRootModule],
-  exports: modules,
-})
+@NgModule({ exports: modules })
 export class TuiModule {}

@@ -21,8 +21,12 @@
                 "onlyDependOnLibsWithTags": ["scope:shared", "scope:admin"]
               },
               {
-                "sourceTag": "scope:client",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:client"]
+                "sourceTag": "scope:mobile",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:mobile"]
+              },
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
               }
             ]
           }

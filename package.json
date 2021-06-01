@@ -25,7 +25,9 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "admin:build-analyzer": "nx run admin:build --stats-json && webpack-bundle-analyzer dist/apps/admin/stats.json",
+    "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer dist/apps/mobile/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -98,5 +100,13 @@
     "ts-jest": "26.5.5",
     "ts-node": "~9.1.1",
     "typescript": "~4.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint . --ext .ts --cache --max-warnings=1"
   }
 }

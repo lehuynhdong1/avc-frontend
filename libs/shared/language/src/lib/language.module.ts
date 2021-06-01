@@ -9,7 +9,7 @@ import { TranslocoRootModule } from './transloco-root.module';
   exports: [TranslocoModule],
 })
 export class LanguageModule {
-  static getImports(
+  static forRoot(
     config?: Partial<TranslocoConfig>
   ): [LanguageModule, ModuleWithProviders<TranslocoRootModule>] {
     return [LanguageModule, TranslocoRootModule.forRoot(config)];

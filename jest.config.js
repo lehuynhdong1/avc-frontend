@@ -5,5 +5,6 @@ module.exports = {
     '<rootDir>/libs/shared/language',
     '<rootDir>/libs/shared/state-management',
     '<rootDir>/libs/shared/app-config',
+    '<rootDir>/libs/admin/core/ui',
   ],
 };

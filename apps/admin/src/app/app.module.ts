@@ -1,6 +1,7 @@
+import { LayoutModule } from '@admin/core/ui';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LanguageModule } from '@shared/language';
@@ -12,11 +13,12 @@ import { TuiModule } from './tui.module';
   imports: [
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     TuiModule,
-    StateManagementModule.getImports(environment),
-    LanguageModule.getImports({ prodMode: environment.production }),
+    StateManagementModule.forRoot(environment),
+    LanguageModule.forRoot({ prodMode: environment.production }),
+    LayoutModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

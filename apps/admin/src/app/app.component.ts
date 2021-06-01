@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'adc-frontend-root',
+  selector: 'adca-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

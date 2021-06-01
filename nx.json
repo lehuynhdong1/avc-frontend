@@ -23,10 +23,10 @@
   },
   "projects": {
     "admin": {
-      "tags": []
+      "tags": ["scope:admin"]
     },
     "mobile": {
-      "tags": []
+      "tags": ["scope:mobile"]
     },
     "shared-language": {
       "tags": ["scope:shared"]
@@ -36,6 +36,9 @@
     },
     "shared-app-config": {
       "tags": ["scope:shared"]
+    },
+    "admin-core-ui": {
+      "tags": ["scope:admin"]
     }
   }
 }
