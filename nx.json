@@ -39,6 +39,18 @@
     },
     "admin-core-ui": {
       "tags": ["scope:admin"]
+    },
+    "admin-auth-login-ui": {
+      "tags": ["scope:admin"]
+    },
+    "shared-auth-login-ui": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-forgot-password-ui": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-reset-password-ui": {
+      "tags": ["scope:shared"]
     }
   }
 }
