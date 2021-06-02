@@ -7,12 +7,13 @@ import { TuiAccordionModule } from '@taiga-ui/kit';
 
 import { TuiScrollbarModule, TuiButtonModule } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
+import { SidebarModule } from '../sidebar/sidebar.module';
 
 const tuiModules = [TuiButtonModule, TuiScrollbarModule, TuiAccordionModule];
 
 @NgModule({
   declarations: [LayoutComponent],
-  imports: [CommonModule, NavbarModule, LanguageModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, NavbarModule, SidebarModule, LanguageModule, RouterModule, ...tuiModules],
   exports: [LayoutComponent]
 })
 export class LayoutModule {}

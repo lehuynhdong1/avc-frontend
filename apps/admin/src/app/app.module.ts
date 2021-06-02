@@ -9,6 +9,7 @@ import { StateManagementModule } from '@shared/state-management';
 import { environment } from '../environments/environment';
 import { TuiModule } from './tui.module';
 import { FeatureModule as CoreModule } from '@admin/core/feature';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [

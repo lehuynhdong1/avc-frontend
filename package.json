@@ -26,6 +26,10 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
+    "lint:scss": "stylelint '**/src/**/*.scss' --syntax scss",
+    "lint:scss:fix": "stylelint '**/src/**/*.scss' --syntax scss --fix",
+    "lint:ts": "eslint . --ext .ts",
+    "lint:ts:fix": "npm run lint:ts -- --fix",
     "admin:build-analyzer": "nx run admin:build --stats-json && webpack-bundle-analyzer dist/apps/admin/stats.json",
     "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer dist/apps/mobile/stats.json"
   },
@@ -111,6 +115,13 @@
     }
   },
   "lint-staged": {
-    "*.ts": "eslint . --ext .ts --cache --max-warnings=1"
+    "src/**/*.ts": [
+      "eslint . --fix",
+      "git add"
+    ],
+    "src/**/*.scss": [
+      "stylelint --syntax scss --fix",
+      "git add"
+    ]
   }
 }
