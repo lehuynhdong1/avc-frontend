@@ -954,6 +954,46 @@
           }
         }
       }
+    },
+    "shared-auth-login-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/auth/login/data-access",
+      "sourceRoot": "libs/shared/auth/login/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/shared/auth/login/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/auth/login/data-access/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/shared/auth/login/data-access/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/auth/login/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/auth/login/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/auth/login/data-access/src/**/*.ts",
+              "libs/shared/auth/login/data-access/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }

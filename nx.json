@@ -75,6 +75,9 @@
     },
     "admin-auth-forgot-password-feature": {
       "tags": ["scope:admin"]
+    },
+    "shared-auth-login-data-access": {
+      "tags": ["scope:shared"]
     }
   }
 }

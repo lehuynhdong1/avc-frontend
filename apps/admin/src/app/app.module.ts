@@ -12,16 +12,16 @@ import { FeatureModule as CoreModule } from '@admin/core/feature';
 import { ApiModule, Configuration } from '@shared/api';
 import { Store } from '@ngxs/store';
 import { AutoTitleService } from '@shared/util';
+import { LoginState } from '@shared/auth/login/data-access';
 
 const apiProvider: Provider = {
   provide: Configuration,
   useFactory: (store: Store) => {
+    const token = store.selectSnapshot(LoginState.token);
+    const appendixHeader = token ? { Authorization: `Bearer ${token}` } : undefined;
     return new Configuration({
       basePath: environment.apiUrl,
-      // #TODO: If apiKey has been already in Store => apiKeys, else return undefined
-      apiKeys: {
-        Authorization: 'Bearer ' + 'Select from Store to get token here'
-      }
+      apiKeys: appendixHeader
     });
   },
   deps: [Store],

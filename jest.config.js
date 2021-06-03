@@ -17,6 +17,7 @@ module.exports = {
     '<rootDir>/libs/admin/auth/forgot-password/ui',
     '<rootDir>/libs/admin/auth/reset-password/ui',
     '<rootDir>/libs/admin/auth/reset-password/feature',
-    '<rootDir>/libs/admin/auth/forgot-password/feature'
+    '<rootDir>/libs/admin/auth/forgot-password/feature',
+    '<rootDir>/libs/shared/auth/login/data-access'
   ]
 };

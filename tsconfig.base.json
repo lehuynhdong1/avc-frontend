@@ -32,7 +32,8 @@
       "@admin/auth/reset-password/feature": ["libs/admin/auth/reset-password/feature/src/index.ts"],
       "@admin/auth/forgot-password/feature": [
         "libs/admin/auth/forgot-password/feature/src/index.ts"
-      ]
+      ],
+      "@shared/auth/login/data-access": ["libs/shared/auth/login/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
