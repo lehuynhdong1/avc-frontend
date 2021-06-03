@@ -1,11 +1,8 @@
-<p>login works!</p>
-<button
-  tuiButton
-  type="button"
-  class="tui-space_right-3 tui-space_bottom-3"
-  appearance="primary"
-  size="m"
->
-  primary
-</button>
-<adc-frontend-login></adc-frontend-login>
+<adc-frontend-forgot-password *ngIf="isForgotPassword"; else elseBlock></adc-frontend-forgot-password>
+
+<ng-template #elseBlock>
+    <adc-frontend-login ></adc-frontend-login>
+</ng-template>
+
+
+
