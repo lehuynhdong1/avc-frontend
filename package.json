@@ -31,7 +31,8 @@
     "lint:ts": "eslint . --ext .ts",
     "lint:ts:fix": "npm run lint:ts -- --fix",
     "admin:build-analyzer": "nx run admin:build --stats-json && webpack-bundle-analyzer dist/apps/admin/stats.json",
-    "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer dist/apps/mobile/stats.json"
+    "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer dist/apps/mobile/stats.json",
+    "update:api": "openapi-generator-cli generate -i https://avc-api.azurewebsites.net/swagger/v1/swagger.yaml -g typescript-angular -o libs/shared/api/src/lib/"
   },
   "private": true,
   "dependencies": {
@@ -85,6 +86,7 @@
     "@nrwl/workspace": "12.3.5",
     "@nxtend/capacitor": "^11.0.0",
     "@nxtend/ionic-angular": "^11.1.1",
+    "@openapitools/openapi-generator-cli": "^2.3.3",
     "@tailwindcss/aspect-ratio": "0.2.1",
     "@tailwindcss/line-clamp": "0.2.1",
     "@types/jest": "26.0.8",

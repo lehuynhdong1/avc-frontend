@@ -720,6 +720,43 @@
           }
         }
       }
+    },
+    "shared-api": {
+      "projectType": "library",
+      "root": "libs/shared/api",
+      "sourceRoot": "libs/shared/api/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/shared/api/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/api/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/shared/api/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/api"],
+          "options": {
+            "jestConfig": "libs/shared/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/api/src/**/*.ts", "libs/shared/api/src/**/*.html"]
+          }
+        }
+      }
     }
   }
 }

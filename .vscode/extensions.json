@@ -6,12 +6,12 @@
     "zignd.html-css-class-completion",
     "nrwl.angular-console",
     "esbenp.prettier-vscode",
-    // "firsttris.vscode-jest-runner",
     "dbaeumer.vscode-eslint",
     "bradlc.vscode-tailwindcss",
     "gruntfuggly.todo-tree",
     "vscode-icons-team.vscode-icons",
     "mhutchie.git-graph",
-    "mrmlnc.vscode-attrs-sorter"
+    "mrmlnc.vscode-attrs-sorter",
+    "firsttris.vscode-jest-runner"
   ]
 }

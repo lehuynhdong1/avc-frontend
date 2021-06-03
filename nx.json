@@ -57,6 +57,9 @@
     },
     "admin-core-feature": {
       "tags": ["scope:admin"]
+    },
+    "shared-api": {
+      "tags": ["scope:shared"]
     }
   }
 }
