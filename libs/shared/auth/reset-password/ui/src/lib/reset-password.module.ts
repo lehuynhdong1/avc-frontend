@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResetPasswordComponent } from './reset-password.component';
+import { SharedResetPasswordComponent } from './reset-password.component';
 
 @NgModule({
-  declarations: [ResetPasswordComponent],
+  declarations: [SharedResetPasswordComponent],
   imports: [CommonModule],
-  exports: [ResetPasswordComponent]
+  exports: [SharedResetPasswordComponent]
 })
-export class ResetPasswordModule {}
+export class SharedResetPasswordModule {}

@@ -8,6 +8,14 @@ const routes: Routes = [
     loadChildren: () => import('@admin/auth/login/feature').then((m) => m.FeatureModule)
   },
   {
+    path: 'forgot-password',
+    loadChildren: () => import('@admin/auth/forgot-password/feature').then((m) => m.FeatureModule)
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () => import('@admin/auth/reset-password/feature').then((m) => m.FeatureModule)
+  },
+  {
     path: '',
     component: LayoutComponent,
     data: { title: 'Dashboard' },

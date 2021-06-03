@@ -485,7 +485,7 @@
       "projectType": "library",
       "root": "libs/admin/auth/login/ui",
       "sourceRoot": "libs/admin/auth/login/ui/src",
-      "prefix": "adc-frontend",
+      "prefix": "adca",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:ng-packagr-lite",
@@ -645,7 +645,7 @@
       "projectType": "library",
       "root": "libs/admin/auth/login/feature",
       "sourceRoot": "libs/admin/auth/login/feature/src",
-      "prefix": "adc-frontend",
+      "prefix": "adca",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:ng-packagr-lite",
@@ -791,6 +791,166 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/util/src/**/*.ts", "libs/shared/util/src/**/*.html"]
+          }
+        }
+      }
+    },
+    "admin-auth-forgot-password-ui": {
+      "projectType": "library",
+      "root": "libs/admin/auth/forgot-password/ui",
+      "sourceRoot": "libs/admin/auth/forgot-password/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/admin/auth/forgot-password/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/auth/forgot-password/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/admin/auth/forgot-password/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/auth/forgot-password/ui"],
+          "options": {
+            "jestConfig": "libs/admin/auth/forgot-password/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/auth/forgot-password/ui/src/**/*.ts",
+              "libs/admin/auth/forgot-password/ui/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "admin-auth-reset-password-ui": {
+      "projectType": "library",
+      "root": "libs/admin/auth/reset-password/ui",
+      "sourceRoot": "libs/admin/auth/reset-password/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/admin/auth/reset-password/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/auth/reset-password/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/admin/auth/reset-password/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/auth/reset-password/ui"],
+          "options": {
+            "jestConfig": "libs/admin/auth/reset-password/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/auth/reset-password/ui/src/**/*.ts",
+              "libs/admin/auth/reset-password/ui/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "admin-auth-reset-password-feature": {
+      "projectType": "library",
+      "root": "libs/admin/auth/reset-password/feature",
+      "sourceRoot": "libs/admin/auth/reset-password/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/admin/auth/reset-password/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/auth/reset-password/feature/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/admin/auth/reset-password/feature/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/auth/reset-password/feature"],
+          "options": {
+            "jestConfig": "libs/admin/auth/reset-password/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/auth/reset-password/feature/src/**/*.ts",
+              "libs/admin/auth/reset-password/feature/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "admin-auth-forgot-password-feature": {
+      "projectType": "library",
+      "root": "libs/admin/auth/forgot-password/feature",
+      "sourceRoot": "libs/admin/auth/forgot-password/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/admin/auth/forgot-password/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/auth/forgot-password/feature/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/admin/auth/forgot-password/feature/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/auth/forgot-password/feature"],
+          "options": {
+            "jestConfig": "libs/admin/auth/forgot-password/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/auth/forgot-password/feature/src/**/*.ts",
+              "libs/admin/auth/forgot-password/feature/src/**/*.html"
+            ]
           }
         }
       }

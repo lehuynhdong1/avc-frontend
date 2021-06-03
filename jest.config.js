@@ -13,6 +13,10 @@ module.exports = {
     '<rootDir>/libs/admin/auth/login/feature',
     '<rootDir>/libs/admin/core/feature',
     '<rootDir>/libs/shared/api',
-    '<rootDir>/libs/shared/util'
+    '<rootDir>/libs/shared/util',
+    '<rootDir>/libs/admin/auth/forgot-password/ui',
+    '<rootDir>/libs/admin/auth/reset-password/ui',
+    '<rootDir>/libs/admin/auth/reset-password/feature',
+    '<rootDir>/libs/admin/auth/forgot-password/feature'
   ]
 };

@@ -63,6 +63,18 @@
     },
     "shared-util": {
       "tags": ["scope:shared"]
+    },
+    "admin-auth-forgot-password-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-auth-reset-password-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-auth-reset-password-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-auth-forgot-password-feature": {
+      "tags": ["scope:admin"]
     }
   }
 }
