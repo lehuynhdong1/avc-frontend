@@ -1,5 +1,5 @@
 import { LayoutModule } from '@admin/core/ui';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -11,7 +11,22 @@ import { TuiRootModule } from '@taiga-ui/core';
 import { FeatureModule as CoreModule } from '@admin/core/feature';
 import { ApiModule, Configuration } from '@shared/api';
 import { Store } from '@ngxs/store';
+import { AutoTitleService } from '@shared/util';
 
+const apiProvider: Provider = {
+  provide: Configuration,
+  useFactory: (store: Store) => {
+    return new Configuration({
+      basePath: environment.apiUrl,
+      // #TODO: If apiKey has been already in Store => apiKeys, else return undefined
+      apiKeys: {
+        Authorization: 'Bearer ' + 'Select from Store to get token here'
+      }
+    });
+  },
+  deps: [Store],
+  multi: false
+};
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -26,21 +41,6 @@ import { Store } from '@ngxs/store';
     LayoutModule
   ],
   bootstrap: [AppComponent],
-  providers: [
-    {
-      provide: Configuration,
-      useFactory: (store: Store) => {
-        return new Configuration({
-          basePath: environment.apiUrl,
-          // #TODO: If apiKey has been already in Store => apiKeys, else return undefined
-          apiKeys: {
-            Authorization: 'Bearer ' + 'Select from Store to get token here'
-          }
-        });
-      },
-      deps: [Store],
-      multi: false
-    }
-  ]
+  providers: [apiProvider, AutoTitleService]
 })
 export class AppModule {}

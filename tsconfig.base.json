@@ -25,7 +25,8 @@
       "@shared/auth/reset-password/ui": ["libs/shared/auth/reset-password/ui/src/index.ts"],
       "@admin/auth/login/feature": ["libs/admin/auth/login/feature/src/index.ts"],
       "@admin/core/feature": ["libs/admin/core/feature/src/index.ts"],
-      "@shared/api": ["libs/shared/api/src/index.ts"]
+      "@shared/api": ["libs/shared/api/src/index.ts"],
+      "@shared/util": ["libs/shared/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

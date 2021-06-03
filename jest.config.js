@@ -12,6 +12,7 @@ module.exports = {
     '<rootDir>/libs/shared/auth/reset-password/ui',
     '<rootDir>/libs/admin/auth/login/feature',
     '<rootDir>/libs/admin/core/feature',
-    '<rootDir>/libs/shared/api'
+    '<rootDir>/libs/shared/api',
+    '<rootDir>/libs/shared/util'
   ]
 };

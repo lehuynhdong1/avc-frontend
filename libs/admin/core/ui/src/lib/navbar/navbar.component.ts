@@ -11,9 +11,7 @@ import { loader } from './transloco.loader';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: TRANSLOCO_SCOPE, useValue: { scope: 'navbar', loader } },
-  ],
+  providers: [{ provide: TRANSLOCO_SCOPE, useValue: { scope: 'navbar', loader } }]
 })
 export class NavbarComponent {
   constructor(private store: Store) {}
