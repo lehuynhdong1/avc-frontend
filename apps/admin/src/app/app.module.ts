@@ -7,8 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { LanguageModule } from '@shared/language';
 import { StateManagementModule } from '@shared/state-management';
 import { environment } from '../environments/environment';
-import { TuiModule } from './tui.module';
+import { TuiRootModule } from '@taiga-ui/core';
 import { FeatureModule as CoreModule } from '@admin/core/feature';
+import { ApiModule, Configuration } from '@shared/api';
+import { Store } from '@ngxs/store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,12 +18,29 @@ import { FeatureModule as CoreModule } from '@admin/core/feature';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    TuiModule,
+    TuiRootModule,
     CoreModule,
     StateManagementModule.forRoot(environment),
+    ApiModule,
     LanguageModule.forRoot({ prodMode: environment.production }),
     LayoutModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: Configuration,
+      useFactory: (store: Store) => {
+        return new Configuration({
+          basePath: environment.apiUrl,
+          // #TODO: If apiKey has been already in Store => apiKeys, else return undefined
+          apiKeys: {
+            Authorization: 'Bearer ' + 'Select from Store to get token here'
+          }
+        });
+      },
+      deps: [Store],
+      multi: false
+    }
+  ]
 })
 export class AppModule {}

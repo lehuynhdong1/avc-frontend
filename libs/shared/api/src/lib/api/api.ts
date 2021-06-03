@@ -1,0 +1,10 @@
+export * from './accounts.service';
+import { AccountsService } from './accounts.service';
+export * from './accounts.serviceInterface';
+export * from './authentication.service';
+import { AuthenticationService } from './authentication.service';
+export * from './authentication.serviceInterface';
+export * from './weatherForecast.service';
+import { WeatherForecastService } from './weatherForecast.service';
+export * from './weatherForecast.serviceInterface';
+export const APIS = [AccountsService, AuthenticationService, WeatherForecastService];

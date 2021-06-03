@@ -32,7 +32,7 @@
     "lint:ts:fix": "npm run lint:ts -- --fix",
     "admin:build-analyzer": "nx run admin:build --stats-json && webpack-bundle-analyzer dist/apps/admin/stats.json",
     "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer dist/apps/mobile/stats.json",
-    "update:api": "openapi-generator-cli generate -i https://avc-api.azurewebsites.net/swagger/v1/swagger.yaml -g typescript-angular -o libs/shared/api/src/lib/"
+    "update:api": "openapi-generator-cli generate && prettier --write libs/shared/api/src/lib/ && eslint libs/shared/api/src/lib/*.ts --ext .ts --fix"
   },
   "private": true,
   "dependencies": {
