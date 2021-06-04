@@ -5,9 +5,9 @@
     </div>
     <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="rounded-md shadow-sm -space-y-px">
-        <div class="tui-form__row">
+        <div class="tui-space_bottom-7">
           <tui-input class="b-form" type="email" formControlName="email">E-Mail</tui-input>
-          <tui-field-error formControlName="email"></tui-field-error>
+          <tui-field-error style="position: absolute" formControlName="email"></tui-field-error>
         </div>
         <div>
           <tui-input-password
@@ -18,7 +18,7 @@
           >
             Password
           </tui-input-password>
-          <tui-field-error formControlName="password"></tui-field-error>
+          <tui-field-error style="position: absolute" formControlName="password"></tui-field-error>
         </div>
       </div>
 
@@ -27,7 +27,11 @@
           <tui-checkbox-labeled formControlName="remember">Remember me</tui-checkbox-labeled>
         </div>
         <div class="text-sm">
-          <a tuiLink href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+          <a
+            tuiLink
+            href="/forgot-password"
+            class="font-medium text-indigo-600 hover:text-indigo-500"
+          >
             Forgot your password?
           </a>
         </div>
