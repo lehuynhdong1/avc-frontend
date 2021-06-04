@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "nx",
-    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
+    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && jetifier",
     "nx": "nx",
     "start": "ng serve",
     "build": "ng build",
@@ -32,7 +32,15 @@
     "lint:ts:fix": "npm run lint:ts -- --fix",
     "admin:build-analyzer": "nx run admin:build --stats-json && webpack-bundle-analyzer dist/apps/admin/stats.json",
     "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer dist/apps/mobile/stats.json",
-    "update:api": "openapi-generator-cli generate && prettier --write libs/shared/api/src/lib/ && eslint libs/shared/api/src/lib/*.ts --ext .ts --fix"
+    "update:api": "openapi-generator-cli generate && prettier --write libs/shared/api/src/lib/ && eslint libs/shared/api/src/lib/*.ts --ext .ts --fix",
+    "mobile:sync": "cd apps/mobile && npx cap sync",
+    "mobile:live-reload:ios": "ionic capacitor run ios -l --external",
+    "mobile:live-reload:android": "ionic capacitor run android -l --external",
+    "mobile:deploy:ios": "cd $PWD/ios/App && gem install bundler && bundle install && bundle exec fastlane beta",
+    "mobile:deploy:android": "cd $PWD/android && ./gradlew assembleDebug",
+    "mobile:open:ios": "npx cap open ios",
+    "mobile:open:android": "npx cap open android",
+    "mobile:gen:splashscreen": "cordova-res android --resources resources --skip-config --copy  && cordova-res ios --resources resources --skip-config --copy"
   },
   "private": true,
   "dependencies": {
@@ -94,6 +102,7 @@
     "@typescript-eslint/eslint-plugin": "4.19.0",
     "@typescript-eslint/parser": "4.19.0",
     "cypress": "^7.3.0",
+    "cordova-res": "^0.15.3",
     "dotenv": "8.2.0",
     "eslint": "7.22.0",
     "eslint-config-prettier": "8.1.0",
@@ -101,6 +110,7 @@
     "husky": "^6.0.0",
     "jest": "26.2.2",
     "jest-preset-angular": "8.4.0",
+    "jetifier": "^2.0.0",
     "lint-staged": "^11.0.0",
     "ng-packagr": "^12.0.0",
     "prettier": "2.2.1",
