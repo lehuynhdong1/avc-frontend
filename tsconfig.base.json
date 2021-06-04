@@ -34,7 +34,9 @@
       "@admin/auth/forgot-password/feature": [
         "libs/admin/auth/forgot-password/feature/src/index.ts"
       ],
-      "@shared/auth/login/data-access": ["libs/shared/auth/login/data-access/src/index.ts"]
+      "@shared/auth/login/data-access": ["libs/shared/auth/login/data-access/src/index.ts"],
+      "@shared/auth/util": ["libs/shared/auth/util/src/index.ts"],
+      "@shared/auth/logout/data-access": ["libs/shared/auth/logout/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

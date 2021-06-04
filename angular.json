@@ -51,8 +51,11 @@
       "prefix": "adca",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "custom-webpack.config.js"
+            },
             "outputPath": "dist/apps/admin",
             "index": "apps/admin/src/index.html",
             "main": "apps/admin/src/main.ts",
@@ -88,12 +91,6 @@
                   "maximumError": "4kb"
                 }
               ],
-              "fileReplacements": [
-                {
-                  "replace": "apps/admin/src/environments/environment.ts",
-                  "with": "apps/admin/src/environments/environment.prod.ts"
-                }
-              ],
               "outputHashing": "all"
             },
             "development": {
@@ -109,15 +106,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "browserTarget": "admin:build:production"
-            },
-            "development": {
-              "browserTarget": "admin:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
+          "options": {
+            "browserTarget": "admin:build:development"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -148,8 +139,11 @@
       "prefix": "adcm",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "custom-webpack.config.js"
+            },
             "outputPath": "dist/apps/mobile",
             "index": "apps/mobile/src/index.html",
             "main": "apps/mobile/src/main.ts",
@@ -186,12 +180,6 @@
                   "maximumError": "4kb"
                 }
               ],
-              "fileReplacements": [
-                {
-                  "replace": "apps/mobile/src/environments/environment.ts",
-                  "with": "apps/mobile/src/environments/environment.prod.ts"
-                }
-              ],
               "outputHashing": "all"
             },
             "development": {
@@ -207,15 +195,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "browserTarget": "mobile:build:production"
-            },
-            "development": {
-              "browserTarget": "mobile:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
+          "options": {
+            "browserTarget": "mobile:build:development"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -990,6 +972,80 @@
               "libs/shared/auth/login/data-access/src/**/*.ts",
               "libs/shared/auth/login/data-access/src/**/*.html"
             ]
+          }
+        }
+      }
+    },
+    "shared-auth-util": {
+      "projectType": "library",
+      "root": "libs/shared/auth/util",
+      "sourceRoot": "libs/shared/auth/util/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/auth/util/tsconfig.lib.json",
+            "project": "libs/shared/auth/util/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/auth/util/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/auth/util/src/**/*.ts",
+              "libs/shared/auth/util/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/auth/util"],
+          "options": {
+            "jestConfig": "libs/shared/auth/util/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-auth-logout-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/auth/logout/data-access",
+      "sourceRoot": "libs/shared/auth/logout/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/auth/logout/data-access/tsconfig.lib.json",
+            "project": "libs/shared/auth/logout/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/auth/logout/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/auth/logout/data-access/src/**/*.ts",
+              "libs/shared/auth/logout/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/auth/logout/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/auth/logout/data-access/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

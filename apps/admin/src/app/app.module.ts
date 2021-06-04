@@ -13,6 +13,7 @@ import { ApiModule, Configuration } from '@shared/api';
 import { Store } from '@ngxs/store';
 import { AutoTitleService } from '@shared/util';
 import { LoginState } from '@shared/auth/login/data-access';
+import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 
 const apiProvider: Provider = {
   provide: Configuration,
@@ -21,8 +22,7 @@ const apiProvider: Provider = {
     return new Configuration({
       basePath: environment.apiUrl,
       apiKeys: {
-        Authorization: token ? `Bearer ${token}` : '',
-        'Access-Control-Allow-Origin': '*'
+        Authorization: token ? `Bearer ${token}` : ''
       }
     });
   },
@@ -40,7 +40,8 @@ const apiProvider: Provider = {
     StateManagementModule.forRoot(environment),
     ApiModule,
     LanguageModule.forRoot({ prodMode: environment.production }),
-    LayoutModule
+    LayoutModule,
+    AuthUtilModule
   ],
   bootstrap: [AppComponent],
   providers: [apiProvider, AutoTitleService]

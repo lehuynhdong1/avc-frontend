@@ -4,7 +4,7 @@ import { AuthenticationService } from '@shared/api';
 import { LOGIN_STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
 import { Login, LoginError, LoginSuccess } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
-import { merge, of, partition, throwError } from 'rxjs';
+import { Logout } from '@shared/auth/logout/data-access';
 
 @State<LoginStateModel>({
   name: LOGIN_STATE_NAME,
@@ -29,21 +29,23 @@ export class LoginState {
 
   @Action(Login)
   login({ dispatch }: StateContext<LoginStateModel>, { payload }: Login) {
-    const [success, error] = partition(
-      this.authService.apiAuthenticationPost(payload, 'response'),
-      (response) => response.ok
+    return this.authService.apiAuthenticationPost(payload).pipe(
+      tap((response) => {
+        dispatch(new LoginSuccess(response));
+      }),
+      catchError(() => {
+        return dispatch(new LoginError(ERROR_CODES.WRONG_USERNAME_OR_PASSWORD));
+      })
     );
-    return merge(
-      success.pipe(
-        tap((response) => {
-          if (response.body) dispatch(new LoginSuccess(response.body));
-        })
-      ),
-      error.pipe(
-        tap(() => {
-          dispatch(new LoginError(ERROR_CODES.WRONG_USERNAME_OR_PASSWORD));
-        })
-      )
-    );
+  }
+
+  @Action(LoginSuccess)
+  loginSuccess({ patchState }: StateContext<LoginStateModel>, { payload }: LoginSuccess) {
+    patchState(payload);
+  }
+
+  @Action(Logout)
+  logout({ patchState }: StateContext<LoginStateModel>) {
+    patchState(INITIAL_STATE);
   }
 }

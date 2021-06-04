@@ -17,7 +17,9 @@
         <div class="hidden sm:block sm:ml-6">
           <div class="flex space-x-4">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <button tuiButton type="button" size="m" appearance="primary">Dashboard</button>
+            <button tuiButton type="button" size="m" appearance="primary" (click)="loadData()">
+              Test load data will error
+            </button>
           </div>
         </div>
       </div>
@@ -58,6 +60,9 @@
           </div>
         </div>
       </div>
+      <button tuiButton type="button" size="s" appearance="primary" (click)="logout()">
+        Logout
+      </button>
     </div>
   </div>
 </nav>

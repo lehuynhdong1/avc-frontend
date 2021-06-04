@@ -5,8 +5,9 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsRootModule } from '@ngxs/store/src/modules/ngxs-root.module';
 import { AppConfig } from '@shared/app-config';
+import { LoginState } from '../../../auth/login/data-access/src/lib/store/login.state';
 
-@NgModule({ imports: [NgxsStoragePluginModule.forRoot()] })
+@NgModule({ imports: [NgxsStoragePluginModule.forRoot({ key: [LoginState] })] })
 export class StateManagementModule {
   static forRoot(
     config: AppConfig
@@ -25,8 +26,8 @@ export class StateManagementModule {
       config.production
         ? undefined
         : NgxsReduxDevtoolsPluginModule.forRoot({
-            disabled: config.production,
-          }),
+            disabled: config.production
+          })
     ];
   }
 }

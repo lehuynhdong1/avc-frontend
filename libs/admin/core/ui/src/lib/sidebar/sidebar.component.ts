@@ -14,4 +14,8 @@ import { Select } from '@ngxs/store';
 })
 export class SidebarComponent {
   @Select(LoginState.account) me$: Observable<LoginStateModel['account']>;
+
+  ngOnInit() {
+    this.me$.subscribe(console.warn);
+  }
 }

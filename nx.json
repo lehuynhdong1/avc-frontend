@@ -7,7 +7,7 @@
     ".eslintrc.json": "*"
   },
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "develop"
   },
   "npmScope": "adc-frontend",
   "tasksRunnerOptions": {
@@ -77,6 +77,12 @@
       "tags": ["scope:admin"]
     },
     "shared-auth-login-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-util": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-logout-data-access": {
       "tags": ["scope:shared"]
     }
   }

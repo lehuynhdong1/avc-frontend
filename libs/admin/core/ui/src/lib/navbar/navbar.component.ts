@@ -5,6 +5,8 @@ import { LanguageCode } from '@shared/language';
 
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { loader } from './transloco.loader';
+import { AccountsService } from '@shared/api';
+import { Logout } from '@shared/auth/logout/data-access';
 
 @Component({
   selector: 'adca-navbar',
@@ -14,9 +16,16 @@ import { loader } from './transloco.loader';
   providers: [{ provide: TRANSLOCO_SCOPE, useValue: { scope: 'navbar', loader } }]
 })
 export class NavbarComponent {
-  constructor(private store: Store) {}
+  constructor(private store: Store, private accountsService: AccountsService) {}
   changeLanguage(language: LanguageCode) {
     // this.transloco.setActiveLang(language);
     this.store.dispatch(new LoadLanguage(language));
+  }
+
+  loadData() {
+    this.accountsService.apiAccountsManagersGet().subscribe(console.log);
+  }
+  logout() {
+    this.store.dispatch(new Logout());
   }
 }
