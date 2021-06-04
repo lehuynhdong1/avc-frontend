@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AuthenticationService } from '@shared/api';
-import { LOGIN_STATE_NAME, INITIAL_STATE, LoginStateModel } from './login-state.model';
-import { Login } from './login.actions';
-import { tap } from 'rxjs/operators';
+import { LOGIN_STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
+import { Login, LoginError, LoginSuccess } from './login.actions';
+import { catchError, tap } from 'rxjs/operators';
+import { merge, of, partition, throwError } from 'rxjs';
 
 @State<LoginStateModel>({
   name: LOGIN_STATE_NAME,
@@ -27,12 +28,22 @@ export class LoginState {
   constructor(private authService: AuthenticationService) {}
 
   @Action(Login)
-  login({ patchState }: StateContext<LoginStateModel>, { payload }: Login) {
-    return this.authService.apiAuthenticationPost(payload).pipe(
-      tap((response) => {
-        if (!response.token) throw new Error('Login failed');
-        else patchState(response);
-      })
+  login({ dispatch }: StateContext<LoginStateModel>, { payload }: Login) {
+    const [success, error] = partition(
+      this.authService.apiAuthenticationPost(payload, 'response'),
+      (response) => response.ok
+    );
+    return merge(
+      success.pipe(
+        tap((response) => {
+          if (response.body) dispatch(new LoginSuccess(response.body));
+        })
+      ),
+      error.pipe(
+        tap(() => {
+          dispatch(new LoginError(ERROR_CODES.WRONG_USERNAME_OR_PASSWORD));
+        })
+      )
     );
   }
 }

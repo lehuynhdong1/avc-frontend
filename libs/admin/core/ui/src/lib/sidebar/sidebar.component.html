@@ -1,13 +1,13 @@
 <nav class="flex flex-col px-6">
-  <section class="flex flex-col items-center py-10">
+  <section class="flex flex-col items-center py-10" *ngIf="me$ | async as me">
     <tui-avatar
       class="tui-space_top-1"
       avatarUrl="http://angular-material.fusetheme.com/assets/images/avatars/brian-hughes.jpg"
       size="xl"
       [rounded]="true"
     ></tui-avatar>
-    <h4 class="text-base font-bold">User Name</h4>
-    <p class="mb-3 text-sm font-bold text-gray-600">hoantse130135@fpt.edu.vn</p>
+    <h4 class="text-base font-bold">{{ me.firstName }} {{ me.lastName }}</h4>
+    <p class="mb-3 text-sm font-bold text-gray-600">{{ me.email }}</p>
   </section>
 
   <section id="dashboards">

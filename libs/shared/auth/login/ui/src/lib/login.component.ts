@@ -1,15 +1,12 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  TUI_INPUT_PASSWORD_DEFAULT_OPTIONS,
-  TUI_INPUT_PASSWORD_OPTIONS,
-  TUI_VALIDATION_ERRORS
-} from '@taiga-ui/kit';
+import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { Login, LoginState } from '@shared/auth/login/data-access';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import { takeUntil } from 'rxjs/operators';
+import { LoginSuccess, LoginError } from '../../../data-access/src/lib/store/login.actions';
 
 //TODO: config validator
 // const requireEmailValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -24,16 +21,6 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     TuiDestroyService,
-    {
-      provide: TUI_INPUT_PASSWORD_OPTIONS,
-      useValue: {
-        ...TUI_INPUT_PASSWORD_DEFAULT_OPTIONS,
-        icons: {
-          hide: 'tuiIconEyeClosed',
-          show: 'tuiIconEyeOpen'
-        }
-      }
-    },
     {
       provide: TUI_VALIDATION_ERRORS,
       useValue: {
@@ -84,7 +71,7 @@ export class SharedLoginComponent implements OnInit {
 
   private registerLogin() {
     this.actions
-      .pipe<Login>(ofActionSuccessful(Login))
+      .pipe<Login>(ofActionSuccessful(LoginSuccess))
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         console.log('Login successfully');
@@ -92,7 +79,7 @@ export class SharedLoginComponent implements OnInit {
       });
 
     this.actions
-      .pipe<Login>(ofActionErrored(Login))
+      .pipe<Login>(ofActionSuccessful(LoginError))
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         const error = this.store.selectSnapshot(LoginState.error);

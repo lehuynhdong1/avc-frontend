@@ -18,10 +18,12 @@ const apiProvider: Provider = {
   provide: Configuration,
   useFactory: (store: Store) => {
     const token = store.selectSnapshot(LoginState.token);
-    const appendixHeader = token ? { Authorization: `Bearer ${token}` } : undefined;
     return new Configuration({
       basePath: environment.apiUrl,
-      apiKeys: appendixHeader
+      apiKeys: {
+        Authorization: token ? `Bearer ${token}` : '',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   },
   deps: [Store],
