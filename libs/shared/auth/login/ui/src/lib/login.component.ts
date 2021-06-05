@@ -80,7 +80,7 @@ export class SharedLoginComponent implements OnInit {
 
   private registerLogin() {
     this.actions
-      .pipe<Login>(ofActionSuccessful(LoginSuccess))
+      .pipe<LoginSuccess>(ofActionSuccessful(LoginSuccess))
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.store.dispatch(
@@ -93,7 +93,7 @@ export class SharedLoginComponent implements OnInit {
       });
 
     this.actions
-      .pipe<Login>(ofActionSuccessful(LoginError))
+      .pipe<LoginError>(ofActionSuccessful(LoginError))
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         const error = this.store.selectSnapshot(LoginState.error);

@@ -4,7 +4,6 @@ import { AuthenticationService } from '@shared/api';
 import { LOGIN_STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
 import { Login, LoginError, LoginSuccess } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
-import { Logout } from '@shared/auth/logout/data-access';
 
 @State<LoginStateModel>({
   name: LOGIN_STATE_NAME,
@@ -44,8 +43,8 @@ export class LoginState {
     patchState(payload);
   }
 
-  @Action(Logout)
-  logout({ patchState }: StateContext<LoginStateModel>) {
-    patchState(INITIAL_STATE);
+  @Action(LoginError)
+  loginError({ patchState }: StateContext<LoginStateModel>, { payload }: LoginError) {
+    patchState({ error: payload });
   }
 }
