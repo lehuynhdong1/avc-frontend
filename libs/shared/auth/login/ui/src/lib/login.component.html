@@ -4,8 +4,8 @@
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in</h2>
     </div>
     <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="login()">
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div class="tui-space_bottom-7">
+      <div class="rounded-md shadow-sm space-y-6">
+        <div>
           <tui-input class="b-form" type="email" formControlName="email">E-Mail</tui-input>
           <tui-field-error style="position: absolute" formControlName="email"></tui-field-error>
         </div>
