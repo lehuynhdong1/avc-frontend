@@ -47,23 +47,37 @@
             />
           </svg>
         </button>
-        <div class="ml-3 relative">
-          <ng-container *ngIf="me$ | async as me; else notAuthen">
+        <ng-container *ngIf="me$ | async as me; else notAuthen">
+          <div class="ml-3 relative">
             <tui-avatar
               avatarUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               size="m"
               [rounded]="true"
             ></tui-avatar>
-            <button tuiButton type="button" size="m" appearance="outline" (click)="logout()">
-              <span class="text-gray-50 hover:text-gray-600">Logout</span>
-            </button>
-          </ng-container>
-          <ng-template #notAuthen>
-            <button tuiButton type="button" size="m" appearance="outline" routerLink="/login">
-              <span class="text-gray-50">Login</span>
-            </button>
-          </ng-template>
-        </div>
+          </div>
+          <button
+            tuiButton
+            type="button"
+            size="m"
+            appearance="outline"
+            (click)="logout()"
+            class="ml-3"
+          >
+            <span class="text-gray-50 hover:text-gray-600">Logout</span>
+          </button>
+        </ng-container>
+        <ng-template #notAuthen>
+          <button
+            tuiButton
+            type="button"
+            size="m"
+            appearance="outline"
+            routerLink="/login"
+            class="ml-3"
+          >
+            <span class="text-gray-50">Login</span>
+          </button>
+        </ng-template>
       </div>
     </div>
   </div>

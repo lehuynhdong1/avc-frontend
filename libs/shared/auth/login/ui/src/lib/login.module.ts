@@ -10,7 +10,6 @@ import {
   TuiFieldErrorModule
 } from '@taiga-ui/kit';
 import { TuiValidatorModule } from '@taiga-ui/cdk';
-import { DataAccessModule } from '@shared/auth/login/data-access';
 
 const tuiModules = [
   TuiButtonModule,
@@ -24,7 +23,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [SharedLoginComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, DataAccessModule, ...tuiModules],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ...tuiModules],
   exports: [SharedLoginComponent]
 })
 export class SharedLoginModule {}
