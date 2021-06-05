@@ -1,4 +1,11 @@
-<nav class="flex flex-col px-6">
+<nav class="flex flex-col px-6 h-full bg-gray-800 text-gray-50">
+  <div class="flex justify-between items-center h-16">
+    <tui-svg src="tuiIconCheckCircleLarge" class="cursor-pointer"></tui-svg>
+    <div>
+      <tui-svg src="tuiIconMailLarge" class="mr-2 cursor-pointer"></tui-svg>
+      <tui-svg src="tuiIconAlertCircleLarge" class="cursor-pointer"></tui-svg>
+    </div>
+  </div>
   <section class="flex flex-col items-center py-10" *ngIf="me$ | async as me">
     <tui-avatar
       class="tui-space_top-1"
@@ -7,11 +14,24 @@
       [rounded]="true"
     ></tui-avatar>
     <h4 class="text-base font-bold">{{ me.firstName }} {{ me.lastName }}</h4>
-    <p class="mb-3 text-sm font-bold text-gray-600">{{ me.email }}</p>
+    <p class="mb-3 text-sm font-bold text-gray-400">{{ me.email }}</p>
   </section>
 
   <section id="dashboards">
     <h3 class="text-base font-bold">Dashboards</h3>
-    <p class="text-gray-600">Dashboards detail hihi</p>
+    <p class="text-gray-400 mb-6">Dashboards detail hihi</p>
+
+    <ul class="flex flex-col items-stretch text-base -mx-3">
+      <li
+        *ngFor="let item of navItems"
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item"
+      >
+        <tui-svg [src]="item.icon" class="zoom-08"></tui-svg>
+        <span class="ml-2">{{ item.label }}</span>
+      </li>
+    </ul>
   </section>
 </nav>
