@@ -1,4 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TUI_INPUT_PASSWORD_DEFAULT_OPTIONS, TUI_INPUT_PASSWORD_OPTIONS } from '@taiga-ui/kit';
 import {
   FormControl,
   FormGroup,
@@ -10,13 +12,6 @@ import {
 } from '@angular/forms';
 import { TuiNotification } from '@taiga-ui/core';
 
-// export function passwordMatchValidator(form: AbstractControl): Validators | null {
-//   return form.get('password')?.value === form.get('passwordConfrm')?.value
-//     ? {
-//         other: 'Password must match'
-//       }
-//     : null;
-// }
 export const passwordMatchValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
@@ -43,12 +38,31 @@ export function passwordConfrmRequiredValidator(field: AbstractControl): Validat
       }
     : null;
 }
+export function verificationCodeRequiredValidator(field: AbstractControl): Validators | null {
+  return field.value === ''
+    ? {
+        other: 'Verification code is required'
+      }
+    : null;
+}
 
 @Component({
   selector: 'adc-frontend-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: TUI_INPUT_PASSWORD_OPTIONS,
+      useValue: {
+        ...TUI_INPUT_PASSWORD_DEFAULT_OPTIONS,
+        icons: {
+          hide: 'tuiIconEyeClosed',
+          show: 'tuiIconEyeOpen'
+        }
+      }
+    }
+  ]
 })
 export class SharedResetPasswordComponent implements OnInit {
   private TUI_NOTIFICATION_SUCCESS = TuiNotification.Success;
@@ -58,18 +72,17 @@ export class SharedResetPasswordComponent implements OnInit {
   private ERROR_MESSAGE = 'Something went wrong. Try again later!';
   private INFOR_MESSAGE = 'Create a new password for your account';
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
   status = this.TUI_NOTIFICATION_INFOR;
   isSubmitted = false;
   isReset = false;
   message = this.INFOR_MESSAGE;
   resetPwdForm!: FormGroup;
   passwordConfrm!: FormControl;
-
   ngOnInit() {
     this.resetPwdForm = this.formBuilder.group(
       {
-        code: new FormControl(''),
+        verificationCode: new FormControl('', verificationCodeRequiredValidator ),
         password: new FormControl('', passwordRequiredValidator),
         passwordConfrm: new FormControl('', passwordConfrmRequiredValidator)
       },
@@ -87,7 +100,7 @@ export class SharedResetPasswordComponent implements OnInit {
     if (this.isReset) {
       this.status = this.TUI_NOTIFICATION_SUCCESS;
       this.message = this.SUCCESS_MESSAGE;
-    } else {
+    }else{
       this.status = this.TUI_NOTIFICATION_ERROR;
       this.message = this.ERROR_MESSAGE;
     }
