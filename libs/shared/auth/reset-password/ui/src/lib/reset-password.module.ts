@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedResetPasswordComponent } from './reset-password.component';
-import { TuiButtonModule, TuiSvgModule, TuiLinkModule,TuiNotificationModule, TuiErrorModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiSvgModule,
+  TuiLinkModule,
+  TuiNotificationModule,
+} from '@taiga-ui/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiInputPasswordModule, TuiFieldErrorModule } from '@taiga-ui/kit';
+import { TuiInputPasswordModule, TuiFieldErrorModule, TuiInputModule } from '@taiga-ui/kit';
 import { TuiValidatorModule } from '@taiga-ui/cdk';
 
 @NgModule({
@@ -19,7 +24,7 @@ import { TuiValidatorModule } from '@taiga-ui/cdk';
     TuiValidatorModule,
     TuiFieldErrorModule,
     TuiNotificationModule,
-    TuiErrorModule
+    TuiInputModule,
   ],
   exports: [SharedResetPasswordComponent]
 })
