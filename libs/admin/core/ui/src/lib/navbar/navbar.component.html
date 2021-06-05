@@ -47,22 +47,24 @@
             />
           </svg>
         </button>
-
-        <!-- Profile dropdown -->
         <div class="ml-3 relative">
-          <div>
+          <ng-container *ngIf="me$ | async as me; else notAuthen">
             <tui-avatar
               avatarUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               size="m"
               [rounded]="true"
-              routerLink="/login"
             ></tui-avatar>
-          </div>
+            <button tuiButton type="button" size="m" appearance="outline" (click)="logout()">
+              <span class="text-gray-50 hover:text-gray-600">Logout</span>
+            </button>
+          </ng-container>
+          <ng-template #notAuthen>
+            <button tuiButton type="button" size="m" appearance="outline" routerLink="/login">
+              <span class="text-gray-50">Login</span>
+            </button>
+          </ng-template>
         </div>
       </div>
-      <button tuiButton type="button" size="s" appearance="primary" (click)="logout()">
-        Logout
-      </button>
     </div>
   </div>
 </nav>

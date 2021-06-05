@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { ShowNotification } from '../store/util.actions';
+import { TuiNotification } from '@taiga-ui/core';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -25,7 +26,8 @@ export class TokenInterceptor implements HttpInterceptor {
             new ShowNotification({
               message: 'Unauthorize access. Please login again!',
               options: {
-                label: 'Unauthorize access'
+                label: 'Unauthorize access',
+                status: TuiNotification.Error
               }
             })
           );

@@ -1,2 +1,2 @@
 export * from './lib/ui.module';
-export * from './lib/reset-password.component';
+export * from './lib/reset-password.page';

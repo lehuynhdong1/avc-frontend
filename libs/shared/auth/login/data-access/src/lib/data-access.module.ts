@@ -3,7 +3,5 @@ import { NgxsModule } from '@ngxs/store';
 
 import { LoginState } from './store/login.state';
 
-@NgModule({
-  imports: [NgxsModule.forFeature([LoginState])]
-})
+@NgModule({ imports: [NgxsModule.forFeature([LoginState])] })
 export class DataAccessModule {}

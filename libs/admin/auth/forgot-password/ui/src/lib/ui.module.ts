@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedForgotPasswordModule } from '@shared/auth/forgot-password/ui';
-import { ForgotPasswordComponent } from './forgot-password.component';
+import { ForgotPasswordPage } from './forgot-password.page';
 
 @NgModule({
+  declarations: [ForgotPasswordPage],
   imports: [CommonModule, SharedForgotPasswordModule],
-  declarations: [ForgotPasswordComponent],
-  exports: [ForgotPasswordComponent]
+  exports: [ForgotPasswordPage]
 })
 export class UiModule {}

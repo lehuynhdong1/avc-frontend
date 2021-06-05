@@ -7,6 +7,9 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { loader } from './transloco.loader';
 import { AccountsService } from '@shared/api';
 import { Logout } from '@shared/auth/logout/data-access';
+import { Observable } from 'rxjs';
+import { LoginStateModel, LoginState } from '@shared/auth/login/data-access';
+import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'adca-navbar',
@@ -16,7 +19,12 @@ import { Logout } from '@shared/auth/logout/data-access';
   providers: [{ provide: TRANSLOCO_SCOPE, useValue: { scope: 'navbar', loader } }]
 })
 export class NavbarComponent {
-  constructor(private store: Store, private accountsService: AccountsService) {}
+  me$: Observable<LoginStateModel['account']>;
+
+  constructor(private store: Store, private accountsService: AccountsService) {
+    this.me$ = this.store.select(LoginState.account).pipe(shareReplay());
+  }
+
   changeLanguage(language: LanguageCode) {
     // this.transloco.setActiveLang(language);
     this.store.dispatch(new LoadLanguage(language));

@@ -14,6 +14,7 @@ import { Store } from '@ngxs/store';
 import { AutoTitleService } from '@shared/util';
 import { LoginState } from '@shared/auth/login/data-access';
 import { UtilModule as AuthUtilModule } from '@shared/auth/util';
+import { TuiThemeNightModule, TuiModeModule } from '@taiga-ui/core';
 
 const apiProvider: Provider = {
   provide: Configuration,
@@ -36,6 +37,8 @@ const apiProvider: Provider = {
     HttpClientModule,
     BrowserAnimationsModule,
     TuiRootModule,
+    TuiThemeNightModule,
+    TuiModeModule,
     CoreModule,
     StateManagementModule.forRoot(environment),
     ApiModule,

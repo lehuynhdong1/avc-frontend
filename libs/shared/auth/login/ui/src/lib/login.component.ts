@@ -1,18 +1,35 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { Login, LoginState } from '@shared/auth/login/data-access';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import { takeUntil } from 'rxjs/operators';
 import { LoginSuccess, LoginError } from '../../../data-access/src/lib/store/login.actions';
+import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { ShowNotification } from '../../../../util/src/lib/store/util.actions';
+import { TuiNotification } from '@taiga-ui/core';
 
 //TODO: config validator
 // const requireEmailValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 //     const email = control.get('email');
 //     return email != null && email.value.lenght != 0 ? {requireEmail: true} : null;
 //   };
+
+export function passwordRequiredValidator(field: AbstractControl): Validators | null {
+  return field.value === ''
+    ? {
+        other: 'Password is required'
+      }
+    : null;
+}
+export function emailRequiredValidator(field: AbstractControl): Validators | null {
+  return field.value === ''
+    ? {
+        other: 'Email address is required'
+      }
+    : null;
+}
 
 @Component({
   selector: 'adc-frontend-login',
@@ -38,20 +55,13 @@ export class SharedLoginComponent implements OnInit {
     private actions: Actions,
     private destroy$: TuiDestroyService
   ) {}
-  isSubmitted = false;
   loginForm!: FormGroup;
-
-  // readonly loginForm = new FormGroup({
-  //   email: new FormControl('', [Validators.required,Validators.email]),
-  //   password: new FormControl('', Validators.required),
-  //   remember: new FormControl(false)
-  // });
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
-      remember: new FormControl(false)
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      remember: [false]
     });
     this.registerLogin();
   }
@@ -59,7 +69,6 @@ export class SharedLoginComponent implements OnInit {
   // get formControls() { return this.loginForm.controls; }
 
   login() {
-    this.isSubmitted = true;
     if (this.loginForm.invalid) return;
 
     const payload: Login['payload'] = {
@@ -74,7 +83,12 @@ export class SharedLoginComponent implements OnInit {
       .pipe<Login>(ofActionSuccessful(LoginSuccess))
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log('Login successfully');
+        this.store.dispatch(
+          new ShowNotification({
+            message: 'Have a good time',
+            options: { label: 'Login succeeded', status: TuiNotification.Success }
+          })
+        );
         this.router.navigateByUrl('/');
       });
 
