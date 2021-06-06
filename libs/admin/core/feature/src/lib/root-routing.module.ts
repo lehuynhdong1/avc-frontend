@@ -6,8 +6,8 @@ import { IsLoggedInGuard, IsNotLoggedInGuard } from '@shared/auth/util';
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () => import('@admin/auth/login/feature').then((m) => m.FeatureModule)
-    // canActivate: [IsNotLoggedInGuard]
+    loadChildren: () => import('@admin/auth/login/feature').then((m) => m.FeatureModule),
+    canActivate: [IsNotLoggedInGuard]
   },
   {
     path: 'forgot-password',

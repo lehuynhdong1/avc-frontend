@@ -4,13 +4,14 @@ import { AuthenticationService } from '@shared/api';
 import { LOGIN_STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
 import { Login, LoginError, LoginSuccess } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
+import { LogoutState } from '@shared/auth/logout/data-access';
 
 @State<LoginStateModel>({
   name: LOGIN_STATE_NAME,
   defaults: INITIAL_STATE
 })
 @Injectable()
-export class LoginState {
+export class LoginState extends LogoutState {
   @Selector()
   static token({ token }: LoginStateModel) {
     return token;
@@ -24,7 +25,9 @@ export class LoginState {
     return error;
   }
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authService: AuthenticationService) {
+    super();
+  }
 
   @Action(Login)
   login({ dispatch }: StateContext<LoginStateModel>, { payload }: Login) {

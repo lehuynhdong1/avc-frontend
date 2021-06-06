@@ -20,13 +20,9 @@ export interface NavItem {
 export class SidebarComponent {
   @Select(LoginState.account) me$: Observable<LoginStateModel['account']>;
   navItems: Array<NavItem> = [
-    { label: 'Home', path: '/', icon: 'tuiIconChartLarge' },
+    { label: 'Dashboard', path: '/', icon: 'tuiIconStarLarge' },
     { label: 'Cars', path: '/cars', icon: 'tuiIconLinkLarge' },
-    { label: 'Managers', path: '/managers', icon: 'tuiIconStructureLarge' },
-    { label: 'Staffs', path: '/staffs', icon: 'tuiIconStructureLarge' }
+    { label: 'Staffs', path: '/staffs', icon: 'tuiIconLinkLarge' },
+    { label: 'Training Model', path: '/training', icon: 'tuiIconTransparentLarge' }
   ];
-
-  ngOnInit() {
-    this.me$.subscribe(console.warn);
-  }
 }

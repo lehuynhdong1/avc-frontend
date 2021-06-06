@@ -6,10 +6,10 @@ import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
   imports: [NgxsModule.forFeature([LanguageState])],
-  exports: [TranslocoModule],
+  exports: [TranslocoModule]
 })
 export class LanguageModule {
-  static forRoot(
+  static getImports(
     config?: Partial<TranslocoConfig>
   ): [LanguageModule, ModuleWithProviders<TranslocoRootModule>] {
     return [LanguageModule, TranslocoRootModule.forRoot(config)];

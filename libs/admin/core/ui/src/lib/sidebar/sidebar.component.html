@@ -1,4 +1,4 @@
-<nav class="flex flex-col px-6 h-full bg-gray-800 text-gray-50">
+<nav class="flex flex-col px-3 h-full bg-gray-900 text-gray-50">
   <div class="flex justify-between items-center h-16">
     <tui-svg src="tuiIconCheckCircleLarge" class="cursor-pointer"></tui-svg>
     <div>
@@ -8,24 +8,28 @@
   </div>
   <section class="flex flex-col items-center py-10" *ngIf="me$ | async as me">
     <tui-avatar
-      class="tui-space_top-1"
-      avatarUrl="http://angular-material.fusetheme.com/assets/images/avatars/brian-hughes.jpg"
+      class="mb-1"
+      [avatarUrl]="
+        me.avatar || 'http://angular-material.fusetheme.com/assets/images/avatars/brian-hughes.jpg'
+      "
       size="xl"
       [rounded]="true"
     ></tui-avatar>
-    <h4 class="text-base font-bold">{{ me.firstName }} {{ me.lastName }}</h4>
-    <p class="mb-3 text-sm font-bold text-gray-400">{{ me.email }}</p>
+    <b class="text-base">{{ me.firstName }} {{ me.lastName }}</b>
+    <b class="text-sm text-gray-400">{{ me.email }}</b>
   </section>
 
   <section id="dashboards">
-    <h3 class="text-base font-bold">Dashboards</h3>
-    <p class="text-gray-400 mb-6">Dashboards detail hihi</p>
+    <div class="block px-2">
+      <b class="text-base">Dashboards</b>
+      <p class="text-gray-400 mt-0 mb-6">Keep track your working process</p>
+    </div>
 
-    <ul class="flex flex-col items-stretch text-base -mx-3">
+    <ul class="flex flex-col items-stretch text-base -mx-1">
       <li
         *ngFor="let item of navItems"
         [routerLink]="item.path"
-        routerLinkActive="active"
+        routerLinkActive="!bg-primary"
         [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item"
       >

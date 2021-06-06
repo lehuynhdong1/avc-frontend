@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, State } from '@ngxs/store';
+import { Action, State, StateContext } from '@ngxs/store';
 import { STATE_NAME, INITIAL_STATE, StateModel } from './logout-state.model';
 import { Logout } from './logout.actions';
 
@@ -10,7 +10,7 @@ import { Logout } from './logout.actions';
 @Injectable()
 export class LogoutState {
   @Action(Logout)
-  logout() {
-    localStorage.clear();
+  logout({ setState }: StateContext<StateModel>) {
+    setState(INITIAL_STATE);
   }
 }

@@ -7,11 +7,12 @@
       "v2.0": {
         "generatorName": "typescript-angular",
         "inputSpec": "https://avc-api.azurewebsites.net/swagger/v1/swagger.yaml",
-        "output": "#{cwd}/libs/shared/api/src/lib/",
+        "output": "#{cwd}/libs/shared/api/src/lib/generated",
         "additionalProperties": {
           "ngVersion": "11.0.0",
           "supportsES6": "true",
-          "withInterfaces": true
+          "withInterfaces": true,
+          "apiModulePrefix": "Open"
         }
       }
     }

@@ -73,11 +73,6 @@
                 "glob": "_redirects",
                 "input": "apps/admin/src",
                 "output": "/"
-              },
-              {
-                "glob": "**/*.svg",
-                "input": "node_modules/ionicons/dist/ionicons/svg",
-                "output": "assets/ionic/icons"
               }
             ],
             "styles": [
@@ -85,7 +80,7 @@
               "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
               "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less"
             ],
-            "scripts": []
+            "scripts": ["apps/admin/src/__env__.js"]
           },
           "configurations": {
             "production": {
@@ -1055,6 +1050,80 @@
           "outputs": ["coverage/libs/shared/auth/logout/data-access"],
           "options": {
             "jestConfig": "libs/shared/auth/logout/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-staff-ui": {
+      "projectType": "library",
+      "root": "libs/admin/staff/ui",
+      "sourceRoot": "libs/admin/staff/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/ui/tsconfig.lib.json",
+            "project": "libs/admin/staff/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/ui/src/**/*.ts",
+              "libs/admin/staff/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/ui"],
+          "options": {
+            "jestConfig": "libs/admin/staff/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-staff-feature": {
+      "projectType": "library",
+      "root": "libs/admin/staff/feature",
+      "sourceRoot": "libs/admin/staff/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/feature/tsconfig.lib.json",
+            "project": "libs/admin/staff/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/feature/src/**/*.ts",
+              "libs/admin/staff/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/feature"],
+          "options": {
+            "jestConfig": "libs/admin/staff/feature/jest.config.js",
             "passWithNoTests": true
           }
         }

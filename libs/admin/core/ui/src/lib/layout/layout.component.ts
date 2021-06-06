@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { AutoTitleService } from '@shared/util';
 
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { loader } from './transloco.loader';
@@ -10,4 +11,9 @@ import { loader } from './transloco.loader';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: TRANSLOCO_SCOPE, useValue: { scope: 'layout', loader } }]
 })
-export class LayoutComponent {}
+export class LayoutComponent implements OnInit {
+  constructor(private autoTitle: AutoTitleService) {}
+  ngOnInit(): void {
+    this.autoTitle.setupAutoTitleListener({ postfix: ' | AVC' });
+  }
+}

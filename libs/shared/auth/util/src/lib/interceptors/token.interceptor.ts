@@ -21,7 +21,7 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<Record<string, string>>> {
     return next.handle(request).pipe(
       catchError((error: HttpResponse<Record<string, string>>) => {
-        if (error.status === 401) {
+        if (error.status === 403) {
           this._store.dispatch(
             new ShowNotification({
               message: 'Unauthorize access. Please login again!',

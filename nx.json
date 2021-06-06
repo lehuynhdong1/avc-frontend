@@ -84,6 +84,12 @@
     },
     "shared-auth-logout-data-access": {
       "tags": ["scope:shared"]
+    },
+    "admin-staff-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-feature": {
+      "tags": ["scope:admin"]
     }
   }
 }

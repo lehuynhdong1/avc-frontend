@@ -1,0 +1,4 @@
+{
+  "production": false,
+  "apiUrl": "https://avc-api.azurewebsites.net"
+}

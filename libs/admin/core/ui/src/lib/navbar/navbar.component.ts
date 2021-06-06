@@ -53,7 +53,4 @@ export class NavbarComponent implements OnInit {
   loadData() {
     this.accountsService.apiAccountsManagersGet().subscribe(console.log);
   }
-  logout() {
-    this.store.dispatch(new Logout());
-  }
 }

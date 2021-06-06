@@ -1,14 +1,21 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
-import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
+import {
+  Store,
+  Actions,
+  ofActionSuccessful,
+  ofActionErrored,
+  ofActionDispatched
+} from '@ngxs/store';
 import { Login, LoginState } from '@shared/auth/login/data-access';
-import { TuiDestroyService } from '@taiga-ui/cdk';
+import { TuiDestroyService, TuiInputType } from '@taiga-ui/cdk';
 import { takeUntil } from 'rxjs/operators';
 import { LoginSuccess, LoginError } from '../../../data-access/src/lib/store/login.actions';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { ShowNotification } from '../../../../util/src/lib/store/util.actions';
 import { TuiNotification } from '@taiga-ui/core';
+import { BehaviorSubject, of } from 'rxjs';
 
 //TODO: config validator
 // const requireEmailValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -48,6 +55,9 @@ export function emailRequiredValidator(field: AbstractControl): Validators | nul
   ]
 })
 export class SharedLoginComponent implements OnInit {
+  tuiEmailType = TuiInputType.Email;
+  whileLoggingIn$ = new BehaviorSubject(false);
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -59,8 +69,8 @@ export class SharedLoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ['minhhuy499@gmail.com', [Validators.required, Validators.email]],
+      password: ['123456', Validators.required],
       remember: [false]
     });
     this.registerLogin();
@@ -80,13 +90,27 @@ export class SharedLoginComponent implements OnInit {
 
   private registerLogin() {
     this.actions
+      .pipe(ofActionDispatched(Login))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.whileLoggingIn$.next(true);
+      });
+
+    this.actions
+      .pipe(ofActionSuccessful(Login))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.whileLoggingIn$.next(false);
+      });
+
+    this.actions
       .pipe<LoginSuccess>(ofActionSuccessful(LoginSuccess))
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.store.dispatch(
           new ShowNotification({
             message: 'Have a good time',
-            options: { label: 'Login succeeded', status: TuiNotification.Success }
+            options: { label: "You're logged in", status: TuiNotification.Success }
           })
         );
         this.router.navigateByUrl('/');

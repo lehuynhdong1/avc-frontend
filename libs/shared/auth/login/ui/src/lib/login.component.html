@@ -4,9 +4,15 @@
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in</h2>
     </div>
     <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="login()">
-      <div class="rounded-md shadow-sm space-y-6">
+      <div class="rounded-md space-y-6">
         <div>
-          <tui-input class="b-form" type="email" formControlName="email">Email</tui-input>
+          <tui-input
+            [tuiTextfieldType]="tuiEmailType"
+            formControlName="email"
+            [tuiTextfieldCleaner]="true"
+            autocomplete="true"
+            >Email</tui-input
+          >
           <tui-field-error formControlName="email"></tui-field-error>
         </div>
         <div>
@@ -43,6 +49,7 @@
           class="tui-form__button relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           size="l"
           type="submit"
+          [showLoader]="(whileLoggingIn$ | async) || false"
         >
           Log in
         </button>

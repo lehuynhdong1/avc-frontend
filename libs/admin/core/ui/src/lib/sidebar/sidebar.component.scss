@@ -2,8 +2,6 @@
   display: block;
 }
 .nav-item {
-  @apply p-2 mb-1 hover:bg-gray-700 hover:text-blue-200 rounded cursor-pointer;
-}
-.active {
-  @apply bg-gray-700 text-blue-400 font-bold;
+  @apply flex items-center;
+  @apply px-2 py-3 mb-1 hover:bg-gray-700 hover:text-gray-100 rounded-lg cursor-pointer font-semibold;
 }

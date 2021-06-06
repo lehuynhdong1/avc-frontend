@@ -20,6 +20,10 @@ module.exports = {
     '<rootDir>/libs/admin/auth/forgot-password/feature',
     '<rootDir>/libs/shared/auth/login/data-access',
     '<rootDir>/libs/shared/auth/util',
-    '<rootDir>/libs/shared/auth/logout/data-access'
+    '<rootDir>/libs/shared/auth/logout/data-access',
+    '<rootDir>/libs/admin/user/manager/ui',
+    '<rootDir>/libs/admin/user/staff/ui',
+    '<rootDir>/libs/admin/user/staff/feature',
+    '<rootDir>/libs/admin/user/manager/feature'
   ]
 };

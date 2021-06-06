@@ -1,52 +1,26 @@
-import { LayoutModule } from '@admin/core/ui';
-import { NgModule, Provider } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import { LanguageModule } from '@shared/language';
-import { StateManagementModule } from '@shared/state-management';
-import { environment } from '../environments/environment';
+import { TuiThemeNightModule, TuiModeModule } from '@taiga-ui/core';
 import { TuiRootModule } from '@taiga-ui/core';
 import { FeatureModule as CoreModule } from '@admin/core/feature';
-import { ApiModule, Configuration } from '@shared/api';
-import { Store } from '@ngxs/store';
+import { environment } from '../environments/environment';
+import { RouterModule } from '@angular/router';
 import { AutoTitleService } from '@shared/util';
-import { LoginState } from '@shared/auth/login/data-access';
-import { UtilModule as AuthUtilModule } from '@shared/auth/util';
-import { TuiThemeNightModule, TuiModeModule } from '@taiga-ui/core';
 
-const apiProvider: Provider = {
-  provide: Configuration,
-  useFactory: (store: Store) => {
-    const token = store.selectSnapshot(LoginState.token);
-    return new Configuration({
-      basePath: environment.apiUrl,
-      apiKeys: {
-        Authorization: token ? `Bearer ${token}` : ''
-      }
-    });
-  },
-  deps: [Store],
-  multi: false
-};
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    HttpClientModule,
     BrowserAnimationsModule,
+    RouterModule,
     TuiRootModule,
     TuiThemeNightModule,
     TuiModeModule,
-    CoreModule,
-    StateManagementModule.forRoot(environment),
-    ApiModule,
-    LanguageModule.forRoot({ prodMode: environment.production }),
-    LayoutModule,
-    AuthUtilModule
+    CoreModule.getImports(environment)
   ],
   bootstrap: [AppComponent],
-  providers: [apiProvider, AutoTitleService]
+  providers: [AutoTitleService]
 })
 export class AppModule {}

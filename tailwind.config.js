@@ -1,22 +1,43 @@
-const { guessProductionMode } = require("@ngneat/tailwind");
+const { guessProductionMode } = require('@ngneat/tailwind');
 
 process.env.TAILWIND_MODE = guessProductionMode() ? 'build' : 'watch';
 
 module.exports = {
-    prefix: '',
-    mode: 'jit',
-    purge: {
-      content: [
-        './apps/**/*.{html,ts,css,scss,sass,less,styl}',
-        './libs/**/*.{html,ts,css,scss,sass,less,styl}',
-      ]
-    },
-    darkMode: 'class', // or 'media' or 'class'
-    theme: {
-      extend: {},
-    },
-    variants: {
-      extend: {},
-    },
-    plugins: [require('@tailwindcss/aspect-ratio'),require('@tailwindcss/line-clamp')],
+  prefix: '',
+  mode: 'jit',
+  purge: {
+    content: [
+      './apps/**/*.{html,ts,css,scss,sass,less,styl}',
+      './libs/**/*.{html,ts,css,scss,sass,less,styl}'
+    ]
+  },
+  darkMode: 'class', // or 'media' or 'class'
+  theme: {
+    extend: {
+      width: {
+        sidebar: '17rem'
+      },
+      colors: {
+        primary: {
+          DEFAULT: 'var(--tui-primary)',
+          hover: 'var(--tui-primary-hover)',
+          active: 'var(--tui-primary-active)'
+        },
+        secondary: {
+          DEFAULT: 'var(--tui-secondary)',
+          hover: 'var(--tui-secondary-hover)',
+          active: 'var(--tui-secondary-active)'
+        },
+        accent: {
+          DEFAULT: 'var(--tui-secondary)',
+          hover: 'var(--tui-secondary-hover)',
+          active: 'var(--tui-secondary-active)'
+        }
+      }
+    }
+  },
+  variants: {
+    extend: {}
+  },
+  plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/line-clamp')]
 };
