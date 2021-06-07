@@ -32,7 +32,7 @@ build_admin:
   artifacts:
     paths:
       - dist/apps/admin
-    expire_in: 2 hrs
+    expire_in: 24 hrs
 
 #########################
 ###### Test Stage ######
@@ -56,14 +56,18 @@ build_admin:
 #########################
 
 deploy_gitlab_page:
-stage: deploy
-script: 
-  - echo "----------------------------------------------------------------"
-  - echo "Deploy admin site to Gitlab Pages"
-  - cp -r dist/apps/admin public
-artifacts:
-  paths:
-    - public
+  stage: deploy
+  script: 
+    - echo "----------------------------------------------------------------"
+    - echo "Deploy admin site to Gitlab Pages"
+    - cp -r dist/apps/admin public
+  only:
+    - develop
+    - master
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 hrs
 
 # upload_to_testflight:
 #   stage: deploy
