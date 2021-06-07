@@ -24,6 +24,22 @@ module.exports = {
     '<rootDir>/libs/admin/user/manager/ui',
     '<rootDir>/libs/admin/user/staff/ui',
     '<rootDir>/libs/admin/user/staff/feature',
-    '<rootDir>/libs/admin/user/manager/feature'
+    '<rootDir>/libs/admin/user/manager/feature',
+    '<rootDir>/libs/shared/profile/ui',
+    '<rootDir>/libs/shared/manage-profile/change-password/ui',
+    '<rootDir>/libs/shared/manage-profile/view-profile/ui',
+    '<rootDir>/libs/shared/manage-profile/view-profile/data-access',
+    '<rootDir>/libs/shared/manage-profile/change-password/data-access',
+    '<rootDir>/libs/shared/features/staff/data-access',
+    '<rootDir>/libs/shared/features/car/data-access',
+    '<rootDir>/libs/shared/features/train-model/data-access',
+    '<rootDir>/libs/admin/manage-profile/view-profile/ui',
+    '<rootDir>/libs/admin/manage-profile/view-profile/feature',
+    '<rootDir>/libs/admin/manage-profile/change-password/feature',
+    '<rootDir>/libs/admin/manage-profile/change-password/ui',
+    '<rootDir>/libs/admin/car/ui',
+    '<rootDir>/libs/admin/train-model/ui',
+    '<rootDir>/libs/admin/train-model/feature',
+    '<rootDir>/libs/admin/car/feature'
   ]
 };

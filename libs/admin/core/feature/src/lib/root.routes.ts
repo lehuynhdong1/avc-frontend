@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LayoutModule, LayoutComponent } from '@admin/core/ui';
+import { Routes } from '@angular/router';
+import { LayoutComponent } from '@admin/core/ui';
 import { IsLoggedInGuard, IsNotLoggedInGuard } from '@shared/auth/util';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('@admin/auth/login/feature').then((m) => m.FeatureModule),
@@ -23,17 +22,13 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     data: { title: 'Dashboard' },
-    children: []
+    children: [
+      {
+        path: 'staff',
+        loadChildren: () => import('@admin/staff/feature').then((m) => m.FeatureModule)
+      },
+      { path: '', pathMatch: 'full', redirectTo: 'staff' }
+    ]
     // canActivate: [IsLoggedInGuard]
   }
 ];
-@NgModule({
-  imports: [
-    LayoutModule,
-    RouterModule.forRoot(routes, {
-      scrollPositionRestoration: 'top'
-    })
-  ],
-  exports: [RouterModule]
-})
-export class RootRoutingModule {}

@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+table tr td {
+  @apply bg-gray-600 #{!important};
+}

@@ -1128,6 +1128,558 @@
           }
         }
       }
+    },
+    "shared-manage-profile-change-password-ui": {
+      "projectType": "library",
+      "root": "libs/shared/manage-profile/change-password/ui",
+      "sourceRoot": "libs/shared/manage-profile/change-password/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/manage-profile/change-password/ui/tsconfig.lib.json",
+            "project": "libs/shared/manage-profile/change-password/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/manage-profile/change-password/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/manage-profile/change-password/ui/src/**/*.ts",
+              "libs/shared/manage-profile/change-password/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/manage-profile/change-password/ui"],
+          "options": {
+            "jestConfig": "libs/shared/manage-profile/change-password/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-manage-profile-view-profile-ui": {
+      "projectType": "library",
+      "root": "libs/shared/manage-profile/view-profile/ui",
+      "sourceRoot": "libs/shared/manage-profile/view-profile/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/manage-profile/view-profile/ui/tsconfig.lib.json",
+            "project": "libs/shared/manage-profile/view-profile/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/manage-profile/view-profile/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/manage-profile/view-profile/ui/src/**/*.ts",
+              "libs/shared/manage-profile/view-profile/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/manage-profile/view-profile/ui"],
+          "options": {
+            "jestConfig": "libs/shared/manage-profile/view-profile/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-manage-profile-view-profile-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/manage-profile/view-profile/data-access",
+      "sourceRoot": "libs/shared/manage-profile/view-profile/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/manage-profile/view-profile/data-access/tsconfig.lib.json",
+            "project": "libs/shared/manage-profile/view-profile/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/manage-profile/view-profile/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/manage-profile/view-profile/data-access/src/**/*.ts",
+              "libs/shared/manage-profile/view-profile/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/manage-profile/view-profile/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/manage-profile/view-profile/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-manage-profile-change-password-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/manage-profile/change-password/data-access",
+      "sourceRoot": "libs/shared/manage-profile/change-password/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/manage-profile/change-password/data-access/tsconfig.lib.json",
+            "project": "libs/shared/manage-profile/change-password/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/manage-profile/change-password/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/manage-profile/change-password/data-access/src/**/*.ts",
+              "libs/shared/manage-profile/change-password/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/manage-profile/change-password/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/manage-profile/change-password/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-features-staff-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/features/staff/data-access",
+      "sourceRoot": "libs/shared/features/staff/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/features/staff/data-access/tsconfig.lib.json",
+            "project": "libs/shared/features/staff/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/features/staff/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/features/staff/data-access/src/**/*.ts",
+              "libs/shared/features/staff/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/features/staff/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/features/staff/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-features-car-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/features/car/data-access",
+      "sourceRoot": "libs/shared/features/car/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/features/car/data-access/tsconfig.lib.json",
+            "project": "libs/shared/features/car/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/features/car/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/features/car/data-access/src/**/*.ts",
+              "libs/shared/features/car/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/features/car/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/features/car/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-features-train-model-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/features/train-model/data-access",
+      "sourceRoot": "libs/shared/features/train-model/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/features/train-model/data-access/tsconfig.lib.json",
+            "project": "libs/shared/features/train-model/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/features/train-model/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/features/train-model/data-access/src/**/*.ts",
+              "libs/shared/features/train-model/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/features/train-model/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/features/train-model/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manage-profile-view-profile-ui": {
+      "projectType": "library",
+      "root": "libs/admin/manage-profile/view-profile/ui",
+      "sourceRoot": "libs/admin/manage-profile/view-profile/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manage-profile/view-profile/ui/tsconfig.lib.json",
+            "project": "libs/admin/manage-profile/view-profile/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manage-profile/view-profile/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manage-profile/view-profile/ui/src/**/*.ts",
+              "libs/admin/manage-profile/view-profile/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manage-profile/view-profile/ui"],
+          "options": {
+            "jestConfig": "libs/admin/manage-profile/view-profile/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manage-profile-view-profile-feature": {
+      "projectType": "library",
+      "root": "libs/admin/manage-profile/view-profile/feature",
+      "sourceRoot": "libs/admin/manage-profile/view-profile/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manage-profile/view-profile/feature/tsconfig.lib.json",
+            "project": "libs/admin/manage-profile/view-profile/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manage-profile/view-profile/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manage-profile/view-profile/feature/src/**/*.ts",
+              "libs/admin/manage-profile/view-profile/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manage-profile/view-profile/feature"],
+          "options": {
+            "jestConfig": "libs/admin/manage-profile/view-profile/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manage-profile-change-password-feature": {
+      "projectType": "library",
+      "root": "libs/admin/manage-profile/change-password/feature",
+      "sourceRoot": "libs/admin/manage-profile/change-password/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manage-profile/change-password/feature/tsconfig.lib.json",
+            "project": "libs/admin/manage-profile/change-password/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manage-profile/change-password/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manage-profile/change-password/feature/src/**/*.ts",
+              "libs/admin/manage-profile/change-password/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manage-profile/change-password/feature"],
+          "options": {
+            "jestConfig": "libs/admin/manage-profile/change-password/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manage-profile-change-password-ui": {
+      "projectType": "library",
+      "root": "libs/admin/manage-profile/change-password/ui",
+      "sourceRoot": "libs/admin/manage-profile/change-password/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manage-profile/change-password/ui/tsconfig.lib.json",
+            "project": "libs/admin/manage-profile/change-password/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manage-profile/change-password/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manage-profile/change-password/ui/src/**/*.ts",
+              "libs/admin/manage-profile/change-password/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manage-profile/change-password/ui"],
+          "options": {
+            "jestConfig": "libs/admin/manage-profile/change-password/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-car-ui": {
+      "projectType": "library",
+      "root": "libs/admin/car/ui",
+      "sourceRoot": "libs/admin/car/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/car/ui/tsconfig.lib.json",
+            "project": "libs/admin/car/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/car/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/car/ui/src/**/*.ts", "libs/admin/car/ui/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/car/ui"],
+          "options": {
+            "jestConfig": "libs/admin/car/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-ui": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/ui",
+      "sourceRoot": "libs/admin/train-model/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/ui/tsconfig.lib.json",
+            "project": "libs/admin/train-model/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/ui/src/**/*.ts",
+              "libs/admin/train-model/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/ui"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-feature": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/feature",
+      "sourceRoot": "libs/admin/train-model/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/feature/tsconfig.lib.json",
+            "project": "libs/admin/train-model/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/feature/src/**/*.ts",
+              "libs/admin/train-model/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/feature"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-car-feature": {
+      "projectType": "library",
+      "root": "libs/admin/car/feature",
+      "sourceRoot": "libs/admin/car/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/car/feature/tsconfig.lib.json",
+            "project": "libs/admin/car/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/car/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/car/feature/src/**/*.ts",
+              "libs/admin/car/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/car/feature"],
+          "options": {
+            "jestConfig": "libs/admin/car/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

@@ -1,0 +1,17 @@
+<section class="flex flex-col">
+  <p>{{ context.data.content }}</p>
+  <section class="flex justify-end space-x-2">
+    <button
+      *ngFor="let button of context.data.buttons"
+      tuiButton
+      [size]="button.uiOptions?.size || 'm'"
+      [shape]="button.uiOptions?.shape || null"
+      [appearance]="button.uiOptions?.appearance || 'primary'"
+      [disabled]="button.uiOptions?.disabled || false"
+      type="button"
+      (click)="complete(button.id)"
+    >
+      {{ button.label }}
+    </button>
+  </section>
+</section>

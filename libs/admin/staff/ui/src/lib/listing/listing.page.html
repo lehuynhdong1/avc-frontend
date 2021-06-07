@@ -1,0 +1,15 @@
+<div class="p-5">
+  <h1>Manage Staffs</h1>
+  <table tuiTable class="table w-100" [columns]="columns">
+    <thead>
+      <tr tuiThGroup>
+        <th tuiTh [resizable]="true">Name</th>
+        <th tuiTh>Balance</th>
+        <th tuiTh>Address</th>
+      </tr>
+    </thead>
+    <tbody tuiTbody [data]="data">
+      <tr *tuiRow="let item of data" tuiTr></tr>
+    </tbody>
+  </table>
+</div>

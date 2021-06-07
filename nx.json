@@ -90,6 +90,51 @@
     },
     "admin-staff-feature": {
       "tags": ["scope:admin"]
+    },
+    "shared-manage-profile-change-password-ui": {
+      "tags": ["scope:shared"]
+    },
+    "shared-manage-profile-view-profile-ui": {
+      "tags": ["scope:shared"]
+    },
+    "shared-manage-profile-view-profile-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-manage-profile-change-password-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-staff-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-car-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-train-model-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "admin-manage-profile-view-profile-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manage-profile-view-profile-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manage-profile-change-password-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manage-profile-change-password-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-car-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-car-feature": {
+      "tags": ["scope:admin"]
     }
   }
 }

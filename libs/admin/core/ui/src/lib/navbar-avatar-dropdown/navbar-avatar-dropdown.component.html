@@ -1,15 +1,28 @@
 <tui-hosted-dropdown tuiDropdownAlign="left" [content]="dropdown">
-  <tui-avatar
-    avatarUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-    size="m"
-    [rounded]="true"
-  ></tui-avatar>
+  <div class="w-[50px] cursor-pointer flex justify-center items-center">
+    <tui-avatar
+      *ngIf="(me$ | async)?.avatar as avatar; else noAvatar"
+      [avatarUrl]="avatar"
+      size="m"
+      [rounded]="true"
+      class="hover:border hover:border-solid hover:border-white"
+    ></tui-avatar>
+    <ng-template #noAvatar>
+      <svg-icon
+        src="assets/icons/personCircleOutline.svg"
+        class="w-10 h-10 text-white fill-current"
+        [applyClass]="true"
+      ></svg-icon>
+    </ng-template>
+  </div>
 </tui-hosted-dropdown>
 <ng-template #dropdown>
   <tui-data-list>
-    <button *ngFor="let item of items" tuiOption class="focus:!bg-gray-300 !w-40">
+    <button *ngFor="let item of items" tuiOption class="focus:!bg-gray-200 !w-40">
       {{ item }}
     </button>
-    <button tuiOption class="focus:!bg-gray-300 !w-40">Log out</button>
+    <button tuiOption class="focus:!bg-gray-200 !text-red-500 font-bold !w-40" (click)="logout()">
+      Log out
+    </button>
   </tui-data-list>
 </ng-template>
