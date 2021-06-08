@@ -1,7 +1,7 @@
 image: node:latest
 stages:
   - build
-  - deploy
+# - deploy
 # - test
 
 variables:
@@ -26,12 +26,15 @@ build_admin:
   script:
     - npm ci --cache .npm --prefer-offline
     - npm run build:prod -- --project=admin
+    - ls dist
+    - ls dist/apps
+    - cp -r dist/apps/admin public
   only:
     - develop
     - master
   artifacts:
     paths:
-      - dist/apps/admin
+      - public
     expire_in: 24 hrs
 
 #########################
@@ -55,19 +58,19 @@ build_admin:
 ###### Deploy Stage ######
 #########################
 
-deploy_gitlab_page:
-  stage: deploy
-  script: 
-    - echo "----------------------------------------------------------------"
-    - echo "Deploy admin site to Gitlab Pages"
-    - cp -r dist/apps/admin public
-  only:
-    - develop
-    - master
-  artifacts:
-    paths:
-      - public
-    expire_in: 1 hrs
+# deploy_gitlab_page:
+#   stage: deploy
+#   script: 
+#     - echo "----------------------------------------------------------------"
+#     - echo "Deploy admin site to Gitlab Pages"
+#     - cp -r dist/apps/admin public
+#   only:
+#     - develop
+#     - master
+#   artifacts:
+#     paths:
+#       - public
+#     expire_in: 1 hrs
 
 # upload_to_testflight:
 #   stage: deploy
