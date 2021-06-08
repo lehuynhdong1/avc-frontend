@@ -20,7 +20,7 @@
   </section>
 
   <section id="dashboards">
-    <div class="block px-2">
+    <div class="block px-6">
       <b class="text-base">Dashboards</b>
       <p class="text-gray-400 mt-0 mb-6">Keep track your working process</p>
     </div>
@@ -30,7 +30,6 @@
         *ngFor="let item of navItems"
         [routerLink]="item.path"
         routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item"
       >
         <tui-svg [src]="item.icon" class="zoom-08"></tui-svg>

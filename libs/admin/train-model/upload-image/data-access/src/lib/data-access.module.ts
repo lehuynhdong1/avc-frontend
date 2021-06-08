@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgxsModule } from '@ngxs/store';
+import { UploadImageState } from './store/upload-image.state';
 
 @NgModule({
-  imports: [CommonModule]
+  imports: [NgxsModule.forFeature([UploadImageState])]
 })
 export class DataAccessModule {}

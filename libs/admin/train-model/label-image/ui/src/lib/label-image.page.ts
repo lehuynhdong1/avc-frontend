@@ -1,31 +1,22 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
-import { FormControl } from '@angular/forms';
-import { TuiFileLike } from '@taiga-ui/kit';
-import { Observable, zip } from 'rxjs';
-import { map, tap, shareReplay, withLatestFrom, takeUntil } from 'rxjs/operators';
-import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
-import {
-  UpdateImages,
-  LabelImageState,
-  IMAGE_TYPES,
-  MAXIMUM_IMAGE_SIZE
-} from '@admin/train-model/label-image/data-access';
-import { ShowNotification } from '@shared/auth/util';
+import { TuiStepState } from '@taiga-ui/kit';
+import { Actions, Store } from '@ngxs/store';
 import { TuiDestroyService } from '@taiga-ui/cdk';
-
-class RejectedFile {
-  constructor(readonly file: TuiFileLike, readonly reason: string) {}
-}
-
-function convertRejected({ file, reason }: RejectedFile): TuiFileLike {
-  return {
-    name: file.name,
-    size: file.size,
-    type: file.type,
-    content: reason
-  };
-}
+import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import {
+  LabelImageState,
+  TransferUploadedImages
+} from '@admin/train-model/label-image/data-access';
+import { PolymorpheusTemplate, PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
+import { LabelImageFile } from '../../../data-access/src/lib/store/label-image-state.model';
+import { UploadImageState } from '../../../../upload-image/data-access/src/lib/store/upload-image.state';
+import {
+  ImageDialogComponent,
+  ImageDialogComponentParams
+} from './image-dialog/image-dialog.component';
 
 @Component({
   templateUrl: './label-image.page.html',
@@ -34,32 +25,40 @@ function convertRejected({ file, reason }: RejectedFile): TuiFileLike {
   providers: [TuiDestroyService]
 })
 export class LabelImagePage {
-  ACCEPTED_FILE_TYPES = IMAGE_TYPES.join(',');
-  MAX_FILE_SIZE = MAXIMUM_IMAGE_SIZE;
+  TUI_STEPPER_PASS = TuiStepState.Pass;
 
-  readonly files = new FormControl([]);
-  private readonly filesChanged$: Observable<ReadonlyArray<File>> = this.files.valueChanges.pipe(
-    tap((files) => this.store.dispatch(new UpdateImages(files))),
-    shareReplay()
-  );
+  readonly imageFiles$ = this.store
+    .select(LabelImageState.images)
+    .pipe(map((images) => Object.values(images)));
 
-  private readonly whenShowError$ = this.actions.pipe(ofActionSuccessful(ShowNotification));
-  private readonly whenUpdateImages$ = this.actions.pipe(ofActionSuccessful(UpdateImages));
+  constructor(
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    private store: Store,
+    private actions: Actions,
+    private destroy$: TuiDestroyService,
+    private injector: Injector,
+    private dialogService: TuiDialogService
+  ) {
+    this.store.dispatch(new TransferUploadedImages());
+  }
 
-  readonly fileLengthChanged$: Observable<number> = this.filesChanged$.pipe(
-    map((files) => files.length)
-  );
+  goTo(path: string[]) {
+    this.router.navigate(path, { relativeTo: this.activatedRoute });
+  }
 
-  readonly setFilesWhenError$ = zip(this.whenShowError$, this.whenUpdateImages$).pipe(
-    withLatestFrom(this.store.select(LabelImageState.images)),
-    tap(([_, images]) => {
-      console.log('T chay sau nha nha');
-
-      this.files.patchValue(images.map((image) => image.file));
-    })
-  );
-
-  constructor(private store: Store, private actions: Actions, private destroy$: TuiDestroyService) {
-    this.setFilesWhenError$.pipe(takeUntil(this.destroy$)).subscribe();
+  showDialog(labelImageFile: LabelImageFile) {
+    const imageFile = this.store.selectSnapshot(UploadImageState.getImageById(labelImageFile.id));
+    const imageDialogParams: ImageDialogComponentParams = {
+      dataUrl: labelImageFile.dataUrl,
+      name: imageFile?.file.name ?? ''
+    };
+    this.dialogService
+      .open<number>(new PolymorpheusComponent(ImageDialogComponent, this.injector), {
+        size: 'l',
+        label: imageFile?.file.name,
+        data: imageDialogParams
+      })
+      .subscribe();
   }
 }

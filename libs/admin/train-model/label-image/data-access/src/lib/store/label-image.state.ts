@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ShowNotification } from '@shared/auth/util';
-import { TuiNotification } from '@taiga-ui/core';
-import {
-  ImageFile,
-  INITIAL_STATE,
-  preCheckFile,
-  StateModel,
-  STATE_NAME
-} from './label-image-state.model';
-import { UpdateImages } from './label-image.actions';
-import * as prettyBytes from 'pretty-bytes';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { INITIAL_STATE, StateModel, STATE_NAME, encodeDataUrl } from './label-image-state.model';
+import { TransferUploadedImages } from './label-image.actions';
+import { UploadImageState } from '@admin/train-model/upload-image/data-access';
+
 @State<StateModel>({
   name: STATE_NAME,
   defaults: INITIAL_STATE
@@ -22,30 +15,23 @@ export class LabelImageState {
     return images;
   }
 
-  @Action(UpdateImages)
-  updateImages({ patchState, dispatch }: StateContext<StateModel>, { files }: UpdateImages) {
-    const acceptedFiles: ImageFile[] = [];
-    const rejectedFiles: { file: File; error: string }[] = [];
-    for (const file of files) {
-      const currentIds = acceptedFiles.map((imgFile) => imgFile.id);
-      const { id, error } = preCheckFile(file, currentIds);
-      if (error) {
-        rejectedFiles.push({ file, error });
-      }
-      if (id) acceptedFiles.push({ id, file });
+  constructor(private store: Store) {}
+
+  @Action(TransferUploadedImages)
+  async transferUploadedImages({ patchState, getState }: StateContext<StateModel>) {
+    const images = this.store.selectSnapshot(UploadImageState.images);
+    if (!images) return;
+    const encodedDataUrlImages = await Promise.all(
+      images.map((image) => encodeDataUrl(image.file))
+    );
+    let imagesObjectMap = getState().images;
+    for (let index = 0; index < images.length; index++) {
+      const image = images[index];
+      imagesObjectMap = {
+        ...imagesObjectMap,
+        [image.id]: { id: image.id, dataUrl: encodedDataUrlImages[index] }
+      };
     }
-    console.log(
-      '🚀 ~ file: label-image.state.ts ~ line 39 ~ LabelImageState ~ updateImages ~ acceptedFiles',
-      acceptedFiles
-    );
-    patchState({ images: acceptedFiles });
-    rejectedFiles.forEach(({ file, error }) =>
-      dispatch(
-        new ShowNotification({
-          message: `${file.name} (${prettyBytes(file.size)}) ${error}`,
-          options: { label: 'Invalid File', status: TuiNotification.Error }
-        })
-      )
-    );
+    patchState({ images: imagesObjectMap });
   }
 }

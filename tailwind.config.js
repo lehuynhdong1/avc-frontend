@@ -15,7 +15,7 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        sidebar: '19rem'
+        sidebar: '18rem'
       },
       height: {
         topbar: '4rem',

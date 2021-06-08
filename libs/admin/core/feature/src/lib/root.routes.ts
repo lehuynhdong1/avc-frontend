@@ -1,23 +1,10 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from '@admin/core/ui';
-import { IsLoggedInGuard, IsNotLoggedInGuard } from '@shared/auth/util';
+import { trainModelRoutes } from '@admin/train-model/routes';
+import { authRoutes } from '@admin/auth/routes';
 
 export const routes: Routes = [
-  {
-    path: 'login',
-    loadChildren: () => import('@admin/auth/login/feature').then((m) => m.FeatureModule),
-    canActivate: [IsNotLoggedInGuard]
-  },
-  {
-    path: 'forgot-password',
-    loadChildren: () => import('@admin/auth/forgot-password/feature').then((m) => m.FeatureModule)
-    // canActivate: [IsNotLoggedInGuard]
-  },
-  {
-    path: 'reset-password',
-    loadChildren: () => import('@admin/auth/reset-password/feature').then((m) => m.FeatureModule)
-    // canActivate: [IsNotLoggedInGuard]
-  },
+  ...authRoutes,
   {
     path: '',
     component: LayoutComponent,
@@ -28,17 +15,10 @@ export const routes: Routes = [
         loadChildren: () => import('@admin/staff/feature').then((m) => m.FeatureModule)
       },
       {
-        path: 'train-model',
-        children: [
-          {
-            path: 'label-image',
-            loadChildren: () =>
-              import('@admin/train-model/label-image/feature').then((m) => m.FeatureModule)
-          },
-          { path: '', pathMatch: 'full', redirectTo: 'label-image' }
-        ]
+        path: 'training',
+        children: trainModelRoutes
       },
-      { path: '', pathMatch: 'full', redirectTo: 'train-model' }
+      { path: '', pathMatch: 'full', redirectTo: 'training' }
     ]
     // canActivate: [IsLoggedInGuard]
   }

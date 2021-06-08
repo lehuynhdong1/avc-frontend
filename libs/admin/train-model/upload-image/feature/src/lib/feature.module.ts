@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
+import { UploadImagePage } from '@admin/train-model/upload-image/ui';
+import { DataAccessModule } from '@admin/train-model/upload-image/data-access';
 @NgModule({
   imports: [
-    CommonModule,
-
-    RouterModule.forChild([
-      /* {path: '', pathMatch: 'full', component: InsertYourComponentHere} */
-    ])
+    RouterModule.forChild([{ path: '', pathMatch: 'full', component: UploadImagePage }]),
+    DataAccessModule
   ]
 })
 export class FeatureModule {}
