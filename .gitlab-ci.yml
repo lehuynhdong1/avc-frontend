@@ -26,8 +26,7 @@ build_admin:
   script:
     - npm ci --cache .npm --prefer-offline
     - npm run build:prod -- --project=admin
-    - ls dist
-    - ls dist/apps
+    - ls .
     - cp -r dist/apps/admin public
   only:
     - develop
