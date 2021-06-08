@@ -70,6 +70,7 @@
     "@tinkoff/ng-polymorpheus": "^3.1.8",
     "angular-svg-icon": "^11.2.0",
     "ngxs-reset-plugin": "^1.4.0",
+    "pretty-bytes": "^5.6.0",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "^0.10.2"

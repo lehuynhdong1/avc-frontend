@@ -1,7 +1,11 @@
-<main class="flex h-screen">
-  <adca-sidebar class="w-sidebar h-full"></adca-sidebar>
-  <main class="flex-grow">
+<div class="flex !min-h-screen">
+  <adca-sidebar class="w-sidebar !min-h-screen"></adca-sidebar>
+  <section class="flex-grow">
     <adca-navbar></adca-navbar>
-    <router-outlet></router-outlet>
-  </main>
-</main>
+    <tui-scrollbar class="h-main">
+      <main class="p-5">
+        <router-outlet></router-outlet>
+      </main>
+    </tui-scrollbar>
+  </section>
+</div>

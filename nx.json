@@ -127,13 +127,52 @@
     "admin-car-ui": {
       "tags": ["scope:admin"]
     },
-    "admin-train-model-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-feature": {
-      "tags": ["scope:admin"]
-    },
     "admin-car-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-label-image-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-label-image-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-label-image-data-access": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-upload-image-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-upload-image-data-access": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-upload-image-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-progress-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-detail-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-detail-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-progress-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-progress-data-access": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-data-access": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-detail-data-access": {
       "tags": ["scope:admin"]
     }
   }

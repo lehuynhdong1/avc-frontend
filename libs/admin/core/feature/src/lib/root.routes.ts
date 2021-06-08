@@ -27,7 +27,18 @@ export const routes: Routes = [
         path: 'staff',
         loadChildren: () => import('@admin/staff/feature').then((m) => m.FeatureModule)
       },
-      { path: '', pathMatch: 'full', redirectTo: 'staff' }
+      {
+        path: 'train-model',
+        children: [
+          {
+            path: 'label-image',
+            loadChildren: () =>
+              import('@admin/train-model/label-image/feature').then((m) => m.FeatureModule)
+          },
+          { path: '', pathMatch: 'full', redirectTo: 'label-image' }
+        ]
+      },
+      { path: '', pathMatch: 'full', redirectTo: 'train-model' }
     ]
     // canActivate: [IsLoggedInGuard]
   }

@@ -40,6 +40,19 @@ module.exports = {
     '<rootDir>/libs/admin/car/ui',
     '<rootDir>/libs/admin/train-model/ui',
     '<rootDir>/libs/admin/train-model/feature',
-    '<rootDir>/libs/admin/car/feature'
+    '<rootDir>/libs/admin/car/feature',
+    '<rootDir>/libs/admin/train-model/label-image/data-access',
+    '<rootDir>/libs/admin/train-model/upload-image/ui',
+    '<rootDir>/libs/admin/train-model/upload-image/data-access',
+    '<rootDir>/libs/admin/train-model/upload-image/feature',
+    '<rootDir>/libs/admin/train-model/progress/feature',
+    '<rootDir>/libs/admin/train-model/history/feature',
+    '<rootDir>/libs/admin/train-model/history-detail/feature',
+    '<rootDir>/libs/admin/train-model/history-detail/ui',
+    '<rootDir>/libs/admin/train-model/history/ui',
+    '<rootDir>/libs/admin/train-model/progress/ui',
+    '<rootDir>/libs/admin/train-model/progress/data-access',
+    '<rootDir>/libs/admin/train-model/history/data-access',
+    '<rootDir>/libs/admin/train-model/history-detail/data-access'
   ]
 };

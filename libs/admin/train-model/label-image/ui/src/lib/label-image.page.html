@@ -1,0 +1,21 @@
+<h1 class="mb-2">Label Images</h1>
+<p class="mt-0 mb-16 text-base">Upload and label images online for a better training model.</p>
+<div class="flex flex-col justify-center items-center w-100">
+  <img
+    src="assets/icons/upload-image.svg"
+    alt="Upload image"
+    class="w-1/2 mb-6 transition-all"
+    [class.slowly-hide]="(fileLengthChanged$ | async)"
+  />
+  <tui-input-file
+    class="w-4/5 h-40"
+    link="Choose your training images"
+    label="or drop these here..."
+    [accept]="ACCEPTED_FILE_TYPES"
+    [formControl]="files"
+    [multiple]="true"
+    [maxFileSize]="MAX_FILE_SIZE"
+    size="l"
+  ></tui-input-file>
+  <div class="w-full" [style.height.rem]="((fileLengthChanged$ | async) || 0) * 5.3"></div>
+</div>

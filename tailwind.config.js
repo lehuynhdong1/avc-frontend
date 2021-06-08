@@ -15,7 +15,11 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        sidebar: '17rem'
+        sidebar: '19rem'
+      },
+      height: {
+        topbar: '4rem',
+        main: 'calc(100vh - 4rem)'
       },
       colors: {
         primary: {

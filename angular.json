@@ -1570,80 +1570,6 @@
         }
       }
     },
-    "admin-train-model-ui": {
-      "projectType": "library",
-      "root": "libs/admin/train-model/ui",
-      "sourceRoot": "libs/admin/train-model/ui/src",
-      "prefix": "adc-frontend",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/train-model/ui/tsconfig.lib.json",
-            "project": "libs/admin/train-model/ui/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/train-model/ui/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/train-model/ui/src/**/*.ts",
-              "libs/admin/train-model/ui/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/train-model/ui"],
-          "options": {
-            "jestConfig": "libs/admin/train-model/ui/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-train-model-feature": {
-      "projectType": "library",
-      "root": "libs/admin/train-model/feature",
-      "sourceRoot": "libs/admin/train-model/feature/src",
-      "prefix": "adc-frontend",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/train-model/feature/tsconfig.lib.json",
-            "project": "libs/admin/train-model/feature/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/train-model/feature/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/train-model/feature/src/**/*.ts",
-              "libs/admin/train-model/feature/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/train-model/feature"],
-          "options": {
-            "jestConfig": "libs/admin/train-model/feature/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "admin-car-feature": {
       "projectType": "library",
       "root": "libs/admin/car/feature",
@@ -1676,6 +1602,561 @@
           "outputs": ["coverage/libs/admin/car/feature"],
           "options": {
             "jestConfig": "libs/admin/car/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-label-image-ui": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/label-image/ui",
+      "sourceRoot": "libs/admin/train-model/label-image/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/label-image/ui/tsconfig.lib.json",
+            "project": "libs/admin/train-model/label-image/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/label-image/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/label-image/ui/src/**/*.ts",
+              "libs/admin/train-model/label-image/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/label-image/ui"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/label-image/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-label-image-feature": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/label-image/feature",
+      "sourceRoot": "libs/admin/train-model/label-image/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/label-image/feature/tsconfig.lib.json",
+            "project": "libs/admin/train-model/label-image/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/label-image/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/label-image/feature/src/**/*.ts",
+              "libs/admin/train-model/label-image/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/label-image/feature"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/label-image/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-label-image-data-access": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/label-image/data-access",
+      "sourceRoot": "libs/admin/train-model/label-image/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/label-image/data-access/tsconfig.lib.json",
+            "project": "libs/admin/train-model/label-image/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/label-image/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/label-image/data-access/src/**/*.ts",
+              "libs/admin/train-model/label-image/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/label-image/data-access"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/label-image/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-upload-image-ui": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/upload-image/ui",
+      "sourceRoot": "libs/admin/train-model/upload-image/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/upload-image/ui/tsconfig.lib.json",
+            "project": "libs/admin/train-model/upload-image/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/upload-image/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/upload-image/ui/src/**/*.ts",
+              "libs/admin/train-model/upload-image/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/upload-image/ui"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/upload-image/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-upload-image-data-access": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/upload-image/data-access",
+      "sourceRoot": "libs/admin/train-model/upload-image/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/upload-image/data-access/tsconfig.lib.json",
+            "project": "libs/admin/train-model/upload-image/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/upload-image/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/upload-image/data-access/src/**/*.ts",
+              "libs/admin/train-model/upload-image/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/upload-image/data-access"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/upload-image/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-upload-image-feature": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/upload-image/feature",
+      "sourceRoot": "libs/admin/train-model/upload-image/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/upload-image/feature/tsconfig.lib.json",
+            "project": "libs/admin/train-model/upload-image/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/upload-image/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/upload-image/feature/src/**/*.ts",
+              "libs/admin/train-model/upload-image/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/upload-image/feature"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/upload-image/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-progress-feature": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/progress/feature",
+      "sourceRoot": "libs/admin/train-model/progress/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/progress/feature/tsconfig.lib.json",
+            "project": "libs/admin/train-model/progress/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/progress/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/progress/feature/src/**/*.ts",
+              "libs/admin/train-model/progress/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/progress/feature"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/progress/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-history-feature": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/history/feature",
+      "sourceRoot": "libs/admin/train-model/history/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/history/feature/tsconfig.lib.json",
+            "project": "libs/admin/train-model/history/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/history/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/history/feature/src/**/*.ts",
+              "libs/admin/train-model/history/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/history/feature"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/history/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-history-detail-feature": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/history-detail/feature",
+      "sourceRoot": "libs/admin/train-model/history-detail/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/history-detail/feature/tsconfig.lib.json",
+            "project": "libs/admin/train-model/history-detail/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/history-detail/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/history-detail/feature/src/**/*.ts",
+              "libs/admin/train-model/history-detail/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/history-detail/feature"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/history-detail/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-history-detail-ui": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/history-detail/ui",
+      "sourceRoot": "libs/admin/train-model/history-detail/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/history-detail/ui/tsconfig.lib.json",
+            "project": "libs/admin/train-model/history-detail/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/history-detail/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/history-detail/ui/src/**/*.ts",
+              "libs/admin/train-model/history-detail/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/history-detail/ui"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/history-detail/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-history-ui": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/history/ui",
+      "sourceRoot": "libs/admin/train-model/history/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/history/ui/tsconfig.lib.json",
+            "project": "libs/admin/train-model/history/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/history/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/history/ui/src/**/*.ts",
+              "libs/admin/train-model/history/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/history/ui"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/history/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-progress-ui": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/progress/ui",
+      "sourceRoot": "libs/admin/train-model/progress/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/progress/ui/tsconfig.lib.json",
+            "project": "libs/admin/train-model/progress/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/progress/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/progress/ui/src/**/*.ts",
+              "libs/admin/train-model/progress/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/progress/ui"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/progress/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-progress-data-access": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/progress/data-access",
+      "sourceRoot": "libs/admin/train-model/progress/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/progress/data-access/tsconfig.lib.json",
+            "project": "libs/admin/train-model/progress/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/progress/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/progress/data-access/src/**/*.ts",
+              "libs/admin/train-model/progress/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/progress/data-access"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/progress/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-history-data-access": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/history/data-access",
+      "sourceRoot": "libs/admin/train-model/history/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/history/data-access/tsconfig.lib.json",
+            "project": "libs/admin/train-model/history/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/history/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/history/data-access/src/**/*.ts",
+              "libs/admin/train-model/history/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/history/data-access"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/history/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-train-model-history-detail-data-access": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/history-detail/data-access",
+      "sourceRoot": "libs/admin/train-model/history-detail/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/history-detail/data-access/tsconfig.lib.json",
+            "project": "libs/admin/train-model/history-detail/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/history-detail/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/history-detail/data-access/src/**/*.ts",
+              "libs/admin/train-model/history-detail/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/history-detail/data-access"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/history-detail/data-access/jest.config.js",
             "passWithNoTests": true
           }
         }

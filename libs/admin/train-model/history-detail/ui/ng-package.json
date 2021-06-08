@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../../../dist/libs/admin/train-model/history-detail/ui",
+  "lib": {
+    "entryFile": "src/index.ts"
+  }
+}
