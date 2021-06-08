@@ -5,8 +5,8 @@ stages:
 # - test
 
 variables:
-  LC_ALL: 'en_US.UTF-8'
-  LANG: 'en_US.UTF-8'
+  # LC_ALL: 'en_US.UTF-8'
+  # LANG: 'en_US.UTF-8'
   GIT_STRATEGY: clone
   API_URL: 'https://avc-api.azurewebsites.net'
   PRODUCTION: 1
