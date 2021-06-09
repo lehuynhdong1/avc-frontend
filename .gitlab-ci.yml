@@ -1,8 +1,6 @@
 image: node:latest
 stages:
   - build
-# - deploy
-# - test
 
 variables:
   API_URL: 'https://avc-api.azurewebsites.net'
