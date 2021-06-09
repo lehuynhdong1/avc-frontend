@@ -1,3 +1,6 @@
 :host {
   display: block;
 }
+section > div {
+  @apply w-full h-full border border-primary rounded-md p-4 #{!important};
+}

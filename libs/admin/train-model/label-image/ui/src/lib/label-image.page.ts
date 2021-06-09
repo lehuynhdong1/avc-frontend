@@ -1,18 +1,17 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-
-import { TuiStepState } from '@taiga-ui/kit';
-import { Actions, Store } from '@ngxs/store';
-import { TuiDestroyService } from '@taiga-ui/cdk';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
 import {
+  LabelImageFile,
   LabelImageState,
   TransferUploadedImages
 } from '@admin/train-model/label-image/data-access';
-import { PolymorpheusTemplate, PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
-import { LabelImageFile } from '../../../data-access/src/lib/store/label-image-state.model';
-import { UploadImageState } from '../../../../upload-image/data-access/src/lib/store/upload-image.state';
+import { UploadImageState } from '@admin/train-model/upload-image/data-access';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Actions, Store } from '@ngxs/store';
+import { TuiDestroyService } from '@taiga-ui/cdk';
+import { TuiDialogService } from '@taiga-ui/core';
+import { TuiStepState } from '@taiga-ui/kit';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { map, shareReplay } from 'rxjs/operators';
 import {
   ImageDialogComponent,
   ImageDialogComponentParams
@@ -27,9 +26,10 @@ import {
 export class LabelImagePage {
   TUI_STEPPER_PASS = TuiStepState.Pass;
 
-  readonly imageFiles$ = this.store
-    .select(LabelImageState.images)
-    .pipe(map((images) => Object.values(images)));
+  readonly imageFiles$ = this.store.select(LabelImageState.images).pipe(
+    map((images) => Object.values(images)),
+    shareReplay()
+  );
 
   constructor(
     public router: Router,

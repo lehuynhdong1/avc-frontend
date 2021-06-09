@@ -78,9 +78,13 @@
             "styles": [
               "apps/admin/src/styles.scss",
               "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
-              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less"
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+              "node_modules/@recogito/annotorious/dist/annotorious.min.css"
             ],
-            "scripts": ["apps/admin/src/__env__.js"]
+            "scripts": [
+              "apps/admin/src/__env__.js",
+              "node_modules/@recogito/annotorious/dist/annotorious.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -133,6 +137,12 @@
           "options": {
             "jestConfig": "apps/admin/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p apps/admin/tsconfig.app.json -d documentation/apps/admin/"
           }
         }
       }
@@ -304,6 +314,12 @@
               "cmd": "update android"
             }
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p apps/mobile/tsconfig.app.json -d documentation/apps/mobile/"
+          }
         }
       }
     },
@@ -343,6 +359,12 @@
               "libs/shared/language/src/**/*.ts",
               "libs/shared/language/src/**/*.html"
             ]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/language/tsconfig.lib.json -d documentation/libs/shared/language/"
           }
         }
       }
@@ -384,6 +406,12 @@
               "libs/shared/state-management/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/state-management/tsconfig.lib.json -d documentation/libs/shared/state-management/"
+          }
         }
       }
     },
@@ -423,6 +451,12 @@
               "libs/shared/app-config/src/**/*.ts",
               "libs/shared/app-config/src/**/*.html"
             ]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/app-config/tsconfig.lib.json -d documentation/libs/shared/app-config/"
           }
         }
       }
@@ -464,6 +498,12 @@
               "libs/admin/core/ui/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/core/ui/tsconfig.lib.json -d documentation/libs/admin/core/ui/"
+          }
         }
       }
     },
@@ -503,6 +543,12 @@
               "libs/admin/auth/login/ui/src/**/*.ts",
               "libs/admin/auth/login/ui/src/**/*.html"
             ]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/login/ui/tsconfig.lib.json -d documentation/libs/admin/auth/login/ui/"
           }
         }
       }
@@ -544,6 +590,12 @@
               "libs/shared/auth/login/ui/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/auth/login/ui/tsconfig.lib.json -d documentation/libs/shared/auth/login/ui/"
+          }
         }
       }
     },
@@ -583,6 +635,12 @@
               "libs/shared/auth/forgot-password/ui/src/**/*.ts",
               "libs/shared/auth/forgot-password/ui/src/**/*.html"
             ]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/auth/forgot-password/ui/tsconfig.lib.json -d documentation/libs/shared/auth/forgot-password/ui/"
           }
         }
       }
@@ -624,6 +682,12 @@
               "libs/shared/auth/reset-password/ui/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/auth/reset-password/ui/tsconfig.lib.json -d documentation/libs/shared/auth/reset-password/ui/"
+          }
         }
       }
     },
@@ -663,6 +727,12 @@
               "libs/admin/auth/login/feature/src/**/*.ts",
               "libs/admin/auth/login/feature/src/**/*.html"
             ]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/login/feature/tsconfig.lib.json -d documentation/libs/admin/auth/login/feature/"
           }
         }
       }
@@ -704,6 +774,12 @@
               "libs/admin/core/feature/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/core/feature/tsconfig.lib.json -d documentation/libs/admin/core/feature/"
+          }
         }
       }
     },
@@ -741,6 +817,12 @@
           "options": {
             "lintFilePatterns": ["libs/shared/api/src/**/*.ts", "libs/shared/api/src/**/*.html"]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/api/tsconfig.lib.json -d documentation/libs/shared/api/"
+          }
         }
       }
     },
@@ -777,6 +859,12 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/util/src/**/*.ts", "libs/shared/util/src/**/*.html"]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/util/tsconfig.lib.json -d documentation/libs/shared/util/"
           }
         }
       }
@@ -818,6 +906,12 @@
               "libs/admin/auth/forgot-password/ui/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/forgot-password/ui/tsconfig.lib.json -d documentation/libs/admin/auth/forgot-password/ui/"
+          }
         }
       }
     },
@@ -857,6 +951,12 @@
               "libs/admin/auth/reset-password/ui/src/**/*.ts",
               "libs/admin/auth/reset-password/ui/src/**/*.html"
             ]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/reset-password/ui/tsconfig.lib.json -d documentation/libs/admin/auth/reset-password/ui/"
           }
         }
       }
@@ -898,6 +998,12 @@
               "libs/admin/auth/reset-password/feature/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/reset-password/feature/tsconfig.lib.json -d documentation/libs/admin/auth/reset-password/feature/"
+          }
         }
       }
     },
@@ -937,6 +1043,12 @@
               "libs/admin/auth/forgot-password/feature/src/**/*.ts",
               "libs/admin/auth/forgot-password/feature/src/**/*.html"
             ]
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/forgot-password/feature/tsconfig.lib.json -d documentation/libs/admin/auth/forgot-password/feature/"
           }
         }
       }
@@ -978,6 +1090,12 @@
               "libs/shared/auth/login/data-access/src/**/*.html"
             ]
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/login/data-access/tsconfig.lib.json -d documentation/libs/admin/auth/login/data-access/"
+          }
         }
       }
     },
@@ -1014,6 +1132,12 @@
           "options": {
             "jestConfig": "libs/shared/auth/util/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/auth/util/tsconfig.lib.json -d documentation/libs/shared/auth/util/"
           }
         }
       }
@@ -1052,6 +1176,12 @@
             "jestConfig": "libs/shared/auth/logout/data-access/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/auth/logout/data-access/tsconfig.lib.json -d documentation/libs/admin/auth/logout/data-access/"
+          }
         }
       }
     },
@@ -1088,6 +1218,12 @@
           "options": {
             "jestConfig": "libs/admin/staff/ui/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/staff/ui/tsconfig.lib.json -d documentation/libs/admin/staff/ui/"
           }
         }
       }
@@ -1126,6 +1262,12 @@
             "jestConfig": "libs/admin/staff/feature/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/staff/feature/tsconfig.lib.json -d documentation/libs/admin/staff/feature/"
+          }
         }
       }
     },
@@ -1162,6 +1304,12 @@
           "options": {
             "jestConfig": "libs/shared/manage-profile/change-password/ui/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/manage-profile/change-password/ui/tsconfig.lib.json -d documentation/libs/shared/manage-profile/change-password/ui/"
           }
         }
       }
@@ -1200,6 +1348,12 @@
             "jestConfig": "libs/shared/manage-profile/view-profile/ui/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/manage-profile/view-profile/ui/tsconfig.lib.json -d documentation/libs/shared/manage-profile/view-profile/ui/"
+          }
         }
       }
     },
@@ -1236,6 +1390,12 @@
           "options": {
             "jestConfig": "libs/shared/manage-profile/view-profile/data-access/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/manage-profile/view-profile/data-access/tsconfig.lib.json -d documentation/libs/shared/manage-profile/view-profile/data-access/"
           }
         }
       }
@@ -1274,6 +1434,12 @@
             "jestConfig": "libs/shared/manage-profile/change-password/data-access/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/manage-profile/change-password/data-access/tsconfig.lib.json -d documentation/libs/shared/manage-profile/change-password/data-access/"
+          }
         }
       }
     },
@@ -1310,6 +1476,12 @@
           "options": {
             "jestConfig": "libs/shared/features/staff/data-access/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/shared/features/staff/data-access/tsconfig.lib.json -d documentation/libs/shared/features/staff/data-access/"
           }
         }
       }
@@ -1348,42 +1520,11 @@
             "jestConfig": "libs/shared/features/car/data-access/jest.config.js",
             "passWithNoTests": true
           }
-        }
-      }
-    },
-    "shared-features-train-model-data-access": {
-      "projectType": "library",
-      "root": "libs/shared/features/train-model/data-access",
-      "sourceRoot": "libs/shared/features/train-model/data-access/src",
-      "prefix": "adc-frontend",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/shared/features/train-model/data-access/tsconfig.lib.json",
-            "project": "libs/shared/features/train-model/data-access/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/shared/features/train-model/data-access/tsconfig.lib.prod.json"
-            }
-          }
         },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "lintFilePatterns": [
-              "libs/shared/features/train-model/data-access/src/**/*.ts",
-              "libs/shared/features/train-model/data-access/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/features/train-model/data-access"],
-          "options": {
-            "jestConfig": "libs/shared/features/train-model/data-access/jest.config.js",
-            "passWithNoTests": true
+            "command": "npx compodoc -p libs/shared/features/car/data-access/tsconfig.lib.json -d documentation/libs/shared/features/car/data-access/"
           }
         }
       }
@@ -1422,6 +1563,12 @@
             "jestConfig": "libs/admin/manage-profile/view-profile/ui/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/manage-profile/view-profile/ui/tsconfig.lib.json -d documentation/libs/admin/manage-profile/view-profile/ui/"
+          }
         }
       }
     },
@@ -1458,6 +1605,12 @@
           "options": {
             "jestConfig": "libs/admin/manage-profile/view-profile/feature/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/manage-profile/view-profile/feature/tsconfig.lib.json -d documentation/libs/admin/manage-profile/view-profile/feature/"
           }
         }
       }
@@ -1496,6 +1649,12 @@
             "jestConfig": "libs/admin/manage-profile/change-password/feature/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/manage-profile/change-password/feature/tsconfig.lib.json -d documentation/libs/admin/manage-profile/change-password/feature/"
+          }
         }
       }
     },
@@ -1533,6 +1692,12 @@
             "jestConfig": "libs/admin/manage-profile/change-password/ui/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/manage-profile/change-password/ui/tsconfig.lib.json -d documentation/libs/admin/manage-profile/change-password/ui/"
+          }
         }
       }
     },
@@ -1566,6 +1731,12 @@
           "options": {
             "jestConfig": "libs/admin/car/ui/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/car/ui/tsconfig.lib.json -d documentation/libs/admin/car/ui/"
           }
         }
       }
@@ -1604,6 +1775,12 @@
             "jestConfig": "libs/admin/car/feature/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/car/feature/tsconfig.lib.json -d documentation/libs/admin/car/feature/"
+          }
         }
       }
     },
@@ -1640,6 +1817,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/label-image/ui/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/label-image/ui/tsconfig.lib.json -d documentation/libs/admin/train-model/label-image/ui/"
           }
         }
       }
@@ -1678,6 +1861,12 @@
             "jestConfig": "libs/admin/train-model/label-image/feature/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/label-image/feature/tsconfig.lib.json -d documentation/libs/admin/train-model/label-image/feature/"
+          }
         }
       }
     },
@@ -1714,6 +1903,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/label-image/data-access/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/label-image/data-access/tsconfig.lib.json -d documentation/libs/admin/train-model/label-image/data-access/"
           }
         }
       }
@@ -1752,6 +1947,12 @@
             "jestConfig": "libs/admin/train-model/upload-image/ui/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/upload-image/ui/tsconfig.lib.json -d documentation/libs/admin/train-model/upload-image/ui/"
+          }
         }
       }
     },
@@ -1788,6 +1989,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/upload-image/data-access/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/upload-image/data-access/tsconfig.lib.json -d documentation/libs/admin/train-model/upload-image/data-access/"
           }
         }
       }
@@ -1826,6 +2033,12 @@
             "jestConfig": "libs/admin/train-model/upload-image/feature/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/upload-image/feature/tsconfig.lib.json -d documentation/libs/admin/train-model/upload-image/feature/"
+          }
         }
       }
     },
@@ -1862,6 +2075,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/progress/feature/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/progress/feature/tsconfig.lib.json -d documentation/libs/admin/train-model/progress/feature/"
           }
         }
       }
@@ -1900,6 +2119,12 @@
             "jestConfig": "libs/admin/train-model/history/feature/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/history/feature/tsconfig.lib.json -d documentation/libs/admin/train-model/history/feature/"
+          }
         }
       }
     },
@@ -1936,6 +2161,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/history-detail/feature/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/history-detail/feature/tsconfig.lib.json -d documentation/libs/admin/train-model/history-detail/feature/"
           }
         }
       }
@@ -1974,6 +2205,12 @@
             "jestConfig": "libs/admin/train-model/history-detail/ui/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/history-detail/ui/tsconfig.lib.json -d documentation/libs/admin/train-model/history-detail/ui/"
+          }
         }
       }
     },
@@ -2010,6 +2247,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/history/ui/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/history/ui/tsconfig.lib.json -d documentation/libs/admin/train-model/history/ui/"
           }
         }
       }
@@ -2048,6 +2291,12 @@
             "jestConfig": "libs/admin/train-model/progress/ui/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/progress/ui/tsconfig.lib.json -d documentation/libs/admin/train-model/progress/ui/"
+          }
         }
       }
     },
@@ -2084,6 +2333,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/progress/data-access/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/progress/data-access/tsconfig.lib.json -d documentation/libs/admin/train-model/progress/data-access/"
           }
         }
       }
@@ -2122,6 +2377,12 @@
             "jestConfig": "libs/admin/train-model/history/data-access/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/history/data-access/tsconfig.lib.json -d documentation/libs/admin/train-model/history/data-access/"
+          }
         }
       }
     },
@@ -2158,6 +2419,12 @@
           "options": {
             "jestConfig": "libs/admin/train-model/history-detail/data-access/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/train-model/history-detail/data-access/tsconfig.lib.json -d documentation/libs/admin/train-model/history-detail/data-access/"
           }
         }
       }
