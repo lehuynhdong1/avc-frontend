@@ -9,12 +9,12 @@ export const authRoutes: Routes = [
   },
   {
     path: 'forgot-password',
-    loadChildren: () => import('@admin/auth/forgot-password/feature').then((m) => m.FeatureModule)
-    // canActivate: [IsNotLoggedInGuard]
+    loadChildren: () => import('@admin/auth/forgot-password/feature').then((m) => m.FeatureModule),
+    canActivate: [IsNotLoggedInGuard]
   },
   {
     path: 'reset-password',
-    loadChildren: () => import('@admin/auth/reset-password/feature').then((m) => m.FeatureModule)
-    // canActivate: [IsNotLoggedInGuard]
+    loadChildren: () => import('@admin/auth/reset-password/feature').then((m) => m.FeatureModule),
+    canActivate: [IsNotLoggedInGuard]
   }
 ];

@@ -18,7 +18,7 @@ export class IsLoggedInGuard implements CanActivate, CanActivateChild {
   isLogined() {
     const isLogined = !!this._store.selectSnapshot(LoginState.token);
     if (!isLogined) {
-      this.router.navigateByUrl('/auth');
+      this.router.navigateByUrl('/login');
     }
     return isLogined;
   }
