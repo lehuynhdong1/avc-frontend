@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ListingState } from './listing/listing.state';
+import { NgxsModule } from '@ngxs/store';
+import { AccountsService } from '@shared/api';
 
 @NgModule({
-  imports: [CommonModule]
+  imports: [NgxsModule.forFeature([ListingState])],
+  providers: [AccountsService]
 })
 export class DataAccessModule {}

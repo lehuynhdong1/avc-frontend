@@ -24,7 +24,7 @@ import {
   providers: [TuiDestroyService]
 })
 export class LabelImagePage {
-  TUI_STEPPER_PASS = TuiStepState.Pass;
+  readonly TUI_STEPPER_PASS = TuiStepState.Pass;
 
   readonly imageFiles$ = this.store.select(LabelImageState.images).pipe(
     map((images) => Object.values(images)),

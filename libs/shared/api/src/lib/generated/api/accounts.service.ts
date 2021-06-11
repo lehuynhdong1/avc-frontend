@@ -30,7 +30,14 @@ import { AccountReadDtoPagingResponseDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
-import { AccountsServiceInterface } from './accounts.serviceInterface';
+import {
+  AccountsServiceInterface,
+  ApiAccountsIdActivationPutRequestParams,
+  ApiAccountsIdGetRequestParams,
+  ApiAccountsManagersGetRequestParams,
+  ApiAccountsPostRequestParams,
+  ApiAccountsStaffsGetRequestParams
+} from './accounts.serviceInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -103,44 +110,41 @@ export class AccountsService implements AccountsServiceInterface {
 
   /**
    * Activate or Deactivate account
-   * @param id Id of Account
-   * @param accountActivationDto IsAvailable: True for activate, false for deactivate
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public apiAccountsIdActivationPut(
-    id: number,
-    accountActivationDto?: AccountActivationDto,
+    requestParameters: ApiAccountsIdActivationPutRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
   public apiAccountsIdActivationPut(
-    id: number,
-    accountActivationDto?: AccountActivationDto,
+    requestParameters: ApiAccountsIdActivationPutRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
   public apiAccountsIdActivationPut(
-    id: number,
-    accountActivationDto?: AccountActivationDto,
+    requestParameters: ApiAccountsIdActivationPutRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
   public apiAccountsIdActivationPut(
-    id: number,
-    accountActivationDto?: AccountActivationDto,
+    requestParameters: ApiAccountsIdActivationPutRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
+    const id = requestParameters.id;
     if (id === null || id === undefined) {
       throw new Error(
         'Required parameter id was null or undefined when calling apiAccountsIdActivationPut.'
       );
     }
+    const accountActivationDto = requestParameters.accountActivationDto;
 
     let headers = this.defaultHeaders;
 
@@ -192,34 +196,35 @@ export class AccountsService implements AccountsServiceInterface {
 
   /**
    * Get Specific Account
-   * @param id
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public apiAccountsIdGet(
-    id: number,
+    requestParameters: ApiAccountsIdGetRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<AccountReadDto>;
   public apiAccountsIdGet(
-    id: number,
+    requestParameters: ApiAccountsIdGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpResponse<AccountReadDto>>;
   public apiAccountsIdGet(
-    id: number,
+    requestParameters: ApiAccountsIdGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpEvent<AccountReadDto>>;
   public apiAccountsIdGet(
-    id: number,
+    requestParameters: ApiAccountsIdGetRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
+    const id = requestParameters.id;
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling apiAccountsIdGet.');
     }
@@ -264,44 +269,38 @@ export class AccountsService implements AccountsServiceInterface {
 
   /**
    * Get List of Manager
-   * @param page
-   * @param limit
-   * @param searchValue
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public apiAccountsManagersGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsManagersGetRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<AccountReadDtoPagingResponseDto>;
   public apiAccountsManagersGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsManagersGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpResponse<AccountReadDtoPagingResponseDto>>;
   public apiAccountsManagersGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsManagersGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpEvent<AccountReadDtoPagingResponseDto>>;
   public apiAccountsManagersGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsManagersGetRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
+    const page = requestParameters.page;
+    const limit = requestParameters.limit;
+    const searchValue = requestParameters.searchValue;
+
     let queryParameters = new HttpParams({ encoder: this.encoder });
     if (page !== undefined && page !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
@@ -354,34 +353,36 @@ export class AccountsService implements AccountsServiceInterface {
 
   /**
    * Create new Account
-   * @param accountCreateDto
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public apiAccountsPost(
-    accountCreateDto?: AccountCreateDto,
+    requestParameters: ApiAccountsPostRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<AccountReadDto>;
   public apiAccountsPost(
-    accountCreateDto?: AccountCreateDto,
+    requestParameters: ApiAccountsPostRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpResponse<AccountReadDto>>;
   public apiAccountsPost(
-    accountCreateDto?: AccountCreateDto,
+    requestParameters: ApiAccountsPostRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpEvent<AccountReadDto>>;
   public apiAccountsPost(
-    accountCreateDto?: AccountCreateDto,
+    requestParameters: ApiAccountsPostRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
+    const accountCreateDto = requestParameters.accountCreateDto;
+
     let headers = this.defaultHeaders;
 
     // authentication (Bearer) required
@@ -432,44 +433,38 @@ export class AccountsService implements AccountsServiceInterface {
 
   /**
    * Get list of staff
-   * @param page page number
-   * @param limit entities number each page
-   * @param searchValue
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public apiAccountsStaffsGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsStaffsGetRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<AccountReadDtoPagingResponseDto>;
   public apiAccountsStaffsGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsStaffsGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpResponse<AccountReadDtoPagingResponseDto>>;
   public apiAccountsStaffsGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsStaffsGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<HttpEvent<AccountReadDtoPagingResponseDto>>;
   public apiAccountsStaffsGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsStaffsGetRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
+    const page = requestParameters.page;
+    const limit = requestParameters.limit;
+    const searchValue = requestParameters.searchValue;
+
     let queryParameters = new HttpParams({ encoder: this.encoder });
     if (page !== undefined && page !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');

@@ -5,7 +5,6 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
 
 @NgModule({
   declarations: [ListingPage],
-  imports: [CommonModule, TuiTableModule],
-  exports: [ListingPage]
+  imports: [CommonModule, TuiTableModule]
 })
 export class ListingModule {}

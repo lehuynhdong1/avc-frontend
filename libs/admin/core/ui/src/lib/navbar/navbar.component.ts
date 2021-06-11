@@ -5,7 +5,6 @@ import { LanguageCode } from '@shared/language';
 
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { loader } from './transloco.loader';
-import { AccountsService } from '@shared/api';
 import { Logout } from '@shared/auth/logout/data-access';
 import { Observable } from 'rxjs';
 import { LoginStateModel, LoginState } from '@shared/auth/login/data-access';
@@ -29,7 +28,6 @@ export class NavbarComponent implements OnInit {
   constructor(
     private store: Store,
     private actions: Actions,
-    private accountsService: AccountsService,
     private router: Router,
     private destroy$: TuiDestroyService
   ) {
@@ -48,9 +46,5 @@ export class NavbarComponent implements OnInit {
   changeLanguage(language: LanguageCode) {
     // this.transloco.setActiveLang(language);
     this.store.dispatch(new LoadLanguage(language));
-  }
-
-  loadData() {
-    this.accountsService.apiAccountsManagersGet().subscribe(console.log);
   }
 }

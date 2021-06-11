@@ -23,20 +23,14 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { AuthenticationPostDto } from '../model/models';
-import { AuthenticationReadDto } from '../model/models';
-
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
-import {
-  AuthenticationServiceInterface,
-  ApiAuthenticationPostRequestParams
-} from './authentication.serviceInterface';
+import { CheckServiceInterface } from './check.serviceInterface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService implements AuthenticationServiceInterface {
+export class CheckService implements CheckServiceInterface {
   protected basePath = 'http://localhost';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
@@ -103,37 +97,29 @@ export class AuthenticationService implements AuthenticationServiceInterface {
   }
 
   /**
-   * Login
-   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public apiAuthenticationPost(
-    requestParameters: ApiAuthenticationPostRequestParams,
+  public apiCheckGet(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AuthenticationReadDto>;
-  public apiAuthenticationPost(
-    requestParameters: ApiAuthenticationPostRequestParams,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any>;
+  public apiCheckGet(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AuthenticationReadDto>>;
-  public apiAuthenticationPost(
-    requestParameters: ApiAuthenticationPostRequestParams,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpResponse<any>>;
+  public apiCheckGet(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AuthenticationReadDto>>;
-  public apiAuthenticationPost(
-    requestParameters: ApiAuthenticationPostRequestParams,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpEvent<any>>;
+  public apiCheckGet(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+    options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
-    const authenticationPostDto = requestParameters.authenticationPostDto;
-
     let headers = this.defaultHeaders;
 
     // authentication (Bearer) required
@@ -148,20 +134,11 @@ export class AuthenticationService implements AuthenticationServiceInterface {
     let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
     if (httpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['text/plain', 'application/json', 'text/json'];
+      const httpHeaderAccepts: string[] = [];
       httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
     if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json', 'text/json', 'application/_*+json'];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(
-      consumes
-    );
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
     }
 
     let responseType: 'text' | 'json' = 'json';
@@ -169,16 +146,12 @@ export class AuthenticationService implements AuthenticationServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.post<AuthenticationReadDto>(
-      `${this.configuration.basePath}/api/authentication`,
-      authenticationPostDto,
-      {
-        responseType: <any>responseType,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress
-      }
-    );
+    return this.httpClient.get<any>(`${this.configuration.basePath}/api/check`, {
+      responseType: <any>responseType,
+      withCredentials: this.configuration.withCredentials,
+      headers: headers,
+      observe: observe,
+      reportProgress: reportProgress
+    });
   }
 }

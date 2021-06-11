@@ -13,26 +13,15 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-import { AuthenticationPostDto } from '../model/models';
-import { AuthenticationReadDto } from '../model/models';
-
 import { Configuration } from '../configuration';
 
-export interface ApiAuthenticationPostRequestParams {
-  authenticationPostDto?: AuthenticationPostDto;
-}
-
-export interface AuthenticationServiceInterface {
+export interface CheckServiceInterface {
   defaultHeaders: HttpHeaders;
   configuration: Configuration;
 
   /**
-   * Login
    *
-   * @param requestParameters
+   *
    */
-  apiAuthenticationPost(
-    requestParameters: ApiAuthenticationPostRequestParams,
-    extraHttpRequestParams?: any
-  ): Observable<AuthenticationReadDto>;
+  apiCheckGet(extraHttpRequestParams?: any): Observable<{}>;
 }

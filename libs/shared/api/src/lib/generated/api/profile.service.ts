@@ -28,7 +28,10 @@ import { ProfileReadDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
-import { ProfileServiceInterface } from './profile.serviceInterface';
+import {
+  ProfileServiceInterface,
+  ApiProfilePasswordPutRequestParams
+} from './profile.serviceInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -161,34 +164,36 @@ export class ProfileService implements ProfileServiceInterface {
 
   /**
    * Change password for owner account
-   * @param profilePasswordUpdateDto
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public apiProfilePasswordPut(
-    profilePasswordUpdateDto?: ProfilePasswordUpdateDto,
+    requestParameters: ApiProfilePasswordPutRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
   public apiProfilePasswordPut(
-    profilePasswordUpdateDto?: ProfilePasswordUpdateDto,
+    requestParameters: ApiProfilePasswordPutRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
   public apiProfilePasswordPut(
-    profilePasswordUpdateDto?: ProfilePasswordUpdateDto,
+    requestParameters: ApiProfilePasswordPutRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
   public apiProfilePasswordPut(
-    profilePasswordUpdateDto?: ProfilePasswordUpdateDto,
+    requestParameters: ApiProfilePasswordPutRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
+    const profilePasswordUpdateDto = requestParameters.profilePasswordUpdateDto;
+
     let headers = this.defaultHeaders;
 
     // authentication (Bearer) required

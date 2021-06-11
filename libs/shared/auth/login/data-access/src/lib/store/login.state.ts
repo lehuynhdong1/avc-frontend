@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AuthenticationService } from '@shared/api';
-import { LOGIN_STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
+import { STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
 import { Login, LoginError, LoginSuccess } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { LogoutState } from '@shared/auth/logout/data-access';
 
 @State<LoginStateModel>({
-  name: LOGIN_STATE_NAME,
+  name: STATE_NAME,
   defaults: INITIAL_STATE
 })
 @Injectable()
@@ -31,7 +31,7 @@ export class LoginState extends LogoutState {
 
   @Action(Login)
   login({ dispatch }: StateContext<LoginStateModel>, { payload }: Login) {
-    return this.authService.apiAuthenticationPost(payload).pipe(
+    return this.authService.apiAuthenticationPost({ authenticationPostDto: payload }).pipe(
       tap((response) => {
         dispatch(new LoginSuccess(response));
       }),

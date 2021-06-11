@@ -52,9 +52,11 @@
       "@shared/manage-profile/change-password/data-access": [
         "libs/shared/manage-profile/change-password/data-access/src/index.ts"
       ],
-      "@shared/features/staff": ["libs/shared/features/staff/data-access/src/index.ts"],
-      "@shared/features/car": ["libs/shared/features/car/data-access/src/index.ts"],
-      "@shared/features/train-model": ["libs/shared/features/train-model/data-access/src/index.ts"],
+      "@shared/features/staff/data-access": ["libs/shared/features/staff/data-access/src/index.ts"],
+      "@shared/features/car/data-access": ["libs/shared/features/car/data-access/src/index.ts"],
+      "@shared/features/train-model/data-access": [
+        "libs/shared/features/train-model/data-access/src/index.ts"
+      ],
       "@admin/manage-profile/view-profile/ui": [
         "libs/admin/manage-profile/view-profile/ui/src/index.ts"
       ],

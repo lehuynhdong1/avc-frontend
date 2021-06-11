@@ -1,0 +1,50 @@
+// Custom @recogito/annotorious/dist/annotorious.min.css styles
+
+svg.a9s-annotationlayer {
+  rect {
+    fill: var(--tui-selection) !important;
+
+    &.a9s-outer {
+      stroke: var(--tui-primary) !important;
+      stroke-width: 4px !important;
+    }
+    &.a9s-inner {
+      stroke: var(--tui-secondary) !important;
+    }
+  }
+  circle {
+    stroke: var(--tui-primary) !important;
+    fill: var(--tui-primary) !important;
+  }
+}
+.r6o-editor ul.r6o-taglist {
+  li {
+    @apply rounded-md border-primary #{!important};
+    .r6o-label {
+      @apply text-primary-active font-bold;
+    }
+  }
+}
+.r6o-editor .r6o-editor-inner {
+  @apply rounded-md flex flex-col;
+  div:nth-child(1) {
+    @apply order-2;
+  }
+  div:nth-child(2) {
+    @apply order-1;
+    input {
+      text-indent: 0.25rem;
+      @apply font-bold text-base h-8;
+    }
+  }
+  div:nth-child(3) {
+    @apply order-3;
+  }
+}
+.r6o-btn {
+  @apply bg-primary text-white border-primary rounded-md #{!important};
+
+  &.outline {
+    @apply bg-transparent text-primary rounded-md #{!important};
+  }
+}

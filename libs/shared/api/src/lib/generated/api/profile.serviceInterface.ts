@@ -18,6 +18,10 @@ import { ProfileReadDto } from '../model/models';
 
 import { Configuration } from '../configuration';
 
+export interface ApiProfilePasswordPutRequestParams {
+  profilePasswordUpdateDto?: ProfilePasswordUpdateDto;
+}
+
 export interface ProfileServiceInterface {
   defaultHeaders: HttpHeaders;
   configuration: Configuration;
@@ -31,10 +35,10 @@ export interface ProfileServiceInterface {
   /**
    * Change password for owner account
    *
-   * @param profilePasswordUpdateDto
+   * @param requestParameters
    */
   apiProfilePasswordPut(
-    profilePasswordUpdateDto?: ProfilePasswordUpdateDto,
+    requestParameters: ApiProfilePasswordPutRequestParams,
     extraHttpRequestParams?: any
   ): Observable<{}>;
 }

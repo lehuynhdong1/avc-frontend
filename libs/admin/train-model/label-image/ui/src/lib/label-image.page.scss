@@ -1,9 +1,6 @@
 :host {
   display: block;
 }
-.placeholder {
-  transition: height 0.2s;
-}
 .slowly-hide {
   @apply h-0 opacity-0 mb-0;
 }

@@ -20,6 +20,31 @@ import { AccountReadDtoPagingResponseDto } from '../model/models';
 
 import { Configuration } from '../configuration';
 
+export interface ApiAccountsIdActivationPutRequestParams {
+  id: number;
+  accountActivationDto?: AccountActivationDto;
+}
+
+export interface ApiAccountsIdGetRequestParams {
+  id: number;
+}
+
+export interface ApiAccountsManagersGetRequestParams {
+  page?: number;
+  limit?: number;
+  searchValue?: string;
+}
+
+export interface ApiAccountsPostRequestParams {
+  accountCreateDto?: AccountCreateDto;
+}
+
+export interface ApiAccountsStaffsGetRequestParams {
+  page?: number;
+  limit?: number;
+  searchValue?: string;
+}
+
 export interface AccountsServiceInterface {
   defaultHeaders: HttpHeaders;
   configuration: Configuration;
@@ -27,57 +52,50 @@ export interface AccountsServiceInterface {
   /**
    * Activate or Deactivate account
    *
-   * @param id Id of Account
-   * @param accountActivationDto IsAvailable: True for activate, false for deactivate
+   * @param requestParameters
    */
   apiAccountsIdActivationPut(
-    id: number,
-    accountActivationDto?: AccountActivationDto,
+    requestParameters: ApiAccountsIdActivationPutRequestParams,
     extraHttpRequestParams?: any
   ): Observable<{}>;
 
   /**
    * Get Specific Account
    *
-   * @param id
+   * @param requestParameters
    */
-  apiAccountsIdGet(id: number, extraHttpRequestParams?: any): Observable<AccountReadDto>;
+  apiAccountsIdGet(
+    requestParameters: ApiAccountsIdGetRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<AccountReadDto>;
 
   /**
    * Get List of Manager
    *
-   * @param page
-   * @param limit
-   * @param searchValue
+   * @param requestParameters
    */
   apiAccountsManagersGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsManagersGetRequestParams,
     extraHttpRequestParams?: any
   ): Observable<AccountReadDtoPagingResponseDto>;
 
   /**
    * Create new Account
    *
-   * @param accountCreateDto
+   * @param requestParameters
    */
   apiAccountsPost(
-    accountCreateDto?: AccountCreateDto,
+    requestParameters: ApiAccountsPostRequestParams,
     extraHttpRequestParams?: any
   ): Observable<AccountReadDto>;
 
   /**
    * Get list of staff
    *
-   * @param page page number
-   * @param limit entities number each page
-   * @param searchValue
+   * @param requestParameters
    */
   apiAccountsStaffsGet(
-    page?: number,
-    limit?: number,
-    searchValue?: string,
+    requestParameters: ApiAccountsStaffsGetRequestParams,
     extraHttpRequestParams?: any
   ): Observable<AccountReadDtoPagingResponseDto>;
 }

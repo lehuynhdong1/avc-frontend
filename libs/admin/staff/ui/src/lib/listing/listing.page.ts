@@ -1,12 +1,23 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
+import {
+  AccountTypes,
+  ListingState,
+  LoadAccounts,
+  StateModel as ListingStateModel
+} from '@shared/features/staff/data-access';
+import { Observable } from 'rxjs';
+import { AccountReadDtoPagingResponseDto } from '@shared/api';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListingPage implements OnInit {
+export class ListingPage {
+  staffs$: Observable<AccountReadDtoPagingResponseDto | null>;
+
   readonly data = [
     {
       name: 'Alex Inkin',
@@ -21,7 +32,13 @@ export class ListingPage implements OnInit {
   ] as const;
 
   readonly columns = Object.keys(this.data[0]);
-  constructor() {}
 
-  ngOnInit(): void {}
+  constructor(private store: Store, activatedRoute: ActivatedRoute) {
+    const accountType = activatedRoute.snapshot.data.accountType as AccountTypes;
+    console.log(accountType);
+
+    this.staffs$ = this.store.select(ListingState[accountType]);
+
+    this.store.dispatch(new LoadAccounts(accountType, { limit: 10 }));
+  }
 }

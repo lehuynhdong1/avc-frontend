@@ -7,6 +7,6 @@ export enum ERROR_CODES {
 export interface LoginStateModel extends AuthenticationReadDto {
   error?: ERROR_CODES;
 }
-export const LOGIN_STATE_NAME = 'Shared_Auth_Login';
+export const STATE_NAME = 'Shared_Auth_Login';
 
 export const INITIAL_STATE: LoginStateModel = {};

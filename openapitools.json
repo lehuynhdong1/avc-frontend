@@ -12,7 +12,10 @@
           "ngVersion": "11.0.0",
           "supportsES6": "true",
           "withInterfaces": true,
-          "apiModulePrefix": "Open"
+          "apiModulePrefix": "Open",
+          "fileNaming": "kebab-case",
+          "useSingleRequestParameter": true,
+          "providedIn": "any"
         }
       }
     }

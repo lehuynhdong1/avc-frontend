@@ -25,6 +25,27 @@
   </button>
 </div>
 <div class="flex flex-wrap items-center w-full">
+  <div class="flex flex-col items-center w-100" [class.slowly-hide]="(imageFiles$ | async)?.length">
+    <img
+      src="assets/icons/upload-image-2.svg"
+      alt="Upload image"
+      class="w-full md:w-3/4 mb-6 transition-all"
+    />
+    <p class="text-base">You doesn't have any uploaded image yet.</p>
+    <div class="flex items-center">
+      <span class="text-base mr-2 mb-3">Let's back to </span>
+      <button
+        tuiButton
+        type="button"
+        class="tui-space_right-3 tui-space_bottom-3"
+        size="m"
+        appearance="primary"
+        routerLink="../upload-image"
+      >
+        Upload Images
+      </button>
+    </div>
+  </div>
   <div
     class="w-40 h-40 shadow cursor-pointer mr-2 mb-2"
     *ngFor="let imageFile of (imageFiles$ | async)"

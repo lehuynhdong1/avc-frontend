@@ -1,10 +1,10 @@
-import { LOGIN_STATE_NAME, LoginStateModel } from './login-state.model';
+import { STATE_NAME, LoginStateModel } from './login-state.model';
 import { AuthenticationPostDto, AuthenticationReadDto } from '@shared/api';
 
 const ACTIONS = {
-  LOGIN: `[${LOGIN_STATE_NAME}] Login`,
-  LOGIN_SUCCESS: `[${LOGIN_STATE_NAME}] Login Success`,
-  LOGIN_ERROR: `[${LOGIN_STATE_NAME}] Login Error`
+  LOGIN: `[${STATE_NAME}] Login`,
+  LOGIN_SUCCESS: `[${STATE_NAME}] Login Success`,
+  LOGIN_ERROR: `[${STATE_NAME}] Login Error`
 };
 
 export class Login {

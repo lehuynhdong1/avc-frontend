@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountReadDto } from './accountReadDto';
+import { AccountReadDto } from './account-read-dto';
 
 export interface AccountReadDtoPagingResponseDto {
   result?: Array<AccountReadDto> | null;
