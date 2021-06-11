@@ -10,17 +10,6 @@
     "defaultBase": "develop"
   },
   "npmScope": "adc-frontend",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "compodoc"],
-        "accessToken": "YTEyMmY2ZjYtMmE3ZS00MmMwLWIxZDQtNDY1YWMxMGRjOGQ3fHJlYWQtd3JpdGU=",
-        "canTrackAnalytics": false,
-        "showUsageWarnings": true
-      }
-    }
-  },
   "projects": {
     "admin": {
       "tags": ["scope:admin"]
