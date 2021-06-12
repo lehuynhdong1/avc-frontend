@@ -40,6 +40,10 @@ svg.a9s-annotationlayer {
   div:nth-child(3) {
     @apply order-3;
   }
+
+  .r6o-widget.comment {
+    @apply hidden;
+  }
 }
 .r6o-btn {
   @apply bg-primary text-white border-primary rounded-md #{!important};

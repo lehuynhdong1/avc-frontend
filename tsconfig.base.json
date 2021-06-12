@@ -107,7 +107,10 @@
         "libs/admin/train-model/history-detail/data-access/src/index.ts"
       ],
       "@admin/train-model/routes": ["libs/admin/train-model/routes.ts"],
-      "@admin/auth/routes": ["libs/admin/auth/routes.ts"]
+      "@admin/auth/routes": ["libs/admin/auth/routes.ts"],
+      "@admin/train-model/label-image/util": [
+        "libs/admin/train-model/label-image/util/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

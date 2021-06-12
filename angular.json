@@ -2428,6 +2428,43 @@
           }
         }
       }
+    },
+    "admin-train-model-label-image-util": {
+      "projectType": "library",
+      "root": "libs/admin/train-model/label-image/util",
+      "sourceRoot": "libs/admin/train-model/label-image/util/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/train-model/label-image/util/tsconfig.lib.json",
+            "project": "libs/admin/train-model/label-image/util/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/train-model/label-image/util/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/train-model/label-image/util/src/**/*.ts",
+              "libs/admin/train-model/label-image/util/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/train-model/label-image/util"],
+          "options": {
+            "jestConfig": "libs/admin/train-model/label-image/util/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

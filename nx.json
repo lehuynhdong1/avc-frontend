@@ -1,165 +1,61 @@
 {
   "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     ".eslintrc.json": "*"
   },
-  "affected": {
-    "defaultBase": "develop"
-  },
+  "affected": { "defaultBase": "develop" },
   "npmScope": "adc-frontend",
   "projects": {
-    "admin": {
-      "tags": ["scope:admin"]
-    },
-    "mobile": {
-      "tags": ["scope:mobile"]
-    },
-    "shared-language": {
-      "tags": ["scope:shared"]
-    },
-    "shared-state-management": {
-      "tags": ["scope:shared"]
-    },
-    "shared-app-config": {
-      "tags": ["scope:shared"]
-    },
-    "admin-core-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-auth-login-ui": {
-      "tags": ["scope:admin"]
-    },
-    "shared-auth-login-ui": {
-      "tags": ["scope:shared"]
-    },
-    "shared-auth-forgot-password-ui": {
-      "tags": ["scope:shared"]
-    },
-    "shared-auth-reset-password-ui": {
-      "tags": ["scope:shared"]
-    },
-    "admin-auth-login-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-core-feature": {
-      "tags": ["scope:admin"]
-    },
-    "shared-api": {
-      "tags": ["scope:shared"]
-    },
-    "shared-util": {
-      "tags": ["scope:shared"]
-    },
-    "admin-auth-forgot-password-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-auth-reset-password-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-auth-reset-password-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-auth-forgot-password-feature": {
-      "tags": ["scope:admin"]
-    },
-    "shared-auth-login-data-access": {
-      "tags": ["scope:shared"]
-    },
-    "shared-auth-util": {
-      "tags": ["scope:shared"]
-    },
-    "shared-auth-logout-data-access": {
-      "tags": ["scope:shared"]
-    },
-    "admin-staff-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-staff-feature": {
-      "tags": ["scope:admin"]
-    },
-    "shared-manage-profile-change-password-ui": {
-      "tags": ["scope:shared"]
-    },
-    "shared-manage-profile-view-profile-ui": {
-      "tags": ["scope:shared"]
-    },
-    "shared-manage-profile-view-profile-data-access": {
-      "tags": ["scope:shared"]
-    },
-    "shared-manage-profile-change-password-data-access": {
-      "tags": ["scope:shared"]
-    },
-    "shared-features-staff-data-access": {
-      "tags": ["scope:shared"]
-    },
-    "shared-features-car-data-access": {
-      "tags": ["scope:shared"]
-    },
-    "admin-manage-profile-view-profile-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-manage-profile-view-profile-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-manage-profile-change-password-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-manage-profile-change-password-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-car-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-car-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-label-image-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-label-image-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-label-image-data-access": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-upload-image-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-upload-image-data-access": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-upload-image-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-progress-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-history-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-history-detail-feature": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-history-detail-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-history-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-progress-ui": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-progress-data-access": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-history-data-access": {
-      "tags": ["scope:admin"]
-    },
-    "admin-train-model-history-detail-data-access": {
-      "tags": ["scope:admin"]
-    }
+    "admin": { "tags": ["scope:admin"] },
+    "mobile": { "tags": ["scope:mobile"] },
+    "shared-language": { "tags": ["scope:shared"] },
+    "shared-state-management": { "tags": ["scope:shared"] },
+    "shared-app-config": { "tags": ["scope:shared"] },
+    "admin-core-ui": { "tags": ["scope:admin"] },
+    "admin-auth-login-ui": { "tags": ["scope:admin"] },
+    "shared-auth-login-ui": { "tags": ["scope:shared"] },
+    "shared-auth-forgot-password-ui": { "tags": ["scope:shared"] },
+    "shared-auth-reset-password-ui": { "tags": ["scope:shared"] },
+    "admin-auth-login-feature": { "tags": ["scope:admin"] },
+    "admin-core-feature": { "tags": ["scope:admin"] },
+    "shared-api": { "tags": ["scope:shared"] },
+    "shared-util": { "tags": ["scope:shared"] },
+    "admin-auth-forgot-password-ui": { "tags": ["scope:admin"] },
+    "admin-auth-reset-password-ui": { "tags": ["scope:admin"] },
+    "admin-auth-reset-password-feature": { "tags": ["scope:admin"] },
+    "admin-auth-forgot-password-feature": { "tags": ["scope:admin"] },
+    "shared-auth-login-data-access": { "tags": ["scope:shared"] },
+    "shared-auth-util": { "tags": ["scope:shared"] },
+    "shared-auth-logout-data-access": { "tags": ["scope:shared"] },
+    "admin-staff-ui": { "tags": ["scope:admin"] },
+    "admin-staff-feature": { "tags": ["scope:admin"] },
+    "shared-manage-profile-change-password-ui": { "tags": ["scope:shared"] },
+    "shared-manage-profile-view-profile-ui": { "tags": ["scope:shared"] },
+    "shared-manage-profile-view-profile-data-access": { "tags": ["scope:shared"] },
+    "shared-manage-profile-change-password-data-access": { "tags": ["scope:shared"] },
+    "shared-features-staff-data-access": { "tags": ["scope:shared"] },
+    "shared-features-car-data-access": { "tags": ["scope:shared"] },
+    "admin-manage-profile-view-profile-ui": { "tags": ["scope:admin"] },
+    "admin-manage-profile-view-profile-feature": { "tags": ["scope:admin"] },
+    "admin-manage-profile-change-password-feature": { "tags": ["scope:admin"] },
+    "admin-manage-profile-change-password-ui": { "tags": ["scope:admin"] },
+    "admin-car-ui": { "tags": ["scope:admin"] },
+    "admin-car-feature": { "tags": ["scope:admin"] },
+    "admin-train-model-label-image-ui": { "tags": ["scope:admin"] },
+    "admin-train-model-label-image-feature": { "tags": ["scope:admin"] },
+    "admin-train-model-label-image-data-access": { "tags": ["scope:admin"] },
+    "admin-train-model-upload-image-ui": { "tags": ["scope:admin"] },
+    "admin-train-model-upload-image-data-access": { "tags": ["scope:admin"] },
+    "admin-train-model-upload-image-feature": { "tags": ["scope:admin"] },
+    "admin-train-model-progress-feature": { "tags": ["scope:admin"] },
+    "admin-train-model-history-feature": { "tags": ["scope:admin"] },
+    "admin-train-model-history-detail-feature": { "tags": ["scope:admin"] },
+    "admin-train-model-history-detail-ui": { "tags": ["scope:admin"] },
+    "admin-train-model-history-ui": { "tags": ["scope:admin"] },
+    "admin-train-model-progress-ui": { "tags": ["scope:admin"] },
+    "admin-train-model-progress-data-access": { "tags": ["scope:admin"] },
+    "admin-train-model-history-data-access": { "tags": ["scope:admin"] },
+    "admin-train-model-history-detail-data-access": { "tags": ["scope:admin"] },
+    "admin-train-model-label-image-util": { "tags": ["scope:admin"] }
   }
 }

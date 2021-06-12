@@ -1,6 +1,7 @@
 import {
   LabelImageFile,
   LabelImageState,
+  SetSelectedImageId,
   TransferUploadedImages
 } from '@admin/train-model/label-image/data-access';
 import { UploadImageState } from '@admin/train-model/upload-image/data-access';
@@ -12,10 +13,8 @@ import { TuiDialogService } from '@taiga-ui/core';
 import { TuiStepState } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { map, shareReplay } from 'rxjs/operators';
-import {
-  ImageDialogComponent,
-  ImageDialogComponentParams
-} from './image-dialog/image-dialog.component';
+import { ImageDialogComponent } from './image-dialog/image-dialog.component';
+import { ImageDialogParams } from '@admin/train-model/label-image/util';
 
 @Component({
   templateUrl: './label-image.page.html',
@@ -48,8 +47,10 @@ export class LabelImagePage {
   }
 
   showDialog(labelImageFile: LabelImageFile) {
+    this.store.dispatch(new SetSelectedImageId(labelImageFile.id));
     const imageFile = this.store.selectSnapshot(UploadImageState.getImageById(labelImageFile.id));
-    const imageDialogParams: ImageDialogComponentParams = {
+    const imageDialogParams: ImageDialogParams = {
+      id: labelImageFile.id,
       dataUrl: labelImageFile.dataUrl,
       name: imageFile?.file.name ?? ''
     };
