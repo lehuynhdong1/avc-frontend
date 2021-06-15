@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface ProfileReadDto {
-  email?: string | null;
-  role?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
+export interface AccountManagerCreateDtoFormWrapper {
+  avatarImage?: Blob | null;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
   phone?: string | null;
-  avatar?: string | null;
 }

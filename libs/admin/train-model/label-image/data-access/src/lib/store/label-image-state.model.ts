@@ -1,17 +1,8 @@
-import { Annotations } from '@admin/train-model/label-image/util';
+import { LabelImageFile } from '@admin/train-model/label-image/util';
 
 export const STATE_NAME = 'Admin_TrainModel_LabelImage';
 export const INITIAL_STATE: StateModel = { images: {}, selectedImageId: null };
 
-export interface LabelImageFile {
-  id: string;
-  dataUrl: string;
-  annotations?: Annotations;
-}
-
-export interface SelectedLabelImageFile extends LabelImageFile {
-  name: string;
-}
 export interface StateModel {
   images: {
     [id: string]: LabelImageFile;

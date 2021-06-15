@@ -1,14 +1,17 @@
-import { STATE_NAME, AccountTypes } from './listing-state.model';
-import { ApiAccountsStaffsGetRequestParams } from '@shared/api';
+import { STATE_NAME } from './listing-state.model';
+import { ApiAccountsStaffIdGetRequestParams, ApiAccountsStaffsGetRequestParams } from '@shared/api';
 
 const ACTIONS = {
-  LOAD_ACCOUNTS: `[${STATE_NAME}] Load Accounts`
+  LOAD_STAFFS: `[${STATE_NAME}] Load Staffs`,
+  LOAD_STAFF_BY_ID: `[${STATE_NAME}] Load Staff By Id`
 };
 
-export class LoadAccounts {
-  static readonly type = ACTIONS.LOAD_ACCOUNTS;
-  constructor(
-    public readonly type: AccountTypes,
-    public readonly params: ApiAccountsStaffsGetRequestParams
-  ) {}
+export class LoadStaffs {
+  static readonly type = ACTIONS.LOAD_STAFFS;
+  constructor(public readonly params: ApiAccountsStaffsGetRequestParams) {}
+}
+
+export class LoadStaffById {
+  static readonly type = ACTIONS.LOAD_STAFF_BY_ID;
+  constructor(public readonly params: ApiAccountsStaffIdGetRequestParams) {}
 }

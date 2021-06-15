@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { AccountsService } from './api/accounts.service';
 import { AuthenticationService } from './api/authentication.service';
 import { CheckService } from './api/check.service';
-import { GendersService } from './api/genders.service';
 import { ProfileService } from './api/profile.service';
 import { RolesService } from './api/roles.service';
 

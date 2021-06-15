@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountReadDto } from './account-read-dto';
 
-export interface AccountReadDtoPagingResponseDto {
-  result?: Array<AccountReadDto> | null;
-  count?: number;
-  nextPage?: string | null;
-  previousPage?: string | null;
+export interface NewPasswordDto {
+  email: string;
+  password?: string | null;
+  securityKey: string;
+  readonly salt?: string | null;
 }

@@ -15,16 +15,35 @@ import { Observable } from 'rxjs';
 
 import { AuthenticationPostDto } from '../model/models';
 import { AuthenticationReadDto } from '../model/models';
+import { NewPasswordDto } from '../model/models';
 
 import { Configuration } from '../configuration';
+
+export interface ApiAuthenticationNewPasswordPostRequestParams {
+  newPasswordDto?: NewPasswordDto;
+}
 
 export interface ApiAuthenticationPostRequestParams {
   authenticationPostDto?: AuthenticationPostDto;
 }
 
+export interface ApiAuthenticationResetPostRequestParams {
+  email?: string;
+}
+
 export interface AuthenticationServiceInterface {
   defaultHeaders: HttpHeaders;
   configuration: Configuration;
+
+  /**
+   * Change password for owner account
+   *
+   * @param requestParameters
+   */
+  apiAuthenticationNewPasswordPost(
+    requestParameters: ApiAuthenticationNewPasswordPostRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
 
   /**
    * Login
@@ -35,4 +54,14 @@ export interface AuthenticationServiceInterface {
     requestParameters: ApiAuthenticationPostRequestParams,
     extraHttpRequestParams?: any
   ): Observable<AuthenticationReadDto>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiAuthenticationResetPost(
+    requestParameters: ApiAuthenticationResetPostRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
 }

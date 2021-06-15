@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AuthenticationService } from '@shared/api';
 import { STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
-import { Login, LoginError, LoginSuccess } from './login.actions';
+import { Login, } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { LogoutState } from '@shared/auth/logout/data-access';
+import { throwError } from 'rxjs';
 
 @State<LoginStateModel>({
   name: STATE_NAME,
@@ -29,25 +30,18 @@ export class LoginState extends LogoutState {
     super();
   }
 
-  @Action(Login)
-  login({ dispatch }: StateContext<LoginStateModel>, { payload }: Login) {
+  @Action(Login, { cancelUncompleted: true })
+  login({ patchState }: StateContext<LoginStateModel>, { payload }: Login) {
     return this.authService.apiAuthenticationPost({ authenticationPostDto: payload }).pipe(
       tap((response) => {
-        dispatch(new LoginSuccess(response));
+        patchState(response);
       }),
-      catchError(() => {
-        return dispatch(new LoginError(ERROR_CODES.WRONG_USERNAME_OR_PASSWORD));
+      catchError((error) => {
+        console.warn(error);
+
+        patchState({ error: ERROR_CODES.WRONG_USERNAME_OR_PASSWORD });
+        return throwError({ error: ERROR_CODES.WRONG_USERNAME_OR_PASSWORD })
       })
     );
-  }
-
-  @Action(LoginSuccess)
-  loginSuccess({ patchState }: StateContext<LoginStateModel>, { payload }: LoginSuccess) {
-    patchState(payload);
-  }
-
-  @Action(LoginError)
-  loginError({ patchState }: StateContext<LoginStateModel>, { payload }: LoginError) {
-    patchState({ error: payload });
   }
 }

@@ -9,9 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AccountStaffReadDto } from './account-staff-read-dto';
 
-export interface GenderReadDto {
-  id?: number;
-  name?: string | null;
-  description?: string | null;
+export interface AccountStaffReadDtoPagingResponseDto {
+  result?: Array<AccountStaffReadDto> | null;
+  count?: number;
+  nextPage?: string | null;
+  previousPage?: string | null;
 }

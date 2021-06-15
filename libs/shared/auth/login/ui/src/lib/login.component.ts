@@ -9,13 +9,11 @@ import {
   ofActionDispatched
 } from '@ngxs/store';
 import { Login, LoginState } from '@shared/auth/login/data-access';
-import { TuiDestroyService, TuiInputType } from '@taiga-ui/cdk';
-import { takeUntil } from 'rxjs/operators';
-import { LoginSuccess, LoginError } from '../../../data-access/src/lib/store/login.actions';
-import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import { ShowNotification } from '../../../../util/src/lib/store/util.actions';
+import { TuiInputType } from '@taiga-ui/cdk';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { ShowNotification } from '@shared/auth/util';
 import { TuiNotification } from '@taiga-ui/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { RxState } from '@rx-angular/state';
 
 //TODO: config validator
 // const requireEmailValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -26,15 +24,15 @@ import { BehaviorSubject, of } from 'rxjs';
 export function passwordRequiredValidator(field: AbstractControl): Validators | null {
   return field.value === ''
     ? {
-        other: 'Password is required'
-      }
+      other: 'Password is required'
+    }
     : null;
 }
 export function emailRequiredValidator(field: AbstractControl): Validators | null {
   return field.value === ''
     ? {
-        other: 'Email address is required'
-      }
+      other: 'Email address is required'
+    }
     : null;
 }
 
@@ -44,7 +42,7 @@ export function emailRequiredValidator(field: AbstractControl): Validators | nul
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    TuiDestroyService,
+    RxState,
     {
       provide: TUI_VALIDATION_ERRORS,
       useValue: {
@@ -56,16 +54,25 @@ export function emailRequiredValidator(field: AbstractControl): Validators | nul
 })
 export class SharedLoginComponent implements OnInit {
   tuiEmailType = TuiInputType.Email;
-  whileLoggingIn$ = new BehaviorSubject(false);
+  loginForm!: FormGroup;
+
+  whileLoggingIn$ = this.state.select('whileLoggingIn');
+
+  private loginDispatchHandler$ = this.actions.pipe(ofActionDispatched(Login));
+  private loginSuccessHandler$ = this.actions.pipe(ofActionSuccessful(Login));
+  private loginErrorHandler$ = this.actions.pipe(ofActionErrored(Login));
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private store: Store,
     private actions: Actions,
-    private destroy$: TuiDestroyService
-  ) {}
-  loginForm!: FormGroup;
+    private state: RxState<{ whileLoggingIn: boolean }>
+  ) {
+    this.state.hold(this.loginDispatchHandler$, this.handleDispatch.bind(this));
+    this.state.hold(this.loginSuccessHandler$, this.handleSuccess.bind(this));
+    this.state.hold(this.loginErrorHandler$, this.handleError.bind(this));
+  }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -73,7 +80,6 @@ export class SharedLoginComponent implements OnInit {
       password: ['123456', Validators.required],
       remember: [false]
     });
-    this.registerLogin();
   }
   //TODO: Validator chay bằng Angular
   // get formControls() { return this.loginForm.controls; }
@@ -88,40 +94,23 @@ export class SharedLoginComponent implements OnInit {
     this.store.dispatch(new Login(payload));
   }
 
-  private registerLogin() {
-    this.actions
-      .pipe(ofActionDispatched(Login))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.whileLoggingIn$.next(true);
-      });
+  private handleDispatch() {
+    this.state.set({ whileLoggingIn: true });
+  }
 
-    this.actions
-      .pipe(ofActionSuccessful(Login))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.whileLoggingIn$.next(false);
-      });
-
-    this.actions
-      .pipe<LoginSuccess>(ofActionSuccessful(LoginSuccess))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.store.dispatch(
-          new ShowNotification({
-            message: 'Have a good time',
-            options: { label: "You're logged in", status: TuiNotification.Success }
-          })
-        );
-        this.router.navigateByUrl('/');
-      });
-
-    this.actions
-      .pipe<LoginError>(ofActionSuccessful(LoginError))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        const error = this.store.selectSnapshot(LoginState.error);
-        console.warn('Login failed with error: ', error);
-      });
+  private handleError() {
+    this.state.set({ whileLoggingIn: false });
+    const error = this.store.selectSnapshot(LoginState.error);
+    console.warn(error);
+  }
+  private handleSuccess() {
+    this.state.set({ whileLoggingIn: false });
+    this.store.dispatch(
+      new ShowNotification({
+        message: 'Have a good time',
+        options: { label: "You're logged in", status: TuiNotification.Success }
+      })
+    );
+    this.router.navigateByUrl('/');
   }
 }

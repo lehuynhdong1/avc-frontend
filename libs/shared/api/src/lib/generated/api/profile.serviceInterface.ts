@@ -22,6 +22,11 @@ export interface ApiProfilePasswordPutRequestParams {
   profilePasswordUpdateDto?: ProfilePasswordUpdateDto;
 }
 
+export interface ApiProfilePutRequestParams {
+  phone?: string;
+  avatarImage?: Blob;
+}
+
 export interface ProfileServiceInterface {
   defaultHeaders: HttpHeaders;
   configuration: Configuration;
@@ -39,6 +44,16 @@ export interface ProfileServiceInterface {
    */
   apiProfilePasswordPut(
     requestParameters: ApiProfilePasswordPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiProfilePut(
+    requestParameters: ApiProfilePutRequestParams,
     extraHttpRequestParams?: any
   ): Observable<{}>;
 }

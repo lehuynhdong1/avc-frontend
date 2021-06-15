@@ -17,7 +17,7 @@ const tuiModules = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,...tuiModules],
   declarations: [LabelImagePage],
   exports: [LabelImagePage],
   providers: [IMAGE_DIALOG_PROVIDER]

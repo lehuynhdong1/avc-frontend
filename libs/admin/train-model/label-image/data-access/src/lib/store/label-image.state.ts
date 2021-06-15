@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store, createSelector } from '@ngxs/store';
 import { INITIAL_STATE, StateModel, STATE_NAME } from './label-image-state.model';
-import { LabelImageById, SetSelectedImageId, TransferUploadedImages } from './label-image.actions';
+import {
+  LabelImageById,
+  SetSelectedImageId,
+  TransferUploadedImages,
+  DonwloadLabelFiles
+} from './label-image.actions';
 import {
   UploadImageState,
   StateModel as UploadImageStateModel
 } from '@admin/train-model/upload-image/data-access';
-import { encodeDataUrl } from '@admin/train-model/label-image/util';
-import { patch } from '@rx-angular/state';
-
+import { encodeDataUrl, imageToString } from '@admin/train-model/label-image/util';
+import { dictionaryToArray, patch } from '@rx-angular/state';
+import { saveAs } from 'file-saver'
+import * as JSZip from 'jszip';
 @State<StateModel>({
   name: STATE_NAME,
   defaults: INITIAL_STATE
@@ -30,7 +36,7 @@ export class LabelImageState {
       }
     );
   }
-  constructor(private store: Store) {}
+  constructor(private store: Store) { }
 
   @Action(TransferUploadedImages)
   async transferUploadedImages({ patchState, getState }: StateContext<StateModel>) {
@@ -44,7 +50,7 @@ export class LabelImageState {
       const image = images[index];
       imagesObjectMap = {
         ...imagesObjectMap,
-        [image.id]: { id: image.id, dataUrl: encodedDataUrlImages[index] }
+        [image.id]: { id: image.id, adcImage: encodedDataUrlImages[index] }
       };
     }
     patchState({ images: imagesObjectMap });
@@ -65,5 +71,21 @@ export class LabelImageState {
     if (!image) return;
     const imageWithNewAnnotations = patch(image, { annotations });
     patchState({ images: patch(images, { [id]: imageWithNewAnnotations }) });
+  }
+
+  @Action(DonwloadLabelFiles) downloadLabelFiles({ getState }: StateContext<StateModel>) {
+    const { images } = getState();
+    const imagesArray = dictionaryToArray(images);
+    const zip = new JSZip()
+    imagesArray.forEach((image) => {
+      const imageFile = this.store.selectSnapshot(UploadImageState.getImageById(image.id));
+      const imagesFolder = zip.folder("images")
+      const labelsFolder = zip.folder("labels");
+      const extension = image.adcImage.mimeType.slice(image.adcImage.mimeType.indexOf('/') + 1)
+      if (imageFile?.file) imagesFolder?.file(`${image.id}.${extension}`, imageFile?.file)
+      labelsFolder?.file(`${image.id}.txt`, imageToString(image))
+    });
+    const now = new Date().toISOString();
+    return zip.generateAsync({ type: 'blob' }).then(zipFile => saveAs(zipFile, now + '.zip'))
   }
 }

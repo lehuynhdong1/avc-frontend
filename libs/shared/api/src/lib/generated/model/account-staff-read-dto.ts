@@ -10,11 +10,15 @@
  * Do not edit the class manually.
  */
 
-export interface ProfileReadDto {
+export interface AccountStaffReadDto {
+  id?: number;
   email?: string | null;
   role?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   phone?: string | null;
   avatar?: string | null;
+  isAvailable?: boolean | null;
+  managedBy?: number | null;
+  managedByEmail?: string | null;
 }

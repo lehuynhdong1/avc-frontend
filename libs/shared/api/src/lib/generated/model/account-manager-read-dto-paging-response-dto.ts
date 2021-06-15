@@ -9,17 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AccountManagerReadDto } from './account-manager-read-dto';
 
-export interface AccountReadDto {
-  id?: number;
-  email?: string | null;
-  role?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
-  phone?: string | null;
-  avatar?: string | null;
-  address?: string | null;
-  gender?: string | null;
-  isAvailable?: boolean | null;
-  createdByEmail?: string | null;
+export interface AccountManagerReadDtoPagingResponseDto {
+  result?: Array<AccountManagerReadDto> | null;
+  count?: number;
+  nextPage?: string | null;
+  previousPage?: string | null;
 }

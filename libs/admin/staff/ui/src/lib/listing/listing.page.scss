@@ -1,7 +1,6 @@
 :host {
   display: block;
 }
-
-table tr td {
-  @apply bg-gray-600 #{!important};
+.min-w-53rem {
+  min-width: 53rem;
 }

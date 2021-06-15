@@ -8,9 +8,9 @@ interface SetupAutoTitleParams {
   postfix?: string;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AutoTitleService {
-  constructor(private title: Title, private router: Router) {}
+  constructor(private title: Title, private router: Router) { }
 
   setupAutoTitleListener(params: SetupAutoTitleParams = {}) {
     this.router.events.pipe(filter((event) => event instanceof ResolveEnd)).subscribe((event) => {

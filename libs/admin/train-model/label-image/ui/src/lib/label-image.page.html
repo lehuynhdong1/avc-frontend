@@ -15,13 +15,24 @@
     tuiButton
     type="button"
     size="m"
+    class="tui-space_right-3 tui-space_bottom-3"
+    appearance="outline"
+    [disabled]="!(imageFiles$ | async)?.length"
+    (click)="downloadLabelFile()"
+  >
+    Download package
+  </button>
+  <button
+    tuiButton
+    type="button"
+    size="m"
     iconRight="tuiIconChevronRight"
     class="tui-space_right-3 tui-space_bottom-3"
     appearance="primary"
     routerLink="../progress"
     [disabled]="!(imageFiles$ | async)?.length"
   >
-    Go Train
+    Go train
   </button>
 </div>
 <div class="flex flex-wrap items-center w-full">
@@ -51,6 +62,6 @@
     *ngFor="let imageFile of (imageFiles$ | async)"
     (click)="showDialog(imageFile)"
   >
-    <img [src]="imageFile.dataUrl" alt="" class="object-contain w-full h-full" />
+    <img [src]="imageFile.adcImage.dataUrl" alt="" class="object-contain w-full h-full" />
   </div>
 </div>

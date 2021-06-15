@@ -1,18 +1,13 @@
-import { AccountReadDtoPagingResponseDto } from '@shared/api';
-
-export const enum AccountTypes {
-  STAFFS = 'staffs',
-  MANAGERS = 'managers'
-}
+import { AccountStaffReadDtoPagingResponseDto, AccountStaffReadDto } from '@shared/api';
 
 export interface StateModel {
-  [AccountTypes.STAFFS]: AccountReadDtoPagingResponseDto | null;
-  [AccountTypes.MANAGERS]: AccountReadDtoPagingResponseDto | null;
+  listing: AccountStaffReadDtoPagingResponseDto | null;
+  detail: AccountStaffReadDto | null;
 }
 
-export const STATE_NAME = 'Shared_Account_Listing';
+export const STATE_NAME = 'Shared_Account_Staffs';
 
 export const INITIAL_STATE: StateModel = {
-  staffs: null,
-  managers: null
+  listing: null,
+  detail: null
 };

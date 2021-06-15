@@ -30,7 +30,8 @@ import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
 import {
   ProfileServiceInterface,
-  ApiProfilePasswordPutRequestParams
+  ApiProfilePasswordPutRequestParams,
+  ApiProfilePutRequestParams
 } from './profile.serviceInterface';
 
 @Injectable({
@@ -57,6 +58,20 @@ export class ProfileService implements ProfileServiceInterface {
       this.configuration.basePath = basePath;
     }
     this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+  }
+
+  /**
+   * @param consumes string[] mime-types
+   * @return true: consumes contains 'multipart/form-data', false: otherwise
+   */
+  private canConsumeForm(consumes: string[]): boolean {
+    const form = 'multipart/form-data';
+    for (const consume of consumes) {
+      if (form === consume) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -216,7 +231,12 @@ export class ProfileService implements ProfileServiceInterface {
     }
 
     // to determine the Content-Type header
-    const consumes: string[] = ['application/json', 'text/json', 'application/_*+json'];
+    const consumes: string[] = [
+      'application/json-patch+json',
+      'application/json',
+      'text/json',
+      'application/_*+json'
+    ];
     const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(
       consumes
     );
@@ -232,6 +252,101 @@ export class ProfileService implements ProfileServiceInterface {
     return this.httpClient.put<any>(
       `${this.configuration.basePath}/api/profile/password`,
       profilePasswordUpdateDto,
+      {
+        responseType: <any>responseType,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiProfilePut(
+    requestParameters: ApiProfilePutRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any>;
+  public apiProfilePut(
+    requestParameters: ApiProfilePutRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpResponse<any>>;
+  public apiProfilePut(
+    requestParameters: ApiProfilePutRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpEvent<any>>;
+  public apiProfilePut(
+    requestParameters: ApiProfilePutRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any> {
+    const phone = requestParameters.phone;
+    const avatarImage = requestParameters.avatarImage;
+
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = [];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['multipart/form-data'];
+
+    const canConsumeForm = this.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    let convertFormParamsToString = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new HttpParams({ encoder: this.encoder });
+    }
+
+    if (phone !== undefined) {
+      formParams = (formParams.append('Phone', <any>phone) as any) || formParams;
+    }
+    if (avatarImage !== undefined) {
+      formParams = (formParams.append('AvatarImage', <any>avatarImage) as any) || formParams;
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.put<any>(
+      `${this.configuration.basePath}/api/profile`,
+      convertFormParamsToString ? formParams.toString() : formParams,
       {
         responseType: <any>responseType,
         withCredentials: this.configuration.withCredentials,

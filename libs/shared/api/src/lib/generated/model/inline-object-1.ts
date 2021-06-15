@@ -10,11 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface ProfileReadDto {
-  email?: string | null;
-  role?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
-  phone?: string | null;
-  avatar?: string | null;
+export interface InlineObject1 {
+  Phone?: string;
+  AvatarImage?: Blob;
 }

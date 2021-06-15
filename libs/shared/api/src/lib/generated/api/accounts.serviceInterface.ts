@@ -14,9 +14,11 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AccountActivationDto } from '../model/models';
-import { AccountCreateDto } from '../model/models';
-import { AccountReadDto } from '../model/models';
-import { AccountReadDtoPagingResponseDto } from '../model/models';
+import { AccountManagerCreateDtoFormWrapper } from '../model/models';
+import { AccountManagerReadDto } from '../model/models';
+import { AccountManagerReadDtoPagingResponseDto } from '../model/models';
+import { AccountStaffReadDto } from '../model/models';
+import { AccountStaffReadDtoPagingResponseDto } from '../model/models';
 
 import { Configuration } from '../configuration';
 
@@ -25,8 +27,12 @@ export interface ApiAccountsIdActivationPutRequestParams {
   accountActivationDto?: AccountActivationDto;
 }
 
-export interface ApiAccountsIdGetRequestParams {
+export interface ApiAccountsManagerIdGetRequestParams {
   id: number;
+}
+
+export interface ApiAccountsManagerPostRequestParams {
+  accountManagerCreateDtoFormWrapper?: AccountManagerCreateDtoFormWrapper;
 }
 
 export interface ApiAccountsManagersGetRequestParams {
@@ -35,8 +41,18 @@ export interface ApiAccountsManagersGetRequestParams {
   searchValue?: string;
 }
 
-export interface ApiAccountsPostRequestParams {
-  accountCreateDto?: AccountCreateDto;
+export interface ApiAccountsStaffIdGetRequestParams {
+  id: number;
+}
+
+export interface ApiAccountsStaffPostRequestParams {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  avatarImage?: Blob;
+  phone?: string;
+  managedBy?: number;
 }
 
 export interface ApiAccountsStaffsGetRequestParams {
@@ -64,10 +80,20 @@ export interface AccountsServiceInterface {
    *
    * @param requestParameters
    */
-  apiAccountsIdGet(
-    requestParameters: ApiAccountsIdGetRequestParams,
+  apiAccountsManagerIdGet(
+    requestParameters: ApiAccountsManagerIdGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountReadDto>;
+  ): Observable<AccountManagerReadDto>;
+
+  /**
+   * Create new Account
+   *
+   * @param requestParameters
+   */
+  apiAccountsManagerPost(
+    requestParameters: ApiAccountsManagerPostRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<AccountManagerReadDto>;
 
   /**
    * Get List of Manager
@@ -77,17 +103,27 @@ export interface AccountsServiceInterface {
   apiAccountsManagersGet(
     requestParameters: ApiAccountsManagersGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountReadDtoPagingResponseDto>;
+  ): Observable<AccountManagerReadDtoPagingResponseDto>;
+
+  /**
+   * Get Specific Account
+   *
+   * @param requestParameters
+   */
+  apiAccountsStaffIdGet(
+    requestParameters: ApiAccountsStaffIdGetRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<AccountManagerReadDto>;
 
   /**
    * Create new Account
    *
    * @param requestParameters
    */
-  apiAccountsPost(
-    requestParameters: ApiAccountsPostRequestParams,
+  apiAccountsStaffPost(
+    requestParameters: ApiAccountsStaffPostRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountReadDto>;
+  ): Observable<AccountStaffReadDto>;
 
   /**
    * Get list of staff
@@ -97,5 +133,5 @@ export interface AccountsServiceInterface {
   apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountReadDtoPagingResponseDto>;
+  ): Observable<AccountStaffReadDtoPagingResponseDto>;
 }

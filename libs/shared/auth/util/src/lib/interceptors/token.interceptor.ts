@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
   HttpResponse
 } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { ShowNotification } from '../store/util.actions';
@@ -14,7 +14,7 @@ import { TuiNotification } from '@taiga-ui/core';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private _store: Store) {}
+  constructor(private _store: Store) { }
   intercept(
     request: HttpRequest<Record<string, string>>,
     next: HttpHandler
@@ -32,7 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
             })
           );
         }
-        return of(error);
+        return throwError(error);
       })
     );
   }

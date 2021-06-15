@@ -24,18 +24,22 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 import { AccountActivationDto } from '../model/models';
-import { AccountCreateDto } from '../model/models';
-import { AccountReadDto } from '../model/models';
-import { AccountReadDtoPagingResponseDto } from '../model/models';
+import { AccountManagerCreateDtoFormWrapper } from '../model/models';
+import { AccountManagerReadDto } from '../model/models';
+import { AccountManagerReadDtoPagingResponseDto } from '../model/models';
+import { AccountStaffReadDto } from '../model/models';
+import { AccountStaffReadDtoPagingResponseDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
 import {
   AccountsServiceInterface,
   ApiAccountsIdActivationPutRequestParams,
-  ApiAccountsIdGetRequestParams,
+  ApiAccountsManagerIdGetRequestParams,
+  ApiAccountsManagerPostRequestParams,
   ApiAccountsManagersGetRequestParams,
-  ApiAccountsPostRequestParams,
+  ApiAccountsStaffIdGetRequestParams,
+  ApiAccountsStaffPostRequestParams,
   ApiAccountsStaffsGetRequestParams
 } from './accounts.serviceInterface';
 
@@ -63,6 +67,20 @@ export class AccountsService implements AccountsServiceInterface {
       this.configuration.basePath = basePath;
     }
     this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+  }
+
+  /**
+   * @param consumes string[] mime-types
+   * @return true: consumes contains 'multipart/form-data', false: otherwise
+   */
+  private canConsumeForm(consumes: string[]): boolean {
+    const form = 'multipart/form-data';
+    for (const consume of consumes) {
+      if (form === consume) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -168,7 +186,12 @@ export class AccountsService implements AccountsServiceInterface {
     }
 
     // to determine the Content-Type header
-    const consumes: string[] = ['application/json', 'text/json', 'application/_*+json'];
+    const consumes: string[] = [
+      'application/json-patch+json',
+      'application/json',
+      'text/json',
+      'application/_*+json'
+    ];
     const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(
       consumes
     );
@@ -200,33 +223,35 @@ export class AccountsService implements AccountsServiceInterface {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public apiAccountsIdGet(
-    requestParameters: ApiAccountsIdGetRequestParams,
+  public apiAccountsManagerIdGet(
+    requestParameters: ApiAccountsManagerIdGetRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountReadDto>;
-  public apiAccountsIdGet(
-    requestParameters: ApiAccountsIdGetRequestParams,
+  ): Observable<AccountManagerReadDto>;
+  public apiAccountsManagerIdGet(
+    requestParameters: ApiAccountsManagerIdGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountReadDto>>;
-  public apiAccountsIdGet(
-    requestParameters: ApiAccountsIdGetRequestParams,
+  ): Observable<HttpResponse<AccountManagerReadDto>>;
+  public apiAccountsManagerIdGet(
+    requestParameters: ApiAccountsManagerIdGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountReadDto>>;
-  public apiAccountsIdGet(
-    requestParameters: ApiAccountsIdGetRequestParams,
+  ): Observable<HttpEvent<AccountManagerReadDto>>;
+  public apiAccountsManagerIdGet(
+    requestParameters: ApiAccountsManagerIdGetRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
     const id = requestParameters.id;
     if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling apiAccountsIdGet.');
+      throw new Error(
+        'Required parameter id was null or undefined when calling apiAccountsManagerIdGet.'
+      );
     }
 
     let headers = this.defaultHeaders;
@@ -255,93 +280,9 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<AccountReadDto>(
-      `${this.configuration.basePath}/api/accounts/${encodeURIComponent(String(id))}`,
+    return this.httpClient.get<AccountManagerReadDto>(
+      `${this.configuration.basePath}/api/accounts/manager/${encodeURIComponent(String(id))}`,
       {
-        responseType: <any>responseType,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress
-      }
-    );
-  }
-
-  /**
-   * Get List of Manager
-   * @param requestParameters
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public apiAccountsManagersGet(
-    requestParameters: ApiAccountsManagersGetRequestParams,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountReadDtoPagingResponseDto>;
-  public apiAccountsManagersGet(
-    requestParameters: ApiAccountsManagersGetRequestParams,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountReadDtoPagingResponseDto>>;
-  public apiAccountsManagersGet(
-    requestParameters: ApiAccountsManagersGetRequestParams,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountReadDtoPagingResponseDto>>;
-  public apiAccountsManagersGet(
-    requestParameters: ApiAccountsManagersGetRequestParams,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<any> {
-    const page = requestParameters.page;
-    const limit = requestParameters.limit;
-    const searchValue = requestParameters.searchValue;
-
-    let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (page !== undefined && page !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
-    }
-    if (limit !== undefined && limit !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>limit, 'limit');
-    }
-    if (searchValue !== undefined && searchValue !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>searchValue, 'searchValue');
-    }
-
-    let headers = this.defaultHeaders;
-
-    // authentication (Bearer) required
-    if (this.configuration.apiKeys) {
-      const key: string | undefined =
-        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
-      if (key) {
-        headers = headers.set('Authorization', key);
-      }
-    }
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['text/plain', 'application/json', 'text/json'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    let responseType: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType = 'text';
-    }
-
-    return this.httpClient.get<AccountReadDtoPagingResponseDto>(
-      `${this.configuration.basePath}/api/accounts/managers`,
-      {
-        params: queryParameters,
         responseType: <any>responseType,
         withCredentials: this.configuration.withCredentials,
         headers: headers,
@@ -357,31 +298,31 @@ export class AccountsService implements AccountsServiceInterface {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public apiAccountsPost(
-    requestParameters: ApiAccountsPostRequestParams,
+  public apiAccountsManagerPost(
+    requestParameters: ApiAccountsManagerPostRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountReadDto>;
-  public apiAccountsPost(
-    requestParameters: ApiAccountsPostRequestParams,
+  ): Observable<AccountManagerReadDto>;
+  public apiAccountsManagerPost(
+    requestParameters: ApiAccountsManagerPostRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountReadDto>>;
-  public apiAccountsPost(
-    requestParameters: ApiAccountsPostRequestParams,
+  ): Observable<HttpResponse<AccountManagerReadDto>>;
+  public apiAccountsManagerPost(
+    requestParameters: ApiAccountsManagerPostRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountReadDto>>;
-  public apiAccountsPost(
-    requestParameters: ApiAccountsPostRequestParams,
+  ): Observable<HttpEvent<AccountManagerReadDto>>;
+  public apiAccountsManagerPost(
+    requestParameters: ApiAccountsManagerPostRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
-    const accountCreateDto = requestParameters.accountCreateDto;
+    const accountManagerCreateDtoFormWrapper = requestParameters.accountManagerCreateDtoFormWrapper;
 
     let headers = this.defaultHeaders;
 
@@ -405,7 +346,12 @@ export class AccountsService implements AccountsServiceInterface {
     }
 
     // to determine the Content-Type header
-    const consumes: string[] = ['application/json', 'text/json', 'application/_*+json'];
+    const consumes: string[] = [
+      'application/json-patch+json',
+      'application/json',
+      'text/json',
+      'application/_*+json'
+    ];
     const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(
       consumes
     );
@@ -418,9 +364,304 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.post<AccountReadDto>(
-      `${this.configuration.basePath}/api/accounts`,
-      accountCreateDto,
+    return this.httpClient.post<AccountManagerReadDto>(
+      `${this.configuration.basePath}/api/accounts/manager`,
+      accountManagerCreateDtoFormWrapper,
+      {
+        responseType: <any>responseType,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * Get List of Manager
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiAccountsManagersGet(
+    requestParameters: ApiAccountsManagersGetRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<AccountManagerReadDtoPagingResponseDto>;
+  public apiAccountsManagersGet(
+    requestParameters: ApiAccountsManagersGetRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpResponse<AccountManagerReadDtoPagingResponseDto>>;
+  public apiAccountsManagersGet(
+    requestParameters: ApiAccountsManagersGetRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpEvent<AccountManagerReadDtoPagingResponseDto>>;
+  public apiAccountsManagersGet(
+    requestParameters: ApiAccountsManagersGetRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<any> {
+    const page = requestParameters.page;
+    const limit = requestParameters.limit;
+    const searchValue = requestParameters.searchValue;
+
+    let queryParameters = new HttpParams({ encoder: this.encoder });
+    if (page !== undefined && page !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
+    }
+    if (limit !== undefined && limit !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>limit, 'limit');
+    }
+    if (searchValue !== undefined && searchValue !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>searchValue, 'searchValue');
+    }
+
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['text/plain', 'application/json', 'text/json'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.get<AccountManagerReadDtoPagingResponseDto>(
+      `${this.configuration.basePath}/api/accounts/managers`,
+      {
+        params: queryParameters,
+        responseType: <any>responseType,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * Get Specific Account
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiAccountsStaffIdGet(
+    requestParameters: ApiAccountsStaffIdGetRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<AccountManagerReadDto>;
+  public apiAccountsStaffIdGet(
+    requestParameters: ApiAccountsStaffIdGetRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpResponse<AccountManagerReadDto>>;
+  public apiAccountsStaffIdGet(
+    requestParameters: ApiAccountsStaffIdGetRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpEvent<AccountManagerReadDto>>;
+  public apiAccountsStaffIdGet(
+    requestParameters: ApiAccountsStaffIdGetRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<any> {
+    const id = requestParameters.id;
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling apiAccountsStaffIdGet.'
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['text/plain', 'application/json', 'text/json'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.get<AccountManagerReadDto>(
+      `${this.configuration.basePath}/api/accounts/staff/${encodeURIComponent(String(id))}`,
+      {
+        responseType: <any>responseType,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * Create new Account
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiAccountsStaffPost(
+    requestParameters: ApiAccountsStaffPostRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<AccountStaffReadDto>;
+  public apiAccountsStaffPost(
+    requestParameters: ApiAccountsStaffPostRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpResponse<AccountStaffReadDto>>;
+  public apiAccountsStaffPost(
+    requestParameters: ApiAccountsStaffPostRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpEvent<AccountStaffReadDto>>;
+  public apiAccountsStaffPost(
+    requestParameters: ApiAccountsStaffPostRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<any> {
+    const email = requestParameters.email;
+    if (email === null || email === undefined) {
+      throw new Error(
+        'Required parameter email was null or undefined when calling apiAccountsStaffPost.'
+      );
+    }
+    const password = requestParameters.password;
+    if (password === null || password === undefined) {
+      throw new Error(
+        'Required parameter password was null or undefined when calling apiAccountsStaffPost.'
+      );
+    }
+    const firstName = requestParameters.firstName;
+    if (firstName === null || firstName === undefined) {
+      throw new Error(
+        'Required parameter firstName was null or undefined when calling apiAccountsStaffPost.'
+      );
+    }
+    const lastName = requestParameters.lastName;
+    if (lastName === null || lastName === undefined) {
+      throw new Error(
+        'Required parameter lastName was null or undefined when calling apiAccountsStaffPost.'
+      );
+    }
+    const avatarImage = requestParameters.avatarImage;
+    const phone = requestParameters.phone;
+    const managedBy = requestParameters.managedBy;
+
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['text/plain', 'application/json', 'text/json'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['multipart/form-data'];
+
+    const canConsumeForm = this.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    let convertFormParamsToString = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new HttpParams({ encoder: this.encoder });
+    }
+
+    if (avatarImage !== undefined) {
+      formParams = (formParams.append('AvatarImage', <any>avatarImage) as any) || formParams;
+    }
+    if (email !== undefined) {
+      formParams = (formParams.append('Email', <any>email) as any) || formParams;
+    }
+    if (password !== undefined) {
+      formParams = (formParams.append('Password', <any>password) as any) || formParams;
+    }
+    if (firstName !== undefined) {
+      formParams = (formParams.append('FirstName', <any>firstName) as any) || formParams;
+    }
+    if (lastName !== undefined) {
+      formParams = (formParams.append('LastName', <any>lastName) as any) || formParams;
+    }
+    if (phone !== undefined) {
+      formParams = (formParams.append('Phone', <any>phone) as any) || formParams;
+    }
+    if (managedBy !== undefined) {
+      formParams = (formParams.append('ManagedBy', <any>managedBy) as any) || formParams;
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.post<AccountStaffReadDto>(
+      `${this.configuration.basePath}/api/accounts/staff`,
+      convertFormParamsToString ? formParams.toString() : formParams,
       {
         responseType: <any>responseType,
         withCredentials: this.configuration.withCredentials,
@@ -442,19 +683,19 @@ export class AccountsService implements AccountsServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountReadDtoPagingResponseDto>;
+  ): Observable<AccountStaffReadDtoPagingResponseDto>;
   public apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountReadDtoPagingResponseDto>>;
+  ): Observable<HttpResponse<AccountStaffReadDtoPagingResponseDto>>;
   public apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountReadDtoPagingResponseDto>>;
+  ): Observable<HttpEvent<AccountStaffReadDtoPagingResponseDto>>;
   public apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     observe: any = 'body',
@@ -502,7 +743,7 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<AccountReadDtoPagingResponseDto>(
+    return this.httpClient.get<AccountStaffReadDtoPagingResponseDto>(
       `${this.configuration.basePath}/api/accounts/staffs`,
       {
         params: queryParameters,

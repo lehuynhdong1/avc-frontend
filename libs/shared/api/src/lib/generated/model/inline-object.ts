@@ -10,16 +10,12 @@
  * Do not edit the class manually.
  */
 
-export interface AccountCreateDto {
-  email?: string | null;
-  password: string;
-  readonly salt?: string | null;
-  firstName: string;
-  lastName: string;
-  roleId: number;
-  phone?: string | null;
-  avatar?: string | null;
-  address?: string | null;
-  genderId: number;
-  readonly createdBy?: number | null;
+export interface InlineObject {
+  AvatarImage?: Blob;
+  Email: string;
+  Password: string;
+  FirstName: string;
+  LastName: string;
+  Phone?: string;
+  ManagedBy?: number;
 }

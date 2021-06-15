@@ -13,16 +13,12 @@ import { Observable, Subject } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
 import {
-  ImageDialogParams,
+  SelectedLabelImageFile,
   ImageDialog,
   Annotation,
   AnnotoriousLayer
 } from '@admin/train-model/label-image/util';
-import {
-  LabelImageById,
-  LabelImageState,
-  SelectedLabelImageFile
-} from '@admin/train-model/label-image/data-access';
+import { LabelImageById, LabelImageState } from '@admin/train-model/label-image/data-access';
 
 @Component({
   selector: 'adca-image-dialog',
@@ -48,7 +44,7 @@ export class ImageDialogComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT)
-    readonly context: TuiDialog<{ data: ImageDialogParams }, number>,
+    readonly context: TuiDialog<{ data: SelectedLabelImageFile }, number>,
     private store: Store,
     private state: RxState<ImageDialog>
   ) {

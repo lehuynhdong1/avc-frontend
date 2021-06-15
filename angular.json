@@ -84,7 +84,8 @@
             "scripts": [
               "apps/admin/src/__env__.js",
               "node_modules/@recogito/annotorious/dist/annotorious.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": ["angular2-text-mask", "file-saver"]
           },
           "configurations": {
             "production": {
