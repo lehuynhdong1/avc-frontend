@@ -54,6 +54,8 @@ module.exports = {
     '<rootDir>/libs/admin/train-model/progress/data-access',
     '<rootDir>/libs/admin/train-model/history/data-access',
     '<rootDir>/libs/admin/train-model/history-detail/data-access',
-    '<rootDir>/libs/admin/train-model/label-image/util'
+    '<rootDir>/libs/admin/train-model/label-image/util',
+    '<rootDir>/libs/admin/staff/detail/feature',
+    '<rootDir>/libs/admin/staff/detail/ui'
   ]
 };

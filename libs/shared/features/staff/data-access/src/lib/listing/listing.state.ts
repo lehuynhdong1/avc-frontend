@@ -25,6 +25,14 @@ export class ListingState {
   @Action(LoadStaffs) loadStaffs({ patchState }: StateContext<StateModel>, { params }: LoadStaffs) {
     return this.accountsService
       .apiAccountsStaffsGet(params)
-      .pipe(tap((response) => patchState({ listing: response })));
+      .pipe(tap((listing) => patchState({ listing })));
+  }
+  @Action(LoadStaffById) loadStaffById(
+    { patchState }: StateContext<StateModel>,
+    { params }: LoadStaffById
+  ) {
+    return this.accountsService
+      .apiAccountsStaffIdGet(params)
+      .pipe(tap((detail) => patchState({ detail })));
   }
 }

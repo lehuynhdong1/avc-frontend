@@ -5,7 +5,9 @@ import { DataAccessModule } from '@admin/train-model/label-image/data-access';
 
 @NgModule({
   imports: [
-    RouterModule.forChild([{ path: '', pathMatch: 'full', component: LabelImagePage }]),
+    RouterModule.forChild([
+      { path: '', pathMatch: 'full', component: LabelImagePage, data: { title: 'Label Image' } }
+    ]),
     DataAccessModule
   ]
 })

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from '@admin/core/ui';
 import { trainModelRoutes } from '@admin/train-model/routes';
 import { authRoutes } from '@admin/auth/routes';
+import { staffRoutes } from '@admin/staff/routes';
 import { IsLoggedInGuard } from '@shared/auth/util';
 
 export const routes: Routes = [
@@ -13,12 +14,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'staff',
-        loadChildren: () => import('@admin/staff/feature').then((m) => m.FeatureModule),
-        canActivate: [IsLoggedInGuard]
-      },
-      {
-        path: 'manager',
-        loadChildren: () => import('@admin/staff/feature').then((m) => m.FeatureModule),
+        children: staffRoutes,
         canActivate: [IsLoggedInGuard]
       },
       {

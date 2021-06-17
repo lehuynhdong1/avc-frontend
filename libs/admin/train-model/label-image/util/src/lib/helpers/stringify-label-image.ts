@@ -1,3 +1,4 @@
+import { Labels } from '../models';
 /**
  * @param boxInString - Location of the annotation on the image in format `xywh=pixel:16.5,56,113,40` from [Annotation.target.selector.value]
  * @param label - label of this annotation from [Annotation.body[0].value]
@@ -9,14 +10,6 @@ export function stringifyBox(boxInString: string, label: Labels, image: Image) {
   const box = convertCoordinates(image, { x, y, width, height });
   return toString(label, box);
 }
-
-export enum Labels {
-  STOP = 0,
-  GO_FORWARD = 1,
-  TURN_LEFT = 2,
-  TURN_RIGHT = 3
-}
-export type LabelTypes = keyof typeof Labels;
 
 interface Image {
   width: number;

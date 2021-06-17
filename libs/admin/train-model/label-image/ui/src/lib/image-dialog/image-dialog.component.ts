@@ -10,15 +10,18 @@ import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { Annotorious } from '@recogito/annotorious';
 import { insert, RxState, patch } from '@rx-angular/state';
 import { Observable, Subject } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { take, tap, withLatestFrom } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
 import {
   SelectedLabelImageFile,
   ImageDialog,
   Annotation,
-  AnnotoriousLayer
+  AnnotoriousLayer,
+  joinStringsToSentence
 } from '@admin/train-model/label-image/util';
 import { LabelImageById, LabelImageState } from '@admin/train-model/label-image/data-access';
+import { ShowNotification } from '@shared/util';
+import { TuiNotification } from '@taiga-ui/core';
 
 @Component({
   selector: 'adca-image-dialog',
@@ -34,21 +37,17 @@ export class ImageDialogComponent implements AfterViewInit, OnDestroy {
 
   private createAnnotation$ = new Subject<Annotation>();
 
-  createAnnotationEffect$ = this.createAnnotation$.pipe(
-    tap((annotation) =>
-      this.state.set((oldState) =>
-        patch(oldState, { annotations: insert(oldState.annotations, annotation) })
-      )
-    )
-  );
-
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT)
     readonly context: TuiDialog<{ data: SelectedLabelImageFile }, number>,
     private store: Store,
     private state: RxState<ImageDialog>
   ) {
-    state.hold(this.createAnnotationEffect$);
+    state.hold(this.createAnnotation$, (annotation) =>
+      this.state.set((oldState) =>
+        patch(oldState, { annotations: insert(oldState.annotations, annotation) })
+      )
+    );
   }
 
   ngAfterViewInit() {
@@ -66,10 +65,19 @@ export class ImageDialogComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.annotations$
-      .pipe(take(1))
-      .subscribe((annotations) =>
-        this.store.dispatch(new LabelImageById(this.context.data.id, annotations))
-      );
+      .pipe(withLatestFrom(this.selectedImage$), take(1))
+      .subscribe(([annotations, selectedImage]) => {
+        const action = selectedImage.annotations?.length ? 'updated' : 'created';
+        const tags = annotations.map((annotation) => annotation.body[0].value);
+        const tagsToString = joinStringsToSentence(tags);
+        this.store.dispatch([
+          new ShowNotification({
+            message: `You've ${action} ${annotations.length} labels with tags ${tagsToString}.`,
+            options: { label: `Labels ${action} successfully`, status: TuiNotification.Success }
+          }),
+          new LabelImageById(this.context.data.id, annotations)
+        ]);
+      });
   }
 
   complete(response: number) {

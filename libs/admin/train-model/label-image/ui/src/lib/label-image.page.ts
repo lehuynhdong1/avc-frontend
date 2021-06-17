@@ -15,7 +15,7 @@ import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { LabelImageFile, SelectedLabelImageFile } from '@admin/train-model/label-image/util';
-import { ShowNotification } from '@shared/auth/util';
+import { ShowNotification } from '@shared/util';
 import { RxState } from '@rx-angular/state';
 
 @Component({
@@ -32,12 +32,18 @@ export class LabelImagePage {
     shareReplay()
   );
 
-  readonly whenDownloadSuccess$ = this.actions.pipe(ofActionSuccessful(DonwloadLabelFiles))
-    .pipe(tap(() => this.store.dispatch(new ShowNotification({
-      message: 'Your zip downloads successfully. Please check your Download folder!', options: {
-        label: 'Download succeed'
-      }
-    }))))
+  readonly whenDownloadSuccess$ = this.actions.pipe(ofActionSuccessful(DonwloadLabelFiles)).pipe(
+    tap(() =>
+      this.store.dispatch(
+        new ShowNotification({
+          message: 'Your zip downloads successfully. Please check your Download folder!',
+          options: {
+            label: 'Download succeed'
+          }
+        })
+      )
+    )
+  );
 
   constructor(
     public router: Router,
@@ -49,7 +55,7 @@ export class LabelImagePage {
     private dialogService: TuiDialogService,
     private state: RxState<{ data: string }>
   ) {
-    state.hold(this.whenDownloadSuccess$)
+    state.hold(this.whenDownloadSuccess$);
     this.store.dispatch(new TransferUploadedImages());
   }
 
@@ -58,7 +64,7 @@ export class LabelImagePage {
   }
 
   downloadLabelFile() {
-    this.store.dispatch(new DonwloadLabelFiles())
+    this.store.dispatch(new DonwloadLabelFiles());
   }
 
   showDialog(labelImageFile: LabelImageFile) {

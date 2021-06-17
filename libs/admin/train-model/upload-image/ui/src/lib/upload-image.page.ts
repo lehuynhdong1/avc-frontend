@@ -10,7 +10,7 @@ import {
   IMAGE_TYPES,
   MAXIMUM_IMAGE_SIZE
 } from '@admin/train-model/upload-image/data-access';
-import { ShowNotification } from '@shared/auth/util';
+import { ShowNotification } from '@shared/util';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 
 @Component({

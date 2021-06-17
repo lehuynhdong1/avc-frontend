@@ -1186,92 +1186,6 @@
         }
       }
     },
-    "admin-staff-ui": {
-      "projectType": "library",
-      "root": "libs/admin/staff/ui",
-      "sourceRoot": "libs/admin/staff/ui/src",
-      "prefix": "adca",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/staff/ui/tsconfig.lib.json",
-            "project": "libs/admin/staff/ui/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/staff/ui/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/staff/ui/src/**/*.ts",
-              "libs/admin/staff/ui/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/staff/ui"],
-          "options": {
-            "jestConfig": "libs/admin/staff/ui/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "generate-docs": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "command": "npx compodoc -p libs/admin/staff/ui/tsconfig.lib.json -d documentation/libs/admin/staff/ui/"
-          }
-        }
-      }
-    },
-    "admin-staff-feature": {
-      "projectType": "library",
-      "root": "libs/admin/staff/feature",
-      "sourceRoot": "libs/admin/staff/feature/src",
-      "prefix": "adca",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/staff/feature/tsconfig.lib.json",
-            "project": "libs/admin/staff/feature/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/staff/feature/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/staff/feature/src/**/*.ts",
-              "libs/admin/staff/feature/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/staff/feature"],
-          "options": {
-            "jestConfig": "libs/admin/staff/feature/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "generate-docs": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "command": "npx compodoc -p libs/admin/staff/feature/tsconfig.lib.json -d documentation/libs/admin/staff/feature/"
-          }
-        }
-      }
-    },
     "shared-manage-profile-change-password-ui": {
       "projectType": "library",
       "root": "libs/shared/manage-profile/change-password/ui",
@@ -2462,6 +2376,166 @@
           "outputs": ["coverage/libs/admin/train-model/label-image/util"],
           "options": {
             "jestConfig": "libs/admin/train-model/label-image/util/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-staff-listing-feature": {
+      "projectType": "library",
+      "root": "libs/admin/staff/listing/feature",
+      "sourceRoot": "libs/admin/staff/listing/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/listing/feature/tsconfig.lib.json",
+            "project": "libs/admin/staff/listing/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/listing/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/listing/feature/src/**/*.ts",
+              "libs/admin/staff/listing/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/listing/feature"],
+          "options": {
+            "jestConfig": "libs/admin/staff/listing/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/staff/listing/feature/tsconfig.lib.json -d documentation/libs/admin/staff/listing/feature/"
+          }
+        }
+      }
+    },
+    "admin-staff-listing-ui": {
+      "projectType": "library",
+      "root": "libs/admin/staff/listing/ui",
+      "sourceRoot": "libs/admin/staff/listing/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/listing/ui/tsconfig.lib.json",
+            "project": "libs/admin/staff/listing/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/listing/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/listing/ui/src/**/*.ts",
+              "libs/admin/staff/listing/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/listing/ui"],
+          "options": {
+            "jestConfig": "libs/admin/staff/listing/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "generate-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx compodoc -p libs/admin/staff/listing/ui/tsconfig.lib.json -d documentation/libs/admin/staff/listing/ui/"
+          }
+        }
+      }
+    },
+    "admin-staff-detail-feature": {
+      "projectType": "library",
+      "root": "libs/admin/staff/detail/feature",
+      "sourceRoot": "libs/admin/staff/detail/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/detail/feature/tsconfig.lib.json",
+            "project": "libs/admin/staff/detail/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/detail/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/detail/feature/src/**/*.ts",
+              "libs/admin/staff/detail/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/detail/feature"],
+          "options": {
+            "jestConfig": "libs/admin/staff/detail/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-staff-detail-ui": {
+      "projectType": "library",
+      "root": "libs/admin/staff/detail/ui",
+      "sourceRoot": "libs/admin/staff/detail/ui/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/detail/ui/tsconfig.lib.json",
+            "project": "libs/admin/staff/detail/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/detail/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/detail/ui/src/**/*.ts",
+              "libs/admin/staff/detail/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/detail/ui"],
+          "options": {
+            "jestConfig": "libs/admin/staff/detail/ui/jest.config.js",
             "passWithNoTests": true
           }
         }

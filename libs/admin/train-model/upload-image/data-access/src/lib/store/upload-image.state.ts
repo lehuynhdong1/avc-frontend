@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
-import { ShowNotification } from '@shared/auth/util';
+import { ShowNotification } from '@shared/util';
 import { TuiNotification } from '@taiga-ui/core';
 import {
   ImageFile,

@@ -7,17 +7,19 @@ import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { AppConfig } from '@shared/app-config';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { RouterModule } from '@angular/router';
+import { UtilModule as SharedUtilModule } from '@shared/util';
 
 export function CoreModulesWithConfig(config: AppConfig) {
   return [
-    ApiModule.forRoot(config),
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'top'
     }),
+    StateManagementModulesWithConfig(config),
+    LanguageModuleWithConfig({ prodMode: config.production }),
+    SharedUtilModule,
+    ApiModule.forRoot(config),
     AngularSvgIconModule.forRoot(),
     LayoutModule,
-    AuthUtilModule,
-    StateManagementModulesWithConfig(config),
-    LanguageModuleWithConfig({ prodMode: config.production })
+    AuthUtilModule
   ];
 }

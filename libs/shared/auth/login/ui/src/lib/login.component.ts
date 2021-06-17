@@ -11,7 +11,7 @@ import {
 import { Login, LoginState } from '@shared/auth/login/data-access';
 import { TuiInputType } from '@taiga-ui/cdk';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import { ShowNotification } from '@shared/auth/util';
+import { ShowNotification } from '@shared/util';
 import { TuiNotification } from '@taiga-ui/core';
 import { RxState } from '@rx-angular/state';
 
@@ -24,15 +24,15 @@ import { RxState } from '@rx-angular/state';
 export function passwordRequiredValidator(field: AbstractControl): Validators | null {
   return field.value === ''
     ? {
-      other: 'Password is required'
-    }
+        other: 'Password is required'
+      }
     : null;
 }
 export function emailRequiredValidator(field: AbstractControl): Validators | null {
   return field.value === ''
     ? {
-      other: 'Email address is required'
-    }
+        other: 'Email address is required'
+      }
     : null;
 }
 

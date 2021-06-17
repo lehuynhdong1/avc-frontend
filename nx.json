@@ -27,8 +27,6 @@
     "shared-auth-login-data-access": { "tags": ["scope:shared"] },
     "shared-auth-util": { "tags": ["scope:shared"] },
     "shared-auth-logout-data-access": { "tags": ["scope:shared"] },
-    "admin-staff-ui": { "tags": ["scope:admin"] },
-    "admin-staff-feature": { "tags": ["scope:admin"] },
     "shared-manage-profile-change-password-ui": { "tags": ["scope:shared"] },
     "shared-manage-profile-view-profile-ui": { "tags": ["scope:shared"] },
     "shared-manage-profile-view-profile-data-access": { "tags": ["scope:shared"] },
@@ -56,6 +54,10 @@
     "admin-train-model-progress-data-access": { "tags": ["scope:admin"] },
     "admin-train-model-history-data-access": { "tags": ["scope:admin"] },
     "admin-train-model-history-detail-data-access": { "tags": ["scope:admin"] },
-    "admin-train-model-label-image-util": { "tags": ["scope:admin"] }
+    "admin-train-model-label-image-util": { "tags": ["scope:admin"] },
+    "admin-staff-listing-feature": { "tags": ["scope:admin"] },
+    "admin-staff-listing-ui": { "tags": ["scope:admin"] },
+    "admin-staff-detail-feature": { "tags": ["scope:admin"] },
+    "admin-staff-detail-ui": { "tags": ["scope:admin"] }
   }
 }

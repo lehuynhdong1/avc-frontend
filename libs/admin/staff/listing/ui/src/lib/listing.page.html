@@ -1,0 +1,49 @@
+<main class="flex">
+  <section class="flex-grow">
+    <h1>Manage Staffs</h1>
+    <table tuiTable class="w-100 min-w-53rem pr-3" [columns]="COLUMNS">
+      <thead>
+        <tr tuiThGroup>
+          <th *tuiHead="'index'" tuiTh>Id</th>
+          <th *tuiHead="'name'" tuiTh>Name</th>
+          <th *tuiHead="'email'" tuiTh [sorter]="null">Email</th>
+          <th *tuiHead="'phone'" tuiTh [sorter]="null">Phone</th>
+          <th *tuiHead="'managedByEmail'" tuiTh [sorter]="null">Managed by</th>
+          <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Available</th>
+        </tr>
+      </thead>
+      <ng-container *ngIf="(staffs$ | async)?.result as staffResponse">
+        <tbody tuiTbody [data]="staffResponse">
+          <tr
+            *tuiRow="let item of staffResponse; let index = index"
+            tuiTr
+            class="cursor-pointer"
+            [class.active]="item.id === (selectedStaffId$ | async)"
+            (click)="selectRow$.next(item.id || 0)"
+            [routerLink]="[item.id]"
+          >
+            <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
+            <td *tuiCell="'name'" tuiTd>
+              <tui-avatar
+                class="tui-space_top-2"
+                [avatarUrl]="item.avatar || ''"
+                [rounded]="true"
+              ></tui-avatar>
+              <div class="tui-space_bottom-1">{{item.firstName}} {{item.lastName}}</div>
+            </td>
+            <td *tuiCell="'email'" tuiTd>{{item.email}}</td>
+            <td *tuiCell="'phone'" tuiTd>{{item.phone}}</td>
+            <td *tuiCell="'managedByEmail'" tuiTd>{{item.managedByEmail}}</td>
+            <td *tuiCell="'isAvailable'" tuiTd>{{item.isAvailable}}</td>
+          </tr>
+
+          <aside *tuiSidebar="(isOpened$ | async) || false; direction: 'right'"></aside>
+        </tbody>
+      </ng-container>
+    </table>
+  </section>
+  <aside class="flex-grow flex-shrink-0 relative">
+    <router-outlet></router-outlet>
+    <tui-svg class="top-right" src="tuiIconRemoveLarge"></tui-svg>
+  </aside>
+</main>
