@@ -2,31 +2,16 @@ image: node:latest
 stages:
   - build
   - deploy
-# - test
 
 variables:
-  # LC_ALL: 'en_US.UTF-8'
-  # LANG: 'en_US.UTF-8'
-  # GIT_STRATEGY: clone
-  API_URL: 'https://avc-api.azurewebsites.net'
+  API_URL: 'HIDDEN'
   PRODUCTION: 1
-  # MESSAGE_ANDROID: "[*Life on Mobile*]\n*API_URL*: $API_URL\n*Android* has been built successfully: \"$CI_COMMIT_MESSAGE\" Hey <users/104121422729815117160>! Click to download *APK* file http://192.168.9.62/loa/loa-mobile/-/jobs/$CI_JOB_ID/artifacts/download"
-  # MESSAGE_IOS: "[*Life on Mobile*]\n*API_URL*: $API_URL\n*iOS* has been built & upload to *TestFlight* successfully: \"$CI_COMMIT_MESSAGE\" Hey <users/104121422729815117160>! Please update & help me test it."
-
-# cache:
-#   key: ${CI_COMMIT_REF_SLUG}
-#   paths:
-#     - .npm/
-
-#########################
-###### Build Stage ######
-#########################
 build_admin:
   stage: build
   script:
-    # - npm ci --cache .npm --prefer-offline
     - npm ci
     - npm run build:prod -- --project=admin
+    - ls .
   only:
     - develop
     - master
@@ -35,30 +20,9 @@ build_admin:
       - dist/apps/admin
     expire_in: 24 hrs
 
-#########################
-###### Test Stage ######
-#########################
-
-# test:
-#   stage: test
-#   script:
-#     - npm run test:ci
-#   tags:
-#     - nng-ios
-#   variables:
-#     GIT_STRATEGY: none
-#   artifacts:
-#     paths:
-#       - coverage
-#     expire_in: 1 month
-
-#########################
-###### Deploy Stage ######
-#########################
-
 pages:
   stage: deploy
-  script: 
+  script:
     - echo "----------------------------------------------------------------"
     - echo "Deploy admin site to Gitlab Pages"
     - cp -r dist/apps/admin public
@@ -69,41 +33,3 @@ pages:
     paths:
       - public
     expire_in: 1 hrs
-
-# upload_to_testflight:
-#   stage: deploy
-#   script:
-#     - echo "----------------------------------------------------------------"
-#     - echo "Upload to TestFlight by " $FASTLANE_USER
-#     - npm run sync -- ios
-#     - npm run deploy:ios
-#     - curl -G --data-urlencode "project=LOA" --data-urlencode "message=$MESSAGE_IOS" http://rancher.nng.bz:8000/api/notify/
-#   variables:
-#     GIT_STRATEGY: none
-#   retry: 2
-#   only:
-#     - develop
-#     - master
-#   tags:
-#     - nng-ios
-
-# build_apk:
-#   stage: deploy
-#   script:
-#     - echo "----------------------------------------------------------------"
-#     - echo "Build Android app to APK by " $FASTLANE_USER
-#     - npm run sync -- android
-#     - npm run deploy:android
-#     - cp android/app/build/outputs/apk/debug/app-debug.apk $PWD/loa.apk
-#     - curl -G --data-urlencode "project=LOA" --data-urlencode "message=$MESSAGE_ANDROID" http://rancher.nng.bz:8000/api/notify/
-#   variables:
-#     GIT_STRATEGY: none
-#   only:
-#     - develop
-#     - master
-#   tags:
-#     - nng-ios
-#   artifacts:
-#     paths:
-#       - loa.apk
-#     expire_in: 1 week
