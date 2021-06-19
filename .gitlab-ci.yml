@@ -33,7 +33,7 @@ build_admin:
     - master
   artifacts:
     paths:
-      - dist/apps/admin
+      - www/apps/admin
     expire_in: 24 hrs
 
 #########################
@@ -63,7 +63,7 @@ pages:
     - echo "----------------------------------------------------------------"
     - echo "Deploy admin site to Gitlab Pages"
     - ls .
-    - cp -r dist/apps/admin public
+    - cp -r www/apps/admin public
   only:
     - develop
     - master

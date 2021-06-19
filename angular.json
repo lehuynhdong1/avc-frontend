@@ -56,7 +56,7 @@
             "customWebpackConfig": {
               "path": "custom-webpack.config.js"
             },
-            "outputPath": "dist/apps/admin",
+            "outputPath": "www/apps/admin",
             "index": "apps/admin/src/index.html",
             "main": "apps/admin/src/main.ts",
             "polyfills": "apps/admin/src/polyfills.ts",
