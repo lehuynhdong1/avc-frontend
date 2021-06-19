@@ -25,8 +25,8 @@ build_admin:
   stage: build
   script:
     # - npm ci --cache .npm --prefer-offline
-    - npm i
-    - npm run build:prod -- --project=admin
+    - npm ci
+    - npm run build:prod -- --project=admin --skip-nx-cache
   only:
     - develop
     - master
