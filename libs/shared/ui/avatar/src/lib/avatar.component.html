@@ -1,0 +1,13 @@
+<tui-avatar
+  *ngIf="url; else noAvatar"
+  [avatarUrl]="url"
+  [size]="size"
+  [rounded]="true"
+></tui-avatar>
+<ng-template #noAvatar>
+  <svg-icon
+    src="assets/icons/personCircleOutline.svg"
+    [class]="'size-' + size"
+    [applyClass]="true"
+  ></svg-icon>
+</ng-template>

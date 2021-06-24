@@ -1,6 +1,6 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
-import { STATE_NAME, StateModel, INITIAL_STATE } from './listing-state.model';
-import { LoadStaffs, LoadStaffById } from './listing.actions';
+import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
+import { LoadManagers, LoadManagerById } from './actions';
 import { AccountsService } from '@shared/api';
 import { tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -10,29 +10,32 @@ import { Injectable } from '@angular/core';
   defaults: INITIAL_STATE
 })
 @Injectable()
-export class ListingState {
+export class ManagerState {
   @Selector()
-  static staffs({ listing }: StateModel) {
+  static managers({ listing }: StateModel) {
     return listing;
   }
   @Selector()
-  static selectedStaff({ detail }: StateModel) {
+  static selectedManager({ detail }: StateModel) {
     return detail;
   }
 
   constructor(private accountsService: AccountsService) {}
 
-  @Action(LoadStaffs) loadStaffs({ patchState }: StateContext<StateModel>, { params }: LoadStaffs) {
-    return this.accountsService
-      .apiAccountsStaffsGet(params)
-      .pipe(tap((listing) => patchState({ listing })));
-  }
-  @Action(LoadStaffById) loadStaffById(
+  @Action(LoadManagers) loadManagers(
     { patchState }: StateContext<StateModel>,
-    { params }: LoadStaffById
+    { params }: LoadManagers
   ) {
     return this.accountsService
-      .apiAccountsStaffIdGet(params)
+      .apiAccountsManagersGet(params)
+      .pipe(tap((listing) => patchState({ listing })));
+  }
+  @Action(LoadManagerById) loadManagerById(
+    { patchState }: StateContext<StateModel>,
+    { params }: LoadManagerById
+  ) {
+    return this.accountsService
+      .apiAccountsManagerIdGet(params)
       .pipe(tap((detail) => patchState({ detail })));
   }
 }

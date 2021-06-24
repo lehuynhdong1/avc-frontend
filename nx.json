@@ -58,6 +58,12 @@
     "admin-staff-listing-feature": { "tags": ["scope:admin"] },
     "admin-staff-listing-ui": { "tags": ["scope:admin"] },
     "admin-staff-detail-feature": { "tags": ["scope:admin"] },
-    "admin-staff-detail-ui": { "tags": ["scope:admin"] }
+    "admin-staff-detail-ui": { "tags": ["scope:admin"] },
+    "shared-ui-avatar": { "tags": ["scope:shared"] },
+    "shared-features-manager-data-access": { "tags": ["scope:shared"] },
+    "admin-manager-listing-ui": { "tags": ["scope:admin"] },
+    "admin-manager-detail-ui": { "tags": ["scope:admin"] },
+    "admin-manager-detail-feature": { "tags": ["scope:admin"] },
+    "admin-manager-listing-feature": { "tags": ["scope:admin"] }
   }
 }

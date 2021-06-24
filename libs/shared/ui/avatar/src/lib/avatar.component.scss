@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+tui-avatar {
+  @apply hover:border hover:border-solid hover:border-white;
+}
+svg-icon {
+  @apply text-white fill-current;
+  .size-s {
+    @apply w-6 h-6;
+  }
+  .size-m {
+    @apply w-10 h-10;
+  }
+  .size-l {
+    @apply w-14 h-14;
+  }
+  .size-xl {
+    @apply w-28 h-28;
+  }
+  .size-xxl {
+    @apply w-40 h-40;
+  }
+}

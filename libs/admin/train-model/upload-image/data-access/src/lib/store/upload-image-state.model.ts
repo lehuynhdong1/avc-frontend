@@ -1,9 +1,9 @@
-const MEGA_BYTE = 1024 * 1024;
-export const MAXIMUM_IMAGE_SIZE = 2 * MEGA_BYTE;
+const KB = 1024;
+export const MAXIMUM_IMAGE_SIZE = 500 * KB;
 export const IMAGE_TYPES = ['image/png', 'image/jpeg'];
 
 export const ADD_IMAGE_ERRORS = {
-  ADC201_EXCEED_MAXSIZE: `File size can not exceed <b>${MAXIMUM_IMAGE_SIZE / MEGA_BYTE} MB</b>`,
+  ADC201_EXCEED_MAXSIZE: `File size can not exceed <b>${MAXIMUM_IMAGE_SIZE / KB} KB</b>`,
   ADC202_INVALID_FILE_TYPE: `File type can only [${IMAGE_TYPES.join(',')}]`,
   ADC203_DUPLICATE_FILE: `File already uploaded.`,
   ADC204_FILE_NOT_FOUND: `File's not found.`

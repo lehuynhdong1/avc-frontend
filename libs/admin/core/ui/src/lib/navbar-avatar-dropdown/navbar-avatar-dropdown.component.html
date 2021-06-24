@@ -1,19 +1,6 @@
 <tui-hosted-dropdown tuiDropdownAlign="left" [content]="dropdown">
   <div class="w-[50px] cursor-pointer flex justify-center items-center">
-    <tui-avatar
-      *ngIf="(me$ | async)?.avatar as avatar; else noAvatar"
-      [avatarUrl]="avatar"
-      size="m"
-      [rounded]="true"
-      class="hover:border hover:border-solid hover:border-white"
-    ></tui-avatar>
-    <ng-template #noAvatar>
-      <svg-icon
-        src="assets/icons/personCircleOutline.svg"
-        class="w-10 h-10 text-white fill-current"
-        [applyClass]="true"
-      ></svg-icon>
-    </ng-template>
+    <adc-frontend-avatar [url]="(me$ | async)?.avatar"></adc-frontend-avatar>
   </div>
 </tui-hosted-dropdown>
 <ng-template #dropdown>

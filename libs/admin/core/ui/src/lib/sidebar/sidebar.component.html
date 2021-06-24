@@ -1,20 +1,14 @@
 <nav class="flex flex-col px-3 h-full bg-gray-900 text-gray-50 sticky top-0 left-0">
   <div class="flex justify-between items-center h-16">
-    <tui-svg src="tuiIconCheckCircleLarge" class="cursor-pointer"></tui-svg>
+    <tui-svg src="tuiIconCheckCircleLarge"></tui-svg>
     <div>
-      <tui-svg src="tuiIconMailLarge" class="mr-2 cursor-pointer"></tui-svg>
-      <tui-svg src="tuiIconAlertCircleLarge" class="cursor-pointer"></tui-svg>
+      <tui-svg src="tuiIconMailLarge" class="mr-2"></tui-svg>
+      <tui-svg src="tuiIconAlertCircleLarge"></tui-svg>
     </div>
   </div>
   <section class="flex flex-col items-center py-10" *ngIf="me$ | async as me">
-    <tui-avatar
-      class="mb-1"
-      [avatarUrl]="
-        me.avatar || 'http://angular-material.fusetheme.com/assets/images/avatars/brian-hughes.jpg'
-      "
-      size="xl"
-      [rounded]="true"
-    ></tui-avatar>
+    <adc-frontend-avatar [url]="me.avatar" size="xl"></adc-frontend-avatar>
+
     <b class="text-base">{{ me.firstName }} {{ me.lastName }}</b>
     <b class="text-sm text-gray-400">{{ me.email }}</b>
   </section>
@@ -25,7 +19,7 @@
       <p class="text-gray-400 mt-0 mb-6">Keep track your working process</p>
     </div>
 
-    <ul class="flex flex-col items-stretch text-base -mx-1">
+    <ul class="nav-list">
       <li
         *ngFor="let item of navItems"
         [routerLink]="item.path"

@@ -10,13 +10,9 @@
       ],
       "parserOptions": { "project": ["libs/admin/staff/detail/ui/tsconfig.*?.json"] },
       "rules": {
-        "@angular-eslint/directive-selector": [
-          "error",
-          { "type": "attribute", "prefix": "adcFrontend", "style": "camelCase" }
-        ],
         "@angular-eslint/component-selector": [
           "error",
-          { "type": "element", "prefix": "adc-frontend", "style": "kebab-case" }
+          { "type": "element", "prefix": "adca", "style": "kebab-case" }
         ]
       }
     },

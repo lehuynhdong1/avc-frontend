@@ -4,11 +4,10 @@ import { NavbarComponent } from './navbar.component';
 import { LanguageModule } from '@shared/language';
 
 import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core';
-import { TuiAvatarModule } from '@taiga-ui/kit';
 import { RouterModule } from '@angular/router';
 import { NavbarAvatarDropdownModule } from '../navbar-avatar-dropdown/navbar-avatar-dropdown.module';
 
-const tuiModules = [TuiButtonModule, TuiAvatarModule, TuiSvgModule];
+const tuiModules = [TuiButtonModule, TuiSvgModule];
 @NgModule({
   declarations: [NavbarComponent],
   imports: [CommonModule, LanguageModule, RouterModule, NavbarAvatarDropdownModule, ...tuiModules],

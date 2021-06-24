@@ -9,6 +9,15 @@
     <p class="mt-0 text-base">Upload then label images online for a better training model.</p>
   </div>
 
+  <tui-badge
+    *ngIf="fileLengthChanged$ | async as fileLength"
+    class="tui-space_right-2"
+    [status]="TUI_SUCCESS"
+    size="l"
+    [value]="fileLength + ' image' + (fileLength === 1 ? '': 's' )+' has uploaded.'"
+  >
+    <tui-svg src="tuiIconCheckCircleLarge" class="mr-2"></tui-svg>
+  </tui-badge>
   <button
     tuiButton
     type="button"
@@ -17,7 +26,7 @@
     class="tui-space_right-3 tui-space_bottom-3"
     appearance="primary"
     routerLink="../label-image"
-    [disabled]="!(fileLengthChanged$ | async)"
+    [disabled]="(fileLengthChanged$ | async) === null || (fileLengthChanged$ | async) === 0"
   >
     Label Images
   </button>
@@ -39,5 +48,5 @@
     [maxFileSize]="MAX_FILE_SIZE"
     size="l"
   ></tui-input-file>
-  <div class="w-full" [style.height.rem]="((fileLengthChanged$ | async) || 0) * 5.3"></div>
+  <div class="w-full" [style.height.rem]="((fileLengthChanged$ | async) || 0) * 5.4"></div>
 </div>

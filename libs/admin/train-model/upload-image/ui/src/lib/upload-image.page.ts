@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 
 import { FormControl } from '@angular/forms';
 import { Observable, zip } from 'rxjs';
@@ -12,6 +12,7 @@ import {
 } from '@admin/train-model/upload-image/data-access';
 import { ShowNotification } from '@shared/util';
 import { TuiDestroyService } from '@taiga-ui/cdk';
+import { TuiStatus } from '@taiga-ui/kit';
 
 @Component({
   templateUrl: './upload-image.page.html',
@@ -20,6 +21,7 @@ import { TuiDestroyService } from '@taiga-ui/cdk';
   providers: [TuiDestroyService]
 })
 export class UploadImagePage implements AfterViewInit {
+  TUI_SUCCESS = TuiStatus.Success;
   ACCEPTED_FILE_TYPES = IMAGE_TYPES.join(',');
   MAX_FILE_SIZE = MAXIMUM_IMAGE_SIZE;
 
@@ -38,7 +40,7 @@ export class UploadImagePage implements AfterViewInit {
 
   readonly setFilesWhenError$ = zip(this.whenShowError$, this.whenUpdateImages$).pipe(
     withLatestFrom(this.store.select(UploadImageState.images)),
-    tap(([_, images]) => this.files.patchValue(images.map((image) => image.file)))
+    tap(([, images]) => this.files.patchValue(images.map((image) => image.file)))
   );
 
   constructor(private store: Store, private actions: Actions, private destroy$: TuiDestroyService) {

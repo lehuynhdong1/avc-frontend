@@ -1,0 +1,68 @@
+<main class="flex">
+  <section class="flex-grow">
+    <h1>Manage Managers</h1>
+
+    <section class="w-100 flex flex-col items-stretch">
+      <tui-input tuiTextfieldSize="xl" [formControl]="searchControl" class="w-100 pr-4 mb-4">
+        Search by manager name ...
+      </tui-input>
+      <ng-container *ngIf="(managers$ | async) as managerResponse">
+        <table tuiTable [columns]="COLUMNS">
+          <thead>
+            <tr tuiThGroup>
+              <th *tuiHead="'index'" tuiTh>Index</th>
+              <th *tuiHead="'avatar'" tuiTh>Avatar</th>
+              <th *tuiHead="'name'" tuiTh>Name</th>
+              <th *tuiHead="'email'" tuiTh [sorter]="null">Email</th>
+              <th *tuiHead="'phone'" tuiTh [sorter]="null">Phone</th>
+              <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Available</th>
+            </tr>
+          </thead>
+          <tbody tuiTbody [data]="managerResponse?.result || []">
+            <tr
+              *tuiRow="let item of (managerResponse?.result || []); let index = index"
+              tuiTr
+              class="cursor-pointer"
+              [class.active]="item.id === (selectedManagerId$ | async)"
+              (click)="selectRow$.next(item.id || 0)"
+              [routerLink]="[item.id]"
+            >
+              <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
+              <td *tuiCell="'avatar'" tuiTd>
+                <adc-frontend-avatar
+                  class="py-2"
+                  [url]="item.avatar"
+                  size="l"
+                ></adc-frontend-avatar>
+              </td>
+              <td *tuiCell="'name'" tuiTd>
+                <div class="tui-space_bottom-1">{{item.firstName}} {{item.lastName}}</div>
+              </td>
+              <td *tuiCell="'email'" tuiTd>{{item.email}}</td>
+              <td *tuiCell="'phone'" tuiTd>{{item.phone}}</td>
+              <td *tuiCell="'isAvailable'" tuiTd>{{item.isAvailable}}</td>
+            </tr>
+            <aside *tuiSidebar="(isOpened$ | async) || false; direction: 'right'"></aside>
+          </tbody>
+        </table>
+        <tui-table-pagination
+          *ngIf="managerResponse.count; else noRecord"
+          [total]="managerResponse.count || 0"
+          [(page)]="page"
+          [(size)]="size"
+        ></tui-table-pagination>
+        <ng-template #noRecord>
+          <p class="text-red-400 text-base">There is no matching result!</p>
+        </ng-template>
+      </ng-container>
+    </section>
+  </section>
+  <aside class="flex-grow flex-shrink-0 relative" *ngIf="selectedManagerId$ | async">
+    <router-outlet></router-outlet>
+    <tui-svg
+      class="top-right cursor-pointer hover:text-red-400"
+      src="tuiIconRemoveLarge"
+      (click)="closeDetail$.next()"
+    ></tui-svg>
+  </aside>
+</main>

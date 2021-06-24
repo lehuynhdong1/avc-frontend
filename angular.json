@@ -2540,6 +2540,228 @@
           }
         }
       }
+    },
+    "shared-ui-avatar": {
+      "projectType": "library",
+      "root": "libs/shared/ui/avatar",
+      "sourceRoot": "libs/shared/ui/avatar/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/ui/avatar/tsconfig.lib.json",
+            "project": "libs/shared/ui/avatar/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/ui/avatar/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/ui/avatar/src/**/*.ts",
+              "libs/shared/ui/avatar/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/ui/avatar"],
+          "options": {
+            "jestConfig": "libs/shared/ui/avatar/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-features-manager-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/features/manager/data-access",
+      "sourceRoot": "libs/shared/features/manager/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/features/manager/data-access/tsconfig.lib.json",
+            "project": "libs/shared/features/manager/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/features/manager/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/features/manager/data-access/src/**/*.ts",
+              "libs/shared/features/manager/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/features/manager/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/features/manager/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manager-listing-ui": {
+      "projectType": "library",
+      "root": "libs/admin/manager/listing/ui",
+      "sourceRoot": "libs/admin/manager/listing/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manager/listing/ui/tsconfig.lib.json",
+            "project": "libs/admin/manager/listing/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manager/listing/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manager/listing/ui/src/**/*.ts",
+              "libs/admin/manager/listing/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manager/listing/ui"],
+          "options": {
+            "jestConfig": "libs/admin/manager/listing/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manager-detail-ui": {
+      "projectType": "library",
+      "root": "libs/admin/manager/detail/ui",
+      "sourceRoot": "libs/admin/manager/detail/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manager/detail/ui/tsconfig.lib.json",
+            "project": "libs/admin/manager/detail/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manager/detail/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manager/detail/ui/src/**/*.ts",
+              "libs/admin/manager/detail/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manager/detail/ui"],
+          "options": {
+            "jestConfig": "libs/admin/manager/detail/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manager-detail-feature": {
+      "projectType": "library",
+      "root": "libs/admin/manager/detail/feature",
+      "sourceRoot": "libs/admin/manager/detail/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manager/detail/feature/tsconfig.lib.json",
+            "project": "libs/admin/manager/detail/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manager/detail/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manager/detail/feature/src/**/*.ts",
+              "libs/admin/manager/detail/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manager/detail/feature"],
+          "options": {
+            "jestConfig": "libs/admin/manager/detail/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manager-listing-feature": {
+      "projectType": "library",
+      "root": "libs/admin/manager/listing/feature",
+      "sourceRoot": "libs/admin/manager/listing/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manager/listing/feature/tsconfig.lib.json",
+            "project": "libs/admin/manager/listing/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manager/listing/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manager/listing/feature/src/**/*.ts",
+              "libs/admin/manager/listing/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manager/listing/feature"],
+          "options": {
+            "jestConfig": "libs/admin/manager/listing/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

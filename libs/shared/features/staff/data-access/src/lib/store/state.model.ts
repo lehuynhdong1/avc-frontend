@@ -5,7 +5,7 @@ export interface StateModel {
   detail: AccountStaffReadDto | null;
 }
 
-export const STATE_NAME = 'Shared_Account_Staffs';
+export const STATE_NAME = 'Shared_Account_Staff';
 
 export const INITIAL_STATE: StateModel = {
   listing: null,

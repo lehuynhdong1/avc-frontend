@@ -1,10 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { ListingState, LoadStaffs } from '@shared/features/staff/data-access';
-import { BehaviorSubject } from 'rxjs';
+import { StaffState, LoadStaffs } from '@shared/features/staff/data-access';
+import { Subject } from 'rxjs';
 import { AccountStaffReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
-import { ListingPageState, INITIAL_STATE, CUSTOM_OPERATORS } from './listing-page.state';
+import { ListingPageState } from './listing-page.state';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'adca-listing',
@@ -23,28 +26,48 @@ export class ListingPage {
     'managedByEmail',
     'isAvailable'
   ] as const;
+  readonly searchControl = new FormControl('');
+  page = 0;
+  size = 10;
 
   /* Attribute Streams */
-  readonly staffs$ = this.store.select(ListingState.staffs);
+  readonly staffs$ = this.store.select(StaffState.staffs);
   readonly isOpened$ = this.state.select('isOpened');
   readonly selectedStaffId$ = this.state.select('selectedStaffId');
 
   /* Action Streams */
-  readonly selectRow$ = new BehaviorSubject(0);
-  readonly openAside$ = new BehaviorSubject(false);
+  readonly selectRow$ = new Subject<number>();
+  readonly openAside$ = new Subject<boolean>();
+  readonly closeDetail$ = new Subject<void>();
+  readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
+    debounceTime(500),
+    distinctUntilChanged()
+  );
 
-  constructor(private store: Store, private state: RxState<ListingPageState>) {
+  constructor(
+    private store: Store,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private state: RxState<ListingPageState>
+  ) {
     this.store.dispatch(new LoadStaffs({ limit: 10 }));
-    this.state.set(INITIAL_STATE);
     this.declareSideEffects();
   }
 
   private declareSideEffects() {
-    this.state.hold(this.selectRow$.pipe(CUSTOM_OPERATORS.skipInitial()), (id) => {
-      this.state.set({ selectedStaffId: id });
+    const lastRouteChild = this.activatedRoute.children[this.activatedRoute.children.length - 1];
+    if (lastRouteChild) {
+      const idFromRoute$ = lastRouteChild.params.pipe(map((params) => parseInt(params.id)));
+      this.state.connect('selectedStaffId', idFromRoute$);
+    }
+    this.state.connect('selectedStaffId', this.selectRow$);
+    this.state.connect('isOpened', this.openAside$);
+    this.state.hold(this.changeSearchValue$, (value) => {
+      this.store.dispatch(new LoadStaffs({ searchValue: value, limit: 10 }));
     });
-    this.state.hold(this.openAside$, (isOpened) => {
-      this.state.set({ isOpened });
+    this.state.hold(this.closeDetail$, () => {
+      this.state.set({ selectedStaffId: 0 });
+      this.router.navigateByUrl('/staff');
     });
   }
 }

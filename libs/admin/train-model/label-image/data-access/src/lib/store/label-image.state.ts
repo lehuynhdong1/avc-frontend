@@ -12,8 +12,8 @@ import {
   StateModel as UploadImageStateModel
 } from '@admin/train-model/upload-image/data-access';
 import { encodeDataUrl, imageToString } from '@admin/train-model/label-image/util';
-import { dictionaryToArray, patch } from '@rx-angular/state';
-import { saveAs } from 'file-saver'
+import { deleteProp, dictionaryToArray, patch, remove } from '@rx-angular/state';
+import { saveAs } from 'file-saver';
 import * as JSZip from 'jszip';
 @State<StateModel>({
   name: STATE_NAME,
@@ -36,7 +36,7 @@ export class LabelImageState {
       }
     );
   }
-  constructor(private store: Store) { }
+  constructor(private store: Store) {}
 
   @Action(TransferUploadedImages)
   async transferUploadedImages({ patchState, getState }: StateContext<StateModel>) {
@@ -46,12 +46,19 @@ export class LabelImageState {
       images.map((image) => encodeDataUrl(image.file))
     );
     let imagesObjectMap = getState().images;
+    let removedImageIds = Object.keys(imagesObjectMap);
     for (let index = 0; index < images.length; index++) {
       const image = images[index];
-      imagesObjectMap = {
-        ...imagesObjectMap,
-        [image.id]: { id: image.id, adcImage: encodedDataUrlImages[index] }
-      };
+      removedImageIds = remove(removedImageIds, image.id);
+      if (imagesObjectMap[image.id] === undefined) {
+        imagesObjectMap = {
+          ...imagesObjectMap,
+          [image.id]: { id: image.id, adcImage: encodedDataUrlImages[index] }
+        };
+      }
+    }
+    for (const removedId of removedImageIds) {
+      imagesObjectMap = deleteProp(imagesObjectMap, removedId);
     }
     patchState({ images: imagesObjectMap });
   }
@@ -76,16 +83,16 @@ export class LabelImageState {
   @Action(DonwloadLabelFiles) downloadLabelFiles({ getState }: StateContext<StateModel>) {
     const { images } = getState();
     const imagesArray = dictionaryToArray(images);
-    const zip = new JSZip()
+    const zip = new JSZip();
     imagesArray.forEach((image) => {
       const imageFile = this.store.selectSnapshot(UploadImageState.getImageById(image.id));
-      const imagesFolder = zip.folder("images")
-      const labelsFolder = zip.folder("labels");
-      const extension = image.adcImage.mimeType.slice(image.adcImage.mimeType.indexOf('/') + 1)
-      if (imageFile?.file) imagesFolder?.file(`${image.id}.${extension}`, imageFile?.file)
-      labelsFolder?.file(`${image.id}.txt`, imageToString(image))
+      const imagesFolder = zip.folder('images');
+      const labelsFolder = zip.folder('labels');
+      const extension = image.adcImage.mimeType.slice(image.adcImage.mimeType.indexOf('/') + 1);
+      if (imageFile?.file) imagesFolder?.file(`${image.id}.${extension}`, imageFile?.file);
+      labelsFolder?.file(`${image.id}.txt`, imageToString(image));
     });
     const now = new Date().toISOString();
-    return zip.generateAsync({ type: 'blob' }).then(zipFile => saveAs(zipFile, now + '.zip'))
+    return zip.generateAsync({ type: 'blob' }).then((zipFile) => saveAs(zipFile, now + '.zip'));
   }
 }

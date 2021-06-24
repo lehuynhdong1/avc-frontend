@@ -113,7 +113,16 @@
       "@admin/staff/listing/feature": ["libs/admin/staff/listing/feature/src/index.ts"],
       "@admin/staff/listing/ui": ["libs/admin/staff/listing/ui/src/index.ts"],
       "@admin/staff/detail/feature": ["libs/admin/staff/detail/feature/src/index.ts"],
-      "@admin/staff/detail/ui": ["libs/admin/staff/detail/ui/src/index.ts"]
+      "@admin/staff/detail/ui": ["libs/admin/staff/detail/ui/src/index.ts"],
+      "@shared/ui/avatar": ["libs/shared/ui/avatar/src/index.ts"],
+      "@shared/features/manager/data-access": [
+        "libs/shared/features/manager/data-access/src/index.ts"
+      ],
+      "@admin/manager/listing/ui": ["libs/admin/manager/listing/ui/src/index.ts"],
+      "@admin/manager/detail/ui": ["libs/admin/manager/detail/ui/src/index.ts"],
+      "@admin/manager/detail/feature": ["libs/admin/manager/detail/feature/src/index.ts"],
+      "@admin/manager/listing/feature": ["libs/admin/manager/listing/feature/src/index.ts"],
+      "@admin/manager/routes": ["libs/admin/manager/routes.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

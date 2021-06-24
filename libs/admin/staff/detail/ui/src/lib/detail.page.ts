@@ -1,12 +1,21 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { ListingState, LoadStaffById } from '@shared/features/staff/data-access';
+import { StaffState, LoadStaffById } from '@shared/features/staff/data-access';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
+const DICTIONARY = [
+  { id: 1, name: 'Luke Skywalker' },
+  { id: 2, name: 'Princess Leia' },
+  { id: 3, name: 'Darth Vader' },
+  { id: 4, name: 'Han Solo' },
+  { id: 5, name: 'Obi-Wan Kenobi' },
+  { id: 6, name: 'Yoda' }
+];
 @Component({
   selector: 'adca-detail',
   templateUrl: './detail.page.html',
@@ -16,18 +25,25 @@ import { map } from 'rxjs/operators';
 })
 export class DetailPage {
   readonly BADGE_PRIMARY = TuiStatus.Primary as const;
-  readonly toggleAvailable = new FormControl();
-  readonly selectedStaff$ = this.store.select(ListingState.selectedStaff);
+  readonly form = this.formBuilder.group({
+    isAvailable: [false, Validators.required],
+    cars: [[1, 2]]
+  });
+  readonly selectedStaff$ = this.store.select(StaffState.selectedStaff);
   private readonly id$ = this.activatedRoute.params.pipe(map(({ id }) => id));
+  private readonly changeCars$: Observable<string> | undefined = this.form
+    .get('cars')
+    ?.valueChanges.pipe(debounceTime(500), distinctUntilChanged());
 
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Record<string, never>>
+    private state: RxState<Record<string, never>>,
+    private formBuilder: FormBuilder
   ) {
     this.state.hold(this.id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
-    this.state.hold(this.selectedStaff$, (staff) =>
-      this.toggleAvailable.setValue(staff?.isAvailable)
-    );
+    this.state.hold(this.selectedStaff$.pipe(filter((staff) => !!staff)), (staff) => {
+      this.form.patchValue({ isAvailable: staff?.isAvailable });
+    });
   }
 }

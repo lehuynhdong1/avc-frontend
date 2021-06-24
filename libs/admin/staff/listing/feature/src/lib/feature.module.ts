@@ -6,6 +6,7 @@ import { ListingPage, UiModule } from '@admin/staff/listing/ui';
 @NgModule({
   imports: [
     UiModule,
+    DataAccessModule,
     RouterModule.forChild([
       {
         path: '',
@@ -18,8 +19,7 @@ import { ListingPage, UiModule } from '@admin/staff/listing/ui';
           }
         ]
       }
-    ]),
-    DataAccessModule
+    ])
   ]
 })
 export class FeatureModule {}

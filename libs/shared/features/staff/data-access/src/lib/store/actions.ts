@@ -1,4 +1,4 @@
-import { STATE_NAME } from './listing-state.model';
+import { STATE_NAME } from './state.model';
 import { ApiAccountsStaffIdGetRequestParams, ApiAccountsStaffsGetRequestParams } from '@shared/api';
 
 const ACTIONS = {
