@@ -3,7 +3,6 @@
 }
 
 table {
-  min-width: 53rem;
   @apply mr-3 text-base rounded-md overflow-hidden;
 
   tr {
@@ -24,7 +23,9 @@ tui-table-pagination {
   @apply text-base pr-4 mt-2;
 }
 aside {
-  @apply bg-gray-100 w-40 rounded-lg;
+  @apply bg-gray-100 w-60 rounded-lg;
+  min-width: 15rem;
+  max-width: 24rem;
 }
 
 tui-svg.top-right {

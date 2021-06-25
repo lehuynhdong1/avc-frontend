@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CarState } from './store/state';
+import { NgxsModule } from '@ngxs/store';
+import { AccountsService } from '@shared/api';
 
 @NgModule({
-  imports: [CommonModule]
+  imports: [NgxsModule.forFeature([CarState])],
+  providers: [AccountsService]
 })
 export class DataAccessModule {}

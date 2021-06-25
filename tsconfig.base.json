@@ -67,8 +67,6 @@
       "@admin/manage-profile/change-password/ui": [
         "libs/admin/manage-profile/change-password/ui/src/index.ts"
       ],
-      "@admin/car/ui": ["libs/admin/car/ui/src/index.ts"],
-      "@admin/car/feature": ["libs/admin/car/feature/src/index.ts"],
       "@admin/train-model/label-image/ui": ["libs/admin/train-model/label-image/ui/src/index.ts"],
       "@admin/train-model/label-image/feature": [
         "libs/admin/train-model/label-image/feature/src/index.ts"
@@ -122,7 +120,14 @@
       "@admin/manager/detail/ui": ["libs/admin/manager/detail/ui/src/index.ts"],
       "@admin/manager/detail/feature": ["libs/admin/manager/detail/feature/src/index.ts"],
       "@admin/manager/listing/feature": ["libs/admin/manager/listing/feature/src/index.ts"],
-      "@admin/manager/routes": ["libs/admin/manager/routes.ts"]
+      "@admin/manager/routes": ["libs/admin/manager/routes.ts"],
+      "@admin/car/listing/feature": ["libs/admin/car/listing/feature/src/index.ts"],
+      "@admin/car/listing/ui": ["libs/admin/car/listing/ui/src/index.ts"],
+      "@admin/car/detail/ui": ["libs/admin/car/detail/ui/src/index.ts"],
+      "@admin/car/detail/feature": ["libs/admin/car/detail/feature/src/index.ts"],
+      "@shared/features/account/data-access": [
+        "libs/shared/features/account/data-access/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

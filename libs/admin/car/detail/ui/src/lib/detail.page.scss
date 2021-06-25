@@ -1,0 +1,7 @@
+:host {
+  @apply block;
+}
+tui-badge {
+  @apply font-bold text-lg;
+  @apply px-4 #{!important};
+}

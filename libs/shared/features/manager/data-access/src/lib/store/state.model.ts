@@ -3,6 +3,7 @@ import { AccountManagerReadDtoPagingResponseDto, AccountManagerReadDto } from '@
 export interface StateModel {
   listing: AccountManagerReadDtoPagingResponseDto | null;
   detail: AccountManagerReadDto | null;
+  errorMessage?: string;
 }
 
 export const STATE_NAME = 'Shared_Account_Manager';

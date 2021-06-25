@@ -62,6 +62,9 @@ module.exports = {
     '<rootDir>/libs/admin/manager/listing/ui',
     '<rootDir>/libs/admin/manager/detail/ui',
     '<rootDir>/libs/admin/manager/detail/feature',
-    '<rootDir>/libs/admin/manager/listing/feature'
+    '<rootDir>/libs/admin/manager/listing/feature',
+    '<rootDir>/libs/admin/car/detail/ui',
+    '<rootDir>/libs/admin/car/detail/feature',
+    '<rootDir>/libs/shared/features/account/data-access'
   ]
 };

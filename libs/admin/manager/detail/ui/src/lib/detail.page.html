@@ -26,9 +26,10 @@
 
   <b class="text-gray-600">Status</b>
   <tui-toggle
-    formControlName="isAvailable"
+    formControlName="status"
     size="l"
-    class="border border-primary border-solid"
+    class="border border-primary border-solid mb-4"
+    (click)="toggleActivation($event)"
   ></tui-toggle>
 
   <b class="text-gray-600">Assigned cars</b>

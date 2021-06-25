@@ -1,0 +1,44 @@
+<form
+  *ngIf="selectedCar$ | async as car; else loading"
+  class="p-5 flex flex-col"
+  [formGroup]="form"
+>
+  <p>
+    <tui-badge [status]="BADGE_PRIMARY" [value]="car.role || ''" size="l"></tui-badge>
+  </p>
+  <b class="text-gray-600">Full name</b>
+  <h2 class="bold my-0">{{ car.firstName }} {{ car.lastName }}</h2>
+  <div class="p-4 relative border border-gray-900">
+    <tui-avatar
+      class="tui-space_top-2"
+      [avatarUrl]="car.avatar || ''"
+      size="xxl"
+      [rounded]="true"
+    ></tui-avatar>
+  </div>
+  <!-- <h2 class="bold mt-0">{{ car.role }}</h2> -->
+
+  <b class="text-gray-600">Email</b>
+  <h3 class="bold mt-0">{{ car.email }}</h3>
+
+  <b class="text-gray-600">Phone</b>
+  <h3 class="bold mt-0">{{ car.phone }}</h3>
+
+  <b class="text-gray-600">Status</b>
+  <tui-toggle
+    formControlName="isAvailable"
+    size="l"
+    class="border border-primary border-solid"
+  ></tui-toggle>
+
+  <b class="text-gray-600">Assigned cars</b>
+  <tui-multi-select formControlName="cars">
+    <tui-data-list-wrapper
+      *tuiDataList
+      tuiMultiSelectGroup
+      [items]="['car1', 'car2']"
+    ></tui-data-list-wrapper>
+  </tui-multi-select>
+</form>
+
+<ng-template #loading> Loading </ng-template>
