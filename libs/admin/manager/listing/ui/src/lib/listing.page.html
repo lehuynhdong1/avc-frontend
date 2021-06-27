@@ -11,7 +11,6 @@
           <thead>
             <tr tuiThGroup>
               <th *tuiHead="'index'" tuiTh>Index</th>
-              <th *tuiHead="'avatar'" tuiTh>Avatar</th>
               <th *tuiHead="'name'" tuiTh>Name</th>
               <th *tuiHead="'email'" tuiTh [sorter]="null">Email</th>
               <th *tuiHead="'phone'" tuiTh [sorter]="null">Phone</th>
@@ -28,13 +27,6 @@
               [routerLink]="[item.id]"
             >
               <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
-              <td *tuiCell="'avatar'" tuiTd>
-                <adc-frontend-avatar
-                  class="py-2"
-                  [url]="item.avatar"
-                  size="l"
-                ></adc-frontend-avatar>
-              </td>
               <td *tuiCell="'name'" tuiTd>
                 <div class="tui-space_bottom-1">{{item.firstName}} {{item.lastName}}</div>
               </td>

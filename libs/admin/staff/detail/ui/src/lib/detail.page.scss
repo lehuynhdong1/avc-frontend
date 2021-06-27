@@ -5,3 +5,13 @@ tui-badge {
   @apply font-bold text-lg;
   @apply px-4 #{!important};
 }
+
+aside {
+  @apply bg-gray-100 w-80 rounded-lg;
+  min-width: 15rem;
+  max-width: 24rem;
+}
+
+tui-svg.top-right {
+  @apply absolute top-3 right-3;
+}

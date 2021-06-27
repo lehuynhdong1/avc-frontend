@@ -1,6 +1,18 @@
 <main class="flex">
   <section class="flex-grow">
-    <h1>Manage Staffs</h1>
+    <div class="flex justify-between items-center">
+      <h1>Manage Staffs</h1>
+      <button
+        tuiButton
+        type="button"
+        class="tui-space_right-3"
+        size="m"
+        icon="tuiIconPlusCircleLarge"
+        routerLink="create"
+      >
+        Create new
+      </button>
+    </div>
 
     <section class="w-100 flex flex-col items-stretch">
       <tui-input tuiTextfieldSize="xl" [formControl]="searchControl" class="w-100 pr-4 mb-4">
@@ -28,20 +40,12 @@
               [routerLink]="[item.id]"
             >
               <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
-              <td *tuiCell="'name'" tuiTd>
-                <tui-avatar
-                  class="tui-space_top-2"
-                  [avatarUrl]="item.avatar || ''"
-                  [rounded]="true"
-                ></tui-avatar>
-                <div class="tui-space_bottom-1">{{item.firstName}} {{item.lastName}}</div>
-              </td>
+              <td *tuiCell="'name'" tuiTd>{{item.firstName}} {{item.lastName}}</td>
               <td *tuiCell="'email'" tuiTd>{{item.email}}</td>
               <td *tuiCell="'phone'" tuiTd>{{item.phone}}</td>
               <td *tuiCell="'managedByEmail'" tuiTd>{{item.managedByEmail}}</td>
               <td *tuiCell="'isAvailable'" tuiTd>{{item.isAvailable}}</td>
             </tr>
-            <aside *tuiSidebar="(isOpened$ | async) || false; direction: 'right'"></aside>
           </tbody>
         </table>
         <tui-table-pagination
@@ -56,12 +60,5 @@
       </ng-container>
     </section>
   </section>
-  <aside class="flex-grow flex-shrink-0 relative" *ngIf="selectedStaffId$ | async">
-    <router-outlet></router-outlet>
-    <tui-svg
-      class="top-right cursor-pointer hover:text-red-400"
-      src="tuiIconRemoveLarge"
-      (click)="closeDetail$.next()"
-    ></tui-svg>
-  </aside>
+  <router-outlet></router-outlet>
 </main>

@@ -1,44 +1,139 @@
-<form
-  *ngIf="selectedCar$ | async as car; else loading"
-  class="p-5 flex flex-col"
-  [formGroup]="form"
->
-  <p>
-    <tui-badge [status]="BADGE_PRIMARY" [value]="car.role || ''" size="l"></tui-badge>
-  </p>
-  <b class="text-gray-600">Full name</b>
-  <h2 class="bold my-0">{{ car.firstName }} {{ car.lastName }}</h2>
-  <div class="p-4 relative border border-gray-900">
-    <tui-avatar
-      class="tui-space_top-2"
-      [avatarUrl]="car.avatar || ''"
-      size="xxl"
-      [rounded]="true"
-    ></tui-avatar>
-  </div>
-  <!-- <h2 class="bold mt-0">{{ car.role }}</h2> -->
+<aside class="relative" [class.fullpage]="isFullPage$ | async">
+  <ng-container *ngIf="selectedCar$ | async as car; else loading">
+    <tui-svg
+      class="top-right !right-10 cursor-pointer hover:text-green-600"
+      src="tuiIconExternalLarge"
+      [routerLink]="'/car/detail/'+car.id"
+    ></tui-svg>
+    <tui-svg
+      class="top-right cursor-pointer hover:text-red-400"
+      src="tuiIconRemoveLarge"
+      routerLink="/car"
+    ></tui-svg>
+    <main class="p-5 flex flex-wrap">
+      <h1 class="text-xl w-full">View Car Detail</h1>
 
-  <b class="text-gray-600">Email</b>
-  <h3 class="bold mt-0">{{ car.email }}</h3>
+      <section class="flex flex-col w-full">
+        <b class="text-gray-600">Name </b>
+        <h2 class="my-0">{{ car.name }}</h2>
+        <div class="p-2 relative border border-gray-900">
+          <adc-frontend-avatar
+            class="tui-space_top-2"
+            [url]="car.image"
+            placeholderClass="text-primary"
+            size="xl"
+          ></adc-frontend-avatar>
+        </div>
+      </section>
+      <!-- <h2 class="mt-0">{{ car.role }}</h2> -->
+      <section class="flex flex-col fullpage_w-1/2">
+        <b class="text-gray-600">Device ID</b>
+        <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
+        <b class="text-gray-600">Config URL</b>
+        <h3 class="mt-0 mb-3">{{ car.configUrl || 'Not yet' }}</h3>
+        <b class="text-gray-600">Managed by</b>
+        <h3 class="mt-0 mb-3">
+          <span [routerLink]="'/manager/'+car.managedBy?.id" class="openable">
+            {{car.managedBy ? '': 'Not yet'}} {{ car.managedBy?.firstName }} {{
+            car.managedBy?.lastName }}<tui-svg
+              src="tuiIconExternal"
+              [tuiHint]="tuiHintManagedBy"
+              [routerLink]="'/staff/'+car.managedBy?.id"
+              class="mb-1"
+            ></tui-svg>
+          </span>
+          <ng-template #tuiHintManagedBy>
+            <div class="cursor-pointer" [routerLink]="'/manager/'+car.managedBy?.id">
+              View
+              <strong>{{car.managedBy?.lastName}} {{car.managedBy?.firstName}}</strong> in detail
+            </div>
+          </ng-template>
+        </h3>
+        <b class="text-gray-600">Assigned to</b>
+        <h3 class="mt-0 mb-3">
+          <span [routerLink]="'/staff/'+car.assignTo?.id" class="cursor-pointer hover:text-primary">
+            {{car.assignTo?.lastName}} {{car.assignTo?.firstName}}<tui-svg
+              src="tuiIconExternal"
+              [tuiHint]="tuiHintAssignTo"
+              class="mb-1"
+            ></tui-svg>
+          </span>
+          <ng-template #tuiHintAssignTo>
+            <div class="cursor-pointer" [routerLink]="'/staff/'+car.assignTo?.id">
+              View
+              <strong>{{car.assignTo?.lastName}} {{car.assignTo?.firstName}}</strong> in detail
+            </div>
+          </ng-template>
+        </h3>
+        <b class="text-gray-600">Created at</b>
+        <h3 class="mt-0 mb-3">{{ car.createdAt | date }}</h3>
+      </section>
 
-  <b class="text-gray-600">Phone</b>
-  <h3 class="bold mt-0">{{ car.phone }}</h3>
+      <section class="flex flex-col fullpage_w-1/2">
+        <b class="text-gray-600 mb-1">Connecting Status: </b>
+        <tui-badge
+          size="m"
+          [value]="car.isConnecting ? 'Connected': 'Disconnected'"
+          [status]="car.isConnecting ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+          class="self-start mb-3"
+        ></tui-badge>
 
-  <b class="text-gray-600">Status</b>
-  <tui-toggle
-    formControlName="isAvailable"
-    size="l"
-    class="border border-primary border-solid"
-  ></tui-toggle>
+        <div class="flex flex-col mb-3">
+          <b class="text-gray-600 mb-1">Approved Status</b>
+          <tui-badge
+            size="m"
+            [value]="car.isApproved ? 'Approved' : 'Pending'"
+            [status]="car.isApproved ? TUI_STATUS.SUCCESS : TUI_STATUS.WARNING"
+            class="self-start"
+          ></tui-badge>
+          <button
+            *ngIf="!car.isApproved"
+            tuiButton
+            size="m"
+            appearance="primary"
+            type="button"
+            (click)="approveCar()"
+            class="self-start"
+          >
+            Approve
+          </button>
+        </div>
 
-  <b class="text-gray-600">Assigned cars</b>
-  <tui-multi-select formControlName="cars">
-    <tui-data-list-wrapper
-      *tuiDataList
-      tuiMultiSelectGroup
-      [items]="['car1', 'car2']"
-    ></tui-data-list-wrapper>
-  </tui-multi-select>
-</form>
-
-<ng-template #loading> Loading </ng-template>
+        <b class="text-gray-600 mb-1">Activation Status</b>
+        <tui-badge
+          size="m"
+          [value]="car.isAvailable ? 'Active' : 'Deactive'"
+          [status]="car.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.WARNING"
+          class="self-start mb-3"
+        ></tui-badge>
+        <button
+          tuiButton
+          size="m"
+          appearance="outline"
+          type="button"
+          (click)="toggleActivation($event, car.isAvailable)"
+          class="self-start"
+        >
+          {{car.isAvailable ? 'Deactivate': 'Reactivate'}}
+        </button>
+      </section>
+      <section class="flex flex-col w-full">
+        <b class="text-gray-600 mb-1">Issues</b>
+        <ng-container *ngIf="isFullPage$ | async; else notShowCarIssue">
+          <h3 *ngIf="car.issue; else carHasIssue" class="mt-0 mb-3">This car has no issues yet.</h3>
+          <ng-template #carHasIssue>
+            <!-- #TODO: Implement table for issues -->
+            <div *ngFor="let issue of car.issue">{{issue.image}}</div>
+          </ng-template>
+        </ng-container>
+        <ng-template #notShowCarIssue>
+          <h3 class="mt-0 mb-3">
+            <span class="openable text-primary" [routerLink]="'/car/detail/'+car.id">Expand</span>
+            to view full car issues.
+          </h3>
+        </ng-template>
+      </section>
+    </main>
+  </ng-container>
+  <ng-template #loading> Loading </ng-template>
+</aside>

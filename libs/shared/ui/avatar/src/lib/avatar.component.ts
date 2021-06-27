@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { TuiSizeXXL } from '@taiga-ui/core';
+import { TuiSizeXXL, TuiSizeXS } from '@taiga-ui/core';
 
 @Component({
   selector: 'adc-frontend-avatar',
@@ -9,5 +9,7 @@ import { TuiSizeXXL } from '@taiga-ui/core';
 })
 export class AvatarComponent {
   @Input() url: string | null | undefined = '';
-  @Input() size: TuiSizeXXL = 'm';
+  @Input() size: TuiSizeXS | TuiSizeXXL = 'm';
+  @Input() placeholderImageAsset = 'assets/icons/personCircleOutline.svg';
+  @Input() placeholderClass = '';
 }

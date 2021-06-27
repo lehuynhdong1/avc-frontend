@@ -2,12 +2,13 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CarState, LoadCars } from '@shared/features/car/data-access';
 import { Subject } from 'rxjs';
-import { AccountCarReadDto } from '@shared/api';
+import { CarListReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TuiStatus } from '@taiga-ui/kit';
 
 @Component({
   selector: 'adca-listing',
@@ -17,15 +18,23 @@ import { ActivatedRoute, Router } from '@angular/router';
   providers: [RxState]
 })
 export class ListingPage {
+  TUI_STATUS = {
+    ERROR: TuiStatus.Error,
+    SUCCESS: TuiStatus.Success,
+    PRIMARY: TuiStatus.Primary
+  };
+
   /* Configurations */
-  readonly COLUMNS: ReadonlyArray<keyof AccountCarReadDto | 'index' | 'name'> = [
+  readonly COLUMNS: ReadonlyArray<keyof CarListReadDto | 'index'> = [
     'index',
-    'avatar',
     'name',
-    'email',
-    'phone',
+    'deviceId',
+    'managedBy',
+    'assignTo',
+    'isConnecting',
     'isAvailable'
   ] as const;
+
   readonly searchControl = new FormControl('');
   page = 0;
   size = 10;
@@ -38,7 +47,6 @@ export class ListingPage {
   /* Action Streams */
   readonly selectRow$ = new Subject<number>();
   readonly openAside$ = new Subject<boolean>();
-  readonly closeDetail$ = new Subject<void>();
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
     debounceTime(500),
     distinctUntilChanged()
@@ -64,10 +72,6 @@ export class ListingPage {
     this.state.connect('isOpened', this.openAside$);
     this.state.hold(this.changeSearchValue$, (value) => {
       this.store.dispatch(new LoadCars({ searchValue: value, limit: 10 }));
-    });
-    this.state.hold(this.closeDetail$, () => {
-      this.state.set({ selectedCarId: 0 });
-      this.router.navigateByUrl('/car');
     });
   }
 }

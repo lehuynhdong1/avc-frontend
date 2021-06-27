@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListingPage } from './listing.page';
 import { TuiTableModule, TuiTablePaginationModule } from '@taiga-ui/addon-table';
-import { TuiToggleModule, TuiInputModule } from '@taiga-ui/kit';
+import { TuiToggleModule, TuiInputModule, TuiTagModule, TuiBadgeModule } from '@taiga-ui/kit';
 import { TuiSidebarModule } from '@taiga-ui/addon-mobile';
 import { TuiActiveZoneModule } from '@taiga-ui/cdk';
 import { TuiSvgModule } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from '@shared/ui/avatar';
+import { TuiHintModule } from '@taiga-ui/core';
 
 const tuiModules = [
   TuiTableModule,
@@ -18,7 +19,10 @@ const tuiModules = [
   TuiActiveZoneModule,
   TuiActiveZoneModule,
   TuiSvgModule,
-  TuiInputModule
+  TuiInputModule,
+  TuiHintModule,
+  TuiTagModule,
+  TuiBadgeModule
 ];
 @NgModule({
   declarations: [ListingPage],

@@ -127,7 +127,11 @@
       "@admin/car/detail/feature": ["libs/admin/car/detail/feature/src/index.ts"],
       "@shared/features/account/data-access": [
         "libs/shared/features/account/data-access/src/index.ts"
-      ]
+      ],
+      "@admin/staff/create/feature": ["libs/admin/staff/create/feature/src/index.ts"],
+      "@admin/staff/create/ui": ["libs/admin/staff/create/ui/src/index.ts"],
+      "@admin/car/routes": ["libs/admin/car/routes.ts"],
+      "@admin/core/util": ["libs/admin/core/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

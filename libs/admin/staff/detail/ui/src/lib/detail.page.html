@@ -1,48 +1,57 @@
-<form
-  *ngIf="selectedStaff$ | async as staff; else loading"
-  class="p-5 flex flex-col"
-  [formGroup]="form"
->
-  <p>
-    <tui-badge [status]="BADGE_PRIMARY" [value]="staff.role || ''" size="l"></tui-badge>
-  </p>
-  <b class="text-gray-600">Full name</b>
-  <h2 class="bold my-0">{{ staff.firstName }} {{ staff.lastName }}</h2>
-  <div class="p-4 relative border border-gray-900">
-    <tui-avatar
-      class="tui-space_top-2"
-      [avatarUrl]="staff.avatar || ''"
-      size="xxl"
-      [rounded]="true"
-    ></tui-avatar>
-  </div>
-  <!-- <h2 class="bold mt-0">{{ staff.role }}</h2> -->
-
-  <b class="text-gray-600">Email</b>
-  <h3 class="bold mt-0">{{ staff.email }}</h3>
-
-  <b class="text-gray-600">Phone</b>
-  <h3 class="bold mt-0">{{ staff.phone }}</h3>
-
-  <b class="text-gray-600">Managed by</b>
-  <h3 class="bold mt-0">{{ staff.managedByEmail || 'Not yet' }}</h3>
-
-  <b class="text-gray-600">Status</b>
-  <tui-toggle
-    formControlName="isAvailable"
-    size="l"
-    class="border border-primary border-solid mb-4"
-    (click)="toggleActivation($event)"
-  ></tui-toggle>
-
-  <b class="text-gray-600">Assigned cars</b>
-  <tui-multi-select formControlName="cars">
-    <tui-data-list-wrapper
-      *tuiDataList
-      tuiMultiSelectGroup
-      [items]="['car1', 'car2']"
-    ></tui-data-list-wrapper>
-  </tui-multi-select>
-</form>
-
-<ng-template #loading> Loading </ng-template>
+<aside class="relative">
+  <ng-container *ngIf="selectedStaff$ | async as staff; else loading">
+    <tui-svg
+      class="top-right !right-20 cursor-pointer text-green-600 hover:text-green-800"
+      src="tuiIconExternalLarge"
+      [routerLink]="'/staff/detail/'+staff.id"
+    ></tui-svg>
+    <tui-svg
+      class="top-right !right-12 cursor-pointer text-yellow-400 hover:text-yellow-500"
+      src="tuiIconEditLarge"
+      [routerLink]="'/staff/update/'+staff.id"
+    ></tui-svg>
+    <tui-svg
+      class="top-right cursor-pointer text-red-500 hover:text-red-700"
+      src="tuiIconRemoveLarge"
+      routerLink="/staff"
+    ></tui-svg>
+    <form class="p-5 flex flex-col" [formGroup]="form">
+      <p>
+        <tui-badge [status]="BADGE_PRIMARY" [value]="staff.role || ''" size="l"></tui-badge>
+      </p>
+      <b class="text-gray-600">Full name</b>
+      <h2 class="bold my-0">{{ staff.firstName }} {{ staff.lastName }}</h2>
+      <div class="p-4 relative border border-gray-900">
+        <tui-avatar
+          class="tui-space_top-2"
+          [avatarUrl]="staff.avatar || ''"
+          size="xxl"
+          [rounded]="true"
+        ></tui-avatar>
+      </div>
+      <!-- <h2 class="bold mt-0">{{ staff.role }}</h2> -->
+      <b class="text-gray-600">Email</b>
+      <h3 class="bold mt-0">{{ staff.email }}</h3>
+      <b class="text-gray-600">Phone</b>
+      <h3 class="bold mt-0">{{ staff.phone }}</h3>
+      <b class="text-gray-600">Managed by</b>
+      <h3 class="bold mt-0">{{ staff.managedByEmail || 'Not yet' }}</h3>
+      <b class="text-gray-600">Status</b>
+      <tui-toggle
+        formControlName="isAvailable"
+        size="l"
+        class="border border-primary border-solid mb-4"
+        (click)="toggleActivation($event)"
+      ></tui-toggle>
+      <b class="text-gray-600">Assigned cars</b>
+      <tui-multi-select formControlName="cars">
+        <tui-data-list-wrapper
+          *tuiDataList
+          tuiMultiSelectGroup
+          [items]="['car1', 'car2']"
+        ></tui-data-list-wrapper>
+      </tui-multi-select>
+    </form>
+  </ng-container>
+  <ng-template #loading> Loading </ng-template>
+</aside>

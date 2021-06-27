@@ -1,5 +1,5 @@
 import { STATE_NAME } from './state.model';
-import { ApiAccountsCarIdGetRequestParams, ApiAccountsCarsGetRequestParams } from '@shared/api';
+import { ApiCarsIdGetRequestParams, ApiCarsGetRequestParams } from '@shared/api';
 
 const ACTIONS = {
   LOAD_CARS: `[${STATE_NAME}] Load Cars`,
@@ -8,10 +8,10 @@ const ACTIONS = {
 
 export class LoadCars {
   static readonly type = ACTIONS.LOAD_CARS;
-  constructor(public readonly params: ApiAccountsCarsGetRequestParams) {}
+  constructor(public readonly params: ApiCarsGetRequestParams) {}
 }
 
 export class LoadCarById {
   static readonly type = ACTIONS.LOAD_CAR_BY_ID;
-  constructor(public readonly params: ApiAccountsCarIdGetRequestParams) {}
+  constructor(public readonly params: ApiCarsIdGetRequestParams) {}
 }

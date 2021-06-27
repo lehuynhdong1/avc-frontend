@@ -1,11 +1,12 @@
-import { AccountCarReadDtoPagingResponseDto, AccountCarReadDto } from '@shared/api';
+import { CarListReadDtoPagingResponseDto, CarReadDto } from '@shared/api';
 
 export interface StateModel {
-  listing: AccountCarReadDtoPagingResponseDto | null;
-  detail: AccountCarReadDto | null;
+  listing: CarListReadDtoPagingResponseDto | null;
+  detail: CarReadDto | null;
+  errorMessage?: string;
 }
 
-export const STATE_NAME = 'Shared_Account_Car';
+export const STATE_NAME = 'Shared_Car';
 
 export const INITIAL_STATE: StateModel = {
   listing: null,

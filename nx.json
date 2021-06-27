@@ -67,6 +67,9 @@
     "admin-car-listing-ui": { "tags": ["scope:admin"] },
     "admin-car-detail-ui": { "tags": ["scope:admin"] },
     "admin-car-detail-feature": { "tags": ["scope:admin"] },
-    "shared-features-account-data-access": { "tags": ["scope:shared"] }
+    "shared-features-account-data-access": { "tags": ["scope:shared"] },
+    "admin-staff-create-feature": { "tags": ["scope:admin"] },
+    "admin-staff-create-ui": { "tags": ["scope:admin"] },
+    "admin-core-util": { "tags": ["scope:admin"] }
   }
 }

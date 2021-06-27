@@ -2,6 +2,10 @@
   display: block;
 }
 
+:host ::ng-deep tui-input tui-wrapper[data-appearance='textfield'] {
+  @apply shadow-none;
+}
+
 table {
   @apply mr-3 text-base rounded-md overflow-hidden;
 

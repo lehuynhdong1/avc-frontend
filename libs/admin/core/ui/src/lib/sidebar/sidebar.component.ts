@@ -21,7 +21,7 @@ export class SidebarComponent {
   @Select(LoginState.account) me$: Observable<LoginStateModel['account']>;
   navItems: Array<NavItem> = [
     { label: 'Dashboard', path: '/dashboard', icon: 'tuiIconStarLarge' },
-    { label: 'Manage Cars', path: '/cars', icon: 'tuiIconLinkLarge' },
+    { label: 'Manage Cars', path: '/car', icon: 'tuiIconLinkLarge' },
     { label: 'Manage Managers', path: '/manager', icon: 'tuiIconLinkLarge' },
     { label: 'Manage Staffs', path: '/staff', icon: 'tuiIconLinkLarge' },
     { label: 'Training Model', path: '/training', icon: 'tuiIconTransparentLarge' }

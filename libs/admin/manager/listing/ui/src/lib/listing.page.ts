@@ -20,7 +20,6 @@ export class ListingPage {
   /* Configurations */
   readonly COLUMNS: ReadonlyArray<keyof AccountManagerReadDto | 'index' | 'name'> = [
     'index',
-    'avatar',
     'name',
     'email',
     'phone',

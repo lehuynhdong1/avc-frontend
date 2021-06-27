@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ListingPage } from './listing.page';
 import { TuiTableModule, TuiTablePaginationModule } from '@taiga-ui/addon-table';
 import { TuiToggleModule, TuiAvatarModule, TuiInputModule } from '@taiga-ui/kit';
-import { TuiSidebarModule } from '@taiga-ui/addon-mobile';
-import { TuiActiveZoneModule } from '@taiga-ui/cdk';
-import { TuiSvgModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -13,12 +11,10 @@ const tuiModules = [
   TuiTableModule,
   TuiTablePaginationModule,
   TuiToggleModule,
-  TuiSidebarModule,
-  TuiActiveZoneModule,
   TuiAvatarModule,
-  TuiActiveZoneModule,
   TuiSvgModule,
-  TuiInputModule
+  TuiInputModule,
+  TuiButtonModule
 ];
 @NgModule({
   declarations: [ListingPage],

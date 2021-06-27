@@ -10,7 +10,6 @@ const tuiModules = [
   TuiToggleModule,
   TuiAvatarModule,
   TuiBadgeModule,
-  TuiToggleModule,
   TuiDataListModule,
   TuiDataListWrapperModule,
   TuiMultiSelectModule

@@ -1,9 +1,6 @@
 :host {
   display: block;
 }
-tui-avatar {
-  @apply hover:border hover:border-solid hover:border-white;
-}
 svg-icon {
   @apply text-white fill-current;
   .size-s {

@@ -10,7 +10,7 @@ export class ConfirmDialogService {
   open(label: string, confirmDialogParams: ConfirmDialogComponentParams) {
     return this.dialogService.open<number>(
       new PolymorpheusComponent(ConfirmDialogComponent, this.injector),
-      { label, data: confirmDialogParams }
+      { label, data: confirmDialogParams, dismissible: false }
     );
   }
 }

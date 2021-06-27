@@ -10,12 +10,18 @@
         <table tuiTable [columns]="COLUMNS">
           <thead>
             <tr tuiThGroup>
-              <th *tuiHead="'index'" tuiTh>Index</th>
-              <th *tuiHead="'avatar'" tuiTh>Avatar</th>
-              <th *tuiHead="'name'" tuiTh>Name</th>
-              <th *tuiHead="'email'" tuiTh [sorter]="null">Email</th>
-              <th *tuiHead="'phone'" tuiTh [sorter]="null">Phone</th>
-              <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Available</th>
+              <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
+              <th *tuiHead="'deviceId'" tuiTh [sorter]="null">Device ID</th>
+              <th *tuiHead="'name'" tuiTh [sorter]="null">Name</th>
+              <th *tuiHead="'assignTo'" tuiTh [sorter]="null">
+                Assigned to <tui-tag size="s" value="Staff" [status]="TUI_STATUS.PRIMARY"></tui-tag>
+              </th>
+              <th *tuiHead="'managedBy'" tuiTh [sorter]="null">
+                Managed by
+                <tui-tag size="s" value="Manager" [status]="TUI_STATUS.PRIMARY"></tui-tag>
+              </th>
+              <th *tuiHead="'isConnecting'" tuiTh [sorter]="null">Connecting Status</th>
+              <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Activation Status</th>
             </tr>
           </thead>
           <tbody tuiTbody [data]="carResponse?.result || []">
@@ -28,19 +34,52 @@
               [routerLink]="[item.id]"
             >
               <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
-              <td *tuiCell="'avatar'" tuiTd>
-                <adc-frontend-avatar
-                  class="py-2"
-                  [url]="item.avatar"
-                  size="l"
-                ></adc-frontend-avatar>
+              <td *tuiCell="'deviceId'" tuiTd>{{item.deviceId}}</td>
+              <td *tuiCell="'name'" tuiTd>{{item.name}}</td>
+              <td *tuiCell="'assignTo'" tuiTd>
+                {{item.assignTo?.lastName}} {{item.assignTo?.firstName}}<tui-svg
+                  src="tuiIconExternal"
+                  [tuiHint]="tuiHintAssignTo"
+                  [routerLink]="'/staff/'+item.assignTo?.id"
+                  class="hover:text-primary mb-1"
+                ></tui-svg>
+                <ng-template #tuiHintAssignTo>
+                  <div class="cursor-pointer" [routerLink]="'/staff/'+item.assignTo?.id">
+                    View
+                    <strong>{{item.assignTo?.lastName}} {{item.assignTo?.firstName}}</strong> in
+                    detail
+                  </div>
+                </ng-template>
               </td>
-              <td *tuiCell="'name'" tuiTd>
-                <div class="tui-space_bottom-1">{{item.firstName}} {{item.lastName}}</div>
+              <td *tuiCell="'managedBy'" tuiTd>
+                {{item.managedBy?.lastName}} {{item.managedBy?.firstName}}<tui-svg
+                  src="tuiIconExternal"
+                  [tuiHint]="tuiHintManagedBy"
+                  [routerLink]="'/staff/'+item.managedBy?.id"
+                  class="hover:text-primary mb-1"
+                ></tui-svg>
+                <ng-template #tuiHintManagedBy>
+                  <div class="cursor-pointer" [routerLink]="'/manager/'+item.managedBy?.id">
+                    View
+                    <strong>{{item.managedBy?.lastName}} {{item.managedBy?.firstName}}</strong> in
+                    detail
+                  </div>
+                </ng-template>
               </td>
-              <td *tuiCell="'email'" tuiTd>{{item.email}}</td>
-              <td *tuiCell="'phone'" tuiTd>{{item.phone}}</td>
-              <td *tuiCell="'isAvailable'" tuiTd>{{item.isAvailable}}</td>
+              <td *tuiCell="'isConnecting'" tuiTd>
+                <tui-badge
+                  size="m"
+                  [value]="item.isConnecting ? 'Connected': 'Disconnected'"
+                  [status]="item.isConnecting ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+                ></tui-badge>
+              </td>
+              <td *tuiCell="'isAvailable'" tuiTd>
+                <tui-badge
+                  size="m"
+                  [value]="item.isAvailable ? 'Active': 'Inactive'"
+                  [status]="item.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+                ></tui-badge>
+              </td>
             </tr>
             <aside *tuiSidebar="(isOpened$ | async) || false; direction: 'right'"></aside>
           </tbody>
@@ -57,12 +96,5 @@
       </ng-container>
     </section>
   </section>
-  <aside class="flex-grow flex-shrink-0 relative" *ngIf="selectedCarId$ | async">
-    <router-outlet></router-outlet>
-    <tui-svg
-      class="top-right cursor-pointer hover:text-red-400"
-      src="tuiIconRemoveLarge"
-      (click)="closeDetail$.next()"
-    ></tui-svg>
-  </aside>
+  <router-outlet></router-outlet>
 </main>

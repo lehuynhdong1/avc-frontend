@@ -1,0 +1,153 @@
+<aside class="flex-grow flex-shrink-0 relative">
+  <tui-svg
+    class="top-right cursor-pointer hover:text-red-400"
+    src="tuiIconRemoveLarge"
+    routerLink="/staff"
+  ></tui-svg>
+  <!-- (click)="closeDetail$.next()" -->
+  <form class="p-5 flex flex-col" [formGroup]="form">
+    <h2>Create Staff</h2>
+
+    <div class="p-4 flex justify-center items-center relative">
+      <tui-input-file
+        link="Choose an avatar"
+        accept="image/*"
+        formControlName="avatarImage"
+        [maxFileSize]="1024*1024"
+        *ngIf="!form.value.avatarImage"
+      >
+      </tui-input-file>
+      <div class="relative" *ngIf="form.value.avatarImage">
+        <adc-frontend-avatar
+          [url]=" form.value.avatarImage | dataUrl | async"
+          size="xxl"
+        ></adc-frontend-avatar>
+        <input
+          type="file"
+          accept="image/*"
+          class="hidden"
+          (change)="clickChangeAvatar$.next($event)"
+          #inputAvatar
+        />
+        <tui-marker-icon
+          [mode]="MARKER_LINK"
+          src="tuiIconUpload"
+          size="s"
+          class="bottom-right border border-solid border-primary"
+          (click)="inputAvatar.click()"
+        ></tui-marker-icon>
+      </div>
+    </div>
+    <div class="flex flex-col mb-3">
+      <label>First name </label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="First name here..."
+        formControlName="firstName"
+      >
+        <span class="text-gray-300">
+          First name here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+    <div class="flex flex-col mb-3">
+      <label>Last name</label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="Last name here..."
+        formControlName="lastName"
+      >
+        <span class="text-gray-300">
+          Last name here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+
+    <div class="flex flex-col mb-3">
+      <label>Email</label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldType]="TUI_INPUT_EMAIL"
+        tuiTextfieldExampleText="Email here..."
+        formControlName="email"
+      >
+        <span class="text-gray-300">
+          Email here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+
+    <div class="flex flex-col mb-3">
+      <label>Password</label>
+      <tui-input-password
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="Password here..."
+        formControlName="password"
+      >
+        <span class="text-gray-300">
+          Password here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input-password>
+    </div>
+
+    <div class="flex flex-col mb-3">
+      <label>Phone</label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="Phone here..."
+        formControlName="phone"
+      >
+        <span class="text-gray-300">
+          Phone here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+
+    <label class="mb-2">Managed by</label>
+    <tui-select
+      *tuiLet="managers$ | async as managers"
+      tuiTextfieldSize="m"
+      [tuiTextfieldLabelOutside]="true"
+      [tuiTextfieldCleaner]="true"
+      tuiTextfieldExampleText="Select manager for this staff."
+      [valueContent]="managerContent"
+      formControlName="managedBy"
+      class="mb-3"
+    >
+      <span class="text-gray-300">
+        Select manager for this staff
+        <tui-svg src="tuiIconEdit"></tui-svg>
+      </span>
+      <tui-data-list-wrapper
+        *tuiDataList
+        [items]="managers"
+        [itemContent]="managerContent"
+      ></tui-data-list-wrapper>
+      <ng-template #managerContent let-manager>
+        <div>{{manager.firstName}} {{manager.lastName}}</div>
+      </ng-template>
+    </tui-select>
+    <tui-checkbox-labeled formControlName="clearWhenSuccess" size="m" class="mb-3">
+      Clear when creating succeeded.
+    </tui-checkbox-labeled>
+    <button tuiButton (click)="clickSubmit$.next()" [disabled]="form.invalid">
+      {{(isUpdatePage$ | async) ? 'Update': 'Create' }}
+    </button>
+  </form>
+  <ng-template #loading> Loading </ng-template>
+</aside>

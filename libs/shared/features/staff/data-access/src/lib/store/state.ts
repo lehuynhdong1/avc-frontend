@@ -1,6 +1,6 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
-import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
-import { LoadStaffs, LoadStaffById } from './actions';
+import { STATE_NAME, StateModel, INITIAL_STATE, CreateStatus } from './state.model';
+import { LoadStaffs, LoadStaffById, CreateStaff, UpdateStaff } from './actions';
 import { AccountsService } from '@shared/api';
 import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -21,6 +21,10 @@ export class StaffState {
   @Selector()
   static selectedStaff({ detail }: StateModel) {
     return detail;
+  }
+  @Selector()
+  static createdDraft({ create }: StateModel) {
+    return create;
   }
   @Selector()
   static errorMessage({ errorMessage }: StateModel) {
@@ -82,5 +86,31 @@ export class StaffState {
           return throwError(errorMessage);
         })
       );
+  }
+
+  @Action(CreateStaff)
+  createStaff({ getState, patchState }: StateContext<StateModel>, { params }: CreateStaff) {
+    const { create } = getState();
+    return this.accountsService.apiAccountsStaffPost(params).pipe(
+      tap(() => patchState({ create: { ...create, status: CreateStatus.SUCCESSFUL } })),
+      catchError((error) => {
+        console.warn(`[${STATE_NAME}] CreateStaff failed with error: `, error);
+        const errorMessage = 'Create staff failed. Sorry, please try again later.';
+        patchState({ errorMessage });
+        return throwError(errorMessage);
+      })
+    );
+  }
+
+  @Action(UpdateStaff)
+  updateStaff({ patchState }: StateContext<StateModel>, { params }: UpdateStaff) {
+    return this.accountsService.apiAccountsIdPatch(params).pipe(
+      catchError((error) => {
+        console.warn(`[${STATE_NAME}] UpdateStaff failed with error: `, error);
+        const errorMessage = 'Update staff failed. Sorry, please try again later.';
+        patchState({ errorMessage });
+        return throwError(errorMessage);
+      })
+    );
   }
 }

@@ -232,6 +232,7 @@ export class ProfileService implements ProfileServiceInterface {
 
     // to determine the Content-Type header
     const consumes: string[] = [
+      'application/merge-patch+json',
       'application/json-patch+json',
       'application/json',
       'text/json',

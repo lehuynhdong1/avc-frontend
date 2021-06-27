@@ -1,7 +1,7 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
 import { LoadCars, LoadCarById } from './actions';
-import { AccountsService } from '@shared/api';
+import { CarsService } from '@shared/api';
 import { tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
@@ -19,20 +19,20 @@ export class CarState {
   static selectedCar({ detail }: StateModel) {
     return detail;
   }
+  @Selector()
+  static errorMessage({ errorMessage }: StateModel) {
+    return errorMessage;
+  }
 
-  constructor(private accountsService: AccountsService) {}
+  constructor(private carsService: CarsService) {}
 
   @Action(LoadCars) loadCars({ patchState }: StateContext<StateModel>, { params }: LoadCars) {
-    return this.accountsService
-      .apiAccountsCarsGet(params)
-      .pipe(tap((listing) => patchState({ listing })));
+    return this.carsService.apiCarsGet(params).pipe(tap((listing) => patchState({ listing })));
   }
   @Action(LoadCarById) loadCarById(
     { patchState }: StateContext<StateModel>,
     { params }: LoadCarById
   ) {
-    return this.accountsService
-      .apiAccountsCarIdGet(params)
-      .pipe(tap((detail) => patchState({ detail })));
+    return this.carsService.apiCarsIdGet(params).pipe(tap((detail) => patchState({ detail })));
   }
 }

@@ -160,6 +160,7 @@ export class AuthenticationService implements AuthenticationServiceInterface {
 
     // to determine the Content-Type header
     const consumes: string[] = [
+      'application/merge-patch+json',
       'application/json-patch+json',
       'application/json',
       'text/json',
@@ -245,6 +246,7 @@ export class AuthenticationService implements AuthenticationServiceInterface {
 
     // to determine the Content-Type header
     const consumes: string[] = [
+      'application/merge-patch+json',
       'application/json-patch+json',
       'application/json',
       'text/json',
@@ -276,6 +278,7 @@ export class AuthenticationService implements AuthenticationServiceInterface {
   }
 
   /**
+   * Request to send the reset password
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.

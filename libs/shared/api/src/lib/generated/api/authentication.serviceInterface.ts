@@ -56,7 +56,7 @@ export interface AuthenticationServiceInterface {
   ): Observable<AuthenticationReadDto>;
 
   /**
-   *
+   * Request to send the reset password
    *
    * @param requestParameters
    */

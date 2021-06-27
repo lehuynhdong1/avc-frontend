@@ -14,6 +14,15 @@ import { ListingPage, UiModule } from '@admin/staff/listing/ui';
         component: ListingPage,
         children: [
           {
+            path: 'create',
+            loadChildren: () => import('@admin/staff/create/feature').then((m) => m.FeatureModule)
+          },
+          {
+            path: 'update/:id',
+            loadChildren: () => import('@admin/staff/create/feature').then((m) => m.FeatureModule),
+            data: { isUpdatePage: true }
+          },
+          {
             path: ':id',
             loadChildren: () => import('@admin/staff/detail/feature').then((m) => m.FeatureModule)
           }

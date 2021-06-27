@@ -14,17 +14,28 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AccountActivationDto } from '../model/models';
+import { AccountManagedByUpdateDto } from '../model/models';
 import { AccountManagerCreateDtoFormWrapper } from '../model/models';
 import { AccountManagerReadDto } from '../model/models';
 import { AccountManagerReadDtoPagingResponseDto } from '../model/models';
 import { AccountStaffReadDto } from '../model/models';
 import { AccountStaffReadDtoPagingResponseDto } from '../model/models';
+import { AccountUpdateDto } from '../model/models';
 
 import { Configuration } from '../configuration';
 
 export interface ApiAccountsIdActivationPutRequestParams {
   id: number;
   accountActivationDto?: AccountActivationDto;
+}
+
+export interface ApiAccountsIdPatchRequestParams {
+  id: number;
+  accountUpdateDto?: AccountUpdateDto;
+}
+
+export interface ApiAccountsManagedbyPutRequestParams {
+  accountManagedByUpdateDto?: AccountManagedByUpdateDto;
 }
 
 export interface ApiAccountsManagerIdGetRequestParams {
@@ -36,6 +47,7 @@ export interface ApiAccountsManagerPostRequestParams {
 }
 
 export interface ApiAccountsManagersGetRequestParams {
+  isAvailable?: boolean;
   page?: number;
   limit?: number;
   searchValue?: string;
@@ -56,6 +68,7 @@ export interface ApiAccountsStaffPostRequestParams {
 }
 
 export interface ApiAccountsStaffsGetRequestParams {
+  isAvailable?: boolean;
   page?: number;
   limit?: number;
   searchValue?: string;
@@ -72,6 +85,26 @@ export interface AccountsServiceInterface {
    */
   apiAccountsIdActivationPut(
     requestParameters: ApiAccountsIdActivationPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   * Partitle update account
+   *
+   * @param requestParameters
+   */
+  apiAccountsIdPatch(
+    requestParameters: ApiAccountsIdPatchRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   * Assign/UnAssign Staff for Manager
+   *
+   * @param requestParameters
+   */
+  apiAccountsManagedbyPut(
+    requestParameters: ApiAccountsManagedbyPutRequestParams,
     extraHttpRequestParams?: any
   ): Observable<{}>;
 
@@ -113,7 +146,7 @@ export interface AccountsServiceInterface {
   apiAccountsStaffIdGet(
     requestParameters: ApiAccountsStaffIdGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountManagerReadDto>;
+  ): Observable<AccountStaffReadDto>;
 
   /**
    * Create new Account
