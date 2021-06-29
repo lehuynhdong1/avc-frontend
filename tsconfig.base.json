@@ -131,7 +131,10 @@
       "@admin/staff/create/feature": ["libs/admin/staff/create/feature/src/index.ts"],
       "@admin/staff/create/ui": ["libs/admin/staff/create/ui/src/index.ts"],
       "@admin/car/routes": ["libs/admin/car/routes.ts"],
-      "@admin/core/util": ["libs/admin/core/util/src/index.ts"]
+      "@admin/core/util": ["libs/admin/core/util/src/index.ts"],
+      "@admin/staff/update/ui": ["libs/admin/staff/update/ui/src/index.ts"],
+      "@admin/staff/update/feature": ["libs/admin/staff/update/feature/src/index.ts"],
+      "@shared/features/issue/data-access": ["libs/shared/features/issue/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

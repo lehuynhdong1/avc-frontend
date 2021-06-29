@@ -1,6 +1,9 @@
 <main class="flex">
   <section class="flex-grow">
-    <h1>Manage Managers</h1>
+    <h1>
+      <tui-svg src="assets/taiga-ui/icons/ribbon.svg#ribbon" class="size-m"></tui-svg> Manage
+      Managers
+    </h1>
 
     <section class="w-100 flex flex-col items-stretch">
       <tui-input tuiTextfieldSize="xl" [formControl]="searchControl" class="w-100 pr-4 mb-4">
@@ -14,7 +17,7 @@
               <th *tuiHead="'name'" tuiTh>Name</th>
               <th *tuiHead="'email'" tuiTh [sorter]="null">Email</th>
               <th *tuiHead="'phone'" tuiTh [sorter]="null">Phone</th>
-              <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Available</th>
+              <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Activation Status</th>
             </tr>
           </thead>
           <tbody tuiTbody [data]="managerResponse?.result || []">
@@ -32,17 +35,22 @@
               </td>
               <td *tuiCell="'email'" tuiTd>{{item.email}}</td>
               <td *tuiCell="'phone'" tuiTd>{{item.phone}}</td>
-              <td *tuiCell="'isAvailable'" tuiTd>{{item.isAvailable}}</td>
+              <td *tuiCell="'isAvailable'" tuiTd>
+                <tui-badge
+                  size="m"
+                  [value]="item.isAvailable ? 'Active': 'Inactive'"
+                  [status]="item.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+                ></tui-badge>
+              </td>
             </tr>
-            <aside *tuiSidebar="(isOpened$ | async) || false; direction: 'right'"></aside>
           </tbody>
         </table>
-        <tui-table-pagination
+        <tui-pagination
           *ngIf="managerResponse.count; else noRecord"
-          [total]="managerResponse.count || 0"
-          [(page)]="page"
-          [(size)]="size"
-        ></tui-table-pagination>
+          [length]="calcTotalPageCount(managerResponse.count)"
+          [index]="0"
+          class="mt-3 self-end"
+        ></tui-pagination>
         <ng-template #noRecord>
           <p class="text-red-400 text-base">There is no matching result!</p>
         </ng-template>

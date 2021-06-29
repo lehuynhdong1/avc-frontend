@@ -10,6 +10,12 @@ export * from './cars.serviceInterface';
 export * from './check.service';
 import { CheckService } from './check.service';
 export * from './check.serviceInterface';
+export * from './issue.service';
+import { IssueService } from './issue.service';
+export * from './issue.serviceInterface';
+export * from './issue-types.service';
+import { IssueTypesService } from './issue-types.service';
+export * from './issue-types.serviceInterface';
 export * from './profile.service';
 import { ProfileService } from './profile.service';
 export * from './profile.serviceInterface';
@@ -21,6 +27,8 @@ export const APIS = [
   AuthenticationService,
   CarsService,
   CheckService,
+  IssueService,
+  IssueTypesService,
   ProfileService,
   RolesService
 ];

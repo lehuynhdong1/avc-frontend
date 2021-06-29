@@ -8,6 +8,8 @@ import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TuiStatus } from '@taiga-ui/kit';
+import { tuiPure } from '@taiga-ui/cdk';
 
 @Component({
   selector: 'adca-listing',
@@ -17,6 +19,12 @@ import { ActivatedRoute, Router } from '@angular/router';
   providers: [RxState]
 })
 export class ListingPage {
+  TUI_STATUS = {
+    ERROR: TuiStatus.Error,
+    SUCCESS: TuiStatus.Success,
+    PRIMARY: TuiStatus.Primary
+  };
+
   /* Configurations */
   readonly COLUMNS: ReadonlyArray<keyof AccountStaffReadDto | 'index' | 'name'> = [
     'index',
@@ -69,5 +77,11 @@ export class ListingPage {
       this.state.set({ selectedStaffId: 0 });
       this.router.navigateByUrl('/staff');
     });
+  }
+
+  @tuiPure
+  calcTotalPageCount(count: number | undefined) {
+    if (!count) return 1;
+    return Math.round(count / 10) + 1;
   }
 }

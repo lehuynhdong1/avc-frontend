@@ -1,11 +1,23 @@
 <tui-stepper [activeItemIndex]="0">
-  <button tuiStep icon="tuiIconPicture"><b class="text-primary">Upload Images</b></button>
-  <button tuiStep disabled icon="tuiIconCopy">Label Images</button>
-  <button tuiStep disabled icon="tuiIconRefresh">Progress</button>
+  <button tuiStep icon="assets/taiga-ui/icons/cloud-upload.svg#cloud-upload">
+    <b class="text-primary">Upload Images</b>
+  </button>
+  <button tuiStep disabled icon="assets/taiga-ui/icons/scan-circle.svg#scan-circle">
+    Label Images
+  </button>
+  <button tuiStep disabled icon="assets/taiga-ui/icons/speedometer.svg#speedometer">
+    Progress
+  </button>
 </tui-stepper>
 <div class="flex items-center mb-6">
   <div class="flex-grow">
-    <h1 class="mb-2">Upload Images</h1>
+    <h1 class="mb-2">
+      <tui-svg
+        src="assets/taiga-ui/icons/cloud-upload.svg#cloud-upload"
+        class="size-m mr-2"
+      ></tui-svg
+      >Upload Images
+    </h1>
     <p class="mt-0 text-base">Upload then label images online for a better training model.</p>
   </div>
 
@@ -33,7 +45,7 @@
 </div>
 <div class="flex flex-col justify-center items-center w-100">
   <img
-    src="assets/icons/upload-image.svg"
+    src="assets/images/upload-image.svg"
     alt="Upload image"
     class="w-1/2 mb-6 transition-all"
     [class.slowly-hide]="(fileLengthChanged$ | async)"

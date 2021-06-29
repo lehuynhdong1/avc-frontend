@@ -133,6 +133,7 @@ export class CarsService implements CarsServiceInterface {
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
     const isAvailable = requestParameters.isAvailable;
+    const isApproved = requestParameters.isApproved;
     const page = requestParameters.page;
     const limit = requestParameters.limit;
     const searchValue = requestParameters.searchValue;
@@ -140,6 +141,9 @@ export class CarsService implements CarsServiceInterface {
     let queryParameters = new HttpParams({ encoder: this.encoder });
     if (isAvailable !== undefined && isAvailable !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>isAvailable, 'IsAvailable');
+    }
+    if (isApproved !== undefined && isApproved !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>isApproved, 'IsApproved');
     }
     if (page !== undefined && page !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>page, 'Page');

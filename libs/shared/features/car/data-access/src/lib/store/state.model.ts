@@ -1,7 +1,8 @@
 import { CarListReadDtoPagingResponseDto, CarReadDto } from '@shared/api';
 
 export interface StateModel {
-  listing: CarListReadDtoPagingResponseDto | null;
+  approvedListing: CarListReadDtoPagingResponseDto | null;
+  unapprovedListing: CarListReadDtoPagingResponseDto | null;
   detail: CarReadDto | null;
   errorMessage?: string;
 }
@@ -9,6 +10,7 @@ export interface StateModel {
 export const STATE_NAME = 'Shared_Car';
 
 export const INITIAL_STATE: StateModel = {
-  listing: null,
+  approvedListing: null,
+  unapprovedListing: null,
   detail: null
 };

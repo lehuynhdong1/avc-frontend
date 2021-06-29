@@ -1,6 +1,6 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
-import { LoadCars, LoadCarById } from './actions';
+import { LoadApprovedCars, LoadUnapprovedCars, LoadCarById } from './actions';
 import { CarsService } from '@shared/api';
 import { tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -12,8 +12,12 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CarState {
   @Selector()
-  static cars({ listing }: StateModel) {
-    return listing;
+  static approvedCars({ approvedListing }: StateModel) {
+    return approvedListing;
+  }
+  @Selector()
+  static unapprovedCars({ unapprovedListing }: StateModel) {
+    return unapprovedListing;
   }
   @Selector()
   static selectedCar({ detail }: StateModel) {
@@ -26,9 +30,24 @@ export class CarState {
 
   constructor(private carsService: CarsService) {}
 
-  @Action(LoadCars) loadCars({ patchState }: StateContext<StateModel>, { params }: LoadCars) {
-    return this.carsService.apiCarsGet(params).pipe(tap((listing) => patchState({ listing })));
+  @Action(LoadApprovedCars) loadApprovedCars(
+    { patchState }: StateContext<StateModel>,
+    { params }: LoadApprovedCars
+  ) {
+    return this.carsService
+      .apiCarsGet(params)
+      .pipe(tap((listing) => patchState({ approvedListing: listing })));
   }
+
+  @Action(LoadUnapprovedCars) loadUnapprovedCars(
+    { patchState }: StateContext<StateModel>,
+    { params }: LoadUnapprovedCars
+  ) {
+    return this.carsService
+      .apiCarsGet(params)
+      .pipe(tap((listing) => patchState({ unapprovedListing: listing })));
+  }
+
   @Action(LoadCarById) loadCarById(
     { patchState }: StateContext<StateModel>,
     { params }: LoadCarById

@@ -25,5 +25,5 @@ export interface CarReadDto {
   isApproved?: boolean;
   managedBy?: AccountManagerReadDto;
   assignTo?: AccountStaffAssignToReadDto;
-  issue?: Array<IssueReadDto> | null;
+  issues?: Array<IssueReadDto> | null;
 }

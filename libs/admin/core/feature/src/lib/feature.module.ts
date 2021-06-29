@@ -5,7 +5,6 @@ import { ApiModule } from '@shared/api';
 import { LayoutModule } from '@admin/core/ui';
 import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { AppConfig } from '@shared/app-config';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { RouterModule } from '@angular/router';
 import { UtilModule as SharedUtilModule } from '@shared/util';
 
@@ -18,7 +17,6 @@ export function CoreModulesWithConfig(config: AppConfig) {
     LanguageModuleWithConfig({ prodMode: config.production }),
     SharedUtilModule,
     ApiModule.forRoot(config),
-    AngularSvgIconModule.forRoot(),
     LayoutModule,
     AuthUtilModule
   ];

@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DetailPage } from '@admin/staff/detail/ui';
+import { UiModule, DetailPage } from '@admin/staff/detail/ui';
+import { DataAccessModule } from '@shared/features/staff/data-access';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', pathMatch: 'full', component: DetailPage }])]
+  imports: [
+    UiModule,
+    DataAccessModule,
+    RouterModule.forChild([{ path: '', pathMatch: 'full', component: DetailPage }])
+  ]
 })
 export class FeatureModule {}

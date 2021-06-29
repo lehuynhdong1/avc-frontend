@@ -12,15 +12,8 @@ import { TuiAppearance } from '@taiga-ui/core';
 import { ConfirmDialogComponentParams } from '@admin/core/ui';
 import { ToggleActivation } from '@shared/features/account/data-access';
 import { ShowNotification, hasValue } from '@shared/util';
+import { Title } from '@angular/platform-browser';
 
-const DICTIONARY = [
-  { id: 1, name: 'Luke Skywalker' },
-  { id: 2, name: 'Princess Leia' },
-  { id: 3, name: 'Darth Vader' },
-  { id: 4, name: 'Han Solo' },
-  { id: 5, name: 'Obi-Wan Kenobi' },
-  { id: 6, name: 'Yoda' }
-];
 const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
   isActivated
 ) => ({
@@ -47,25 +40,34 @@ const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentPa
   providers: [RxState]
 })
 export class DetailPage {
-  readonly BADGE_PRIMARY = TuiStatus.Primary as const;
+  TUI_STATUS = {
+    ERROR: TuiStatus.Error,
+    WARNING: TuiStatus.Warning,
+    SUCCESS: TuiStatus.Success,
+    PRIMARY: TuiStatus.Primary
+  };
   readonly form = this.formBuilder.group({
     isAvailable: [false, Validators.required],
     cars: [[1, 2]]
   });
-  readonly selectedStaff$ = this.store.select(StaffState.selectedStaff);
+  readonly selectedStaff$ = this.store.select(StaffState.selectedStaff).pipe(hasValue());
   private readonly errorMessage$ = this.store.select(StaffState.errorMessage).pipe(hasValue());
   private readonly id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
 
   /* Actions */
-  readonly clickActivate$ = new Subject<boolean>();
+  readonly clickActivate$ = new Subject<void>();
 
   /* Side effects */
   private whenClickActivate$ = this.clickActivate$.pipe(
+    map(() => this.form.value.isAvailable),
     switchMap((currentValue) =>
-      this.confirmDialogService.open('Hello', getConfirmDialogParams(currentValue))
+      this.confirmDialogService.open(
+        currentValue ? 'Deactivate car' : 'Activate car',
+        getConfirmDialogParams(currentValue)
+      )
     ),
     filter((response) => response === 1),
-    map(() => this.form.get('isAvailable')?.value)
+    map(() => this.form.value.isAvailable)
   );
   private whenToggleActivationFailed$ = this.actions.pipe<ToggleActivation>(
     ofActionErrored(ToggleActivation)
@@ -77,10 +79,12 @@ export class DetailPage {
     private activatedRoute: ActivatedRoute,
     private state: RxState<Record<string, never>>,
     private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
+    private title: Title
   ) {
     this.state.hold(this.id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
     this.state.hold(this.selectedStaff$, (staff) => {
+      title.setTitle(staff?.firstName + ' ' + staff?.lastName + ' | AVC');
       this.form.patchValue({ isAvailable: staff?.isAvailable });
     });
     this.state.hold(
@@ -100,11 +104,5 @@ export class DetailPage {
         );
       }
     );
-  }
-
-  toggleActivation(event: Event) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    this.clickActivate$.next(this.form.get('isAvailable')?.value);
   }
 }

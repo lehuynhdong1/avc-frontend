@@ -19,14 +19,17 @@
       <p class="text-gray-400 mt-0 mb-6">Keep track your working process</p>
     </div>
 
-    <ul class="nav-list">
+    <ul class="nav-list" *ngIf="currentUrl$ | async as currentUrl">
       <li
         *ngFor="let item of navItems"
         [routerLink]="item.path"
         routerLinkActive="active"
         class="nav-item"
       >
-        <tui-svg [src]="item.icon" class="zoom-08"></tui-svg>
+        <tui-svg
+          [src]="currentUrl.includes(item.path) ? getFilledIcon(item.icon) : item.icon"
+          class="zoom-08"
+        ></tui-svg>
         <span class="ml-2">{{ item.label }}</span>
       </li>
     </ul>

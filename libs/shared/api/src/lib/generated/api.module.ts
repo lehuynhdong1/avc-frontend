@@ -6,6 +6,8 @@ import { AccountsService } from './api/accounts.service';
 import { AuthenticationService } from './api/authentication.service';
 import { CarsService } from './api/cars.service';
 import { CheckService } from './api/check.service';
+import { IssueService } from './api/issue.service';
+import { IssueTypesService } from './api/issue-types.service';
 import { ProfileService } from './api/profile.service';
 import { RolesService } from './api/roles.service';
 

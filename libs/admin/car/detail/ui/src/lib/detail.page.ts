@@ -11,6 +11,7 @@ import { TuiAppearance } from '@taiga-ui/core';
 import { ConfirmDialogComponentParams } from '@admin/core/ui';
 import { ToggleActivation } from '@shared/features/account/data-access';
 import { ShowNotification, hasValue } from '@shared/util';
+import { IssueReadDto } from '@shared/api';
 
 const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
   isActivated
@@ -44,6 +45,17 @@ export class DetailPage {
     SUCCESS: TuiStatus.Success,
     PRIMARY: TuiStatus.Primary
   };
+
+  /* Configurations */
+  readonly COLUMNS: ReadonlyArray<keyof IssueReadDto | 'index'> = [
+    'index',
+    'type',
+    'createdAt',
+    'image',
+    'description',
+    'location',
+    'isAvailable'
+  ] as const;
 
   readonly selectedCar$ = this.store.select(CarState.selectedCar).pipe(hasValue());
   private readonly errorMessage$ = this.store.select(CarState.errorMessage).pipe(hasValue());

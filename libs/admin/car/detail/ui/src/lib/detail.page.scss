@@ -6,6 +6,32 @@ aside {
   @apply bg-gray-100 w-80 rounded-lg;
   min-width: 15rem;
   max-width: 24rem;
+  main h1 tui-svg {
+    @apply hidden;
+  }
+
+  &.fullpage {
+    @apply bg-transparent;
+    @apply w-3/4 max-w-full;
+
+    .fullpage_w-1\/2 {
+      @apply w-1/2;
+    }
+
+    tui-svg.top-right {
+      @apply hidden;
+    }
+    main {
+      @apply p-0;
+      h1 {
+        @apply text-2xl;
+
+        tui-svg {
+          @apply inline-block;
+        }
+      }
+    }
+  }
 }
 
 tui-svg.top-right {
@@ -16,24 +42,6 @@ tui-svg.top-right {
   @apply cursor-pointer hover:text-primary;
 }
 
-aside.fullpage {
-  @apply bg-transparent;
-  @apply w-3/4 max-w-full;
-
-  .fullpage_w-1\/2 {
-    @apply w-1/2;
-  }
-
-  tui-svg.top-right {
-    @apply hidden;
-  }
-  main {
-    @apply p-0;
-    h1 {
-      @apply text-2xl;
-    }
-  }
-}
 :host ::ng-deep tui-wrapper[data-appearance='outline'] {
   @apply text-red-500;
   &:after {

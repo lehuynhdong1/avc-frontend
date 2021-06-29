@@ -1,15 +1,16 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { CarState, LoadCars } from '@shared/features/car/data-access';
+import { CarState, LoadApprovedCars, LoadUnapprovedCars } from '@shared/features/car/data-access';
 import { Subject } from 'rxjs';
 import { CarListReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TuiStatus } from '@taiga-ui/kit';
-
+import { tuiPure } from '@taiga-ui/cdk';
+import { hasValue } from '@shared/util';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -40,13 +41,13 @@ export class ListingPage {
   size = 10;
 
   /* Attribute Streams */
-  readonly cars$ = this.store.select(CarState.cars);
-  readonly isOpened$ = this.state.select('isOpened');
+  readonly approvedCars$ = this.store.select(CarState.approvedCars);
+  readonly unapprovedCars$ = this.store.select(CarState.unapprovedCars).pipe(hasValue());
+  readonly unapprovedCarsCount$ = this.unapprovedCars$.pipe(map((cars) => cars.count));
   readonly selectedCarId$ = this.state.select('selectedCarId');
 
   /* Action Streams */
   readonly selectRow$ = new Subject<number>();
-  readonly openAside$ = new Subject<boolean>();
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
     debounceTime(500),
     distinctUntilChanged()
@@ -55,10 +56,9 @@ export class ListingPage {
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private state: RxState<ListingPageState>
   ) {
-    this.store.dispatch(new LoadCars({ limit: 10 }));
+    this.store.dispatch([new LoadApprovedCars({ limit: 10 }), new LoadUnapprovedCars()]);
     this.declareSideEffects();
   }
 
@@ -69,9 +69,14 @@ export class ListingPage {
       this.state.connect('selectedCarId', idFromRoute$);
     }
     this.state.connect('selectedCarId', this.selectRow$);
-    this.state.connect('isOpened', this.openAside$);
     this.state.hold(this.changeSearchValue$, (value) => {
-      this.store.dispatch(new LoadCars({ searchValue: value, limit: 10 }));
+      this.store.dispatch(new LoadApprovedCars({ searchValue: value, limit: 10 }));
     });
+  }
+
+  @tuiPure
+  calcTotalPageCount(count: number | undefined) {
+    if (!count) return 1;
+    return Math.round(count / 10) + 1;
   }
 }

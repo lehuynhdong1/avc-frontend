@@ -5,9 +5,5 @@
   [rounded]="true"
 ></tui-avatar>
 <ng-template #noAvatar>
-  <svg-icon
-    [src]="placeholderImageAsset"
-    [class]="'size-' + size + (placeholderClass ? ' ' + placeholderClass : '')"
-    [applyClass]="true"
-  ></svg-icon>
+  <tui-svg [src]="placeholderImageAsset" [class]="placeholderClass + ' size-' + size"></tui-svg>
 </ng-template>

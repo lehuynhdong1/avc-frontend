@@ -1,6 +1,12 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE, CreateStatus } from './state.model';
-import { LoadStaffs, LoadStaffById, CreateStaff, UpdateStaff } from './actions';
+import {
+  LoadStaffs,
+  LoadStaffById,
+  CreateStaff,
+  UpdateStaff,
+  UpdateStaffManagedBy
+} from './actions';
 import { AccountsService } from '@shared/api';
 import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -107,6 +113,18 @@ export class StaffState {
     return this.accountsService.apiAccountsIdPatch(params).pipe(
       catchError((error) => {
         console.warn(`[${STATE_NAME}] UpdateStaff failed with error: `, error);
+        const errorMessage = 'Update staff failed. Sorry, please try again later.';
+        patchState({ errorMessage });
+        return throwError(errorMessage);
+      })
+    );
+  }
+
+  @Action(UpdateStaffManagedBy)
+  updateStaffManagedBy({ patchState }: StateContext<StateModel>, { params }: UpdateStaffManagedBy) {
+    return this.accountsService.apiAccountsManagedbyPut(params).pipe(
+      catchError((error) => {
+        console.warn(`[${STATE_NAME}] UpdateStaffManagedBy failed with error: `, error);
         const errorMessage = 'Update staff failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);

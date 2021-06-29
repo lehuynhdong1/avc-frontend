@@ -4,7 +4,6 @@
     src="tuiIconRemoveLarge"
     routerLink="/staff"
   ></tui-svg>
-  <!-- (click)="closeDetail$.next()" -->
   <form class="p-5 flex flex-col" [formGroup]="form">
     <h2>Create Staff</h2>
 
@@ -118,14 +117,14 @@
       </tui-input>
     </div>
 
-    <label class="mb-2">Managed by</label>
+    <label class="mb-2">Managed by </label>
     <tui-select
       *tuiLet="managers$ | async as managers"
       tuiTextfieldSize="m"
       [tuiTextfieldLabelOutside]="true"
       [tuiTextfieldCleaner]="true"
+      [valueContent]="managers ? stringifyManagers(managers) : loading"
       tuiTextfieldExampleText="Select manager for this staff."
-      [valueContent]="managerContent"
       formControlName="managedBy"
       class="mb-3"
     >
@@ -133,20 +132,22 @@
         Select manager for this staff
         <tui-svg src="tuiIconEdit"></tui-svg>
       </span>
-      <tui-data-list-wrapper
-        *tuiDataList
-        [items]="managers"
-        [itemContent]="managerContent"
-      ></tui-data-list-wrapper>
-      <ng-template #managerContent let-manager>
-        <div>{{manager.firstName}} {{manager.lastName}}</div>
+
+      <ng-template tuiDataList>
+        <tui-data-list *ngIf="managers else loading">
+          <button tuiOption *ngFor="let manager of managers" [value]="manager.id">
+            {{manager.firstName}} {{manager.lastName}}
+          </button>
+        </tui-data-list>
       </ng-template>
     </tui-select>
+
     <tui-checkbox-labeled formControlName="clearWhenSuccess" size="m" class="mb-3">
       Clear when creating succeeded.
     </tui-checkbox-labeled>
-    <button tuiButton (click)="clickSubmit$.next()" [disabled]="form.invalid">
-      {{(isUpdatePage$ | async) ? 'Update': 'Create' }}
+
+    <button tuiButton (click)="clickCreate$.next()" size="m" [disabled]="form.invalid">
+      Create
     </button>
   </form>
   <ng-template #loading> Loading </ng-template>

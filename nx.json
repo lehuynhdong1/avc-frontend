@@ -70,6 +70,9 @@
     "shared-features-account-data-access": { "tags": ["scope:shared"] },
     "admin-staff-create-feature": { "tags": ["scope:admin"] },
     "admin-staff-create-ui": { "tags": ["scope:admin"] },
-    "admin-core-util": { "tags": ["scope:admin"] }
+    "admin-core-util": { "tags": ["scope:admin"] },
+    "admin-staff-update-ui": { "tags": ["scope:admin"] },
+    "admin-staff-update-feature": { "tags": ["scope:admin"] },
+    "shared-features-issue-data-access": { "tags": ["scope:shared"] }
   }
 }

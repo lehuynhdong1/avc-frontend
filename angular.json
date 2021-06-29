@@ -70,6 +70,11 @@
                 "output": "assets/taiga-ui/icons"
               },
               {
+                "glob": "*.svg",
+                "input": "libs/admin/core/util/src/assets/icons",
+                "output": "assets/taiga-ui/icons"
+              },
+              {
                 "glob": "_redirects",
                 "input": "apps/admin/src",
                 "output": "/"
@@ -2983,6 +2988,117 @@
           "outputs": ["coverage/libs/admin/core/util"],
           "options": {
             "jestConfig": "libs/admin/core/util/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-staff-update-ui": {
+      "projectType": "library",
+      "root": "libs/admin/staff/update/ui",
+      "sourceRoot": "libs/admin/staff/update/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/update/ui/tsconfig.lib.json",
+            "project": "libs/admin/staff/update/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/update/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/update/ui/src/**/*.ts",
+              "libs/admin/staff/update/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/update/ui"],
+          "options": {
+            "jestConfig": "libs/admin/staff/update/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-staff-update-feature": {
+      "projectType": "library",
+      "root": "libs/admin/staff/update/feature",
+      "sourceRoot": "libs/admin/staff/update/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/staff/update/feature/tsconfig.lib.json",
+            "project": "libs/admin/staff/update/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/staff/update/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/staff/update/feature/src/**/*.ts",
+              "libs/admin/staff/update/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/staff/update/feature"],
+          "options": {
+            "jestConfig": "libs/admin/staff/update/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-features-issue-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/features/issue/data-access",
+      "sourceRoot": "libs/shared/features/issue/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/features/issue/data-access/tsconfig.lib.json",
+            "project": "libs/shared/features/issue/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/features/issue/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/features/issue/data-access/src/**/*.ts",
+              "libs/shared/features/issue/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/features/issue/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/features/issue/data-access/jest.config.js",
             "passWithNoTests": true
           }
         }

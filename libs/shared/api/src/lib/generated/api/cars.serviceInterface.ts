@@ -20,6 +20,7 @@ import { Configuration } from '../configuration';
 
 export interface ApiCarsGetRequestParams {
   isAvailable?: boolean;
+  isApproved?: boolean;
   page?: number;
   limit?: number;
   searchValue?: string;

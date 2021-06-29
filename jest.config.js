@@ -68,6 +68,9 @@ module.exports = {
     '<rootDir>/libs/shared/features/account/data-access',
     '<rootDir>/libs/admin/staff/create/feature',
     '<rootDir>/libs/admin/staff/create/ui',
-    '<rootDir>/libs/admin/core/util'
+    '<rootDir>/libs/admin/core/util',
+    '<rootDir>/libs/admin/staff/update/ui',
+    '<rootDir>/libs/admin/staff/update/feature',
+    '<rootDir>/libs/shared/features/issue/data-access'
   ]
 };

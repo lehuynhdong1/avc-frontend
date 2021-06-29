@@ -1,28 +1,22 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListingPage } from './listing.page';
-import { TuiTableModule, TuiTablePaginationModule } from '@taiga-ui/addon-table';
-import { TuiToggleModule, TuiInputModule, TuiTagModule, TuiBadgeModule } from '@taiga-ui/kit';
-import { TuiSidebarModule } from '@taiga-ui/addon-mobile';
-import { TuiActiveZoneModule } from '@taiga-ui/cdk';
-import { TuiSvgModule } from '@taiga-ui/core';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AvatarModule } from '@shared/ui/avatar';
-import { TuiHintModule } from '@taiga-ui/core';
+import { TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiButtonModule, TuiHintModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiBadgeModule, TuiInputModule, TuiPaginationModule, TuiTagModule } from '@taiga-ui/kit';
+import { ListingPage } from './listing.page';
 
 const tuiModules = [
   TuiTableModule,
-  TuiTablePaginationModule,
-  TuiToggleModule,
-  TuiSidebarModule,
-  TuiActiveZoneModule,
-  TuiActiveZoneModule,
+  TuiPaginationModule,
   TuiSvgModule,
   TuiInputModule,
   TuiHintModule,
   TuiTagModule,
-  TuiBadgeModule
+  TuiBadgeModule,
+  TuiButtonModule
 ];
 @NgModule({
   declarations: [ListingPage],

@@ -15,42 +15,44 @@
       src="tuiIconRemoveLarge"
       routerLink="/staff"
     ></tui-svg>
-    <form class="p-5 flex flex-col" [formGroup]="form">
-      <p>
-        <tui-badge [status]="BADGE_PRIMARY" [value]="staff.role || ''" size="l"></tui-badge>
-      </p>
-      <b class="text-gray-600">Full name</b>
+    <form class="p-5 flex flex-col">
+      <h1 class="text-xl w-full">Staff Detail</h1>
+
+      <label>Full name</label>
       <h2 class="bold my-0">{{ staff.firstName }} {{ staff.lastName }}</h2>
       <div class="p-4 relative border border-gray-900">
-        <tui-avatar
+        <adc-frontend-avatar
           class="tui-space_top-2"
-          [avatarUrl]="staff.avatar || ''"
+          [url]="staff.avatar || ''"
           size="xxl"
-          [rounded]="true"
-        ></tui-avatar>
+        ></adc-frontend-avatar>
       </div>
       <!-- <h2 class="bold mt-0">{{ staff.role }}</h2> -->
-      <b class="text-gray-600">Email</b>
+      <label>Email</label>
       <h3 class="bold mt-0">{{ staff.email }}</h3>
-      <b class="text-gray-600">Phone</b>
+      <label>Phone</label>
       <h3 class="bold mt-0">{{ staff.phone }}</h3>
-      <b class="text-gray-600">Managed by</b>
+      <label>Managed by</label>
       <h3 class="bold mt-0">{{ staff.managedByEmail || 'Not yet' }}</h3>
-      <b class="text-gray-600">Status</b>
-      <tui-toggle
-        formControlName="isAvailable"
-        size="l"
-        class="border border-primary border-solid mb-4"
-        (click)="toggleActivation($event)"
-      ></tui-toggle>
-      <b class="text-gray-600">Assigned cars</b>
-      <tui-multi-select formControlName="cars">
-        <tui-data-list-wrapper
-          *tuiDataList
-          tuiMultiSelectGroup
-          [items]="['car1', 'car2']"
-        ></tui-data-list-wrapper>
-      </tui-multi-select>
+
+      <b class="text-gray-600 mb-1">Activation Status</b>
+      <tui-badge
+        size="m"
+        [value]="staff.isAvailable ? 'Active' : 'Inactive'"
+        [status]="staff.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+        class="self-start mb-3"
+      ></tui-badge>
+      <button
+        tuiButton
+        size="m"
+        appearance="outline"
+        type="button"
+        (click)="this.clickActivate$.next()"
+        class="self-start"
+        [class.deactivate]="staff.isAvailable"
+      >
+        {{staff.isAvailable ? 'Deactivate': 'Reactivate'}}
+      </button>
     </form>
   </ng-container>
   <ng-template #loading> Loading </ng-template>
