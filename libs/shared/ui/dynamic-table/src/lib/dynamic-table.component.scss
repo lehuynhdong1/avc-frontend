@@ -1,0 +1,24 @@
+:host {
+  @apply block w-full;
+}
+
+table {
+  @apply w-full mr-3 text-base rounded-md overflow-hidden;
+
+  tr {
+    th {
+      @apply bg-gray-700 text-white;
+    }
+    &:hover td,
+    &.active td {
+      @apply bg-gray-100;
+    }
+
+    &.active td {
+      @apply text-primary-active;
+    }
+  }
+}
+tui-table-pagination {
+  @apply text-base pr-4 mt-2;
+}

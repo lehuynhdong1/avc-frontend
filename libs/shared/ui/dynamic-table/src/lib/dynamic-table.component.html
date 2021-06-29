@@ -1,0 +1,45 @@
+<table tuiTable [columns]="getKeys(columns) || []">
+  <thead>
+    <tr tuiThGroup>
+      <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
+      <ng-container *ngFor="let column of columns">
+        <th *tuiHead="column.key" tuiTh [sorter]="null">{{ column.title }}</th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody tuiTbody [data]="response?.result || array || []">
+    <tr
+      *tuiRow="let item of response?.result || array || []; let index = index"
+      tuiTr
+      [class.cursor-pointer]="selectable"
+      [class.active]="item.id === (selectedId$ | async)"
+      (click)="selectRow$.next(item.id || 0)"
+    >
+      <td *tuiCell="'index'" tuiTd>
+        <b>{{ index + 1 }}</b>
+      </td>
+      <ng-container *ngFor="let column of columns">
+        <ng-container *ngIf="column.type === 'boolean'; else nonBooleanColumn">
+          <td *tuiCell="column.key.toString()" tuiTd>
+            <adc-frontend-boolean-column
+              [item]="item"
+              [column]="column"
+            ></adc-frontend-boolean-column>
+          </td>
+        </ng-container>
+        <ng-template #nonBooleanColumn>
+          <td *tuiCell="column.key.toString()" tuiTd>{{ item[column.key] }}</td>
+        </ng-template>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+<tui-pagination
+  *ngIf="paginable && (response?.count || array?.length)"
+  [length]="calcTotalPageCount(response?.count || array?.length)"
+  [index]="0"
+  class="mt-3 self-end"
+></tui-pagination>
+<p *ngIf="(response?.result || array)?.length === 0" class="text-red-400 text-base">
+  There is no matching result!
+</p>

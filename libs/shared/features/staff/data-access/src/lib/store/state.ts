@@ -39,12 +39,15 @@ export class StaffState {
 
   constructor(private accountsService: AccountsService) {}
 
-  @Action(LoadStaffs) loadStaffs({ patchState }: StateContext<StateModel>, { params }: LoadStaffs) {
+  @Action(LoadStaffs, { cancelUncompleted: true }) loadStaffs(
+    { patchState }: StateContext<StateModel>,
+    { params }: LoadStaffs
+  ) {
     return this.accountsService
       .apiAccountsStaffsGet(params)
       .pipe(tap((listing) => patchState({ listing })));
   }
-  @Action(LoadStaffById) loadStaffById(
+  @Action(LoadStaffById, { cancelUncompleted: true }) loadStaffById(
     { patchState }: StateContext<StateModel>,
     { params }: LoadStaffById
   ) {

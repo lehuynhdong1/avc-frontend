@@ -5,9 +5,9 @@ import { DetailPage } from './detail.page';
 import { TuiBadgeModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from '@shared/ui/avatar';
-import { TuiButtonModule, TuiLinkModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiLinkModule, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
 
-const tuiModules = [TuiSvgModule, TuiBadgeModule, TuiButtonModule, TuiLinkModule];
+const tuiModules = [TuiSvgModule, TuiBadgeModule, TuiButtonModule, TuiLinkModule, TuiLoaderModule];
 @NgModule({
   declarations: [DetailPage],
   imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, ...tuiModules],

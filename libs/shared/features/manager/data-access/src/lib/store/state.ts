@@ -28,7 +28,7 @@ export class ManagerState {
 
   constructor(private accountsService: AccountsService) {}
 
-  @Action(LoadManagers) loadManagers(
+  @Action(LoadManagers, { cancelUncompleted: true }) loadManagers(
     { patchState }: StateContext<StateModel>,
     { params }: LoadManagers
   ) {
@@ -36,7 +36,7 @@ export class ManagerState {
       .apiAccountsManagersGet(params)
       .pipe(tap((listing) => patchState({ listing })));
   }
-  @Action(LoadManagerById) loadManagerById(
+  @Action(LoadManagerById, { cancelUncompleted: true }) loadManagerById(
     { patchState }: StateContext<StateModel>,
     { params }: LoadManagerById
   ) {

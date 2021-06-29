@@ -1,0 +1,70 @@
+<main class="flex">
+  <section class="flex-grow">
+    <h1>
+      <tui-svg src="assets/taiga-ui/icons/warning.svg#warning" class="size-m"></tui-svg> Manage
+      Issues
+    </h1>
+
+    <section class="w-100 flex flex-col items-stretch">
+      <tui-input tuiTextfieldSize="xl" [formControl]="searchControl" class="w-100 pr-4 mb-4">
+        Search by issue name ...
+      </tui-input>
+      <ng-container *ngIf="(issues$ | async) as issueResponse">
+        <table tuiTable [columns]="COLUMNS">
+          <thead>
+            <tr tuiThGroup>
+              <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
+              <th *tuiHead="'type'" tuiTh [sorter]="null">Issue type</th>
+              <th *tuiHead="'createdAt'" tuiTh [sorter]="null">Created at</th>
+              <th *tuiHead="'image'" tuiTh [sorter]="null">Image</th>
+              <th *tuiHead="'description'" tuiTh [sorter]="null">Description</th>
+              <th *tuiHead="'location'" tuiTh [sorter]="null">Location</th>
+              <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Activation Status</th>
+            </tr>
+          </thead>
+          <tbody tuiTbody [data]="issueResponse?.result || []">
+            <tr
+              *tuiRow="let issue of (issueResponse?.result || []); let index = index"
+              tuiTr
+              class="cursor-pointer"
+              [class.active]="issue.id === (selectedIssueId$ | async)"
+              (click)="selectRow$.next(issue.id || 0)"
+              [routerLink]="[issue.id]"
+            >
+              <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
+              <td *tuiCell="'type'" tuiTd>{{issue.type}}</td>
+              <td *tuiCell="'description'" tuiTd>{{issue.description}}</td>
+              <td *tuiCell="'createdAt'" tuiTd>{{issue.createdAt}}</td>
+              <td *tuiCell="'image'" tuiTd>{{issue.image}}</td>
+              <td *tuiCell="'location'" tuiTd>{{issue.location}}</td>
+              <td *tuiCell="'isAvailable'" tuiTd>
+                <tui-badge
+                  size="m"
+                  [value]="issue.isAvailable ? 'Active': 'Inactive'"
+                  [status]="issue.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+                ></tui-badge>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <tui-pagination
+          *ngIf="issueResponse.count; else noRecord"
+          [length]="calcTotalPageCount(issueResponse.count)"
+          [index]="0"
+          class="mt-3 self-end"
+        ></tui-pagination>
+        <ng-template #noRecord>
+          <p class="text-red-400 text-base">There is no matching result!</p>
+        </ng-template>
+      </ng-container>
+    </section>
+  </section>
+  <aside class="flex-grow flex-shrink-0 relative" *ngIf="selectedIssueId$ | async">
+    <router-outlet></router-outlet>
+    <tui-svg
+      class="top-right cursor-pointer hover:text-red-400"
+      src="tuiIconRemoveLarge"
+      (click)="closeDetail$.next()"
+    ></tui-svg>
+  </aside>
+</main>

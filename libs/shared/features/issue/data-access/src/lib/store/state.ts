@@ -26,7 +26,10 @@ export class IssueState {
 
   constructor(private issuesService: IssueService) {}
 
-  @Action(LoadIssues) loadIssues({ patchState }: StateContext<StateModel>, { params }: LoadIssues) {
+  @Action(LoadIssues, { cancelUncompleted: true }) loadIssues(
+    { patchState }: StateContext<StateModel>,
+    { params }: LoadIssues
+  ) {
     return this.issuesService.apiIssueGet(params).pipe(tap((listing) => patchState({ listing })));
   }
 

@@ -1,15 +1,15 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { ManagerState, LoadManagers } from '@shared/features/manager/data-access';
+import { IssueState, LoadIssues } from '@shared/features/issue/data-access';
 import { Subject } from 'rxjs';
-import { AccountManagerReadDto } from '@shared/api';
+import { IssueReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tuiPure } from '@taiga-ui/cdk';
-import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
+import { TuiStatus } from '@taiga-ui/kit';
 
 @Component({
   selector: 'adca-listing',
@@ -19,28 +19,33 @@ import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
   providers: [RxState]
 })
 export class ListingPage {
-  DYNAMIC_COLUMNS: DynamicTableColumns<AccountManagerReadDto> = [
-    { key: 'firstName', title: 'First Name', type: 'string' },
-    { key: 'lastName', title: 'Last Name', type: 'string' },
-    { key: 'email', title: 'Email', type: 'string' },
-    { key: 'phone', title: 'Phone', type: 'string' },
-    {
-      key: 'isAvailable',
-      title: 'Activation Status',
-      type: 'boolean',
-      trueMessage: 'Active',
-      falseMessage: 'Inactive'
-    }
-  ];
+  TUI_STATUS = {
+    ERROR: TuiStatus.Error,
+    SUCCESS: TuiStatus.Success,
+    PRIMARY: TuiStatus.Primary
+  };
 
+  /* Configurations */
+  readonly COLUMNS: ReadonlyArray<keyof IssueReadDto | 'index'> = [
+    'index',
+    'type',
+    'createdAt',
+    'image',
+    'description',
+    'location',
+    'isAvailable'
+  ] as const;
   readonly searchControl = new FormControl('');
+  page = 0;
+  size = 10;
+
   /* Attribute Streams */
-  readonly managers$ = this.store.select(ManagerState.managers);
+  readonly issues$ = this.store.select(IssueState.issues);
   readonly isOpened$ = this.state.select('isOpened');
-  readonly selectedManagerId$ = this.state.select('selectedManagerId');
+  readonly selectedIssueId$ = this.state.select('selectedIssueId');
 
   /* Action Streams */
-  readonly selectRow$ = new Subject<Id>();
+  readonly selectRow$ = new Subject<number>();
   readonly openAside$ = new Subject<boolean>();
   readonly closeDetail$ = new Subject<void>();
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
@@ -54,7 +59,7 @@ export class ListingPage {
     private router: Router,
     private state: RxState<ListingPageState>
   ) {
-    this.store.dispatch(new LoadManagers({ limit: 10 }));
+    this.store.dispatch(new LoadIssues({ limit: 10 }));
     this.declareSideEffects();
   }
 
@@ -68,20 +73,16 @@ export class ListingPage {
     const lastRouteChild = this.activatedRoute.children[this.activatedRoute.children.length - 1];
     if (lastRouteChild) {
       const idFromRoute$ = lastRouteChild.params.pipe(map((params) => parseInt(params.id)));
-      this.state.connect('selectedManagerId', idFromRoute$);
+      this.state.connect('selectedIssueId', idFromRoute$);
     }
-    this.state.connect('selectedManagerId', this.selectRow$);
+    this.state.connect('selectedIssueId', this.selectRow$);
     this.state.connect('isOpened', this.openAside$);
-
     this.state.hold(this.changeSearchValue$, (value) => {
-      this.store.dispatch(new LoadManagers({ searchValue: value, limit: 10 }));
+      this.store.dispatch(new LoadIssues({ searchValue: value, limit: 10 }));
     });
     this.state.hold(this.closeDetail$, () => {
-      this.state.set({ selectedManagerId: 0 });
-      this.router.navigateByUrl('/manager');
-    });
-    this.state.hold(this.selectRow$, (id) => {
-      this.router.navigate([id], { relativeTo: this.activatedRoute });
+      this.state.set({ selectedIssueId: 0 });
+      this.router.navigateByUrl('/issue');
     });
   }
 }
