@@ -20,8 +20,7 @@ import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 })
 export class ListingPage {
   DYNAMIC_COLUMNS: DynamicTableColumns<AccountManagerReadDto> = [
-    { key: 'firstName', title: 'First Name', type: 'string' },
-    { key: 'lastName', title: 'Last Name', type: 'string' },
+    { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
     { key: 'email', title: 'Email', type: 'string' },
     { key: 'phone', title: 'Phone', type: 'string' },
     {

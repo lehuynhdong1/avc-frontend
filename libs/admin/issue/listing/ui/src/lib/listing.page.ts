@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tuiPure } from '@taiga-ui/cdk';
-import { TuiStatus } from '@taiga-ui/kit';
+import { Id, DynamicTableColumns } from '@shared/ui/dynamic-table';
 
 @Component({
   selector: 'adca-listing',
@@ -19,22 +19,20 @@ import { TuiStatus } from '@taiga-ui/kit';
   providers: [RxState]
 })
 export class ListingPage {
-  TUI_STATUS = {
-    ERROR: TuiStatus.Error,
-    SUCCESS: TuiStatus.Success,
-    PRIMARY: TuiStatus.Primary
-  };
+  DYNAMIC_COLUMNS: DynamicTableColumns<IssueReadDto> = [
+    { key: 'type', title: 'Type', type: 'string' },
+    { key: 'createdAt', title: 'Created at', type: 'date' },
+    { key: 'description', title: 'Description', type: 'date' },
+    { key: 'location', title: 'Location', type: 'date' },
+    {
+      key: 'isAvailable',
+      title: 'Activation Status',
+      type: 'boolean',
+      trueMessage: 'Active',
+      falseMessage: 'Inactive'
+    }
+  ];
 
-  /* Configurations */
-  readonly COLUMNS: ReadonlyArray<keyof IssueReadDto | 'index'> = [
-    'index',
-    'type',
-    'createdAt',
-    'image',
-    'description',
-    'location',
-    'isAvailable'
-  ] as const;
   readonly searchControl = new FormControl('');
   page = 0;
   size = 10;
@@ -45,7 +43,7 @@ export class ListingPage {
   readonly selectedIssueId$ = this.state.select('selectedIssueId');
 
   /* Action Streams */
-  readonly selectRow$ = new Subject<number>();
+  readonly selectRow$ = new Subject<Id>();
   readonly openAside$ = new Subject<boolean>();
   readonly closeDetail$ = new Subject<void>();
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(

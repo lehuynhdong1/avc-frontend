@@ -76,6 +76,10 @@
     "shared-features-issue-data-access": { "tags": ["scope:shared"] },
     "admin-issue-listing-ui": { "tags": ["scope:admin"] },
     "admin-issue-listing-feature": { "tags": ["scope:admin"] },
-    "shared-ui-dynamic-table": { "tags": ["scope:shared"] }
+    "shared-ui-dynamic-table": { "tags": ["scope:shared"] },
+    "admin-manager-update-feature": { "tags": ["scope:admin"] },
+    "admin-manager-create-feature": { "tags": ["scope:admin"] },
+    "admin-manager-create-ui": { "tags": ["scope:admin"] },
+    "admin-manager-update-ui": { "tags": ["scope:admin"] }
   }
 }

@@ -1,0 +1,117 @@
+<aside class="flex-grow flex-shrink-0 relative">
+  <tui-svg
+    class="top-right cursor-pointer hover:text-red-400"
+    src="tuiIconRemoveLarge"
+    routerLink="/staff"
+  ></tui-svg>
+  <form class="p-5 flex flex-col" [formGroup]="form">
+    <h2>Update Manager</h2>
+    <adc-frontend-avatar
+      [url]="(manager$| async)?.avatar"
+      size="xxl"
+      class="mb-3"
+    ></adc-frontend-avatar>
+    <div class="flex flex-col mb-3">
+      <label>First name </label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="First name here..."
+        formControlName="firstName"
+      >
+        <span class="text-gray-300">
+          First name here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+    <div class="flex flex-col mb-3">
+      <label>Last name</label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="Last name here..."
+        formControlName="lastName"
+      >
+        <span class="text-gray-300">
+          Last name here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+
+    <div class="flex flex-col mb-3">
+      <label>Phone</label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="Phone here..."
+        formControlName="phone"
+      >
+        <span class="text-gray-300">
+          Phone here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label class="mb-2">System Role</label>
+      <tui-select
+        *tuiLet="roles$ | async as roles"
+        tuiTextfieldSize="m"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldCleaner]="true"
+        tuiTextfieldExampleText="Select role for this manager."
+        [valueContent]="roles ? stringifyRoles(roles) : loading"
+        formControlName="roleId"
+      >
+        <span class="text-gray-300">
+          Select role for this manager
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+        <ng-template tuiDataList>
+          <tui-data-list *ngIf="roles else loading">
+            <button *ngFor="let item of roles" tuiOption [value]="item.id">{{item.name}}</button>
+          </tui-data-list>
+        </ng-template>
+      </tui-select>
+
+      <ng-container *ngIf="form.get('roleId')?.value === ROLE_STAFF">
+        <label class="mt-3 mb-2">Managed by</label>
+        <tui-select
+          *tuiLet="managers$ | async as managers"
+          tuiTextfieldSize="m"
+          [tuiTextfieldLabelOutside]="true"
+          [tuiTextfieldCleaner]="true"
+          [valueContent]="managers ? stringifyManagers(managers) : loading"
+          tuiTextfieldExampleText="Select manager for this manager."
+          formControlName="managedBy"
+          class="mb-3"
+        >
+          <span class="text-gray-300">
+            Select manager for this manager
+            <tui-svg src="tuiIconEdit"></tui-svg>
+          </span>
+
+          <ng-template tuiDataList>
+            <tui-data-list *ngIf="managers else loading">
+              <button tuiOption *ngFor="let manager of managers" [value]="manager.id">
+                {{manager.firstName}} {{manager.lastName}}
+              </button>
+            </tui-data-list>
+          </ng-template>
+        </tui-select>
+      </ng-container>
+    </div>
+
+    <button tuiButton (click)="clickUpdate$.next()" size="m" [disabled]="form.invalid" class="mb-2">
+      Save
+    </button>
+    <button tuiButton (click)="clickDiscard$.next()" size="m" appearance="outline">Discard</button>
+  </form>
+  <ng-template #loading> Loading </ng-template>
+</aside>

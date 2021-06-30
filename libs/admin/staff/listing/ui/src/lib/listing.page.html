@@ -22,55 +22,15 @@
         Search by staff name ...
       </tui-input>
       <ng-container *ngIf="(staffs$ | async) as staffResponse">
-        <table tuiTable [columns]="COLUMNS">
-          <thead>
-            <tr tuiThGroup>
-              <th *tuiHead="'index'" tuiTh>Id</th>
-              <th *tuiHead="'name'" tuiTh>Name</th>
-              <th *tuiHead="'email'" tuiTh [sorter]="null">Email</th>
-              <th *tuiHead="'phone'" tuiTh [sorter]="null">Phone</th>
-              <th *tuiHead="'managedByEmail'" tuiTh [sorter]="null">
-                Managed by
-                <tui-tag size="s" value="Manager" [status]="TUI_STATUS.PRIMARY"></tui-tag>
-              </th>
-              <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Activation Status</th>
-            </tr>
-          </thead>
-          <tbody tuiTbody [data]="staffResponse?.result || []">
-            <tr
-              *tuiRow="let item of (staffResponse?.result || []); let index = index"
-              tuiTr
-              class="cursor-pointer"
-              [class.active]="item.id === (selectedStaffId$ | async)"
-              (click)="selectRow$.next(item.id || 0)"
-              [routerLink]="[item.id]"
-            >
-              <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
-              <td *tuiCell="'name'" tuiTd>{{item.firstName}} {{item.lastName}}</td>
-              <td *tuiCell="'email'" tuiTd>{{item.email}}</td>
-              <td *tuiCell="'phone'" tuiTd>{{item.phone}}</td>
-              <td *tuiCell="'managedByEmail'" tuiTd>{{item.managedByEmail}}</td>
-              <td *tuiCell="'isAvailable'" tuiTd>
-                <tui-badge
-                  size="m"
-                  [value]="item.isAvailable ? 'Active': 'Inactive'"
-                  [status]="item.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
-                ></tui-badge>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <tui-pagination
-          *ngIf="staffResponse.count; else noRecord"
-          [length]="calcTotalPageCount(staffResponse.count)"
-          [index]="0"
-          class="mt-3 self-end"
-        ></tui-pagination>
-        <ng-template #noRecord>
-          <p class="text-red-400 text-base">There is no matching result!</p>
-        </ng-template>
+        <adc-frontend-dynamic-table
+          [columns]="DYNAMIC_COLUMNS"
+          [response]="staffResponse"
+          [paginable]="true"
+          [selectable]="true"
+          (selectRow)="selectRow$.next($event)"
+        ></adc-frontend-dynamic-table>
       </ng-container>
     </section>
   </section>
-  <router-outlet></router-outlet>
+  <div class="pl-4"><router-outlet></router-outlet></div>
 </main>

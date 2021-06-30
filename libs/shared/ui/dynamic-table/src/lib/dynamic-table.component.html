@@ -1,7 +1,9 @@
 <table tuiTable [columns]="getKeys(columns) || []">
   <thead>
     <tr tuiThGroup>
-      <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
+      <ng-container *ngIf="indexable">
+        <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
+      </ng-container>
       <ng-container *ngFor="let column of columns">
         <th *tuiHead="column.key" tuiTh [sorter]="null">{{ column.title }}</th>
       </ng-container>
@@ -13,13 +15,15 @@
       tuiTr
       [class.cursor-pointer]="selectable"
       [class.active]="item.id === (selectedId$ | async)"
-      (click)="selectRow$.next(item.id || 0)"
+      (click)="selectable && selectRow$.next(item.id || 0)"
     >
-      <td *tuiCell="'index'" tuiTd>
-        <b>{{ index + 1 }}</b>
-      </td>
+      <ng-container *ngIf="indexable">
+        <td *tuiCell="'index'" tuiTd>
+          <b>{{ index + 1 }}</b>
+        </td>
+      </ng-container>
       <ng-container *ngFor="let column of columns">
-        <ng-container *ngIf="column.type === 'boolean'; else nonBooleanColumn">
+        <ng-container *ngIf="column.type === 'boolean'">
           <td *tuiCell="column.key.toString()" tuiTd>
             <adc-frontend-boolean-column
               [item]="item"
@@ -27,9 +31,18 @@
             ></adc-frontend-boolean-column>
           </td>
         </ng-container>
-        <ng-template #nonBooleanColumn>
-          <td *tuiCell="column.key.toString()" tuiTd>{{ item[column.key] }}</td>
-        </ng-template>
+        <ng-container *ngIf="column.type === 'date'">
+          <td *tuiCell="column.key.toString()" tuiTd>
+            {{ toDate(item[column.key]) | date }}
+          </td>
+        </ng-container>
+        <ng-container *ngIf="column.type === 'string'">
+          <td *tuiCell="column.key.toString()" tuiTd>
+            {{
+              column.cellTemplate ? (item | cellTemplate: column.cellTemplate) : item[column.key]
+            }}
+          </td>
+        </ng-container>
       </ng-container>
     </tr>
   </tbody>

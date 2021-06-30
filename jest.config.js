@@ -74,6 +74,10 @@ module.exports = {
     '<rootDir>/libs/shared/features/issue/data-access',
     '<rootDir>/libs/admin/issue/feature',
     '<rootDir>/libs/admin/issue/ui',
-    '<rootDir>/libs/shared/ui/dynamic-table'
+    '<rootDir>/libs/shared/ui/dynamic-table',
+    '<rootDir>/libs/admin/manager/update/feature',
+    '<rootDir>/libs/admin/manager/create/feature',
+    '<rootDir>/libs/admin/manager/create/ui',
+    '<rootDir>/libs/admin/manager/update/ui'
   ]
 };

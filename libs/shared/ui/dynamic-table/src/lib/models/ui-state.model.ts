@@ -4,6 +4,11 @@ interface KeyValue<K, Type> {
   key: K;
   title: string;
   type: Type;
+  /**
+   * @description template for a cell. Supported #FIELD_OF_T
+   * @example "#firstName #lastName"
+   */
+  cellTemplate?: string;
 }
 
 export type SupportedDto = AccountManagerReadDto;
@@ -17,6 +22,7 @@ export interface BooleanField<Dto extends HasId> extends KeyValue<keyof Dto, 'bo
 
 export type ColumnType<Dto extends HasId> =
   | KeyValue<keyof Dto, 'string'>
+  | KeyValue<keyof Dto, 'date'>
   | KeyValue<keyof Dto, 'number'>
   | BooleanField<Dto>;
 export type DynamicTableColumns<Dto extends HasId> = ColumnType<Dto>[];

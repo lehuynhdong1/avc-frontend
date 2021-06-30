@@ -8,8 +8,8 @@ import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TuiStatus } from '@taiga-ui/kit';
 import { tuiPure } from '@taiga-ui/cdk';
+import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 
 @Component({
   selector: 'adca-listing',
@@ -19,24 +19,20 @@ import { tuiPure } from '@taiga-ui/cdk';
   providers: [RxState]
 })
 export class ListingPage {
-  TUI_STATUS = {
-    ERROR: TuiStatus.Error,
-    SUCCESS: TuiStatus.Success,
-    PRIMARY: TuiStatus.Primary
-  };
-
-  /* Configurations */
-  readonly COLUMNS: ReadonlyArray<keyof AccountStaffReadDto | 'index' | 'name'> = [
-    'index',
-    'name',
-    'email',
-    'phone',
-    'managedByEmail',
-    'isAvailable'
-  ] as const;
+  DYNAMIC_COLUMNS: DynamicTableColumns<AccountStaffReadDto> = [
+    { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
+    { key: 'email', title: 'Email', type: 'string' },
+    { key: 'phone', title: 'Phone', type: 'string' },
+    { key: 'managedByEmail', title: 'Managed by', type: 'string' },
+    {
+      key: 'isAvailable',
+      title: 'Activation Status',
+      type: 'boolean',
+      trueMessage: 'Active',
+      falseMessage: 'Inactive'
+    }
+  ];
   readonly searchControl = new FormControl('');
-  page = 0;
-  size = 10;
 
   /* Attribute Streams */
   readonly staffs$ = this.store.select(StaffState.staffs);
@@ -44,7 +40,7 @@ export class ListingPage {
   readonly selectedStaffId$ = this.state.select('selectedStaffId');
 
   /* Action Streams */
-  readonly selectRow$ = new Subject<number>();
+  readonly selectRow$ = new Subject<Id>();
   readonly openAside$ = new Subject<boolean>();
   readonly closeDetail$ = new Subject<void>();
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
@@ -76,6 +72,9 @@ export class ListingPage {
     this.state.hold(this.closeDetail$, () => {
       this.state.set({ selectedStaffId: 0 });
       this.router.navigateByUrl('/staff');
+    });
+    this.state.hold(this.selectRow$, (id) => {
+      this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
   }
 

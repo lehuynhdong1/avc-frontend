@@ -1,10 +1,21 @@
 <main class="flex">
   <section class="flex-grow">
-    <h1>
-      <tui-svg src="assets/taiga-ui/icons/ribbon.svg#ribbon" class="size-m"></tui-svg> Manage
-      Managers
-    </h1>
-
+    <div class="flex justify-between items-center">
+      <h1>
+        <tui-svg src="assets/taiga-ui/icons/ribbon.svg#ribbon" class="size-m"></tui-svg> Manage
+        Managers
+      </h1>
+      <button
+        tuiButton
+        type="button"
+        class="tui-space_right-3"
+        size="m"
+        icon="tuiIconPlusCircleLarge"
+        routerLink="create"
+      >
+        Create new
+      </button>
+    </div>
     <section class="w-100 flex flex-col items-stretch">
       <tui-input tuiTextfieldSize="xl" [formControl]="searchControl" class="w-full pr-4 mb-4">
         Search by manager name ...
@@ -20,12 +31,5 @@
       </ng-container>
     </section>
   </section>
-  <aside class="flex-grow flex-shrink-0 relative" *ngIf="selectedManagerId$ | async">
-    <router-outlet></router-outlet>
-    <tui-svg
-      class="top-right cursor-pointer hover:text-red-400"
-      src="tuiIconRemoveLarge"
-      (click)="closeDetail$.next()"
-    ></tui-svg>
-  </aside>
+  <div class="pl-4"><router-outlet></router-outlet></div>
 </main>

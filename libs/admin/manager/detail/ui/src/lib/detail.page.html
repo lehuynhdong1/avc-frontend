@@ -1,58 +1,77 @@
-<form *ngIf="selectedManager$ | async as manager; else loading" class="p-5 flex flex-col">
-  <h1 class="text-xl w-full">Manager Detail</h1>
-  <label>Full name</label>
-  <h2 class="bold my-0">{{ manager.firstName }} {{ manager.lastName }}</h2>
-  <div class="p-4 relative border border-gray-900">
-    <adc-frontend-avatar
-      class="tui-space_top-2"
-      [url]="manager.avatar || ''"
-      size="xxl"
-    ></adc-frontend-avatar>
-  </div>
-  <!-- <h2 class="bold mt-0">{{ manager.role }}</h2> -->
+<aside class="relative">
+  <form *ngIf="selectedManager$ | async as manager; else loading">
+    <tui-svg
+      class="top-right !right-20 cursor-pointer text-green-600 hover:text-green-800"
+      src="tuiIconExternalLarge"
+      [routerLink]="'/manager/detail/'+manager.id"
+    ></tui-svg>
+    <tui-svg
+      class="top-right !right-12 cursor-pointer text-yellow-400 hover:text-yellow-500"
+      src="tuiIconEditLarge"
+      [routerLink]="'/manager/update/'+manager.id"
+    ></tui-svg>
+    <tui-svg
+      class="top-right cursor-pointer text-red-500 hover:text-red-700"
+      src="tuiIconRemoveLarge"
+      routerLink="/manager"
+    ></tui-svg>
+    <section class="p-5 flex flex-col">
+      <h1 class="text-xl w-full">Manager Detail</h1>
+      <label>Full name</label>
+      <h2 class="bold my-0">{{ manager.firstName }} {{ manager.lastName }}</h2>
+      <div class="p-4 relative border border-gray-900">
+        <adc-frontend-avatar
+          class="tui-space_top-2"
+          [url]="manager.avatar || ''"
+          size="xxl"
+        ></adc-frontend-avatar>
+      </div>
+      <!-- <h2 class="bold mt-0">{{ manager.role }}</h2> -->
 
-  <label>Email</label>
-  <h3 class="bold mt-0">{{ manager.email }}</h3>
+      <label>Email</label>
+      <h3 class="bold mt-0">{{ manager.email }}</h3>
 
-  <label>Phone</label>
-  <h3 class="bold mt-0">{{ manager.phone }}</h3>
+      <label>Phone</label>
+      <h3 class="bold mt-0">{{ manager.phone }}</h3>
 
-  <b class="text-gray-600 text-sm mb-1">Activation Status</b>
-  <tui-badge
-    size="m"
-    [value]="manager.isAvailable ? 'Active' : 'Inactive'"
-    [status]="manager.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
-    class="self-start mb-2"
-  ></tui-badge>
-  <button
-    tuiButton
-    size="m"
-    appearance="outline"
-    type="button"
-    (click)="clickActivate$.next()"
-    class="self-start mb-3"
-    [class.deactivate]="manager.isAvailable"
-  >
-    {{manager.isAvailable ? 'Deactivate': 'Reactivate'}}
-  </button>
+      <b class="text-gray-600 text-sm mb-1">Activation Status</b>
+      <tui-badge
+        size="m"
+        [value]="manager.isAvailable ? 'Active' : 'Inactive'"
+        [status]="manager.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+        class="self-start mb-2"
+      ></tui-badge>
+      <button
+        tuiButton
+        size="m"
+        appearance="outline"
+        type="button"
+        (click)="clickActivate$.next()"
+        class="self-start mb-3"
+        [class.deactivate]="manager.isAvailable"
+      >
+        {{manager.isAvailable ? 'Deactivate': 'Reactivate'}}
+      </button>
 
-  <label>Assigned cars</label>
-  <ul class="text-sm mb-3">
-    <li class="!ml-3">
-      <a tuiLink [routerLink]="'/car/'+ ''">Car Name</a>
-    </li>
-    <li class="!ml-3">Car Name</li>
-  </ul>
+      <label>Assigned cars</label>
+      <ul class="text-sm mb-3">
+        <li class="!ml-3">
+          <a tuiLink [routerLink]="'/car/'+ ''">Car Name</a>
+        </li>
+        <li class="!ml-3">Car Name</li>
+      </ul>
 
-  <label>Assigned staffs</label>
-  <ul class="text-sm mb-3">
-    <li class="!ml-3">
-      <a tuiLink [routerLink]="'/staff/'+ ''">Staff Name</a>
-    </li>
-    <li class="!ml-3">Staff Name</li>
-  </ul>
-</form>
+      <label>Assigned staffs</label>
+      <ul class="text-sm mb-3">
+        <li class="!ml-3">
+          <a tuiLink [routerLink]="'/staff/'+ ''">Staff Name</a>
+        </li>
+        <li class="!ml-3">Staff Name</li>
+      </ul>
+    </section>
+  </form>
 
-<ng-template #loading
-  ><div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
-</ng-template>
+  <ng-template #loading
+    ><div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
+  </ng-template>
+</aside>

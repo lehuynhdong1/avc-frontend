@@ -8,7 +8,7 @@
         @apply border-green-500;
       }
 
-      &[data-state='hovegreen'] {
+      &[data-state='hovered'] {
         @apply bg-green-100;
       }
 

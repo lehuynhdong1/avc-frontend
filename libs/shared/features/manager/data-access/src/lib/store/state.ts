@@ -1,6 +1,6 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
-import { LoadManagers, LoadManagerById } from './actions';
+import { LoadManagers, LoadManagerById, CreateManager, UpdateManager } from './actions';
 import { AccountsService } from '@shared/api';
 import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -83,5 +83,33 @@ export class ManagerState {
           return throwError(errorMessage);
         })
       );
+  }
+
+  @Action(CreateManager)
+  createManager({ getState, patchState }: StateContext<StateModel>, { params }: CreateManager) {
+    const { create } = getState();
+    return this.accountsService.apiAccountsManagerPost(params).pipe(
+      tap(
+        () => patchState({ create }),
+        catchError((error) => {
+          console.warn(`[${STATE_NAME}] CreateManager failed with error: `, error);
+          const errorMessage = 'Create manager failed. Sorry, please try again later.';
+          patchState({ errorMessage });
+          return throwError(errorMessage);
+        })
+      )
+    );
+  }
+
+  @Action(UpdateManager)
+  updateManager({ patchState }: StateContext<StateModel>, { params }: UpdateManager) {
+    return this.accountsService.apiAccountsIdPatch(params).pipe(
+      catchError((error) => {
+        console.warn(`[${STATE_NAME}] UpdateManager failed with error: `, error);
+        const errorMessage = 'Update manager failed. Sorry, please try again later.';
+        patchState({ errorMessage });
+        return throwError(errorMessage);
+      })
+    );
   }
 }

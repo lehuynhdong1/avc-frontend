@@ -7,10 +7,10 @@ import { RxState } from '@rx-angular/state';
 import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-import { TuiStatus } from '@taiga-ui/kit';
+import { ActivatedRoute, Router } from '@angular/router';
 import { tuiPure } from '@taiga-ui/cdk';
 import { hasValue } from '@shared/util';
+import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -19,22 +19,36 @@ import { hasValue } from '@shared/util';
   providers: [RxState]
 })
 export class ListingPage {
-  TUI_STATUS = {
-    ERROR: TuiStatus.Error,
-    SUCCESS: TuiStatus.Success,
-    PRIMARY: TuiStatus.Primary
-  };
-
-  /* Configurations */
-  readonly COLUMNS: ReadonlyArray<keyof CarListReadDto | 'index'> = [
-    'index',
-    'name',
-    'deviceId',
-    'managedBy',
-    'assignTo',
-    'isConnecting',
-    'isAvailable'
-  ] as const;
+  DYNAMIC_COLUMNS: DynamicTableColumns<CarListReadDto> = [
+    { key: 'name', title: 'Name', type: 'string' },
+    { key: 'deviceId', title: 'Device ID', type: 'string' },
+    {
+      key: 'managedBy',
+      title: 'Managed by',
+      type: 'string',
+      cellTemplate: '#managedBy.lastName #managedBy.firstName'
+    },
+    {
+      key: 'assignTo',
+      title: 'Assigned to',
+      type: 'string',
+      cellTemplate: '#assignTo.lastName #assignTo.firstName'
+    },
+    {
+      key: 'isConnecting',
+      title: 'Connecting Status',
+      type: 'boolean',
+      trueMessage: 'Connected',
+      falseMessage: 'Disconnected'
+    },
+    {
+      key: 'isAvailable',
+      title: 'Activation Status',
+      type: 'boolean',
+      trueMessage: 'Active',
+      falseMessage: 'Inactive'
+    }
+  ];
 
   readonly searchControl = new FormControl('');
   page = 0;
@@ -42,12 +56,14 @@ export class ListingPage {
 
   /* Attribute Streams */
   readonly approvedCars$ = this.store.select(CarState.approvedCars);
-  readonly unapprovedCars$ = this.store.select(CarState.unapprovedCars).pipe(hasValue());
-  readonly unapprovedCarsCount$ = this.unapprovedCars$.pipe(map((cars) => cars.count));
+  readonly unapprovedCarsCount$ = this.store.select(CarState.unapprovedCars).pipe(
+    hasValue(),
+    map((cars) => cars.count)
+  );
   readonly selectedCarId$ = this.state.select('selectedCarId');
 
   /* Action Streams */
-  readonly selectRow$ = new Subject<number>();
+  readonly selectRow$ = new Subject<Id>();
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
     debounceTime(500),
     distinctUntilChanged()
@@ -55,6 +71,7 @@ export class ListingPage {
 
   constructor(
     private store: Store,
+    private router: Router,
     private activatedRoute: ActivatedRoute,
     private state: RxState<ListingPageState>
   ) {
@@ -71,6 +88,9 @@ export class ListingPage {
     this.state.connect('selectedCarId', this.selectRow$);
     this.state.hold(this.changeSearchValue$, (value) => {
       this.store.dispatch(new LoadApprovedCars({ searchValue: value, limit: 10 }));
+    });
+    this.state.hold(this.selectRow$, (id) => {
+      this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
   }
 

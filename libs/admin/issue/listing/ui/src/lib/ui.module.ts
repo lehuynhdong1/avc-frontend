@@ -1,21 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListingPage } from './listing.page';
-import { TuiTableModule } from '@taiga-ui/addon-table';
-import { TuiInputModule, TuiPaginationModule, TuiBadgeModule } from '@taiga-ui/kit';
+import { TuiInputModule } from '@taiga-ui/kit';
 import { TuiSvgModule } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DynamicTableModule } from '@shared/ui/dynamic-table';
 
-const tuiModules = [
-  TuiTableModule,
-  TuiPaginationModule,
-  TuiSvgModule,
-  TuiInputModule,
-  TuiBadgeModule
-];
+const tuiModules = [TuiSvgModule, TuiInputModule];
 @NgModule({
   declarations: [ListingPage],
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, ...tuiModules]
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, DynamicTableModule, ...tuiModules]
 })
 export class UiModule {}

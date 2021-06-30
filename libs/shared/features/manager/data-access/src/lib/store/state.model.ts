@@ -1,8 +1,13 @@
-import { AccountManagerReadDtoPagingResponseDto, AccountManagerReadDto } from '@shared/api';
+import {
+  AccountManagerReadDtoPagingResponseDto,
+  AccountManagerReadDto,
+  ApiAccountsManagerPostRequestParams
+} from '@shared/api';
 
 export interface StateModel {
   listing: AccountManagerReadDtoPagingResponseDto | null;
   detail: AccountManagerReadDto | null;
+  create?: ApiAccountsManagerPostRequestParams;
   errorMessage?: string;
 }
 

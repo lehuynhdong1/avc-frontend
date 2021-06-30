@@ -14,7 +14,7 @@ import { UnsavedChangesGuard } from '@admin/core/util';
         path: '',
         pathMatch: 'full',
         component: UpdatePage,
-        data: { title: 'Update New Staff' },
+        data: { title: 'Update Staff' },
         canDeactivate: [UnsavedChangesGuard]
       }
     ])
