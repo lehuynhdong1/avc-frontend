@@ -31,7 +31,7 @@
     "lint:ts": "eslint . --ext .ts",
     "lint:ts:fix": "npm run lint:ts -- --fix",
     "admin:build-analyzer": "nx run admin:build:production --stats-json && webpack-bundle-analyzer www/apps/admin/stats.json",
-    "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer dist/apps/mobile/stats.json",
+    "mobile:build-analyzer": "nx run mobile:build --stats-json && webpack-bundle-analyzer www/apps/mobile/stats.json",
     "update:api": "rm -rf libs/shared/api/src/lib/generated && openapi-generator-cli generate && prettier --write libs/shared/api/src/lib/generated && eslint libs/shared/api/src/lib/generated/*.ts --ext .ts --fix",
     "mobile:sync": "cd apps/mobile && npx cap sync",
     "mobile:live-reload:ios": "cd apps/mobile && ionic capacitor run ios -l --external",
@@ -83,7 +83,7 @@
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^12.0.0",
+    "@angular-builders/custom-webpack": "^11.1.1",
     "@angular-devkit/build-angular": "~0.1102.0",
     "@angular-eslint/eslint-plugin": "~2.0.2",
     "@angular-eslint/eslint-plugin-template": "~2.0.2",

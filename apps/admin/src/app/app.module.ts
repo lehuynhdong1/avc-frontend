@@ -2,19 +2,33 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { TuiThemeNightModule, TuiModeModule } from '@taiga-ui/core';
 import { TuiRootModule } from '@taiga-ui/core';
-import { CoreModulesWithConfig } from '@admin/core/feature';
 import { environment } from '../environments/environment';
+import { routes } from './root.routes';
+import { LanguageModuleWithConfig } from '@shared/language';
+import { StateManagementModulesWithConfig } from '@shared/state-management';
+import { OpenApiModule } from '@shared/api';
+import { LayoutModule } from '@admin/core/ui';
+import { UtilModule as CoreUtilModule } from '@admin/core/util';
+import { UtilModule as AuthUtilModule } from '@shared/auth/util';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { getApiConfigFactory } from './api-config.factory';
 
-const tuiModules = [TuiRootModule, TuiThemeNightModule, TuiModeModule];
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    ...tuiModules,
-    CoreModulesWithConfig(environment)
+    HttpClientModule,
+    TuiRootModule,
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' }),
+    OpenApiModule.forRoot(getApiConfigFactory),
+    LayoutModule,
+    CoreUtilModule,
+    AuthUtilModule,
+    StateManagementModulesWithConfig(environment),
+    LanguageModuleWithConfig({ prodMode: environment.production })
   ],
   bootstrap: [AppComponent]
 })

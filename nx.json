@@ -17,7 +17,6 @@
     "shared-auth-forgot-password-ui": { "tags": ["scope:shared"] },
     "shared-auth-reset-password-ui": { "tags": ["scope:shared"] },
     "admin-auth-login-feature": { "tags": ["scope:admin"] },
-    "admin-core-feature": { "tags": ["scope:admin"] },
     "shared-api": { "tags": ["scope:shared"] },
     "shared-util": { "tags": ["scope:shared"] },
     "admin-auth-forgot-password-ui": { "tags": ["scope:admin"] },

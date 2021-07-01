@@ -3,7 +3,7 @@
   "appName": "mobile",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "../../dist/apps/mobile",
+  "webDir": "../../www/apps/mobile",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
