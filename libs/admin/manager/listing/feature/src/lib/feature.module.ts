@@ -19,9 +19,7 @@ import { ListingPage, UiModule } from '@admin/manager/listing/ui';
           },
           {
             path: 'update/:id',
-            loadChildren: () =>
-              import('@admin/manager/update/feature').then((m) => m.FeatureModule),
-            data: { isUpdatePage: true }
+            loadChildren: () => import('@admin/manager/update/feature').then((m) => m.FeatureModule)
           },
           {
             path: ':id',

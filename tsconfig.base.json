@@ -142,7 +142,11 @@
       "@admin/manager/update/feature": ["libs/admin/manager/update/feature/src/index.ts"],
       "@admin/manager/create/feature": ["libs/admin/manager/create/feature/src/index.ts"],
       "@admin/manager/create/ui": ["libs/admin/manager/create/ui/src/index.ts"],
-      "@admin/manager/update/ui": ["libs/admin/manager/update/ui/src/index.ts"]
+      "@admin/manager/update/ui": ["libs/admin/manager/update/ui/src/index.ts"],
+      "@admin/car/update/feature": ["libs/admin/car/update/feature/src/index.ts"],
+      "@admin/car/update/ui": ["libs/admin/car/update/ui/src/index.ts"],
+      "@admin/issue/detail/ui": ["libs/admin/issue/detail/ui/src/index.ts"],
+      "@admin/issue/detail/feature": ["libs/admin/issue/detail/feature/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -6,8 +6,8 @@
     </h1>
 
     <section class="w-100 flex flex-col items-stretch">
-      <tui-input tuiTextfieldSize="xl" [formControl]="searchControl" class="w-100 pr-4 mb-4">
-        Search by issue name ...
+      <tui-input tuiTextfieldSize="l" [formControl]="searchControl" class="flex-grow pr-4 mb-4">
+        Search by issue description ...
       </tui-input>
       <ng-container *ngIf="(issues$ | async) as issueResponse">
         <adc-frontend-dynamic-table
@@ -20,12 +20,5 @@
       </ng-container>
     </section>
   </section>
-  <aside class="flex-grow flex-shrink-0 relative" *ngIf="selectedIssueId$ | async">
-    <div class="pl-4"><router-outlet></router-outlet></div>
-    <tui-svg
-      class="top-right cursor-pointer hover:text-red-400"
-      src="tuiIconRemoveLarge"
-      (click)="closeDetail$.next()"
-    ></tui-svg>
-  </aside>
+  <div class="pl-4"><router-outlet></router-outlet></div>
 </main>

@@ -14,6 +14,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { CarListReadDtoPagingResponseDto } from '../model/models';
+import { CarManagedByUpdateDto } from '../model/models';
 import { CarReadDto } from '../model/models';
 
 import { Configuration } from '../configuration';
@@ -28,6 +29,14 @@ export interface ApiCarsGetRequestParams {
 
 export interface ApiCarsIdGetRequestParams {
   id: number;
+}
+
+export interface ApiCarsManagedbyPutRequestParams {
+  carManagedByUpdateDto?: CarManagedByUpdateDto;
+}
+
+export interface ApiCarsPostRequestParams {
+  deviceId?: string;
 }
 
 export interface CarsServiceInterface {
@@ -53,4 +62,24 @@ export interface CarsServiceInterface {
     requestParameters: ApiCarsIdGetRequestParams,
     extraHttpRequestParams?: any
   ): Observable<CarReadDto>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiCarsManagedbyPut(
+    requestParameters: ApiCarsManagedbyPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiCarsPost(
+    requestParameters: ApiCarsPostRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
 }

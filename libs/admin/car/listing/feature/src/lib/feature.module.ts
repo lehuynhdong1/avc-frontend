@@ -16,6 +16,10 @@ import { ListingPage, UiModule } from '@admin/car/listing/ui';
           {
             path: ':id',
             loadChildren: () => import('@admin/car/detail/feature').then((m) => m.FeatureModule)
+          },
+          {
+            path: 'update/:id',
+            loadChildren: () => import('@admin/car/update/feature').then((m) => m.FeatureModule)
           }
         ]
       }

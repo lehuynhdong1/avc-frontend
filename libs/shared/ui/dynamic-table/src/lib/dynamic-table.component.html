@@ -33,7 +33,7 @@
         </ng-container>
         <ng-container *ngIf="column.type === 'date'">
           <td *tuiCell="column.key.toString()" tuiTd>
-            {{ toDate(item[column.key]) | date }}
+            {{ item[column.key] ? (toDate(item[column.key]) | date) : 'Undefined' }}
           </td>
         </ng-container>
         <ng-container *ngIf="column.type === 'string'">

@@ -1,16 +1,17 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ManagerState, LoadManagers } from '@shared/features/manager/data-access';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { AccountManagerReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tuiPure } from '@taiga-ui/cdk';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
-
+import { ActivationStatus, ActivationStatuses } from '@admin/core/util';
+import { TuiStatus } from '@taiga-ui/kit';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -19,7 +20,7 @@ import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
   providers: [RxState]
 })
 export class ListingPage {
-  DYNAMIC_COLUMNS: DynamicTableColumns<AccountManagerReadDto> = [
+  readonly DYNAMIC_COLUMNS: DynamicTableColumns<AccountManagerReadDto> = [
     { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
     { key: 'email', title: 'Email', type: 'string' },
     { key: 'phone', title: 'Phone', type: 'string' },
@@ -30,22 +31,23 @@ export class ListingPage {
       trueMessage: 'Active',
       falseMessage: 'Inactive'
     }
-  ];
+  ] as const;
+  readonly IS_AVAILABLE_VALUES: ReadonlyArray<ActivationStatuses> = ['All', 'Active', 'Inactive'];
+  readonly TUI_STATUS = {
+    ERROR: TuiStatus.Error,
+    SUCCESS: TuiStatus.Success,
+    PRIMARY: TuiStatus.Primary
+  };
 
   readonly searchControl = new FormControl('');
+  readonly isAvailableControl = new FormControl('All');
+
   /* Attribute Streams */
   readonly managers$ = this.store.select(ManagerState.managers);
-  readonly isOpened$ = this.state.select('isOpened');
   readonly selectedManagerId$ = this.state.select('selectedManagerId');
 
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
-  readonly openAside$ = new Subject<boolean>();
-  readonly closeDetail$ = new Subject<void>();
-  readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
-    debounceTime(500),
-    distinctUntilChanged()
-  );
 
   constructor(
     private store: Store,
@@ -53,7 +55,6 @@ export class ListingPage {
     private router: Router,
     private state: RxState<ListingPageState>
   ) {
-    this.store.dispatch(new LoadManagers({ limit: 10 }));
     this.declareSideEffects();
   }
 
@@ -70,17 +71,28 @@ export class ListingPage {
       this.state.connect('selectedManagerId', idFromRoute$);
     }
     this.state.connect('selectedManagerId', this.selectRow$);
-    this.state.connect('isOpened', this.openAside$);
 
-    this.state.hold(this.changeSearchValue$, (value) => {
-      this.store.dispatch(new LoadManagers({ searchValue: value, limit: 10 }));
-    });
-    this.state.hold(this.closeDetail$, () => {
-      this.state.set({ selectedManagerId: 0 });
-      this.router.navigateByUrl('/manager');
-    });
-    this.state.hold(this.selectRow$, (id) => {
-      this.router.navigate([id], { relativeTo: this.activatedRoute });
-    });
+    const searchValueChanged$ = this.searchControl.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      startWith('')
+    );
+    const isAvailableChanged$ = this.isAvailableControl.valueChanges.pipe(
+      debounceTime(200),
+      startWith('All')
+    );
+    this.state.hold(
+      combineLatest([searchValueChanged$, isAvailableChanged$]),
+      ([searchValue, isAvailable]) => {
+        const isAvailableTrueValue = ActivationStatus[isAvailable as ActivationStatuses];
+        this.store.dispatch(
+          new LoadManagers({ searchValue, isAvailable: isAvailableTrueValue, limit: 10 })
+        );
+      }
+    );
+
+    this.state.hold(this.selectRow$, (id) =>
+      this.router.navigate([id], { relativeTo: this.activatedRoute })
+    );
   }
 }

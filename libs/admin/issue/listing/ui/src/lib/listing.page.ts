@@ -22,34 +22,19 @@ export class ListingPage {
   DYNAMIC_COLUMNS: DynamicTableColumns<IssueReadDto> = [
     { key: 'type', title: 'Type', type: 'string' },
     { key: 'createdAt', title: 'Created at', type: 'date' },
-    { key: 'description', title: 'Description', type: 'date' },
-    { key: 'location', title: 'Location', type: 'date' },
-    {
-      key: 'isAvailable',
-      title: 'Activation Status',
-      type: 'boolean',
-      trueMessage: 'Active',
-      falseMessage: 'Inactive'
-    }
+    { key: 'description', title: 'Description', type: 'string' },
+    { key: 'location', title: 'Location', type: 'string' }
   ];
-
   readonly searchControl = new FormControl('');
   page = 0;
   size = 10;
 
   /* Attribute Streams */
   readonly issues$ = this.store.select(IssueState.issues);
-  readonly isOpened$ = this.state.select('isOpened');
   readonly selectedIssueId$ = this.state.select('selectedIssueId');
 
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
-  readonly openAside$ = new Subject<boolean>();
-  readonly closeDetail$ = new Subject<void>();
-  readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
-    debounceTime(500),
-    distinctUntilChanged()
-  );
 
   constructor(
     private store: Store,
@@ -73,14 +58,16 @@ export class ListingPage {
       const idFromRoute$ = lastRouteChild.params.pipe(map((params) => parseInt(params.id)));
       this.state.connect('selectedIssueId', idFromRoute$);
     }
-    this.state.connect('selectedIssueId', this.selectRow$);
-    this.state.connect('isOpened', this.openAside$);
-    this.state.hold(this.changeSearchValue$, (value) => {
-      this.store.dispatch(new LoadIssues({ searchValue: value, limit: 10 }));
-    });
-    this.state.hold(this.closeDetail$, () => {
-      this.state.set({ selectedIssueId: 0 });
-      this.router.navigateByUrl('/issue');
+    const searchValueChanged$ = this.searchControl.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    );
+
+    this.state.hold(searchValueChanged$, (searchValue) =>
+      this.store.dispatch(new LoadIssues({ searchValue, limit: 10 }))
+    );
+    this.state.hold(this.selectRow$, (id) => {
+      this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
   }
 }

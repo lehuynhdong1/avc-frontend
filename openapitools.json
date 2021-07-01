@@ -15,7 +15,7 @@
           "apiModulePrefix": "Open",
           "fileNaming": "kebab-case",
           "useSingleRequestParameter": true,
-          "providedIn": "any"
+          "providedIn": "none"
         }
       }
     }

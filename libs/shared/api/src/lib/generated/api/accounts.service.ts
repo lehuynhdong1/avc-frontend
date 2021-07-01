@@ -25,9 +25,10 @@ import { Observable } from 'rxjs';
 
 import { AccountActivationDto } from '../model/models';
 import { AccountManagedByUpdateDto } from '../model/models';
-import { AccountManagerCreateDtoFormWrapper } from '../model/models';
+import { AccountManagerDetailReadDto } from '../model/models';
 import { AccountManagerReadDto } from '../model/models';
 import { AccountManagerReadDtoPagingResponseDto } from '../model/models';
+import { AccountStaffDetailReadDto } from '../model/models';
 import { AccountStaffReadDto } from '../model/models';
 import { AccountStaffReadDtoPagingResponseDto } from '../model/models';
 import { AccountUpdateDto } from '../model/models';
@@ -405,19 +406,19 @@ export class AccountsService implements AccountsServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountManagerReadDto>;
+  ): Observable<AccountManagerDetailReadDto>;
   public apiAccountsManagerIdGet(
     requestParameters: ApiAccountsManagerIdGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountManagerReadDto>>;
+  ): Observable<HttpResponse<AccountManagerDetailReadDto>>;
   public apiAccountsManagerIdGet(
     requestParameters: ApiAccountsManagerIdGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountManagerReadDto>>;
+  ): Observable<HttpEvent<AccountManagerDetailReadDto>>;
   public apiAccountsManagerIdGet(
     requestParameters: ApiAccountsManagerIdGetRequestParams,
     observe: any = 'body',
@@ -457,7 +458,7 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<AccountManagerReadDto>(
+    return this.httpClient.get<AccountManagerDetailReadDto>(
       `${this.configuration.basePath}/api/accounts/manager/${encodeURIComponent(String(id))}`,
       {
         responseType: <any>responseType,
@@ -499,7 +500,32 @@ export class AccountsService implements AccountsServiceInterface {
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
-    const accountManagerCreateDtoFormWrapper = requestParameters.accountManagerCreateDtoFormWrapper;
+    const email = requestParameters.email;
+    if (email === null || email === undefined) {
+      throw new Error(
+        'Required parameter email was null or undefined when calling apiAccountsManagerPost.'
+      );
+    }
+    const password = requestParameters.password;
+    if (password === null || password === undefined) {
+      throw new Error(
+        'Required parameter password was null or undefined when calling apiAccountsManagerPost.'
+      );
+    }
+    const firstName = requestParameters.firstName;
+    if (firstName === null || firstName === undefined) {
+      throw new Error(
+        'Required parameter firstName was null or undefined when calling apiAccountsManagerPost.'
+      );
+    }
+    const lastName = requestParameters.lastName;
+    if (lastName === null || lastName === undefined) {
+      throw new Error(
+        'Required parameter lastName was null or undefined when calling apiAccountsManagerPost.'
+      );
+    }
+    const avatarImage = requestParameters.avatarImage;
+    const phone = requestParameters.phone;
 
     let headers = this.defaultHeaders;
 
@@ -523,18 +549,39 @@ export class AccountsService implements AccountsServiceInterface {
     }
 
     // to determine the Content-Type header
-    const consumes: string[] = [
-      'application/merge-patch+json',
-      'application/json-patch+json',
-      'application/json',
-      'text/json',
-      'application/_*+json'
-    ];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(
-      consumes
-    );
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
+    const consumes: string[] = ['multipart/form-data'];
+
+    const canConsumeForm = this.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    let convertFormParamsToString = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new HttpParams({ encoder: this.encoder });
+    }
+
+    if (avatarImage !== undefined) {
+      formParams = (formParams.append('AvatarImage', <any>avatarImage) as any) || formParams;
+    }
+    if (email !== undefined) {
+      formParams = (formParams.append('Email', <any>email) as any) || formParams;
+    }
+    if (password !== undefined) {
+      formParams = (formParams.append('Password', <any>password) as any) || formParams;
+    }
+    if (firstName !== undefined) {
+      formParams = (formParams.append('FirstName', <any>firstName) as any) || formParams;
+    }
+    if (lastName !== undefined) {
+      formParams = (formParams.append('LastName', <any>lastName) as any) || formParams;
+    }
+    if (phone !== undefined) {
+      formParams = (formParams.append('Phone', <any>phone) as any) || formParams;
     }
 
     let responseType: 'text' | 'json' = 'json';
@@ -544,7 +591,7 @@ export class AccountsService implements AccountsServiceInterface {
 
     return this.httpClient.post<AccountManagerReadDto>(
       `${this.configuration.basePath}/api/accounts/manager`,
-      accountManagerCreateDtoFormWrapper,
+      convertFormParamsToString ? formParams.toString() : formParams,
       {
         responseType: <any>responseType,
         withCredentials: this.configuration.withCredentials,
@@ -654,19 +701,19 @@ export class AccountsService implements AccountsServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountStaffReadDto>;
+  ): Observable<AccountStaffDetailReadDto>;
   public apiAccountsStaffIdGet(
     requestParameters: ApiAccountsStaffIdGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountStaffReadDto>>;
+  ): Observable<HttpResponse<AccountStaffDetailReadDto>>;
   public apiAccountsStaffIdGet(
     requestParameters: ApiAccountsStaffIdGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountStaffReadDto>>;
+  ): Observable<HttpEvent<AccountStaffDetailReadDto>>;
   public apiAccountsStaffIdGet(
     requestParameters: ApiAccountsStaffIdGetRequestParams,
     observe: any = 'body',
@@ -706,7 +753,7 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<AccountStaffReadDto>(
+    return this.httpClient.get<AccountStaffDetailReadDto>(
       `${this.configuration.basePath}/api/accounts/staff/${encodeURIComponent(String(id))}`,
       {
         responseType: <any>responseType,

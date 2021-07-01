@@ -1,12 +1,17 @@
 <aside class="relative" [class.fullpage]="isFullPage$ | async">
   <ng-container *ngIf="selectedCar$ | async as car; else loading">
     <tui-svg
-      class="top-right !right-10 cursor-pointer hover:text-green-600"
+      class="top-right !right-20 cursor-pointer text-green-600 hover:text-green-800"
       src="tuiIconExternalLarge"
       [routerLink]="'/car/detail/'+car.id"
     ></tui-svg>
     <tui-svg
-      class="top-right cursor-pointer hover:text-red-400"
+      class="top-right !right-12 cursor-pointer text-yellow-400 hover:text-yellow-500"
+      src="tuiIconEditLarge"
+      [routerLink]="'/car/update/'+car.id"
+    ></tui-svg>
+    <tui-svg
+      class="top-right cursor-pointer text-red-500 hover:text-red-700"
       src="tuiIconRemoveLarge"
       routerLink="/car"
     ></tui-svg>
@@ -54,21 +59,6 @@
           </ng-template>
         </h3>
         <b class="text-gray-600">Assigned to</b>
-        <h3 class="mt-0 mb-3">
-          <span [routerLink]="'/staff/'+car.assignTo?.id" class="cursor-pointer hover:text-primary">
-            {{car.assignTo?.firstName}} {{car.assignTo?.lastName}}<tui-svg
-              src="tuiIconExternal"
-              [tuiHint]="tuiHintAssignTo"
-              class="mb-1"
-            ></tui-svg>
-          </span>
-          <ng-template #tuiHintAssignTo>
-            <div class="cursor-pointer" [routerLink]="'/staff/'+car.assignTo?.id">
-              View
-              <strong>{{car.assignTo?.lastName}} {{car.assignTo?.firstName}}</strong> in detail
-            </div>
-          </ng-template>
-        </h3>
         <b class="text-gray-600">Created at</b>
         <h3 class="mt-0 mb-3">{{ car.createdAt | date }}</h3>
       </section>

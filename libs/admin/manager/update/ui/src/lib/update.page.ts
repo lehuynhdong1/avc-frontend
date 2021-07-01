@@ -39,7 +39,8 @@ export class UpdatePage implements CanShowUnsavedDialog {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     phone: [''],
-    roleId: ['', Validators.required]
+    roleId: ['', Validators.required],
+    managedBy: [null]
   });
 
   manager$ = this.store.select(ManagerState.selectedManager).pipe(hasValue());
@@ -92,7 +93,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
 
     this.clickUpdateEffects();
     this.clickDiscardEffects();
-    this.whenRoleIsManagerEffects();
+    this.whenRoleIsStaffEffects();
 
     const errorMessage$ = this.store.select(ManagerState.errorMessage).pipe(hasValue());
     const messagesWhenFailed$ = this.actions
@@ -153,13 +154,13 @@ export class UpdatePage implements CanShowUnsavedDialog {
       this.router.navigateByUrl(detailPageRoute);
     });
   }
-  private whenRoleIsManagerEffects() {
-    const whenIsManager$ = this.form.get('roleId')?.valueChanges.pipe(
+  private whenRoleIsStaffEffects() {
+    const whenIsStaff$ = this.form.get('roleId')?.valueChanges.pipe(
       filter((roleId) => roleId === Role.STAFF),
       withLatestFrom(this.store.select(ManagerState.managers)),
       filter(([, managers]) => !managers)
     );
-    if (whenIsManager$)
-      this.state.hold(whenIsManager$, () => this.store.dispatch(new LoadManagers({ limit: 10 })));
+    if (whenIsStaff$)
+      this.state.hold(whenIsStaff$, () => this.store.dispatch(new LoadManagers({ limit: 10 })));
   }
 }

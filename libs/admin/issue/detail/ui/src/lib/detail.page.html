@@ -1,0 +1,36 @@
+<aside class="relative">
+  <ng-container *ngIf="selectedIssue$ | async as issue; else loading">
+    <tui-svg
+      class="top-right cursor-pointer text-red-500 hover:text-red-700"
+      src="tuiIconRemoveLarge"
+      routerLink="/issue"
+    ></tui-svg>
+    <section class="p-5 flex flex-col">
+      <h1 class="text-xl w-full">Issue Detail</h1>
+
+      <label>Issue ID</label>
+      <h2 class="bold my-0">{{ issue.id }}</h2>
+      <div class="p-4 relative border border-gray-900">
+        <adc-frontend-avatar
+          class="tui-space_top-2"
+          [url]="issue.image || ''"
+          size="xxl"
+        ></adc-frontend-avatar>
+      </div>
+      <!-- <h2 class="bold mt-0">{{ issue.role }}</h2> -->
+      <label>Type</label>
+      <h3 class="bold mt-0">{{ issue.type }}</h3>
+      <label>Description</label>
+      <h3 class="bold mt-0">{{ issue.description }}</h3>
+      <label>Location</label>
+      <h3 class="bold mt-0">{{ issue.location }}</h3>
+      <label>Car</label>
+      <h3 class="bold mt-0">{{ issue.carId }}</h3>
+      <label>Occured at</label>
+      <h3 class="bold mt-0">{{ issue.createdAt | date }}</h3>
+    </section>
+  </ng-container>
+  <ng-template #loading>
+    <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
+  </ng-template>
+</aside>

@@ -6,7 +6,7 @@ interface KeyValue<K, Type> {
   type: Type;
   /**
    * @description template for a cell. Supported #FIELD_OF_T
-   * @example "#firstName #lastName"
+   * @example "#firstName #lastName  #person.name.surname"
    */
   cellTemplate?: string;
 }
@@ -20,12 +20,13 @@ export interface BooleanField<Dto extends HasId> extends KeyValue<keyof Dto, 'bo
   falseMessage: string;
 }
 
-export type ColumnType<Dto extends HasId> =
+export type ColumnType<Dto extends HasId> = Readonly<
   | KeyValue<keyof Dto, 'string'>
   | KeyValue<keyof Dto, 'date'>
   | KeyValue<keyof Dto, 'number'>
-  | BooleanField<Dto>;
-export type DynamicTableColumns<Dto extends HasId> = ColumnType<Dto>[];
+  | BooleanField<Dto>
+>;
+export type DynamicTableColumns<Dto extends HasId> = ReadonlyArray<ColumnType<Dto>>;
 
 export interface DynamicTableUiState {
   isOpened: boolean;

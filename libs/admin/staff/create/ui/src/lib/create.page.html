@@ -103,10 +103,12 @@
 
     <div class="flex flex-col mb-3">
       <label>Phone</label>
-      <tui-input
+      <tui-input-phone
         tuiTextfieldSize="m"
         [tuiTextfieldCleaner]="true"
         [tuiTextfieldLabelOutside]="true"
+        countryCode="+84"
+        phoneMaskAfterCountryCode="### ###-###"
         tuiTextfieldExampleText="Phone here..."
         formControlName="phone"
       >
@@ -114,7 +116,7 @@
           Phone here
           <tui-svg src="tuiIconEdit"></tui-svg>
         </span>
-      </tui-input>
+      </tui-input-phone>
     </div>
 
     <label class="mb-2">Managed by </label>

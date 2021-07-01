@@ -17,5 +17,4 @@ export interface InlineObject {
   FirstName: string;
   LastName: string;
   Phone?: string;
-  ManagedBy?: number;
 }

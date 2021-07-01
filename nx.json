@@ -80,6 +80,10 @@
     "admin-manager-update-feature": { "tags": ["scope:admin"] },
     "admin-manager-create-feature": { "tags": ["scope:admin"] },
     "admin-manager-create-ui": { "tags": ["scope:admin"] },
-    "admin-manager-update-ui": { "tags": ["scope:admin"] }
+    "admin-manager-update-ui": { "tags": ["scope:admin"] },
+    "admin-car-update-feature": { "tags": ["scope:admin"] },
+    "admin-car-update-ui": { "tags": ["scope:admin"] },
+    "admin-issue-detail-ui": { "tags": ["scope:admin"] },
+    "admin-issue-detail-feature": { "tags": ["scope:admin"] }
   }
 }

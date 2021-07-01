@@ -10,11 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface AccountManagerCreateDtoFormWrapper {
-  avatarImage?: Blob | null;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  phone?: string | null;
+export interface CarManagedByUpdateDto {
+  carId?: number;
+  managerId?: number;
 }

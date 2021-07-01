@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UpdatePage } from './update.page';
-import { TuiInputModule, TuiSelectModule } from '@taiga-ui/kit';
+import { TuiInputModule, TuiInputPhoneModule, TuiSelectModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   TuiButtonModule,
@@ -20,7 +20,8 @@ const tuiModules = [
   TuiInputModule,
   TuiTextfieldControllerModule,
   TuiSelectModule,
-  TuiLetModule
+  TuiLetModule,
+  TuiInputPhoneModule
 ];
 @NgModule({
   declarations: [UpdatePage],

@@ -8,7 +8,6 @@ import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { tuiPure } from '@taiga-ui/cdk';
 import { hasValue } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 @Component({
@@ -26,13 +25,7 @@ export class ListingPage {
       key: 'managedBy',
       title: 'Managed by',
       type: 'string',
-      cellTemplate: '#managedBy.lastName #managedBy.firstName'
-    },
-    {
-      key: 'assignTo',
-      title: 'Assigned to',
-      type: 'string',
-      cellTemplate: '#assignTo.lastName #assignTo.firstName'
+      cellTemplate: '#managedBy.firstName #managedBy.lastName'
     },
     {
       key: 'isConnecting',
@@ -92,11 +85,5 @@ export class ListingPage {
     this.state.hold(this.selectRow$, (id) => {
       this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
-  }
-
-  @tuiPure
-  calcTotalPageCount(count: number | undefined) {
-    if (!count) return 1;
-    return Math.round(count / 10) + 1;
   }
 }

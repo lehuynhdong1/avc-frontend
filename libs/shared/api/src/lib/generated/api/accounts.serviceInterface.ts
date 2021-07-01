@@ -15,9 +15,10 @@ import { Observable } from 'rxjs';
 
 import { AccountActivationDto } from '../model/models';
 import { AccountManagedByUpdateDto } from '../model/models';
-import { AccountManagerCreateDtoFormWrapper } from '../model/models';
+import { AccountManagerDetailReadDto } from '../model/models';
 import { AccountManagerReadDto } from '../model/models';
 import { AccountManagerReadDtoPagingResponseDto } from '../model/models';
+import { AccountStaffDetailReadDto } from '../model/models';
 import { AccountStaffReadDto } from '../model/models';
 import { AccountStaffReadDtoPagingResponseDto } from '../model/models';
 import { AccountUpdateDto } from '../model/models';
@@ -43,7 +44,12 @@ export interface ApiAccountsManagerIdGetRequestParams {
 }
 
 export interface ApiAccountsManagerPostRequestParams {
-  accountManagerCreateDtoFormWrapper?: AccountManagerCreateDtoFormWrapper;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  avatarImage?: Blob;
+  phone?: string;
 }
 
 export interface ApiAccountsManagersGetRequestParams {
@@ -116,7 +122,7 @@ export interface AccountsServiceInterface {
   apiAccountsManagerIdGet(
     requestParameters: ApiAccountsManagerIdGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountManagerReadDto>;
+  ): Observable<AccountManagerDetailReadDto>;
 
   /**
    * Create new Account
@@ -146,7 +152,7 @@ export interface AccountsServiceInterface {
   apiAccountsStaffIdGet(
     requestParameters: ApiAccountsStaffIdGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountStaffReadDto>;
+  ): Observable<AccountStaffDetailReadDto>;
 
   /**
    * Create new Account

@@ -7,7 +7,18 @@ import { RouterModule } from '@angular/router';
   imports: [
     DataAccessModule,
     UiModule,
-    RouterModule.forChild([{ path: '', pathMatch: 'full', component: ListingPage }])
+    RouterModule.forChild([
+      {
+        path: '',
+        component: ListingPage,
+        children: [
+          {
+            path: ':id',
+            loadChildren: () => import('@admin/issue/detail/feature').then((m) => m.FeatureModule)
+          }
+        ]
+      }
+    ])
   ]
 })
 export class FeatureModule {}

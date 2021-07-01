@@ -5,6 +5,7 @@ import { DynamicTableUiState, ColumnType, HasId, Id, PagingResponse } from './mo
 import { Subject } from 'rxjs';
 import { map, filter, pairwise } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { DynamicTableColumns } from './models/ui-state.model';
 
 @Component({
   selector: 'adc-frontend-dynamic-table',
@@ -14,7 +15,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
   providers: [RxState]
 })
 export class DynamicTableComponent<T extends HasId> {
-  @Input() columns: Array<ColumnType<T>>;
+  @Input() columns: DynamicTableColumns<T>;
   @Input() response: PagingResponse<T>;
   @Input() array: Array<T>;
   @Input() indexable = true;
@@ -59,19 +60,25 @@ export class DynamicTableComponent<T extends HasId> {
   @tuiPure
   calcTotalPageCount(count: number | undefined) {
     if (!count) return 1;
-    return Math.round(count / 10) + 1;
+    return Math.floor(count / 10) + 1;
   }
   @tuiPure
   getTypeof(value: number | string | boolean) {
     return typeof value;
   }
   @tuiPure
-  getKeys(columns: Array<ColumnType<T>>) {
+  getKeys(columns: DynamicTableColumns<T>) {
     return ['index', ...columns.map((col) => col.key)];
   }
   @tuiPure
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   toDate(value: any) {
+    console.log(value);
+
     return new Date(value);
+  }
+
+  trackByType(_: number, item: ColumnType<T>) {
+    return item.type;
   }
 }

@@ -26,7 +26,6 @@
           size="xxl"
         ></adc-frontend-avatar>
       </div>
-      <!-- <h2 class="bold mt-0">{{ manager.role }}</h2> -->
 
       <label>Email</label>
       <h3 class="bold mt-0">{{ manager.email }}</h3>
@@ -53,20 +52,18 @@
         {{manager.isAvailable ? 'Deactivate': 'Reactivate'}}
       </button>
 
-      <label>Assigned cars</label>
+      <label>Assigned Cars ({{manager.assignedCars?.length}})</label>
       <ul class="text-sm mb-3">
-        <li class="!ml-3">
-          <a tuiLink [routerLink]="'/car/'+ ''">Car Name</a>
+        <li class="!ml-3" *ngFor="let car of manager.assignedCars">
+          <a tuiLink [routerLink]="'/car/'+ car.id">{{car.name}}</a>
         </li>
-        <li class="!ml-3">Car Name</li>
       </ul>
 
-      <label>Assigned staffs</label>
+      <label>Assigned Staffs ({{manager.assignedStaffs?.length}})</label>
       <ul class="text-sm mb-3">
-        <li class="!ml-3">
-          <a tuiLink [routerLink]="'/staff/'+ ''">Staff Name</a>
+        <li class="!ml-3" *ngFor="let staff of manager.assignedStaffs">
+          <a tuiLink [routerLink]="'/staff/'+ staff.id">{{staff.firstName}} {{staff.lastName}}</a>
         </li>
-        <li class="!ml-3">Staff Name</li>
       </ul>
     </section>
   </form>

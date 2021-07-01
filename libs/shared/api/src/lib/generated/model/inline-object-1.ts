@@ -11,9 +11,11 @@
  */
 
 export interface InlineObject1 {
-  TypeId?: number;
-  CarId?: number;
-  Description?: string;
-  Location?: string;
-  image?: Blob;
+  AvatarImage?: Blob;
+  Email: string;
+  Password: string;
+  FirstName: string;
+  LastName: string;
+  Phone?: string;
+  ManagedBy?: number;
 }

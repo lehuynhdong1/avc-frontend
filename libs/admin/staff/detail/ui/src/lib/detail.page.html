@@ -33,7 +33,12 @@
       <label>Phone</label>
       <h3 class="bold mt-0">{{ staff.phone }}</h3>
       <label>Managed by</label>
-      <h3 class="bold mt-0">{{ staff.managedByEmail || 'Not yet' }}</h3>
+      <h3 class="bold mt-0">
+        <ng-container *ngIf="staff.managedBy; else notHasManagedBy">
+          {{ staff.managedBy?.firstName }} {{ staff.managedBy?.lastName }}
+        </ng-container>
+        <ng-template #notHasManagedBy> Not yet </ng-template>
+      </h3>
 
       <b class="text-gray-600 mb-1">Activation Status</b>
       <tui-badge

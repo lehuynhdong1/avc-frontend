@@ -8,7 +8,8 @@ import {
   TuiSelectModule,
   TuiDataListWrapperModule,
   TuiMarkerIconModule,
-  TuiCheckboxLabeledModule
+  TuiCheckboxLabeledModule,
+  TuiInputPhoneModule
 } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
@@ -29,6 +30,7 @@ const tuiModules = [
   TuiSvgModule,
   TuiInputModule,
   TuiInputFileModule,
+  TuiInputPhoneModule,
   TuiInputPasswordModule,
   TuiTextfieldControllerModule,
   TuiSelectModule,
