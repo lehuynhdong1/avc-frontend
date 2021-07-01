@@ -1403,49 +1403,6 @@
         }
       }
     },
-    "admin-manage-profile-view-profile-ui": {
-      "projectType": "library",
-      "root": "libs/admin/manage-profile/view-profile/ui",
-      "sourceRoot": "libs/admin/manage-profile/view-profile/ui/src",
-      "prefix": "adc-frontend",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/manage-profile/view-profile/ui/tsconfig.lib.json",
-            "project": "libs/admin/manage-profile/view-profile/ui/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/manage-profile/view-profile/ui/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/manage-profile/view-profile/ui/src/**/*.ts",
-              "libs/admin/manage-profile/view-profile/ui/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/manage-profile/view-profile/ui"],
-          "options": {
-            "jestConfig": "libs/admin/manage-profile/view-profile/ui/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "generate-docs": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "command": "npx compodoc -p libs/admin/manage-profile/view-profile/ui/tsconfig.lib.json -d documentation/libs/admin/manage-profile/view-profile/ui/"
-          }
-        }
-      }
-    },
     "admin-manage-profile-view-profile-feature": {
       "projectType": "library",
       "root": "libs/admin/manage-profile/view-profile/feature",
@@ -1528,49 +1485,6 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "command": "npx compodoc -p libs/admin/manage-profile/change-password/feature/tsconfig.lib.json -d documentation/libs/admin/manage-profile/change-password/feature/"
-          }
-        }
-      }
-    },
-    "admin-manage-profile-change-password-ui": {
-      "projectType": "library",
-      "root": "libs/admin/manage-profile/change-password/ui",
-      "sourceRoot": "libs/admin/manage-profile/change-password/ui/src",
-      "prefix": "adc-frontend",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/manage-profile/change-password/ui/tsconfig.lib.json",
-            "project": "libs/admin/manage-profile/change-password/ui/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/manage-profile/change-password/ui/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/manage-profile/change-password/ui/src/**/*.ts",
-              "libs/admin/manage-profile/change-password/ui/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/manage-profile/change-password/ui"],
-          "options": {
-            "jestConfig": "libs/admin/manage-profile/change-password/ui/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "generate-docs": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "command": "npx compodoc -p libs/admin/manage-profile/change-password/ui/tsconfig.lib.json -d documentation/libs/admin/manage-profile/change-password/ui/"
           }
         }
       }

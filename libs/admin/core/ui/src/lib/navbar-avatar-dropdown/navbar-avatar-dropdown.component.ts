@@ -37,7 +37,12 @@ const confirmDialogParams: ConfirmDialogComponentParams = {
 })
 export class NavbarAvatarDropdownComponent {
   @Select(LoginState.account) me$: Observable<LoginStateModel['account']>;
-  readonly items = ['Profile'];
+  readonly items = [
+    {
+      title: 'Profile',
+      link: 'profile'
+    }
+  ];
 
   /* Actions */
   readonly clickLogout$ = new Subject();

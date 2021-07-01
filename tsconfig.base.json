@@ -146,7 +146,8 @@
       "@admin/car/update/feature": ["libs/admin/car/update/feature/src/index.ts"],
       "@admin/car/update/ui": ["libs/admin/car/update/ui/src/index.ts"],
       "@admin/issue/detail/ui": ["libs/admin/issue/detail/ui/src/index.ts"],
-      "@admin/issue/detail/feature": ["libs/admin/issue/detail/feature/src/index.ts"]
+      "@admin/issue/detail/feature": ["libs/admin/issue/detail/feature/src/index.ts"],
+      "@admin/manage-profile/routes": ["libs/admin/manage-profile/routes.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

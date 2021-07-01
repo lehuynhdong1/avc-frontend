@@ -9,7 +9,7 @@ import { LanguageModuleWithConfig } from '@shared/language';
 import { StateManagementModulesWithConfig } from '@shared/state-management';
 import { OpenApiModule } from '@shared/api';
 import { LayoutModule } from '@admin/core/ui';
-import { UtilModule as CoreUtilModule } from '@admin/core/util';
+import { UtilModule as SharedUtilModule } from '@shared/util';
 import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,7 +25,7 @@ import { getApiConfigFactory } from './api-config.factory';
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' }),
     OpenApiModule.forRoot(getApiConfigFactory),
     LayoutModule,
-    CoreUtilModule,
+    SharedUtilModule,
     AuthUtilModule,
     StateManagementModulesWithConfig(environment),
     LanguageModuleWithConfig({ prodMode: environment.production })

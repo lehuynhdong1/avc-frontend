@@ -5,22 +5,18 @@ import {
   TuiButtonModule,
   TuiDataListModule,
   TuiDialogModule,
-  TuiHostedDropdownModule,
+  TuiHostedDropdownModule
 } from '@taiga-ui/core';
 import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
 import { CONFIRM_DIALOG_PROVIDER } from '../confirm-dialog/confirm-dialog.provider';
 import { AvatarModule } from '@shared/ui/avatar';
+import { RouterModule } from '@angular/router';
 
-const tuiModules = [
-  TuiHostedDropdownModule,
-  TuiDataListModule,
-  TuiButtonModule,
-  TuiDialogModule
-];
+const tuiModules = [TuiHostedDropdownModule, TuiDataListModule, TuiButtonModule, TuiDialogModule];
 
 @NgModule({
   declarations: [NavbarAvatarDropdownComponent],
-  imports: [CommonModule, ConfirmDialogModule, AvatarModule, ...tuiModules],
+  imports: [CommonModule, ConfirmDialogModule, AvatarModule, RouterModule, ...tuiModules],
   exports: [NavbarAvatarDropdownComponent],
   providers: [CONFIRM_DIALOG_PROVIDER]
 })

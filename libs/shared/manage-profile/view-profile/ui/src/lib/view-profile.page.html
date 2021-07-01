@@ -1,0 +1,57 @@
+<main class="flex flex-col" *ngIf="me$ | async as my; else loading">
+  <h1 class="text-xl w-full">
+    <tui-svg
+      src="assets/taiga-ui/icons/personCircleOutline.svg#personCircleOutline"
+      class="size-m"
+    ></tui-svg>
+    My Profile
+  </h1>
+
+  <label>Full name</label>
+  <h2 class="bold my-0">{{ my.firstName }} {{ my.lastName }}</h2>
+  <div class="p-4 relative border border-gray-900">
+    <adc-frontend-avatar
+      class="tui-space_top-2"
+      [url]="my.avatar || ''"
+      size="xxl"
+      placeholderClass="!text-primary"
+    ></adc-frontend-avatar>
+  </div>
+  <label>Email</label>
+  <h3 class="bold mt-0">{{ my.email }}</h3>
+  <!-- <label>Phone</label>
+    <h3 class="bold mt-0">{{ my.phone }}</h3> -->
+  <label>Role</label>
+  <h3 class="bold mt-0">{{ my.roleName }}</h3>
+  <!-- <label>Managed by</label>
+    <h3 class="bold mt-0">
+          <ng-container *ngIf="my.managedBy; else notHasManagedBy">
+            {{ my.managedBy?.firstName }} {{ my.managedBy?.lastName }}
+          </ng-container>
+          <ng-template #notHasManagedBy> Not yet </ng-template>
+        </h3> -->
+
+  <button
+    tuiButton
+    size="m"
+    appearance="outline"
+    type="button"
+    routerLink="update-profile"
+    class="self-start w-52 mb-3 primary"
+  >
+    Update Profile
+  </button>
+  <button
+    tuiButton
+    size="m"
+    appearance="outline"
+    type="button"
+    routerLink="change-password"
+    class="self-start w-52 danger"
+  >
+    Change Password
+  </button>
+</main>
+<ng-template #loading>
+  <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
+</ng-template>

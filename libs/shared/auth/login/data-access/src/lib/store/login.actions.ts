@@ -1,9 +1,10 @@
 import { STATE_NAME } from './login-state.model';
-import { AuthenticationPostDto } from '@shared/api';
+import { AuthenticationPostDto, ProfileReadDto } from '@shared/api';
 
 const ACTIONS = {
   LOGIN: `[${STATE_NAME}] Login`,
-  LOAD_ROLES: `[${STATE_NAME}] Load roles only 1 time`
+  LOAD_ROLES: `[${STATE_NAME}] Load roles only 1 time`,
+  UPDATE_PROFILE: `[${STATE_NAME}] Update profile`
 };
 
 export class Login {
@@ -13,4 +14,9 @@ export class Login {
 
 export class LoadRoles {
   static readonly type = ACTIONS.LOAD_ROLES;
+}
+
+export class UpdateProfile {
+  static readonly type = ACTIONS.UPDATE_PROFILE;
+  constructor(public readonly payload: ProfileReadDto) {}
 }

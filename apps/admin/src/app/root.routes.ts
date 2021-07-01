@@ -5,6 +5,7 @@ import { authRoutes } from '@admin/auth/routes';
 import { carRoutes } from '@admin/car/routes';
 import { staffRoutes } from '@admin/staff/routes';
 import { issueRoutes } from '@admin/issue/routes';
+import { manageProfileRoutes } from '@admin/manage-profile/routes';
 import { managerRoutes } from '@admin/manager/routes';
 import { IsLoggedInGuard } from '@shared/auth/util';
 
@@ -38,6 +39,11 @@ export const routes: Routes = [
       {
         path: 'issue',
         children: issueRoutes,
+        canActivate: [IsLoggedInGuard]
+      },
+      {
+        path: 'profile',
+        children: manageProfileRoutes,
         canActivate: [IsLoggedInGuard]
       },
       { path: '', pathMatch: 'full', redirectTo: 'training' }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
 import { AuthenticationService, RolesService } from '@shared/api';
 import { STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
-import { Login, LoadRoles } from './login.actions';
+import { Login, LoadRoles, UpdateProfile } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { LogoutState } from '@shared/auth/logout/data-access';
 import { throwError } from 'rxjs';
@@ -43,7 +43,7 @@ export class LoginState extends LogoutState implements NgxsOnInit {
     return this.authService.apiAuthenticationPost({ authenticationPostDto: payload }).pipe(
       tap((response) => patchState(response)),
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] Login with error: ${error}`);
+        console.warn(`[${STATE_NAME}] Login with error: `, error);
 
         patchState({ error: ERROR_CODES.WRONG_USERNAME_OR_PASSWORD });
         return throwError({ error: ERROR_CODES.WRONG_USERNAME_OR_PASSWORD });
@@ -56,9 +56,14 @@ export class LoginState extends LogoutState implements NgxsOnInit {
     return this.rolesService.apiRolesGet().pipe(
       tap((roles: unknown) => patchState({ roles: roles as LoginStateModel['roles'] })),
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] Login with error: ${error}`);
+        console.warn(`[${STATE_NAME}] Login with error: `, error);
         return throwError({ error: ERROR_CODES.LOAD_ROLES_FAILED });
       })
     );
+  }
+
+  @Action(UpdateProfile)
+  updateProfile({ patchState }: StateContext<LoginStateModel>, { payload }: UpdateProfile) {
+    patchState({ account: payload });
   }
 }

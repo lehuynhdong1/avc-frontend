@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+label {
+  @apply text-gray-600 font-bold text-sm;
+}
+:host ::ng-deep button {
+  &.primary {
+    tui-wrapper[data-appearance='outline'] {
+      @apply text-primary;
+      &:after {
+        @apply border-primary;
+      }
+
+      &[data-state='hovered'] {
+        @apply bg-purple-50;
+      }
+
+      &[data-state='pressed'] {
+        @apply bg-primary text-white;
+      }
+    }
+  }
+  &.danger {
+    tui-wrapper[data-appearance='outline'] {
+      @apply text-red-500;
+      &:after {
+        @apply border-red-500;
+      }
+
+      &[data-state='hovered'] {
+        @apply bg-red-50;
+      }
+
+      &[data-state='pressed'] {
+        @apply bg-red-500 text-white;
+      }
+    }
+  }
+}

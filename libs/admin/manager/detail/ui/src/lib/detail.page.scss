@@ -9,7 +9,7 @@
       }
 
       &[data-state='hovegreen'] {
-        @apply bg-green-100;
+        @apply bg-green-50;
       }
 
       &[data-state='pressed'] {
@@ -24,7 +24,7 @@
         }
 
         &[data-state='hovered'] {
-          @apply bg-red-100;
+          @apply bg-red-50;
         }
 
         &[data-state='pressed'] {

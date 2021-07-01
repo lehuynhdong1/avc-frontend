@@ -5,8 +5,13 @@
 </tui-hosted-dropdown>
 <ng-template #dropdown>
   <tui-data-list>
-    <button *ngFor="let item of items" tuiOption class="focus:!bg-gray-200 !w-40">
-      {{ item }}
+    <button
+      *ngFor="let item of items"
+      tuiOption
+      class="focus:!bg-gray-200 !w-40"
+      [routerLink]="item.link"
+    >
+      {{ item.title }}
     </button>
     <button
       tuiOption
