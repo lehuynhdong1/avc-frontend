@@ -73,8 +73,6 @@ export class DynamicTableComponent<T extends HasId> {
   @tuiPure
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   toDate(value: any) {
-    console.log(value);
-
     return new Date(value);
   }
 

@@ -78,9 +78,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
     managers: Array<AccountManagerReadDto>
   ): TuiStringHandler<TuiContextWithImplicit<number>> {
     const map = new Map(
-      managers.map(
-        ({ id, firstName, lastName }) => [id, `${firstName} ${lastName}`] as [number, string]
-      )
+      managers.map(({ id, firstName, lastName }) => [id, `${firstName} ${lastName}`])
     );
     return ({ $implicit }: TuiContextWithImplicit<number>) => map.get($implicit) || '';
   }
