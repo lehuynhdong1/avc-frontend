@@ -1,10 +1,10 @@
-import { CanShowUnsavedDialog, Role } from '@admin/core/util';
+import { CanShowUnsavedDialog } from '@admin/core/util';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, ofActionErrored, ofActionSuccessful, Store } from '@ngxs/store';
 import { RxState } from '@rx-angular/state';
-import { RoleReadDto, AccountManagerReadDto } from '@shared/api';
+import { RoleReadDto, AccountManagerDetailReadDto } from '@shared/api';
 import { LoginState } from '@shared/auth/login/data-access';
 import {
   LoadManagerById,
@@ -12,7 +12,7 @@ import {
   ManagerState,
   UpdateManager
 } from '@shared/features/manager/data-access';
-import { hasValue, ShowNotification } from '@shared/util';
+import { hasValue, ShowNotification, Role } from '@shared/util';
 import { TuiContextWithImplicit, TuiInputType, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
 import { TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
@@ -73,7 +73,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
 
   @tuiPure
   stringifyManagers(
-    managers: Array<AccountManagerReadDto>
+    managers: Array<AccountManagerDetailReadDto>
   ): TuiStringHandler<TuiContextWithImplicit<number>> {
     const map = new Map(
       managers.map(

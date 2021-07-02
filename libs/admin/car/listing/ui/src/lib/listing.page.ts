@@ -1,15 +1,16 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CarState, LoadApprovedCars, LoadUnapprovedCars } from '@shared/features/car/data-access';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { CarListReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { hasValue } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
+import { SidebarService } from '@admin/core/ui';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -57,18 +58,16 @@ export class ListingPage {
 
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
-  readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
-    debounceTime(500),
-    distinctUntilChanged()
-  );
+  readonly changeIsAvailable$ = new Subject<boolean | undefined>();
 
   constructor(
     private store: Store,
     private router: Router,
+    private sidebar: SidebarService,
     private activatedRoute: ActivatedRoute,
     private state: RxState<ListingPageState>
   ) {
-    this.store.dispatch([new LoadApprovedCars({ limit: 10 }), new LoadUnapprovedCars()]);
+    this.store.dispatch(new LoadUnapprovedCars());
     this.declareSideEffects();
   }
 
@@ -79,11 +78,25 @@ export class ListingPage {
       this.state.connect('selectedCarId', idFromRoute$);
     }
     this.state.connect('selectedCarId', this.selectRow$);
-    this.state.hold(this.changeSearchValue$, (value) => {
-      this.store.dispatch(new LoadApprovedCars({ searchValue: value, limit: 10 }));
-    });
+
+    this.whenFilterChangedEffects();
     this.state.hold(this.selectRow$, (id) => {
+      this.sidebar.collapse();
       this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
+  }
+
+  private whenFilterChangedEffects() {
+    const changeSearchValue$ = this.searchControl.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      startWith('')
+    );
+    this.state.hold(
+      combineLatest([changeSearchValue$, this.changeIsAvailable$]),
+      ([searchValue, isAvailable]) => {
+        this.store.dispatch(new LoadApprovedCars({ searchValue, isAvailable, limit: 10 }));
+      }
+    );
   }
 }

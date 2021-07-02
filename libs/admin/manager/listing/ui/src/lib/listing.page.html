@@ -5,14 +5,7 @@
         <tui-svg src="assets/taiga-ui/icons/ribbon.svg#ribbon" class="size-m"></tui-svg> Manage
         Managers
       </h1>
-      <button
-        tuiButton
-        type="button"
-        class="tui-space_right-3"
-        size="m"
-        icon="tuiIconPlusCircleLarge"
-        routerLink="create"
-      >
+      <button tuiButton type="button" size="m" icon="tuiIconPlusCircleLarge" routerLink="create">
         Create new
       </button>
     </div>
@@ -21,24 +14,10 @@
         <tui-input tuiTextfieldSize="l" [formControl]="searchControl" class="flex-grow pr-4 mb-4">
           Search by manager name ...
         </tui-input>
-        <tui-select tuiTextfieldSize="l" [formControl]="isAvailableControl" class="w-44">
-          Activation Status
-          <tui-data-list-wrapper
-            *tuiDataList
-            [itemContent]="content"
-            [items]="IS_AVAILABLE_VALUES"
-          ></tui-data-list-wrapper>
-
-          <ng-template #content let-data>
-            <div class="p-2">
-              <tui-badge
-                size="m"
-                [value]="data"
-                [status]="data === 'All' ? TUI_STATUS.PRIMARY : data === 'Active' ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
-              ></tui-badge>
-            </div>
-          </ng-template>
-        </tui-select>
+        <adca-available-filter
+          class="w-44"
+          (valueChange)="changeIsAvailable$.next($event)"
+        ></adca-available-filter>
       </section>
       <ng-container *ngIf="(managers$ | async) as managerResponse">
         <adc-frontend-dynamic-table

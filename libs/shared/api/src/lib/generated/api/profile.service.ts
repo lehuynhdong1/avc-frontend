@@ -23,8 +23,8 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
+import { AccountReadDto } from '../model/models';
 import { ProfilePasswordUpdateDto } from '../model/models';
-import { ProfileReadDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -126,17 +126,17 @@ export class ProfileService implements ProfileServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<ProfileReadDto>;
+  ): Observable<AccountReadDto>;
   public apiProfileGet(
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<ProfileReadDto>>;
+  ): Observable<HttpResponse<AccountReadDto>>;
   public apiProfileGet(
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<ProfileReadDto>>;
+  ): Observable<HttpEvent<AccountReadDto>>;
   public apiProfileGet(
     observe: any = 'body',
     reportProgress: boolean = false,
@@ -168,7 +168,7 @@ export class ProfileService implements ProfileServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<ProfileReadDto>(`${this.configuration.basePath}/api/profile`, {
+    return this.httpClient.get<AccountReadDto>(`${this.configuration.basePath}/api/profile`, {
       responseType: <any>responseType,
       withCredentials: this.configuration.withCredentials,
       headers: headers,

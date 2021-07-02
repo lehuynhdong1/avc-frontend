@@ -1,5 +1,5 @@
 import { STATE_NAME } from './login-state.model';
-import { AuthenticationPostDto, ProfileReadDto } from '@shared/api';
+import { AuthenticationPostDto, AccountStaffDetailReadDto } from '@shared/api';
 
 const ACTIONS = {
   LOGIN: `[${STATE_NAME}] Login`,
@@ -18,5 +18,5 @@ export class LoadRoles {
 
 export class UpdateProfile {
   static readonly type = ACTIONS.UPDATE_PROFILE;
-  constructor(public readonly payload: ProfileReadDto) {}
+  constructor(public readonly payload: AccountStaffDetailReadDto) {}
 }

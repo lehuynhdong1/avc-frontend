@@ -13,8 +13,8 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
+import { AccountReadDto } from '../model/models';
 import { ProfilePasswordUpdateDto } from '../model/models';
-import { ProfileReadDto } from '../model/models';
 
 import { Configuration } from '../configuration';
 
@@ -35,7 +35,7 @@ export interface ProfileServiceInterface {
    * Get personal Profile Infomation
    *
    */
-  apiProfileGet(extraHttpRequestParams?: any): Observable<ProfileReadDto>;
+  apiProfileGet(extraHttpRequestParams?: any): Observable<AccountReadDto>;
 
   /**
    * Change password for owner account

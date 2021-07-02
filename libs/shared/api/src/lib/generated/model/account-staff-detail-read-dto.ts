@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { CarAssignedReadDto } from './car-assigned-read-dto';
-import { AccountManagerReadDto } from './account-manager-read-dto';
+import { AccountNotManagedByReadDto } from './account-not-managed-by-read-dto';
 
 export interface AccountStaffDetailReadDto {
   id?: number;
@@ -21,6 +21,6 @@ export interface AccountStaffDetailReadDto {
   phone?: string | null;
   avatar?: string | null;
   isAvailable?: boolean | null;
-  managedBy?: AccountManagerReadDto;
+  managedBy?: AccountNotManagedByReadDto;
   assignedCars?: Array<CarAssignedReadDto> | null;
 }

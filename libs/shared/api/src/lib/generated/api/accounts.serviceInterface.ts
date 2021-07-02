@@ -16,11 +16,11 @@ import { Observable } from 'rxjs';
 import { AccountActivationDto } from '../model/models';
 import { AccountManagedByUpdateDto } from '../model/models';
 import { AccountManagerDetailReadDto } from '../model/models';
-import { AccountManagerReadDto } from '../model/models';
-import { AccountManagerReadDtoPagingResponseDto } from '../model/models';
+import { AccountNotManagedByReadDto } from '../model/models';
+import { AccountNotManagedByReadDtoPagingResponseDto } from '../model/models';
+import { AccountReadDto } from '../model/models';
+import { AccountReadDtoPagingResponseDto } from '../model/models';
 import { AccountStaffDetailReadDto } from '../model/models';
-import { AccountStaffReadDto } from '../model/models';
-import { AccountStaffReadDtoPagingResponseDto } from '../model/models';
 import { AccountUpdateDto } from '../model/models';
 
 import { Configuration } from '../configuration';
@@ -132,7 +132,7 @@ export interface AccountsServiceInterface {
   apiAccountsManagerPost(
     requestParameters: ApiAccountsManagerPostRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountManagerReadDto>;
+  ): Observable<AccountNotManagedByReadDto>;
 
   /**
    * Get List of Manager
@@ -142,7 +142,7 @@ export interface AccountsServiceInterface {
   apiAccountsManagersGet(
     requestParameters: ApiAccountsManagersGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountManagerReadDtoPagingResponseDto>;
+  ): Observable<AccountNotManagedByReadDtoPagingResponseDto>;
 
   /**
    * Get Specific Account
@@ -162,7 +162,7 @@ export interface AccountsServiceInterface {
   apiAccountsStaffPost(
     requestParameters: ApiAccountsStaffPostRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountStaffReadDto>;
+  ): Observable<AccountReadDto>;
 
   /**
    * Get list of staff
@@ -172,5 +172,5 @@ export interface AccountsServiceInterface {
   apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<AccountStaffReadDtoPagingResponseDto>;
+  ): Observable<AccountReadDtoPagingResponseDto>;
 }

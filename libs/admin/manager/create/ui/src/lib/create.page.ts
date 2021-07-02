@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { TuiNotification } from '@taiga-ui/core';
 import { ShowNotification, hasValue } from '@shared/util';
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler, TuiInputType } from '@taiga-ui/cdk';
-import { AccountManagerReadDto } from '@shared/api';
+import { AccountManagerDetailReadDto } from '@shared/api';
 import { CanShowUnsavedDialog } from '@admin/core/util';
 
 const INIT_FORM_VALUE = {
@@ -75,7 +75,7 @@ export class CreatePage implements CanShowUnsavedDialog {
 
   @tuiPure
   stringifyManagers(
-    managers: Array<AccountManagerReadDto>
+    managers: Array<AccountManagerDetailReadDto>
   ): TuiStringHandler<TuiContextWithImplicit<number>> {
     const map = new Map(
       managers.map(

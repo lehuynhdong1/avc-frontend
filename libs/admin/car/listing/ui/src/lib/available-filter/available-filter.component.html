@@ -1,0 +1,14 @@
+<tui-select [tuiTextfieldSize]="size" [formControl]="control" class="w-full">
+  Activation Status
+  <tui-data-list-wrapper
+    *tuiDataList
+    [itemContent]="content"
+    [items]="IS_AVAILABLE_VALUES"
+  ></tui-data-list-wrapper>
+
+  <ng-template #content let-data>
+    <div class="p-2">
+      <tui-badge [size]="size" [value]="data" [status]="data | status"></tui-badge>
+    </div>
+  </ng-template>
+</tui-select>

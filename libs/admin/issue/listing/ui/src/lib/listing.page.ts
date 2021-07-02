@@ -8,8 +8,8 @@ import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { tuiPure } from '@taiga-ui/cdk';
 import { Id, DynamicTableColumns } from '@shared/ui/dynamic-table';
+import { SidebarService } from '@admin/core/ui';
 
 @Component({
   selector: 'adca-listing',
@@ -39,17 +39,12 @@ export class ListingPage {
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
+    private sidebar: SidebarService,
     private router: Router,
     private state: RxState<ListingPageState>
   ) {
     this.store.dispatch(new LoadIssues({ limit: 10 }));
     this.declareSideEffects();
-  }
-
-  @tuiPure
-  calcTotalPageCount(count: number | undefined) {
-    if (!count) return 1;
-    return Math.round(count / 10) + 1;
   }
 
   private declareSideEffects() {
@@ -67,6 +62,7 @@ export class ListingPage {
       this.store.dispatch(new LoadIssues({ searchValue, limit: 10 }))
     );
     this.state.hold(this.selectRow$, (id) => {
+      this.sidebar.collapse();
       this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
   }

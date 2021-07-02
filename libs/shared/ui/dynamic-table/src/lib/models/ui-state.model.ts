@@ -1,5 +1,3 @@
-import { AccountManagerReadDto } from '@shared/api';
-
 interface KeyValue<K, Type> {
   key: K;
   title: string;
@@ -11,7 +9,6 @@ interface KeyValue<K, Type> {
   cellTemplate?: string;
 }
 
-export type SupportedDto = AccountManagerReadDto;
 export type Id = string | number;
 export type HasId = { id?: Id };
 

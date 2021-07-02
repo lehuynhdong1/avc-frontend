@@ -9,8 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountStaffReadDto } from './account-staff-read-dto';
 import { CarAssignedReadDto } from './car-assigned-read-dto';
+import { AccountNotManagedByReadDto } from './account-not-managed-by-read-dto';
 
 export interface AccountManagerDetailReadDto {
   id?: number;
@@ -21,6 +21,6 @@ export interface AccountManagerDetailReadDto {
   phone?: string | null;
   avatar?: string | null;
   isAvailable?: boolean | null;
-  assignedStaffs?: Array<AccountStaffReadDto> | null;
+  assignedStaffs?: Array<AccountNotManagedByReadDto> | null;
   assignedCars?: Array<CarAssignedReadDto> | null;
 }

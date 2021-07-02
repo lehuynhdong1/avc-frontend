@@ -26,11 +26,11 @@ import { Observable } from 'rxjs';
 import { AccountActivationDto } from '../model/models';
 import { AccountManagedByUpdateDto } from '../model/models';
 import { AccountManagerDetailReadDto } from '../model/models';
-import { AccountManagerReadDto } from '../model/models';
-import { AccountManagerReadDtoPagingResponseDto } from '../model/models';
+import { AccountNotManagedByReadDto } from '../model/models';
+import { AccountNotManagedByReadDtoPagingResponseDto } from '../model/models';
+import { AccountReadDto } from '../model/models';
+import { AccountReadDtoPagingResponseDto } from '../model/models';
 import { AccountStaffDetailReadDto } from '../model/models';
-import { AccountStaffReadDto } from '../model/models';
-import { AccountStaffReadDtoPagingResponseDto } from '../model/models';
 import { AccountUpdateDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -481,19 +481,19 @@ export class AccountsService implements AccountsServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountManagerReadDto>;
+  ): Observable<AccountNotManagedByReadDto>;
   public apiAccountsManagerPost(
     requestParameters: ApiAccountsManagerPostRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountManagerReadDto>>;
+  ): Observable<HttpResponse<AccountNotManagedByReadDto>>;
   public apiAccountsManagerPost(
     requestParameters: ApiAccountsManagerPostRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountManagerReadDto>>;
+  ): Observable<HttpEvent<AccountNotManagedByReadDto>>;
   public apiAccountsManagerPost(
     requestParameters: ApiAccountsManagerPostRequestParams,
     observe: any = 'body',
@@ -589,7 +589,7 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.post<AccountManagerReadDto>(
+    return this.httpClient.post<AccountNotManagedByReadDto>(
       `${this.configuration.basePath}/api/accounts/manager`,
       convertFormParamsToString ? formParams.toString() : formParams,
       {
@@ -613,19 +613,19 @@ export class AccountsService implements AccountsServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountManagerReadDtoPagingResponseDto>;
+  ): Observable<AccountNotManagedByReadDtoPagingResponseDto>;
   public apiAccountsManagersGet(
     requestParameters: ApiAccountsManagersGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountManagerReadDtoPagingResponseDto>>;
+  ): Observable<HttpResponse<AccountNotManagedByReadDtoPagingResponseDto>>;
   public apiAccountsManagersGet(
     requestParameters: ApiAccountsManagersGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountManagerReadDtoPagingResponseDto>>;
+  ): Observable<HttpEvent<AccountNotManagedByReadDtoPagingResponseDto>>;
   public apiAccountsManagersGet(
     requestParameters: ApiAccountsManagersGetRequestParams,
     observe: any = 'body',
@@ -677,7 +677,7 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<AccountManagerReadDtoPagingResponseDto>(
+    return this.httpClient.get<AccountNotManagedByReadDtoPagingResponseDto>(
       `${this.configuration.basePath}/api/accounts/managers`,
       {
         params: queryParameters,
@@ -776,19 +776,19 @@ export class AccountsService implements AccountsServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountStaffReadDto>;
+  ): Observable<AccountReadDto>;
   public apiAccountsStaffPost(
     requestParameters: ApiAccountsStaffPostRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountStaffReadDto>>;
+  ): Observable<HttpResponse<AccountReadDto>>;
   public apiAccountsStaffPost(
     requestParameters: ApiAccountsStaffPostRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountStaffReadDto>>;
+  ): Observable<HttpEvent<AccountReadDto>>;
   public apiAccountsStaffPost(
     requestParameters: ApiAccountsStaffPostRequestParams,
     observe: any = 'body',
@@ -888,7 +888,7 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.post<AccountStaffReadDto>(
+    return this.httpClient.post<AccountReadDto>(
       `${this.configuration.basePath}/api/accounts/staff`,
       convertFormParamsToString ? formParams.toString() : formParams,
       {
@@ -912,19 +912,19 @@ export class AccountsService implements AccountsServiceInterface {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<AccountStaffReadDtoPagingResponseDto>;
+  ): Observable<AccountReadDtoPagingResponseDto>;
   public apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<AccountStaffReadDtoPagingResponseDto>>;
+  ): Observable<HttpResponse<AccountReadDtoPagingResponseDto>>;
   public apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<AccountStaffReadDtoPagingResponseDto>>;
+  ): Observable<HttpEvent<AccountReadDtoPagingResponseDto>>;
   public apiAccountsStaffsGet(
     requestParameters: ApiAccountsStaffsGetRequestParams,
     observe: any = 'body',
@@ -976,7 +976,7 @@ export class AccountsService implements AccountsServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<AccountStaffReadDtoPagingResponseDto>(
+    return this.httpClient.get<AccountReadDtoPagingResponseDto>(
       `${this.configuration.basePath}/api/accounts/staffs`,
       {
         params: queryParameters,

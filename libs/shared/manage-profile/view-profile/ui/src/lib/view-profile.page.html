@@ -1,4 +1,4 @@
-<main class="flex flex-col" *ngIf="me$ | async as my; else loading">
+<main class="flex flex-col w-60" *ngIf="me$ | async as my; else loading" [formGroup]="form">
   <h1 class="text-xl w-full">
     <tui-svg
       src="assets/taiga-ui/icons/personCircleOutline.svg#personCircleOutline"
@@ -9,35 +9,66 @@
 
   <label>Full name</label>
   <h2 class="bold my-0">{{ my.firstName }} {{ my.lastName }}</h2>
-  <div class="p-4 relative border border-gray-900">
-    <adc-frontend-avatar
-      class="tui-space_top-2"
-      [url]="my.avatar || ''"
-      size="xxl"
-      placeholderClass="!text-primary"
-    ></adc-frontend-avatar>
+  <div class="p-4 border border-gray-900">
+    <div class="relative w-40">
+      <adc-frontend-avatar
+        [url]="(form.value.avatarImage | dataUrl | async) || my.avatar"
+        placeholderClass="!text-primary"
+        size="xxl"
+      ></adc-frontend-avatar>
+      <input
+        type="file"
+        accept="image/*"
+        class="hidden"
+        (change)="clickChangeAvatar$.next($event)"
+        #inputAvatar
+      />
+      <tui-marker-icon
+        [mode]="MARKER_LINK"
+        src="tuiIconUpload"
+        size="s"
+        class="bottom-right border border-solid border-primary"
+        (click)="inputAvatar.click()"
+      ></tui-marker-icon>
+    </div>
   </div>
   <label>Email</label>
   <h3 class="bold mt-0">{{ my.email }}</h3>
-  <!-- <label>Phone</label>
-    <h3 class="bold mt-0">{{ my.phone }}</h3> -->
   <label>Role</label>
-  <h3 class="bold mt-0">{{ my.roleName }}</h3>
-  <!-- <label>Managed by</label>
+  <h3 class="bold mt-0">{{ my.role }}</h3>
+  <label>Phone</label>
+  <tui-input-phone
+    tuiTextfieldSize="m"
+    [tuiTextfieldCleaner]="true"
+    [tuiTextfieldLabelOutside]="true"
+    countryCode="+84"
+    phoneMaskAfterCountryCode="### ###-###"
+    tuiTextfieldExampleText="Phone here..."
+    formControlName="phone"
+    class="mb-3 font-bold"
+  >
+    <h3 class="bold mt-0 text-gray-300">
+      Phone here
+      <tui-svg src="tuiIconEdit"></tui-svg>
+    </h3>
+  </tui-input-phone>
+  <ng-container *ngIf="my.role === 'Staff'">
+    <label>Managed by</label>
     <h3 class="bold mt-0">
-          <ng-container *ngIf="my.managedBy; else notHasManagedBy">
-            {{ my.managedBy?.firstName }} {{ my.managedBy?.lastName }}
-          </ng-container>
-          <ng-template #notHasManagedBy> Not yet </ng-template>
-        </h3> -->
+      <ng-container *ngIf="my.managedBy; else notHasManagedBy">
+        {{ my.managedBy?.firstName }} {{ my.managedBy?.lastName }}
+      </ng-container>
+      <ng-template #notHasManagedBy> Not yet </ng-template>
+    </h3>
+  </ng-container>
 
   <button
     tuiButton
     size="m"
     appearance="outline"
     type="button"
-    routerLink="update-profile"
-    class="self-start w-52 mb-3 primary"
+    (click)="clickUpdate$.next()"
+    class="self-start w-full mb-3 primary"
   >
     Update Profile
   </button>
@@ -47,7 +78,7 @@
     appearance="outline"
     type="button"
     routerLink="change-password"
-    class="self-start w-52 danger"
+    class="self-start w-full danger"
   >
     Change Password
   </button>

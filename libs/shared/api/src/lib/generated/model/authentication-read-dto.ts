@@ -9,9 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountReadAfterAuthenDto } from './account-read-after-authen-dto';
+import { AccountReadDto } from './account-read-dto';
 
 export interface AuthenticationReadDto {
   token?: string | null;
-  account?: AccountReadAfterAuthenDto;
+  account?: AccountReadDto;
 }

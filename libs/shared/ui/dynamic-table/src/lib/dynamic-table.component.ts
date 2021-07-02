@@ -71,8 +71,7 @@ export class DynamicTableComponent<T extends HasId> {
     return ['index', ...columns.map((col) => col.key)];
   }
   @tuiPure
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  toDate(value: any) {
+  toDate(value: string) {
     return new Date(value);
   }
 

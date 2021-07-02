@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountManagerReadDto } from './account-manager-read-dto';
+import { AccountNotManagedByReadDto } from './account-not-managed-by-read-dto';
 import { AccountStaffAssignToReadDto } from './account-staff-assign-to-read-dto';
 
 export interface CarListReadDto {
@@ -19,6 +19,6 @@ export interface CarListReadDto {
   isAvailable?: boolean | null;
   createdAt?: string | null;
   deviceId?: string | null;
-  managedBy?: AccountManagerReadDto;
+  managedBy?: AccountNotManagedByReadDto;
   assignTo?: AccountStaffAssignToReadDto;
 }

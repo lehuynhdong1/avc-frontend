@@ -1,16 +1,15 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { StaffState, LoadStaffs } from '@shared/features/staff/data-access';
-import { Subject } from 'rxjs';
-import { AccountStaffReadDto } from '@shared/api';
+import { Subject, combineLatest } from 'rxjs';
+import { AccountStaffDetailReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { tuiPure } from '@taiga-ui/cdk';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
-
+import { SidebarService } from '@admin/core/ui';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -19,11 +18,16 @@ import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
   providers: [RxState]
 })
 export class ListingPage {
-  DYNAMIC_COLUMNS: DynamicTableColumns<AccountStaffReadDto> = [
+  DYNAMIC_COLUMNS: DynamicTableColumns<AccountStaffDetailReadDto> = [
     { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
     { key: 'email', title: 'Email', type: 'string' },
     { key: 'phone', title: 'Phone', type: 'string' },
-    { key: 'managedByEmail', title: 'Managed by', type: 'string' },
+    {
+      key: 'managedBy',
+      title: 'Managed by',
+      cellTemplate: '#managedBy.firstName #managedBy.lastName',
+      type: 'string'
+    },
     {
       key: 'isAvailable',
       title: 'Activation Status',
@@ -36,25 +40,19 @@ export class ListingPage {
 
   /* Attribute Streams */
   readonly staffs$ = this.store.select(StaffState.staffs);
-  readonly isOpened$ = this.state.select('isOpened');
   readonly selectedStaffId$ = this.state.select('selectedStaffId');
 
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
-  readonly openAside$ = new Subject<boolean>();
-  readonly closeDetail$ = new Subject<void>();
-  readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
-    debounceTime(500),
-    distinctUntilChanged()
-  );
+  readonly changeIsAvailable$ = new Subject<boolean | undefined>();
 
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private sidebar: SidebarService,
     private state: RxState<ListingPageState>
   ) {
-    this.store.dispatch(new LoadStaffs({ limit: 10 }));
     this.declareSideEffects();
   }
 
@@ -65,22 +63,25 @@ export class ListingPage {
       this.state.connect('selectedStaffId', idFromRoute$);
     }
     this.state.connect('selectedStaffId', this.selectRow$);
-    this.state.connect('isOpened', this.openAside$);
-    this.state.hold(this.changeSearchValue$, (value) => {
-      this.store.dispatch(new LoadStaffs({ searchValue: value, limit: 10 }));
-    });
-    this.state.hold(this.closeDetail$, () => {
-      this.state.set({ selectedStaffId: 0 });
-      this.router.navigateByUrl('/staff');
-    });
+
+    this.whenFilterChangedEffects();
     this.state.hold(this.selectRow$, (id) => {
+      this.sidebar.collapse();
       this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
   }
 
-  @tuiPure
-  calcTotalPageCount(count: number | undefined) {
-    if (!count) return 1;
-    return Math.round(count / 10) + 1;
+  private whenFilterChangedEffects() {
+    const changeSearchValue$ = this.searchControl.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      startWith('')
+    );
+    this.state.hold(
+      combineLatest([changeSearchValue$, this.changeIsAvailable$]),
+      ([searchValue, isAvailable]) => {
+        this.store.dispatch(new LoadStaffs({ searchValue, isAvailable, limit: 10 }));
+      }
+    );
   }
 }

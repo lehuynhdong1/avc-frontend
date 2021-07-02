@@ -8,7 +8,6 @@
       <button
         tuiButton
         type="button"
-        class="tui-space_right-3"
         size="m"
         appearance="outline"
         icon="assets/taiga-ui/icons/wall-clock.svg#wall-clock"
@@ -19,9 +18,15 @@
     </section>
 
     <section class="w-100 flex flex-col items-stretch">
-      <tui-input tuiTextfieldSize="xl" [formControl]="searchControl" class="w-100 pr-4 mb-4">
-        Search by car name ...
-      </tui-input>
+      <section class="flex">
+        <tui-input tuiTextfieldSize="l" [formControl]="searchControl" class="flex-grow pr-4 mb-4">
+          Search by car name ...
+        </tui-input>
+        <adca-available-filter
+          class="w-44"
+          (valueChange)="changeIsAvailable$.next($event)"
+        ></adca-available-filter>
+      </section>
       <ng-container *ngIf="(approvedCars$ | async) as carResponse">
         <adc-frontend-dynamic-table
           [columns]="DYNAMIC_COLUMNS"

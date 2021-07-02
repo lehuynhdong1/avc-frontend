@@ -7,10 +7,10 @@ import { RxState } from '@rx-angular/state';
 import { withLatestFrom, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TuiNotification } from '@taiga-ui/core';
-import { ShowNotification, hasValue } from '@shared/util';
+import { ShowNotification, hasValue, Empty } from '@shared/util';
 import { LoadManagers, ManagerState } from '@shared/features/manager/data-access';
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler, TuiInputType } from '@taiga-ui/cdk';
-import { AccountManagerReadDto } from '@shared/api';
+import { AccountManagerDetailReadDto } from '@shared/api';
 import { CanShowUnsavedDialog } from '@admin/core/util';
 
 const INIT_FORM_VALUE = {
@@ -69,7 +69,7 @@ export class CreatePage implements CanShowUnsavedDialog {
   constructor(
     private store: Store,
     private actions: Actions,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     private formBuilder: FormBuilder
   ) {
     this.store.dispatch(new LoadManagers({ limit: 10 }));
@@ -78,7 +78,7 @@ export class CreatePage implements CanShowUnsavedDialog {
 
   @tuiPure
   stringifyManagers(
-    managers: Array<AccountManagerReadDto>
+    managers: Array<AccountManagerDetailReadDto>
   ): TuiStringHandler<TuiContextWithImplicit<number>> {
     const map = new Map(
       managers.map(

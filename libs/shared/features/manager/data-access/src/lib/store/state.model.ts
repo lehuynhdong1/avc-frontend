@@ -1,11 +1,11 @@
 import {
-  AccountManagerReadDtoPagingResponseDto,
+  AccountNotManagedByReadDtoPagingResponseDto,
   AccountManagerDetailReadDto,
   ApiAccountsManagerPostRequestParams
 } from '@shared/api';
 
 export interface StateModel {
-  listing: AccountManagerReadDtoPagingResponseDto | null;
+  listing: AccountNotManagedByReadDtoPagingResponseDto | null;
   detail: AccountManagerDetailReadDto | null;
   create?: ApiAccountsManagerPostRequestParams;
   errorMessage?: string;

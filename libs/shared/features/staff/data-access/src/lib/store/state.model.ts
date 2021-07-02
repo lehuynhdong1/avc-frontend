@@ -1,5 +1,5 @@
 import {
-  AccountStaffReadDtoPagingResponseDto,
+  AccountReadDtoPagingResponseDto,
   AccountStaffDetailReadDto,
   ApiAccountsStaffPostRequestParams
 } from '@shared/api';
@@ -10,7 +10,7 @@ export enum CreateStatus {
   FAILED
 }
 export interface StateModel {
-  listing?: AccountStaffReadDtoPagingResponseDto;
+  listing?: AccountReadDtoPagingResponseDto;
   detail?: AccountStaffDetailReadDto;
   create?: { params?: ApiAccountsStaffPostRequestParams; status: CreateStatus };
   errorMessage?: string;

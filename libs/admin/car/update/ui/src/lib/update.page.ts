@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, ofActionErrored, ofActionSuccessful, Store } from '@ngxs/store';
 import { RxState } from '@rx-angular/state';
-import { RoleReadDto, AccountManagerReadDto } from '@shared/api';
+import { RoleReadDto, AccountManagerDetailReadDto } from '@shared/api';
 import { LoginState } from '@shared/auth/login/data-access';
 import {
   LoadCarById,
@@ -63,7 +63,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
 
   @tuiPure
   stringifyManagers(
-    managers: Array<AccountManagerReadDto>
+    managers: Array<AccountManagerDetailReadDto>
   ): TuiStringHandler<TuiContextWithImplicit<number>> {
     const map = new Map(
       managers.map(

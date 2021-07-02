@@ -1,36 +1,44 @@
-<nav class="flex flex-col px-3 h-full bg-gray-900 text-gray-50 sticky top-0 left-0">
-  <div class="flex justify-between items-center h-16">
-    <tui-svg src="tuiIconCheckCircleLarge"></tui-svg>
-    <div>
+<nav class="w-sidebar" [class.collapse]="collapse$ | async">
+  <section class="nav__support">
+    <tui-svg
+      src="tuiIconMenuLarge"
+      (click)="toggleSidebar$.next()"
+      [tuiHint]="(collapse$ | async) ? 'Expand' : 'Collapse'"
+    ></tui-svg>
+    <div class="wrapper">
       <tui-svg src="tuiIconMailLarge" class="mr-2"></tui-svg>
       <tui-svg src="tuiIconAlertCircleLarge"></tui-svg>
     </div>
-  </div>
-  <section class="flex flex-col items-center py-10" *ngIf="me$ | async as me">
+  </section>
+  <section class="nav__personal" *ngIf="me$ | async as me">
     <adc-frontend-avatar [url]="me.avatar" size="xl"></adc-frontend-avatar>
 
     <b class="text-base">{{ me.firstName }} {{ me.lastName }}</b>
     <b class="text-sm text-gray-400">{{ me.email }}</b>
   </section>
 
-  <section id="dashboards">
-    <div class="block px-6">
-      <b class="text-base">Dashboards</b>
-      <p class="text-gray-400 mt-0 mb-6">Keep track your working process</p>
+  <section class="nav__main">
+    <div class="nav__current">
+      <b class="nav__current-title">Dashboards</b>
+      <p class="nav__current-description">Keep track your working process</p>
     </div>
-
-    <ul class="nav-list" *ngIf="currentUrl$ | async as currentUrl">
+    <div class="nav__divider"></div>
+    <ul class="nav__list" *ngIf="currentUrl$ | async as currentUrl">
       <li
         *ngFor="let item of navItems"
         [routerLink]="item.path"
         routerLinkActive="active"
-        class="nav-item"
+        class="nav__list-item"
       >
         <tui-svg
           [src]="currentUrl.includes(item.path) ? getFilledIcon(item.icon) : item.icon"
           class="zoom-08"
+          [tuiHint]="item.label"
+          [tuiHintShowDelay]="100"
+          [tuiHintHideDelay]="100"
+          tuiHintDirection="right"
         ></tui-svg>
-        <span class="ml-2">{{ item.label }}</span>
+        <span class="nav__list-item-title">{{ item.label }}</span>
       </li>
     </ul>
   </section>

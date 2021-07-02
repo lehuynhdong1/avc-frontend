@@ -5,6 +5,11 @@
 label {
   @apply text-gray-600 font-bold text-sm;
 }
+
+tui-marker-icon.bottom-right {
+  @apply absolute -bottom-3 -right-3;
+}
+
 :host ::ng-deep button {
   &.primary {
     tui-wrapper[data-appearance='outline'] {
@@ -37,5 +42,13 @@ label {
         @apply bg-red-500 text-white;
       }
     }
+  }
+}
+
+:host ::ng-deep tui-input-phone tui-wrapper {
+  @apply shadow-none;
+
+  &:hover {
+    @apply shadow-sm;
   }
 }

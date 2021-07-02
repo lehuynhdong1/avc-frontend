@@ -63,10 +63,10 @@ export class StaffState {
       const { listing, detail } = getState();
       let newState = getState();
       if (listing?.result) {
-        const willUpdateManager = listing.result.find((manager) => manager.id === id);
-        const updatedManager = { ...willUpdateManager, isAvailable };
-        if (willUpdateManager) {
-          const newResult = update(listing.result, updatedManager, 'id');
+        const willUpdateStaff = listing.result.find((staff) => staff.id === id);
+        const updatedStaff = { ...willUpdateStaff, isAvailable };
+        if (willUpdateStaff) {
+          const newResult = update(listing.result, updatedStaff, 'id');
           newState = { ...newState, listing: { ...listing, result: newResult } };
         }
       }

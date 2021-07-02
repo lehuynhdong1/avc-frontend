@@ -13,5 +13,4 @@
 export interface ProfilePasswordUpdateDto {
   newPassword?: string | null;
   oldPassword?: string | null;
-  readonly salt?: string | null;
 }

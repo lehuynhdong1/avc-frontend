@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountStaffReadDto } from './account-staff-read-dto';
+import { AccountNotManagedByReadDto } from './account-not-managed-by-read-dto';
 
-export interface AccountStaffReadDtoPagingResponseDto {
-  result?: Array<AccountStaffReadDto> | null;
+export interface AccountNotManagedByReadDtoPagingResponseDto {
+  result?: Array<AccountNotManagedByReadDto> | null;
   count?: number;
   nextPage?: string | null;
   previousPage?: string | null;

@@ -4,8 +4,8 @@ import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { ProfileService } from '@shared/api';
-import { ChangePassword, ViewProfile } from './actions';
-import { UpdateProfile } from '@shared/auth/login/data-access';
+import { ChangePassword, ViewProfile, UpdateProfile } from './actions';
+import { UpdateProfile as LoginUpdateProfile } from '@shared/auth/login/data-access';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -24,7 +24,7 @@ export class ManageProfileState {
   viewProfile({ dispatch }: StateContext<StateModel>) {
     return this.profileService
       .apiProfileGet()
-      .pipe(tap((profile) => dispatch(new UpdateProfile(profile))));
+      .pipe(tap((profile) => dispatch(new LoginUpdateProfile(profile))));
   }
 
   @Action(ChangePassword)
@@ -32,6 +32,18 @@ export class ManageProfileState {
     return this.profileService.apiProfilePasswordPut(params).pipe(
       catchError((error) => {
         console.warn(`[${STATE_NAME}] ChangePassword with error: `, error);
+        return throwError({
+          error: 'We missed something. Change password failed, please try again later.'
+        });
+      })
+    );
+  }
+  @Action(UpdateProfile)
+  updateProfile({ dispatch }: StateContext<StateModel>, { params }: UpdateProfile) {
+    return this.profileService.apiProfilePut(params).pipe(
+      tap(() => dispatch(new ViewProfile())),
+      catchError((error) => {
+        console.warn(`[${STATE_NAME}] UpdateProfile with error: `, error);
         return throwError({
           error: 'We missed something. Change password failed, please try again later.'
         });
