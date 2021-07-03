@@ -7,6 +7,7 @@ export const staffRoutes: Routes = [
   },
   {
     path: 'detail/:id',
-    loadChildren: () => import('@admin/staff/detail/feature').then((m) => m.FeatureModule)
+    loadChildren: () => import('@admin/staff/detail/feature').then((m) => m.FeatureModule),
+    data: { fullPage: true }
   }
 ];

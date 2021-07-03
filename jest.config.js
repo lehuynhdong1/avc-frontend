@@ -79,6 +79,8 @@ module.exports = {
     '<rootDir>/libs/admin/car/update/feature',
     '<rootDir>/libs/admin/car/update/ui',
     '<rootDir>/libs/admin/issue/detail/ui',
-    '<rootDir>/libs/admin/issue/detail/feature'
+    '<rootDir>/libs/admin/issue/detail/feature',
+    '<rootDir>/libs/admin/dashboard/feature',
+    '<rootDir>/libs/admin/dashboard/ui'
   ]
 };

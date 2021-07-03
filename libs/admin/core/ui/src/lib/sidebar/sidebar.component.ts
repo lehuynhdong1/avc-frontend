@@ -14,38 +14,45 @@ export interface NavItem {
   label: string;
   path: string;
   icon: string;
+  description: string;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Dashboard',
     path: '/dashboard',
-    icon: 'assets/taiga-ui/icons/bar-chart-outline.svg#bar-chart-outline'
+    icon: 'assets/taiga-ui/icons/bar-chart-outline.svg#bar-chart-outline',
+    description: 'Keep track your working process'
   },
   {
     label: 'Manage Cars',
     path: '/car',
-    icon: 'assets/taiga-ui/icons/car-sport-outline.svg#car-sport-outline'
+    icon: 'assets/taiga-ui/icons/car-sport-outline.svg#car-sport-outline',
+    description: 'Follow any device changes'
   },
   {
     label: 'Manage Managers',
     path: '/manager',
-    icon: 'assets/taiga-ui/icons/ribbon-outline.svg#ribbon-outline'
+    icon: 'assets/taiga-ui/icons/ribbon-outline.svg#ribbon-outline',
+    description: 'Empower taks through managers'
   },
   {
     label: 'Manage Staffs',
     path: '/staff',
-    icon: 'assets/taiga-ui/icons/people-outline.svg#people-outline'
+    icon: 'assets/taiga-ui/icons/people-outline.svg#people-outline',
+    description: 'See all staffs under your management'
   },
   {
     label: 'Issue History',
     path: '/issue',
-    icon: 'assets/taiga-ui/icons/warning-outline.svg#warning-outline'
+    icon: 'assets/taiga-ui/icons/warning-outline.svg#warning-outline',
+    description: 'Quickly access any system issues'
   },
   {
     label: 'Training Model',
     path: '/training',
-    icon: 'assets/taiga-ui/icons/library-outline.svg#library-outline'
+    icon: 'assets/taiga-ui/icons/library-outline.svg#library-outline',
+    description: 'Enhance your detection algorithm'
   }
 ];
 @Component({
@@ -59,10 +66,11 @@ export class SidebarComponent {
   readonly navItems = NAV_ITEMS;
   @Select(LoginState.account) me$: Observable<LoginStateModel['account']>;
   collapse$ = this.sidebarService.collapse$;
-  currentUrl$ = this.router.events.pipe(
+  currentItem$ = this.router.events.pipe(
     filter((event) => event instanceof NavigationEnd),
     map((event) => (event as NavigationEnd).url),
-    startWith(this.router.url)
+    startWith(this.router.url),
+    map((currentUrl) => NAV_ITEMS.find((item) => currentUrl.includes(item.path)))
   );
 
   toggleSidebar$ = new Subject<void>();

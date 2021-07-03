@@ -28,25 +28,25 @@ export class ManageProfileState {
   }
 
   @Action(ChangePassword)
-  changePassword(_: StateContext<StateModel>, { params }: ChangePassword) {
+  changePassword({ patchState }: StateContext<StateModel>, { params }: ChangePassword) {
     return this.profileService.apiProfilePasswordPut(params).pipe(
       catchError((error) => {
         console.warn(`[${STATE_NAME}] ChangePassword with error: `, error);
-        return throwError({
-          error: 'We missed something. Change password failed, please try again later.'
-        });
+        const errorMessage = 'We missed something. Change password failed, please try again later.';
+        patchState({ errorMessage });
+        return throwError(errorMessage);
       })
     );
   }
   @Action(UpdateProfile)
-  updateProfile({ dispatch }: StateContext<StateModel>, { params }: UpdateProfile) {
+  updateProfile({ dispatch, patchState }: StateContext<StateModel>, { params }: UpdateProfile) {
     return this.profileService.apiProfilePut(params).pipe(
       tap(() => dispatch(new ViewProfile())),
       catchError((error) => {
         console.warn(`[${STATE_NAME}] UpdateProfile with error: `, error);
-        return throwError({
-          error: 'We missed something. Change password failed, please try again later.'
-        });
+        const errorMessage = 'We missed something. Update profile failed, please try again later.';
+        patchState({ errorMessage });
+        return throwError(errorMessage);
       })
     );
   }

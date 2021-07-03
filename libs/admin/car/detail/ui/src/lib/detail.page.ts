@@ -1,6 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Actions, ofActionErrored, Store } from '@ngxs/store';
-import { CarState, LoadCarById } from '@shared/features/car/data-access';
+import {
+  CarState,
+  LoadCarById,
+  ToggleActivation,
+  ToggleApprove
+} from '@shared/features/car/data-access';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
@@ -9,28 +14,26 @@ import { Observable, Subject } from 'rxjs';
 import { ConfirmDialogService } from '@admin/core/ui';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ConfirmDialogComponentParams } from '@admin/core/ui';
-import { ToggleActivation } from '@shared/features/account/data-access';
 import { ShowNotification, hasValue } from '@shared/util';
 import { IssueReadDto } from '@shared/api';
+import { DynamicTableColumns } from '@shared/ui/dynamic-table';
 
-const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
-  isActivated
-) => ({
-  content: `Do you really want to ${isActivated ? 'deactivate' : 'activate'} this car?`,
-  buttons: [
-    {
-      id: 1,
-      label: isActivated ? 'Deactivate' : 'Activate'
-    },
-    {
-      id: 2,
-      label: 'Cancel',
-      uiOptions: {
-        appearance: TuiAppearance.Outline
-      }
-    }
-  ]
-});
+const getConfirmDialogParams: (
+  type: 'isAvailable' | 'isApproved',
+  isActivated: boolean
+) => ConfirmDialogComponentParams = (type, isActivated) => {
+  const mapper = {
+    isAvailable: ['Activate', 'Deactivate'],
+    isApproved: ['Approve', 'Reject']
+  };
+  return {
+    content: `Do you really want to ${isActivated ? mapper[type][1] : mapper[type][0]} this car?`,
+    buttons: [
+      { id: 1, label: isActivated ? mapper[type][1] : mapper[type][0] },
+      { id: 2, label: 'Cancel', uiOptions: { appearance: TuiAppearance.Outline } }
+    ]
+  };
+};
 @Component({
   selector: 'adca-detail',
   templateUrl: './detail.page.html',
@@ -47,16 +50,12 @@ export class DetailPage {
   };
 
   /* Configurations */
-  readonly COLUMNS: ReadonlyArray<keyof IssueReadDto | 'index'> = [
-    'index',
-    'type',
-    'createdAt',
-    'image',
-    'description',
-    'location',
-    'isAvailable'
-  ] as const;
-
+  readonly DYNAMIC_COLUMNS: DynamicTableColumns<IssueReadDto> = [
+    { key: 'type', title: 'Type', type: 'string' },
+    { key: 'createdAt', title: 'Created at', type: 'date' },
+    { key: 'description', title: 'Description', type: 'string' },
+    { key: 'location', title: 'Location', type: 'string' }
+  ];
   readonly selectedCar$ = this.store.select(CarState.selectedCar).pipe(hasValue());
   private readonly errorMessage$ = this.store.select(CarState.errorMessage).pipe(hasValue());
   private readonly id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
@@ -67,6 +66,7 @@ export class DetailPage {
 
   /* Actions */
   readonly clickActivate$ = new Subject<boolean>();
+  readonly clickApprove$ = new Subject<boolean>();
 
   /* Side effects */
   private whenClickActivate$ = this.clickActivate$.pipe(
@@ -74,7 +74,20 @@ export class DetailPage {
       this.confirmDialogService
         .open(
           currentValue ? 'Deactivate car' : 'Activate car',
-          getConfirmDialogParams(currentValue)
+          getConfirmDialogParams('isAvailable', currentValue)
+        )
+        .pipe(
+          filter((response) => response === 1),
+          map(() => currentValue)
+        )
+    )
+  );
+  private whenClickApprove$ = this.clickApprove$.pipe(
+    switchMap((currentValue) =>
+      this.confirmDialogService
+        .open(
+          currentValue ? 'Reject car' : 'Approve car',
+          getConfirmDialogParams('isApproved', currentValue)
         )
         .pipe(
           filter((response) => response === 1),
@@ -85,6 +98,9 @@ export class DetailPage {
   private whenToggleActivationFailed$ = this.actions.pipe<ToggleActivation>(
     ofActionErrored(ToggleActivation)
   );
+  private whenToggleApproveFailed$ = this.actions.pipe<ToggleApprove>(
+    ofActionErrored(ToggleApprove)
+  );
 
   constructor(
     private store: Store,
@@ -94,11 +110,11 @@ export class DetailPage {
     private confirmDialogService: ConfirmDialogService
   ) {
     this.state.hold(this.id$, (id) => this.store.dispatch(new LoadCarById({ id })));
-    this.state.hold(
-      this.whenClickActivate$.pipe(withLatestFrom(this.id$)),
-      ([currentStatus, id]) => {
-        this.store.dispatch(new ToggleActivation({ id, currentValue: currentStatus }));
-      }
+    this.state.hold(this.whenClickActivate$, (currentValue) =>
+      this.store.dispatch(new ToggleActivation(currentValue))
+    );
+    this.state.hold(this.whenClickApprove$, (currentValue) =>
+      this.store.dispatch(new ToggleApprove(currentValue))
     );
     this.state.hold(
       this.whenToggleActivationFailed$.pipe(withLatestFrom(this.errorMessage$)),
@@ -111,14 +127,16 @@ export class DetailPage {
         );
       }
     );
-  }
-
-  approveCar() {
-    // #TODO: Approve car feature
-  }
-  toggleActivation(event: Event, currentValue: boolean | null | undefined) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    this.clickActivate$.next(currentValue || false);
+    this.state.hold(
+      this.whenToggleApproveFailed$.pipe(withLatestFrom(this.errorMessage$)),
+      ([, errorMessage]) => {
+        this.store.dispatch(
+          new ShowNotification({
+            message: errorMessage ?? 'Something',
+            options: { label: errorMessage }
+          })
+        );
+      }
+    );
   }
 }

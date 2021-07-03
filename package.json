@@ -63,6 +63,7 @@
     "@ngxs/store": "^3.7.2",
     "@recogito/annotorious": "^2.4.0",
     "@rx-angular/state": "^1.4.3",
+    "@taiga-ui/addon-charts": "^2.9.1",
     "@taiga-ui/addon-mobile": "^2.9.1",
     "@taiga-ui/addon-table": "^2.9.1",
     "@taiga-ui/cdk": "^2.9.1",

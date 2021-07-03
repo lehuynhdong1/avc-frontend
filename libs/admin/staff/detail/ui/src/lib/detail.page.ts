@@ -1,18 +1,19 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Actions, ofActionErrored, Store } from '@ngxs/store';
 import { StaffState, LoadStaffById } from '@shared/features/staff/data-access';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
-import { ActivatedRoute } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, filter, switchMap, withLatestFrom, mapTo, shareReplay } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 import { ConfirmDialogService } from '@admin/core/ui';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ConfirmDialogComponentParams } from '@admin/core/ui';
 import { ToggleActivation } from '@shared/features/account/data-access';
 import { ShowNotification, hasValue } from '@shared/util';
 import { Title } from '@angular/platform-browser';
+import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
+import { CarAssignedReadDto } from '@shared/api';
 
 const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
   isActivated
@@ -40,34 +41,50 @@ const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentPa
   providers: [RxState]
 })
 export class DetailPage {
-  TUI_STATUS = {
+  readonly TUI_STATUS = {
     ERROR: TuiStatus.Error,
     WARNING: TuiStatus.Warning,
     SUCCESS: TuiStatus.Success,
     PRIMARY: TuiStatus.Primary
   };
-  readonly form = this.formBuilder.group({
-    isAvailable: [false, Validators.required],
-    cars: [[1, 2]]
-  });
+  CAR_DYNAMIC_COLUMNS: DynamicTableColumns<CarAssignedReadDto> = [
+    { key: 'name', title: 'Name', type: 'string' },
+    { key: 'deviceId', title: 'Device ID', type: 'string' },
+    { key: 'configUrl', title: 'Configuration URL', type: 'string' },
+    { key: 'createdAt', title: 'Created at', type: 'date' },
+    {
+      key: 'isConnecting',
+      title: 'Connecting Status',
+      type: 'boolean',
+      trueMessage: 'Connected',
+      falseMessage: 'Disconnected'
+    }
+  ];
   readonly selectedStaff$ = this.store.select(StaffState.selectedStaff).pipe(hasValue());
+  readonly isFullPage$: Observable<boolean> = this.activatedRoute.data.pipe(
+    map(({ fullPage }) => fullPage),
+    shareReplay(1)
+  );
   private readonly errorMessage$ = this.store.select(StaffState.errorMessage).pipe(hasValue());
-  private readonly id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
+  readonly selectCar$ = new Subject<Id>();
 
   /* Actions */
   readonly clickActivate$ = new Subject<void>();
 
   /* Side effects */
   private whenClickActivate$ = this.clickActivate$.pipe(
-    map(() => this.form.value.isAvailable),
-    switchMap((currentValue) =>
-      this.confirmDialogService.open(
-        currentValue ? 'Deactivate car' : 'Activate car',
-        getConfirmDialogParams(currentValue)
-      )
-    ),
-    filter((response) => response === 1),
-    map(() => this.form.value.isAvailable)
+    withLatestFrom(this.selectedStaff$),
+    switchMap(([, staff]) =>
+      this.confirmDialogService
+        .open(
+          staff.isAvailable ? 'Deactivate car' : 'Activate car',
+          getConfirmDialogParams(staff.isAvailable || false)
+        )
+        .pipe(
+          filter((response) => response === 1),
+          mapTo(staff)
+        )
+    )
   );
   private whenToggleActivationFailed$ = this.actions.pipe<ToggleActivation>(
     ofActionErrored(ToggleActivation)
@@ -76,33 +93,37 @@ export class DetailPage {
   constructor(
     private store: Store,
     private actions: Actions,
-    private activatedRoute: ActivatedRoute,
     private state: RxState<Record<string, never>>,
-    private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
-    private title: Title
+    private activatedRoute: ActivatedRoute,
+    router: Router,
+    title: Title
   ) {
-    this.state.hold(this.id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
+    const id$ = activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
+    this.state.hold(id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
     this.state.hold(this.selectedStaff$, (staff) => {
       title.setTitle(staff?.firstName + ' ' + staff?.lastName + ' | AVC');
-      this.form.patchValue({ isAvailable: staff?.isAvailable });
     });
-    this.state.hold(
-      this.whenClickActivate$.pipe(withLatestFrom(this.id$)),
-      ([currentStatus, id]) => {
-        this.store.dispatch(new ToggleActivation({ id, currentValue: currentStatus }));
-      }
+    this.state.hold(this.whenClickActivate$, ({ id = 0, isAvailable = false }) =>
+      this.store.dispatch(new ToggleActivation({ id, currentValue: isAvailable || false }))
     );
     this.state.hold(
-      this.whenToggleActivationFailed$.pipe(withLatestFrom(this.errorMessage$)),
-      ([, errorMessage]) => {
+      this.whenToggleActivationFailed$.pipe(
+        withLatestFrom(this.selectedStaff$, this.errorMessage$)
+      ),
+      ([, staff, errorMessage]) => {
         this.store.dispatch(
           new ShowNotification({
-            message: errorMessage ?? 'Something',
-            options: { label: errorMessage }
+            message: errorMessage,
+            options: {
+              label: `${staff.isAvailable ? 'Deactivate' : 'Activate'} ${staff.firstName} ${
+                staff.lastName
+              }`
+            }
           })
         );
       }
     );
+    this.state.hold(this.selectCar$, (id) => router.navigateByUrl('/car/' + id));
   }
 }

@@ -88,7 +88,13 @@ export class UpdatePage implements CanShowUnsavedDialog {
     this.state.hold(id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
 
     this.state.hold(this.staff$, ({ firstName, lastName, phone, managedBy }) => {
-      this.form.patchValue({ firstName, lastName, phone, roleId: Role.STAFF, managedBy });
+      this.form.patchValue({
+        firstName,
+        lastName,
+        phone,
+        roleId: Role.STAFF,
+        managedBy: managedBy?.id
+      });
     });
 
     this.clickUpdateEffects();

@@ -6,11 +6,19 @@ import { TuiBadgeModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from '@shared/ui/avatar';
 import { TuiButtonModule, TuiLinkModule, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
+import { DynamicTableModule } from '@shared/ui/dynamic-table';
 
 const tuiModules = [TuiSvgModule, TuiBadgeModule, TuiButtonModule, TuiLinkModule, TuiLoaderModule];
 @NgModule({
   declarations: [DetailPage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, ...tuiModules],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AvatarModule,
+    DynamicTableModule,
+    ...tuiModules
+  ],
   exports: [DetailPage]
 })
 export class UiModule {}

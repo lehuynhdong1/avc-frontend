@@ -147,7 +147,10 @@
       "@admin/car/update/ui": ["libs/admin/car/update/ui/src/index.ts"],
       "@admin/issue/detail/ui": ["libs/admin/issue/detail/ui/src/index.ts"],
       "@admin/issue/detail/feature": ["libs/admin/issue/detail/feature/src/index.ts"],
-      "@admin/manage-profile/routes": ["libs/admin/manage-profile/routes.ts"]
+      "@admin/manage-profile/routes": ["libs/admin/manage-profile/routes.ts"],
+      "@admin/dashboard/feature": ["libs/admin/dashboard/feature/src/index.ts"],
+      "@admin/dashboard/ui": ["libs/admin/dashboard/ui/src/index.ts"],
+      "@admin/dashboard/routes": ["libs/admin/dashboard/routes.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

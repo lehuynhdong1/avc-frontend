@@ -3378,6 +3378,80 @@
           }
         }
       }
+    },
+    "admin-dashboard-feature": {
+      "projectType": "library",
+      "root": "libs/admin/dashboard/feature",
+      "sourceRoot": "libs/admin/dashboard/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/dashboard/feature/tsconfig.lib.json",
+            "project": "libs/admin/dashboard/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/dashboard/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/dashboard/feature/src/**/*.ts",
+              "libs/admin/dashboard/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/dashboard/feature"],
+          "options": {
+            "jestConfig": "libs/admin/dashboard/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-dashboard-ui": {
+      "projectType": "library",
+      "root": "libs/admin/dashboard/ui",
+      "sourceRoot": "libs/admin/dashboard/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/dashboard/ui/tsconfig.lib.json",
+            "project": "libs/admin/dashboard/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/dashboard/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/dashboard/ui/src/**/*.ts",
+              "libs/admin/dashboard/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/dashboard/ui"],
+          "options": {
+            "jestConfig": "libs/admin/dashboard/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

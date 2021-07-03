@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AuthenticationService, RolesService } from '@shared/api';
 import { STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
 import { Login, LoadRoles, UpdateProfile } from './login.actions';
@@ -12,7 +12,7 @@ import { throwError } from 'rxjs';
   defaults: INITIAL_STATE
 })
 @Injectable()
-export class LoginState extends LogoutState implements NgxsOnInit {
+export class LoginState extends LogoutState {
   @Selector()
   static token({ token }: LoginStateModel) {
     return token;
@@ -34,10 +34,6 @@ export class LoginState extends LogoutState implements NgxsOnInit {
     super();
   }
 
-  ngxsOnInit({ dispatch }: StateContext<LoginStateModel>) {
-    dispatch(new LoadRoles());
-  }
-
   @Action(Login, { cancelUncompleted: true })
   login({ patchState }: StateContext<LoginStateModel>, { payload }: Login) {
     return this.authService.apiAuthenticationPost({ authenticationPostDto: payload }).pipe(
@@ -51,7 +47,7 @@ export class LoginState extends LogoutState implements NgxsOnInit {
     );
   }
 
-  @Action(LoadRoles)
+  @Action(LoadRoles, { cancelUncompleted: true })
   loadRoles({ patchState }: StateContext<LoginStateModel>) {
     return this.rolesService.apiRolesGet().pipe(
       tap((roles: unknown) => patchState({ roles: roles as LoginStateModel['roles'] })),
@@ -62,7 +58,7 @@ export class LoginState extends LogoutState implements NgxsOnInit {
     );
   }
 
-  @Action(UpdateProfile)
+  @Action(UpdateProfile, { cancelUncompleted: true })
   updateProfile({ patchState }: StateContext<LoginStateModel>, { payload }: UpdateProfile) {
     patchState({ account: payload });
   }

@@ -8,6 +8,7 @@ import { issueRoutes } from '@admin/issue/routes';
 import { manageProfileRoutes } from '@admin/manage-profile/routes';
 import { managerRoutes } from '@admin/manager/routes';
 import { IsLoggedInGuard } from '@shared/auth/util';
+import { dashboardRoutes } from '@admin/dashboard/routes';
 
 export const routes: Routes = [
   ...authRoutes,
@@ -44,6 +45,11 @@ export const routes: Routes = [
       {
         path: 'profile',
         children: manageProfileRoutes,
+        canActivate: [IsLoggedInGuard]
+      },
+      {
+        path: 'dashboard',
+        children: dashboardRoutes,
         canActivate: [IsLoggedInGuard]
       },
       { path: '', pathMatch: 'full', redirectTo: 'training' }

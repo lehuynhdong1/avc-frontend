@@ -1,5 +1,5 @@
-<aside class="relative">
-  <ng-container *ngIf="selectedStaff$ | async as staff; else loading">
+<aside class="relative" [class.fullpage]="isFullPage$ | async">
+  <main *ngIf="selectedStaff$ | async as staff; else loading">
     <tui-svg
       class="top-right !right-20 cursor-pointer text-green-600 hover:text-green-800"
       src="tuiIconExternalLarge"
@@ -15,9 +15,11 @@
       src="tuiIconRemoveLarge"
       routerLink="/staff"
     ></tui-svg>
-    <form class="p-5 flex flex-col">
-      <h1 class="text-xl w-full">Staff Detail</h1>
-
+    <h1>
+      <tui-svg src="assets/taiga-ui/icons/people.svg#people" class="size-m"></tui-svg>
+      Staff Detail
+    </h1>
+    <section class="staff__information">
       <label>Full name</label>
       <h2 class="bold my-0">{{ staff.firstName }} {{ staff.lastName }}</h2>
       <div class="p-4 relative border border-gray-900">
@@ -41,25 +43,51 @@
       </h3>
 
       <b class="text-gray-600 mb-1">Activation Status</b>
-      <tui-badge
-        size="m"
-        [value]="staff.isAvailable ? 'Active' : 'Inactive'"
-        [status]="staff.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
-        class="self-start mb-3"
-      ></tui-badge>
-      <button
-        tuiButton
-        size="m"
-        appearance="outline"
-        type="button"
-        (click)="this.clickActivate$.next()"
-        class="self-start"
-        [class.deactivate]="staff.isAvailable"
-      >
-        {{staff.isAvailable ? 'Deactivate': 'Reactivate'}}
-      </button>
-    </form>
-  </ng-container>
+      <div class="self-start mb-3">
+        <tui-badge
+          size="l"
+          [value]="staff.isAvailable ? 'Active' : 'Inactive'"
+          [status]="staff.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+          class="mr-2"
+        ></tui-badge>
+        <button
+          tuiButton
+          size="s"
+          appearance="outline"
+          type="button"
+          (click)="this.clickActivate$.next()"
+          [class.deactivate]="staff.isAvailable"
+        >
+          {{staff.isAvailable ? 'Deactivate': 'Reactivate'}}
+        </button>
+      </div>
+
+      <section *ngIf="(isFullPage$ | async) === undefined">
+        <label>Assigned Cars ({{staff.assignedCars?.length}})</label>
+        <ul class="text-sm mb-3">
+          <li class="!ml-3" *ngFor="let car of staff.assignedCars">
+            <a tuiLink [routerLink]="'/car/'+ car.id">{{car.name}}</a>
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="staff__information-extend" *ngIf="(isFullPage$ | async)">
+      <label>Assigned Cars ({{staff.assignedCars?.length}})</label>
+      <ng-container *ngIf="staff.assignedCars && staff.assignedCars.length > 0; else noCar">
+        <adc-frontend-dynamic-table
+          class="mt-1 mb-3"
+          [columns]="CAR_DYNAMIC_COLUMNS"
+          [array]="staff.assignedCars || []"
+          [selectable]="true"
+          (selectRow)="selectCar$.next($event)"
+        ></adc-frontend-dynamic-table>
+      </ng-container>
+      <ng-template #noCar>
+        <h3 class="mt-0 mb-3">This staff has no car yet.</h3>
+      </ng-template>
+    </section>
+  </main>
   <ng-template #loading>
     <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
   </ng-template>

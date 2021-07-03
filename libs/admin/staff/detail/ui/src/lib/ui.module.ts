@@ -1,26 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DetailPage } from './detail.page';
-import { TuiAvatarModule, TuiBadgeModule } from '@taiga-ui/kit';
+import { TuiBadgeModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiButtonModule, TuiDataListModule, TuiSvgModule, TuiLoaderModule } from '@taiga-ui/core';
-import { TuiDataListWrapperModule, TuiMultiSelectModule } from '@taiga-ui/kit';
+import { TuiButtonModule, TuiSvgModule, TuiLoaderModule } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { AvatarModule } from '@shared/ui/avatar';
+import { DynamicTableModule } from '@shared/ui/dynamic-table';
 
-const tuiModules = [
-  TuiAvatarModule,
-  TuiBadgeModule,
-  TuiDataListModule,
-  TuiDataListWrapperModule,
-  TuiMultiSelectModule,
-  TuiSvgModule,
-  TuiButtonModule,
-  TuiLoaderModule
-];
+const tuiModules = [TuiBadgeModule, TuiSvgModule, TuiButtonModule, TuiLoaderModule];
 @NgModule({
   declarations: [DetailPage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, ...tuiModules],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AvatarModule,
+    DynamicTableModule,
+    ...tuiModules
+  ],
   exports: [DetailPage]
 })
 export class UiModule {}

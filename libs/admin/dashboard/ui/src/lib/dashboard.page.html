@@ -1,0 +1,53 @@
+<h1>
+  <tui-svg src="assets/taiga-ui/icons/bar-chart.svg#bar-chart" class="size-m"></tui-svg>
+  Dashboard
+</h1>
+<section class="flex justify-between">
+  <tui-axes class="axes text-green-500" [verticalLines]="4" [horizontalLines]="2">
+    <tui-line-chart
+      [x]="1"
+      [y]="0"
+      [width]="6"
+      [height]="200"
+      [smoothingFactor]="50"
+      [value]="value"
+      [filled]="true"
+    ></tui-line-chart>
+    <section class="absolute top-2 left-2">
+      <b class="text-sm">Registered cars</b>
+      <h3 class="mt-0 text-5xl">{{(approvedCars$ | async)?.length | number:'2.0'}}</h3>
+    </section>
+  </tui-axes>
+
+  <tui-axes class="axes text-red-400" [verticalLines]="4" [horizontalLines]="2">
+    <tui-line-chart
+      [x]="1"
+      [y]="0"
+      [width]="6"
+      [height]="200"
+      [smoothingFactor]="50"
+      [value]="value"
+      [filled]="true"
+    ></tui-line-chart>
+    <section class="absolute top-2 left-2">
+      <b class="text-sm">Registered managers</b>
+      <h3 class="mt-0 text-5xl">{{(managers$ | async)?.length | number:'2.0'}}</h3>
+    </section>
+  </tui-axes>
+
+  <tui-axes class="axes text-blue-400" [verticalLines]="4" [horizontalLines]="2">
+    <tui-line-chart
+      [x]="1"
+      [y]="0"
+      [width]="6"
+      [height]="200"
+      [smoothingFactor]="50"
+      [value]="value"
+      [filled]="true"
+    ></tui-line-chart>
+    <section class="absolute top-2 left-2">
+      <b class="text-sm">Registered staffs</b>
+      <h3 class="mt-0 text-5xl">{{(staffs$ | async)?.length | number:'2.0'}}</h3>
+    </section>
+  </tui-axes>
+</section>

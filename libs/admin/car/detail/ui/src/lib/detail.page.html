@@ -15,13 +15,13 @@
       src="tuiIconRemoveLarge"
       routerLink="/car"
     ></tui-svg>
-    <main class="p-5 flex flex-wrap">
-      <h1 class="text-xl w-full">
+    <main>
+      <h1>
         <tui-svg src="assets/taiga-ui/icons/car-sport.svg#car-sport" class="size-m"></tui-svg>
         Car Detail
       </h1>
 
-      <section class="flex flex-col w-full">
+      <section class="car__information">
         <b class="text-gray-600">Name </b>
         <h2 class="my-0">{{ car.name }}</h2>
         <div class="p-2 relative border border-gray-900">
@@ -33,13 +33,13 @@
             size="xl"
           ></adc-frontend-avatar>
         </div>
-      </section>
 
-      <section class="flex flex-col w-full fullpage_w-1/2">
         <b class="text-gray-600">Device ID</b>
         <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
+
         <b class="text-gray-600">Config URL</b>
         <h3 class="mt-0 mb-3">{{ car.configUrl || 'Not yet' }}</h3>
+
         <b class="text-gray-600">Managed by</b>
         <h3 class="mt-0 mb-3">
           <span [routerLink]="'/manager/'+car.managedBy?.id" class="openable">
@@ -58,12 +58,20 @@
             </div>
           </ng-template>
         </h3>
-        <b class="text-gray-600">Assigned to</b>
+
+        <ng-container *ngIf="(isFullPage$ | async) === undefined">
+          <b class="text-gray-600 mb-1">Issues</b>
+          <h3 class="mt-0 mb-3">
+            <span class="openable text-primary" [routerLink]="'/car/detail/'+car.id">Expand</span>
+            to view full car issues.
+          </h3>
+        </ng-container>
+
         <b class="text-gray-600">Created at</b>
         <h3 class="mt-0 mb-3">{{ car.createdAt | date }}</h3>
       </section>
 
-      <section class="flex flex-col w-full fullpage_w-1/2">
+      <section class="car__information-extend">
         <b class="text-gray-600 mb-1">Connecting Status: </b>
         <tui-badge
           size="m"
@@ -74,92 +82,53 @@
 
         <div class="flex flex-col mb-3">
           <b class="text-gray-600 mb-1">Approved Status</b>
-          <tui-badge
-            size="m"
-            [value]="car.isApproved ? 'Approved' : 'Pending'"
-            [status]="car.isApproved ? TUI_STATUS.SUCCESS : TUI_STATUS.WARNING"
-            class="self-start"
-          ></tui-badge>
-          <button
-            *ngIf="!car.isApproved"
-            tuiButton
-            size="m"
-            appearance="primary"
-            type="button"
-            (click)="approveCar()"
-            class="self-start"
-          >
-            Approve
-          </button>
+          <div class="self-start">
+            <tui-badge
+              size="m"
+              [value]="car.isApproved === (null || undefined) ? 'Pending' : car.isApproved ? 'Approved' : 'Rejected'"
+              [status]="car.isApproved === (null || undefined) ? TUI_STATUS.PRIMARY : car.isApproved ? TUI_STATUS.SUCCESS : TUI_STATUS.WARNING"
+              class="mr-2"
+            ></tui-badge>
+            <button
+              tuiButton
+              size="xs"
+              appearance="outline"
+              type="button"
+              (click)="this.clickApprove$.next(car.isApproved || false)"
+            >
+              {{ car.isApproved ? 'Reject' : 'Approve'}}
+            </button>
+          </div>
         </div>
 
         <b class="text-gray-600 mb-1">Activation Status</b>
-        <tui-badge
-          size="m"
-          [value]="car.isAvailable ? 'Active' : 'Inactive'"
-          [status]="car.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
-          class="self-start mb-3"
-        ></tui-badge>
-        <button
-          tuiButton
-          size="m"
-          appearance="outline"
-          type="button"
-          (click)="toggleActivation($event, car.isAvailable)"
-          class="self-start"
-        >
-          {{car.isAvailable ? 'Deactivate': 'Reactivate'}}
-        </button>
+        <div class="self-start mb-3">
+          <tui-badge
+            size="l"
+            [value]="car.isAvailable ? 'Active' : 'Inactive'"
+            [status]="car.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+            class="mr-2"
+          ></tui-badge>
+          <button
+            tuiButton
+            size="s"
+            appearance="outline"
+            type="button"
+            (click)="this.clickActivate$.next(car.isAvailable || false)"
+          >
+            {{car.isAvailable ? 'Deactivate': 'Reactivate'}}
+          </button>
+        </div>
       </section>
-      <section class="flex flex-col w-full">
+
+      <section class="car__information-table">
         <b class="text-gray-600 mb-1">Issues</b>
-        <ng-container *ngIf="isFullPage$ | async; else notShowCarIssue">
-          <h3 *ngIf="car.issues; else carHasIssue" class="mt-0 mb-3">
-            This car has no issues yet.
-          </h3>
-          <ng-template #carHasIssue>
-            <table tuiTable [columns]="COLUMNS">
-              <thead>
-                <tr tuiThGroup>
-                  <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
-                  <th *tuiHead="'type'" tuiTh [sorter]="null">Issue type</th>
-                  <th *tuiHead="'createdAt'" tuiTh [sorter]="null">Created at</th>
-                  <th *tuiHead="'image'" tuiTh [sorter]="null">Image</th>
-                  <th *tuiHead="'description'" tuiTh [sorter]="null">Description</th>
-                  <th *tuiHead="'location'" tuiTh [sorter]="null">Location</th>
-                  <th *tuiHead="'isAvailable'" tuiTh [sorter]="null">Activation Status</th>
-                </tr>
-              </thead>
-              <tbody tuiTbody [data]="car.issues || []">
-                <tr
-                  *tuiRow="let issue of (car.issues || []); let index = index"
-                  tuiTr
-                  class="cursor-pointer"
-                  [routerLink]="[issue.id]"
-                >
-                  <td *tuiCell="'index'" tuiTd><b>{{index + 1}}</b></td>
-                  <td *tuiCell="'type'" tuiTd>{{issue.type}}</td>
-                  <td *tuiCell="'description'" tuiTd>{{issue.description}}</td>
-                  <td *tuiCell="'createdAt'" tuiTd>{{issue.createdAt}}</td>
-                  <td *tuiCell="'image'" tuiTd>{{issue.image}}</td>
-                  <td *tuiCell="'location'" tuiTd>{{issue.location}}</td>
-                  <td *tuiCell="'isAvailable'" tuiTd>
-                    <tui-badge
-                      size="m"
-                      [value]="issue.isAvailable ? 'Active': 'Inactive'"
-                      [status]="issue.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
-                    ></tui-badge>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </ng-template>
-        </ng-container>
-        <ng-template #notShowCarIssue>
-          <h3 class="mt-0 mb-3">
-            <span class="openable text-primary" [routerLink]="'/car/detail/'+car.id">Expand</span>
-            to view full car issues.
-          </h3>
+        <h3 *ngIf="car.issues; else carHasIssue" class="mt-0 mb-3">This car has no issues yet.</h3>
+        <ng-template #carHasIssue>
+          <adc-frontend-dynamic-table
+            [columns]="DYNAMIC_COLUMNS"
+            [array]="car.issues || []"
+          ></adc-frontend-dynamic-table>
         </ng-template>
       </section>
     </main>

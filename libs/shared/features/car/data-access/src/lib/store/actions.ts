@@ -9,7 +9,9 @@ const ACTIONS = {
   LOAD_APPROVED_CARS: `[${STATE_NAME}] Load approved cars`,
   LOAD_UNAPPROVED_CARS: `[${STATE_NAME}] Load unapproved cars`,
   LOAD_CAR_BY_ID: `[${STATE_NAME}] Load car by ID`,
-  UPDATE_CAR_MANAGED_BY: `[${STATE_NAME}] Update car by id & manager id`
+  UPDATE_CAR_MANAGED_BY: `[${STATE_NAME}] Update car by id & manager id`,
+  TOGGLE_ACTIVATION: `[${STATE_NAME}] Toggle activation of a car`,
+  TOGGLE_APPROVE: `[${STATE_NAME}] Toggle approve a car`
 };
 
 export class LoadApprovedCars {
@@ -32,4 +34,14 @@ export class LoadCarById {
 export class UpdateCarManagedBy {
   static readonly type = ACTIONS.UPDATE_CAR_MANAGED_BY;
   constructor(public readonly params: ApiCarsManagedbyPutRequestParams) {}
+}
+
+export class ToggleActivation {
+  static readonly type = ACTIONS.TOGGLE_ACTIVATION;
+  constructor(public readonly currentValue: boolean) {}
+}
+
+export class ToggleApprove {
+  static readonly type = ACTIONS.TOGGLE_APPROVE;
+  constructor(public readonly currentValue: boolean) {}
 }

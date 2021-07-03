@@ -92,6 +92,8 @@
     "admin-car-update-feature": { "tags": ["scope:admin"] },
     "admin-car-update-ui": { "tags": ["scope:admin"] },
     "admin-issue-detail-ui": { "tags": ["scope:admin"] },
-    "admin-issue-detail-feature": { "tags": ["scope:admin"] }
+    "admin-issue-detail-feature": { "tags": ["scope:admin"] },
+    "admin-dashboard-feature": { "tags": ["scope:admin"] },
+    "admin-dashboard-ui": { "tags": ["scope:admin"] }
   }
 }

@@ -11,19 +11,26 @@
     </div>
   </section>
   <section class="nav__personal" *ngIf="me$ | async as me">
-    <adc-frontend-avatar [url]="me.avatar" size="xl"></adc-frontend-avatar>
+    <adc-frontend-avatar
+      [url]="me.avatar"
+      size="xl"
+      class="hover:animate-pulse cursor-pointer"
+      routerLink="/profile"
+    ></adc-frontend-avatar>
 
-    <b class="text-base">{{ me.firstName }} {{ me.lastName }}</b>
+    <b class="text-base hover:text-primary-hover cursor-pointer" routerLink="/profile"
+      >{{ me.firstName }} {{ me.lastName }}</b
+    >
     <b class="text-sm text-gray-400">{{ me.email }}</b>
   </section>
 
   <section class="nav__main">
-    <div class="nav__current">
-      <b class="nav__current-title">Dashboards</b>
-      <p class="nav__current-description">Keep track your working process</p>
+    <div class="nav__current" *ngIf="currentItem$ | async as currentItem">
+      <b class="nav__current-title">{{ currentItem.label }}</b>
+      <p class="nav__current-description">{{ currentItem.description }}</p>
     </div>
     <div class="nav__divider"></div>
-    <ul class="nav__list" *ngIf="currentUrl$ | async as currentUrl">
+    <ul class="nav__list">
       <li
         *ngFor="let item of navItems"
         [routerLink]="item.path"
@@ -31,7 +38,7 @@
         class="nav__list-item"
       >
         <tui-svg
-          [src]="currentUrl.includes(item.path) ? getFilledIcon(item.icon) : item.icon"
+          [src]="(currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon"
           class="zoom-08"
           [tuiHint]="item.label"
           [tuiHintShowDelay]="100"

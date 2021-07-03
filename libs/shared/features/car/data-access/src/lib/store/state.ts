@@ -1,6 +1,13 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
-import { LoadApprovedCars, LoadUnapprovedCars, LoadCarById, UpdateCarManagedBy } from './actions';
+import {
+  LoadApprovedCars,
+  LoadUnapprovedCars,
+  LoadCarById,
+  UpdateCarManagedBy,
+  ToggleActivation,
+  ToggleApprove
+} from './actions';
 import { CarsService } from '@shared/api';
 import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -66,5 +73,32 @@ export class CarState {
         return throwError(errorMessage);
       })
     );
+  }
+
+  @Action(ToggleActivation)
+  toggleActivation(
+    { patchState, getState }: StateContext<StateModel>,
+    { currentValue }: ToggleActivation
+  ) {
+    // TODO: Waiting for API & implement this
+    patchState({
+      detail: {
+        ...getState().detail,
+        isAvailable: !currentValue
+      }
+    });
+  }
+  @Action(ToggleApprove)
+  toggleApprove(
+    { patchState, getState }: StateContext<StateModel>,
+    { currentValue }: ToggleApprove
+  ) {
+    // TODO: Waiting for API & implement this
+    patchState({
+      detail: {
+        ...getState().detail,
+        isApproved: !currentValue
+      }
+    });
   }
 }
