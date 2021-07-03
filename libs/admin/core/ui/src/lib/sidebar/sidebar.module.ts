@@ -10,7 +10,7 @@ import { TuiHintModule } from '@taiga-ui/core';
 const tuiModules = [TuiButtonModule, TuiSvgModule, TuiHintModule];
 @NgModule({
   declarations: [SidebarComponent],
-  imports: [CommonModule, TranslocoModule, RouterModule, AvatarModule, ...tuiModules],
+  imports: [CommonModule, TranslocoModule, RouterModule, AvatarModule, tuiModules],
   exports: [SidebarComponent]
 })
 export class SidebarModule {}

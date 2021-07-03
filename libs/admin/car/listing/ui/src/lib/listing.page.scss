@@ -4,13 +4,3 @@
 :host ::ng-deep tui-input tui-wrapper[data-appearance='textfield'] {
   @apply shadow-none;
 }
-
-aside {
-  @apply bg-gray-100 w-60 rounded-lg;
-  min-width: 15rem;
-  max-width: 24rem;
-}
-
-tui-svg.top-right {
-  @apply absolute top-3 right-3;
-}

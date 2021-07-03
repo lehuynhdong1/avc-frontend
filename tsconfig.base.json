@@ -150,7 +150,17 @@
       "@admin/manage-profile/routes": ["libs/admin/manage-profile/routes.ts"],
       "@admin/dashboard/feature": ["libs/admin/dashboard/feature/src/index.ts"],
       "@admin/dashboard/ui": ["libs/admin/dashboard/ui/src/index.ts"],
-      "@admin/dashboard/routes": ["libs/admin/dashboard/routes.ts"]
+      "@admin/dashboard/routes": ["libs/admin/dashboard/routes.ts"],
+      "@admin/car/unapproved-listing/ui": ["libs/admin/car/unapproved-listing/ui/src/index.ts"],
+      "@admin/car/unapproved-listing/feature": [
+        "libs/admin/car/unapproved-listing/feature/src/index.ts"
+      ],
+      "@shared/auth/forgot-password/data-access": [
+        "libs/shared/auth/forgot-password/data-access/src/index.ts"
+      ],
+      "@shared/auth/reset-password/data-access": [
+        "libs/shared/auth/reset-password/data-access/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -25,7 +25,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [UpdatePage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, ...tuiModules],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, tuiModules],
   exports: [UpdatePage]
 })
 export class UiModule {}

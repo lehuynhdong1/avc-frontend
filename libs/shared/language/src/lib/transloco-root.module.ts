@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {
   TRANSLOCO_LOADER,
   Translation,
@@ -6,7 +6,7 @@ import {
   TRANSLOCO_CONFIG,
   translocoConfig,
   TranslocoModule,
-  TranslocoConfig,
+  TranslocoConfig
 } from '@ngneat/transloco';
 import { Injectable, ModuleWithProviders, NgModule } from '@angular/core';
 
@@ -20,26 +20,24 @@ export class TranslocoHttpLoader implements TranslocoLoader {
 }
 
 @NgModule({
-  imports: [TranslocoModule, HttpClientModule],
-  exports: [TranslocoModule],
+  imports: [TranslocoModule],
+  exports: [TranslocoModule]
 })
 export class TranslocoRootModule {
-  static forRoot(
-    config?: Partial<TranslocoConfig>
-  ): ModuleWithProviders<TranslocoRootModule> {
+  static forRoot(config?: Partial<TranslocoConfig>): ModuleWithProviders<TranslocoRootModule> {
     const customConfig = translocoConfig({
       availableLangs: ['en', 'vi'],
       defaultLang: 'en',
       // Remove this option if your application doesn't support changing language in runtime.
       reRenderOnLangChange: true,
-      ...config,
+      ...config
     });
     return {
       ngModule: TranslocoRootModule,
       providers: [
         { provide: TRANSLOCO_CONFIG, useValue: customConfig },
-        { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader },
-      ],
+        { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader }
+      ]
     };
   }
 }

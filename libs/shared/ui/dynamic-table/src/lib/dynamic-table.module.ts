@@ -10,7 +10,7 @@ import { CellTemplatePipe } from './pipes/cell-template.pipe';
 const tuiModules = [TuiTableModule, TuiPaginationModule, TuiBadgeModule];
 @NgModule({
   declarations: [DynamicTableComponent, BooleanColumnComponent, CellTemplatePipe],
-  imports: [CommonModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, RouterModule, tuiModules],
   exports: [DynamicTableComponent]
 })
 export class DynamicTableModule {}

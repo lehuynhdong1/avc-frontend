@@ -7,13 +7,12 @@ import { environment } from '../environments/environment';
 import { routes } from './root.routes';
 import { LanguageModuleWithConfig } from '@shared/language';
 import { StateManagementModulesWithConfig } from '@shared/state-management';
-import { OpenApiModule } from '@shared/api';
+import { Configuration, OpenApiModule } from '@shared/api';
 import { LayoutModule } from '@admin/core/ui';
 import { UtilModule as SharedUtilModule } from '@shared/util';
 import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { getApiConfigFactory } from './api-config.factory';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +22,7 @@ import { getApiConfigFactory } from './api-config.factory';
     HttpClientModule,
     TuiRootModule,
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' }),
-    OpenApiModule.forRoot(getApiConfigFactory),
+    OpenApiModule.forRoot(() => new Configuration({ basePath: environment.apiUrl })),
     LayoutModule,
     SharedUtilModule,
     AuthUtilModule,

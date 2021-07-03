@@ -31,7 +31,6 @@ export class DetailPage {
     title: Title
   ) {
     this.state.hold(this.id$, (id) => {
-      console.log('=============', id);
       this.store.dispatch(new LoadIssueById({ id }));
     });
     this.state.hold(this.selectedIssue$, (issue) => title.setTitle(issue.type + ' | AVC'));

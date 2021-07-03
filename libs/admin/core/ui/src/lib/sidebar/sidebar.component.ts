@@ -40,7 +40,7 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'Manage Staffs',
     path: '/staff',
     icon: 'assets/taiga-ui/icons/people-outline.svg#people-outline',
-    description: 'See all staffs under your management'
+    description: 'Up to date with your staffs'
   },
   {
     label: 'Issue History',

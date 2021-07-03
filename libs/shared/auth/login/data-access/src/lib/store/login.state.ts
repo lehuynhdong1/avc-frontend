@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { AuthenticationService, RolesService } from '@shared/api';
+import { AuthenticationService, Configuration, RolesService } from '@shared/api';
 import { STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
-import { Login, LoadRoles, UpdateProfile } from './login.actions';
+import { Login, LoadRoles, UpdateProfile, LoadToken } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { LogoutState } from '@shared/auth/logout/data-access';
 import { throwError } from 'rxjs';
@@ -30,14 +30,21 @@ export class LoginState extends LogoutState {
     return error;
   }
 
-  constructor(private authService: AuthenticationService, private rolesService: RolesService) {
+  constructor(
+    private authService: AuthenticationService,
+    private rolesService: RolesService,
+    private apiConfig: Configuration
+  ) {
     super();
   }
 
   @Action(Login, { cancelUncompleted: true })
-  login({ patchState }: StateContext<LoginStateModel>, { payload }: Login) {
+  login({ patchState, dispatch }: StateContext<LoginStateModel>, { payload }: Login) {
     return this.authService.apiAuthenticationPost({ authenticationPostDto: payload }).pipe(
-      tap((response) => patchState(response)),
+      tap((response) => {
+        patchState(response);
+        dispatch(new LoadToken());
+      }),
       catchError((error) => {
         console.warn(`[${STATE_NAME}] Login with error: `, error);
 
@@ -61,5 +68,9 @@ export class LoginState extends LogoutState {
   @Action(UpdateProfile, { cancelUncompleted: true })
   updateProfile({ patchState }: StateContext<LoginStateModel>, { payload }: UpdateProfile) {
     patchState({ account: payload });
+  }
+
+  @Action(LoadToken) loadToken({ getState }: StateContext<LoginStateModel>) {
+    this.apiConfig.apiKeys = { Authorization: `Bearer ${getState().token}` };
   }
 }

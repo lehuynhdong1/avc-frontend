@@ -94,6 +94,10 @@
     "admin-issue-detail-ui": { "tags": ["scope:admin"] },
     "admin-issue-detail-feature": { "tags": ["scope:admin"] },
     "admin-dashboard-feature": { "tags": ["scope:admin"] },
-    "admin-dashboard-ui": { "tags": ["scope:admin"] }
+    "admin-dashboard-ui": { "tags": ["scope:admin"] },
+    "admin-car-unapproved-listing-ui": { "tags": ["scope:admin"] },
+    "admin-car-unapproved-listing-feature": { "tags": ["scope:admin"] },
+    "shared-auth-forgot-password-data-access": { "tags": ["scope:shared"] },
+    "shared-auth-reset-password-data-access": { "tags": ["scope:shared"] }
   }
 }

@@ -30,7 +30,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [SharedLoginComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, tuiModules],
   exports: [SharedLoginComponent]
 })
 export class SharedLoginModule {}

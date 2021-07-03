@@ -40,14 +40,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [CreatePage],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    UtilModule,
-    AvatarModule,
-    ...tuiModules
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, UtilModule, AvatarModule, tuiModules],
   exports: [CreatePage]
 })
 export class UiModule {}

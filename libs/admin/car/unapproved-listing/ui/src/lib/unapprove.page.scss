@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+aside {
+  @apply bg-gray-100 w-96 rounded-lg;
+  min-width: 20rem;
+  max-width: 30rem;
+
+  main {
+    @apply flex flex-col flex-wrap p-5;
+
+    h1 {
+      @apply text-xl w-full;
+    }
+  }
+}
+
+tui-svg.top-right {
+  @apply absolute top-3 right-3;
+}

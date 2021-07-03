@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
       {
         path: '',
         component: ListingPage,
+        data: { title: 'Issues History' },
         children: [
           {
             path: ':id',

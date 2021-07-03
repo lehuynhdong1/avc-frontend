@@ -25,7 +25,7 @@ const tuiModules = [
 ];
 
 @NgModule({
-  imports: [CommonModule, AvatarModule, ReactiveFormsModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, AvatarModule, ReactiveFormsModule, RouterModule, tuiModules],
   declarations: [ViewProfilePage],
   exports: [ViewProfilePage]
 })

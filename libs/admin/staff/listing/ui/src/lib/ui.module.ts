@@ -17,7 +17,7 @@ const tuiModules = [TuiSvgModule, TuiInputModule, TuiButtonModule];
     ReactiveFormsModule,
     DynamicTableModule,
     AvailableFilterModule,
-    ...tuiModules
+    tuiModules
   ]
 })
 export class UiModule {}

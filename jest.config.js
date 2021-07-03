@@ -81,6 +81,10 @@ module.exports = {
     '<rootDir>/libs/admin/issue/detail/ui',
     '<rootDir>/libs/admin/issue/detail/feature',
     '<rootDir>/libs/admin/dashboard/feature',
-    '<rootDir>/libs/admin/dashboard/ui'
+    '<rootDir>/libs/admin/dashboard/ui',
+    '<rootDir>/libs/admin/car/unapproved-listing/ui',
+    '<rootDir>/libs/admin/car/unapproved-listing/feature',
+    '<rootDir>/libs/shared/auth/forgot-password/data-access',
+    '<rootDir>/libs/shared/auth/reset-password/data-access'
   ]
 };

@@ -20,7 +20,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [DetailPage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, ...tuiModules],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, tuiModules],
   exports: [DetailPage]
 })
 export class UiModule {}

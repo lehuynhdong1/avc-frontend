@@ -4,12 +4,12 @@ import { IssueState, LoadIssues } from '@shared/features/issue/data-access';
 import { Subject } from 'rxjs';
 import { IssueReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
-import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Id, DynamicTableColumns } from '@shared/ui/dynamic-table';
 import { SidebarService } from '@admin/core/ui';
+import { Empty } from '@shared/util';
 
 @Component({
   selector: 'adca-listing',
@@ -31,7 +31,6 @@ export class ListingPage {
 
   /* Attribute Streams */
   readonly issues$ = this.store.select(IssueState.issues);
-  readonly selectedIssueId$ = this.state.select('selectedIssueId');
 
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
@@ -41,18 +40,13 @@ export class ListingPage {
     private activatedRoute: ActivatedRoute,
     private sidebar: SidebarService,
     private router: Router,
-    private state: RxState<ListingPageState>
+    private state: RxState<Empty>
   ) {
     this.store.dispatch(new LoadIssues({ limit: 10 }));
     this.declareSideEffects();
   }
 
   private declareSideEffects() {
-    const lastRouteChild = this.activatedRoute.children[this.activatedRoute.children.length - 1];
-    if (lastRouteChild) {
-      const idFromRoute$ = lastRouteChild.params.pipe(map((params) => parseInt(params.id)));
-      this.state.connect('selectedIssueId', idFromRoute$);
-    }
     const searchValueChanged$ = this.searchControl.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged()

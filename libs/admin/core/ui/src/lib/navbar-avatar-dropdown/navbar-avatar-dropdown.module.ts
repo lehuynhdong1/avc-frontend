@@ -16,7 +16,7 @@ const tuiModules = [TuiHostedDropdownModule, TuiDataListModule, TuiButtonModule,
 
 @NgModule({
   declarations: [NavbarAvatarDropdownComponent],
-  imports: [CommonModule, ConfirmDialogModule, AvatarModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, ConfirmDialogModule, AvatarModule, RouterModule, tuiModules],
   exports: [NavbarAvatarDropdownComponent],
   providers: [CONFIRM_DIALOG_PROVIDER]
 })

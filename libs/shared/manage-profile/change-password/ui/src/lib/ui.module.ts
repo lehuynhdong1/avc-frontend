@@ -14,7 +14,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [ChangePasswordPage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, tuiModules],
   exports: [ChangePasswordPage]
 })
 export class UiModule {}

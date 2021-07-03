@@ -4,12 +4,12 @@ import { StaffState, LoadStaffs } from '@shared/features/staff/data-access';
 import { Subject, combineLatest } from 'rxjs';
 import { AccountStaffDetailReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
-import { ListingPageState } from './listing-page.state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { SidebarService } from '@admin/core/ui';
+import { Empty } from '@shared/util';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -40,7 +40,6 @@ export class ListingPage {
 
   /* Attribute Streams */
   readonly staffs$ = this.store.select(StaffState.staffs);
-  readonly selectedStaffId$ = this.state.select('selectedStaffId');
 
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
@@ -51,23 +50,16 @@ export class ListingPage {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private sidebar: SidebarService,
-    private state: RxState<ListingPageState>
+    private state: RxState<Empty>
   ) {
     this.declareSideEffects();
   }
 
   private declareSideEffects() {
-    const lastRouteChild = this.activatedRoute.children[this.activatedRoute.children.length - 1];
-    if (lastRouteChild) {
-      const idFromRoute$ = lastRouteChild.params.pipe(map((params) => parseInt(params.id)));
-      this.state.connect('selectedStaffId', idFromRoute$);
-    }
-    this.state.connect('selectedStaffId', this.selectRow$);
-
     this.whenFilterChangedEffects();
     this.state.hold(this.selectRow$, (id) => {
       this.sidebar.collapse();
-      this.router.navigate([id], { relativeTo: this.activatedRoute });
+      this.router.navigate(['..', 'update', id], { relativeTo: this.activatedRoute });
     });
   }
 

@@ -7,7 +7,9 @@ import { DataAccessModule } from '@shared/features/issue/data-access';
   imports: [
     UiModule,
     DataAccessModule,
-    RouterModule.forChild([{ path: '', pathMatch: 'full', component: DetailPage }])
+    RouterModule.forChild([
+      { path: '', pathMatch: 'full', component: DetailPage, data: { title: 'Issue Detail' } }
+    ])
   ]
 })
 export class FeatureModule {}

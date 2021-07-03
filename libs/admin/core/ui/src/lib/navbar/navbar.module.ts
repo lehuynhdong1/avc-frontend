@@ -10,7 +10,7 @@ import { NavbarAvatarDropdownModule } from '../navbar-avatar-dropdown/navbar-ava
 const tuiModules = [TuiButtonModule, TuiSvgModule];
 @NgModule({
   declarations: [NavbarComponent],
-  imports: [CommonModule, LanguageModule, RouterModule, NavbarAvatarDropdownModule, ...tuiModules],
+  imports: [CommonModule, LanguageModule, RouterModule, NavbarAvatarDropdownModule, tuiModules],
   exports: [NavbarComponent]
 })
 export class NavbarModule {}

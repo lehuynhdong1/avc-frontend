@@ -1,0 +1,23 @@
+<aside class="relative">
+  <tui-svg
+    class="top-right cursor-pointer text-red-500 hover:text-red-700"
+    src="tuiIconRemoveLarge"
+    routerLink="/car"
+  ></tui-svg>
+  <main>
+    <h1>Unapproved Cars</h1>
+    <tui-input tuiTextfieldSize="m" [formControl]="searchControl" class="flex-grow mb-4">
+      Search by car name ...
+    </tui-input>
+    <ng-container *ngIf="(unapprovedCars$ | async) as carResponse">
+      <adc-frontend-dynamic-table
+        [columns]="DYNAMIC_COLUMNS"
+        [response]="carResponse"
+        [paginable]="true"
+        [selectable]="true"
+        (selectRow)="selectRow$.next($event)"
+      ></adc-frontend-dynamic-table>
+    </ng-container>
+  </main>
+  <ng-template #loading> <tui-loader></tui-loader> </ng-template>
+</aside>

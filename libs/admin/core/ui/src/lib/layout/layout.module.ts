@@ -13,7 +13,7 @@ const tuiModules = [TuiButtonModule, TuiScrollbarModule, TuiAccordionModule];
 
 @NgModule({
   declarations: [LayoutComponent],
-  imports: [CommonModule, NavbarModule, SidebarModule, LanguageModule, RouterModule, ...tuiModules],
+  imports: [CommonModule, NavbarModule, SidebarModule, LanguageModule, RouterModule, tuiModules],
   exports: [LayoutComponent]
 })
 export class LayoutModule {}

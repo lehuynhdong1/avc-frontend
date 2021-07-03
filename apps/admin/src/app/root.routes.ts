@@ -52,7 +52,7 @@ export const routes: Routes = [
         children: dashboardRoutes,
         canActivate: [IsLoggedInGuard]
       },
-      { path: '', pathMatch: 'full', redirectTo: 'training' }
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' }
     ]
     // canActivate: [IsLoggedInGuard]
   }

@@ -10,6 +10,6 @@ import { DynamicTableModule } from '@shared/ui/dynamic-table';
 const tuiModules = [TuiSvgModule, TuiInputModule, TuiTextfieldControllerModule];
 @NgModule({
   declarations: [ListingPage],
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, DynamicTableModule, ...tuiModules]
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, DynamicTableModule, tuiModules]
 })
 export class UiModule {}

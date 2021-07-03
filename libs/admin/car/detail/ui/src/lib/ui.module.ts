@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 const tuiModules = [TuiBadgeModule, TuiSvgModule, TuiHintModule, TuiButtonModule, TuiLoaderModule];
 @NgModule({
   declarations: [DetailPage],
-  imports: [CommonModule, RouterModule, AvatarModule, DynamicTableModule, ...tuiModules],
+  imports: [CommonModule, RouterModule, AvatarModule, DynamicTableModule, tuiModules],
   exports: [DetailPage]
 })
 export class UiModule {}

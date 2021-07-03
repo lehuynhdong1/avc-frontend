@@ -1,13 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedForgotPasswordComponent } from './forgot-password.component';
-import {
-  TuiButtonModule,
-  TuiSvgModule,
-  TuiLinkModule,
-  TuiNotificationModule
-} from '@taiga-ui/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TuiButtonModule, TuiLinkModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TuiInputModule, TuiFieldErrorModule } from '@taiga-ui/kit';
 import { TuiValidatorModule } from '@taiga-ui/cdk';
 import { RouterModule } from '@angular/router';
@@ -15,16 +10,14 @@ import { RouterModule } from '@angular/router';
   declarations: [SharedForgotPasswordComponent],
   imports: [
     CommonModule,
-    FormsModule,
     ReactiveFormsModule,
     RouterModule,
     TuiButtonModule,
-    TuiSvgModule,
     TuiInputModule,
+    TuiTextfieldControllerModule,
     TuiLinkModule,
     TuiValidatorModule,
-    TuiFieldErrorModule,
-    TuiNotificationModule
+    TuiFieldErrorModule
   ],
   exports: [SharedForgotPasswordComponent]
 })

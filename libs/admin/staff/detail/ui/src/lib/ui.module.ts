@@ -17,7 +17,7 @@ const tuiModules = [TuiBadgeModule, TuiSvgModule, TuiButtonModule, TuiLoaderModu
     RouterModule,
     AvatarModule,
     DynamicTableModule,
-    ...tuiModules
+    tuiModules
   ],
   exports: [DetailPage]
 })

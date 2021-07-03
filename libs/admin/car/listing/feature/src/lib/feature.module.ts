@@ -14,6 +14,11 @@ import { ListingPage, UiModule } from '@admin/car/listing/ui';
         component: ListingPage,
         children: [
           {
+            path: 'unapproved',
+            loadChildren: () =>
+              import('@admin/car/unapproved-listing/feature').then((m) => m.FeatureModule)
+          },
+          {
             path: ':id',
             loadChildren: () => import('@admin/car/detail/feature').then((m) => m.FeatureModule)
           },
