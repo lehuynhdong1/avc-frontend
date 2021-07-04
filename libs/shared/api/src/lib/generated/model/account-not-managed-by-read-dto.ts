@@ -18,5 +18,6 @@ export interface AccountNotManagedByReadDto {
   lastName?: string | null;
   phone?: string | null;
   avatar?: string | null;
+  createdAt?: string;
   isAvailable?: boolean | null;
 }

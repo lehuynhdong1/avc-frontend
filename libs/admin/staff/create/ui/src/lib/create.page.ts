@@ -12,6 +12,7 @@ import { LoadManagers, ManagerState } from '@shared/features/manager/data-access
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler, TuiInputType } from '@taiga-ui/cdk';
 import { AccountManagerDetailReadDto } from '@shared/api';
 import { CanShowUnsavedDialog } from '@admin/core/util';
+import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
 
 const INIT_FORM_VALUE = {
   firstName: '',
@@ -34,6 +35,7 @@ export class CreatePage implements CanShowUnsavedDialog {
   readonly TUI_INPUT_EMAIL = TuiInputType.Email as const;
   readonly MARKER_LINK = TuiMarkerIconMode.Link as const;
   readonly BADGE_PRIMARY = TuiStatus.Primary as const;
+  readonly MAXIMUM_IMAGE_SIZE = MAXIMUM_IMAGE_SIZE;
 
   willShowUnsavedDialog = false;
 

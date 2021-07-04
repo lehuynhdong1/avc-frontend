@@ -19,5 +19,5 @@ export interface CarAssignedReadDto {
   createdAt?: string | null;
   deviceId?: string | null;
   configUrl?: string | null;
-  isApproved?: boolean;
+  isApproved?: boolean | null;
 }

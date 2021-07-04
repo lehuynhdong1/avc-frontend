@@ -13,6 +13,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
+import { CarActivationDto } from '../model/models';
 import { CarListReadDtoPagingResponseDto } from '../model/models';
 import { CarManagedByUpdateDto } from '../model/models';
 import { CarReadDto } from '../model/models';
@@ -25,6 +26,20 @@ export interface ApiCarsGetRequestParams {
   page?: number;
   limit?: number;
   searchValue?: string;
+}
+
+export interface ApiCarsIdActivationPutRequestParams {
+  id: number;
+  carActivationDto?: CarActivationDto;
+}
+
+export interface ApiCarsIdApprovementPutRequestParams {
+  id: number;
+  isApproved: boolean;
+  imageFile?: Blob;
+  name?: string;
+  configFile?: Blob;
+  managedBy?: number;
 }
 
 export interface ApiCarsIdGetRequestParams {
@@ -52,6 +67,26 @@ export interface CarsServiceInterface {
     requestParameters: ApiCarsGetRequestParams,
     extraHttpRequestParams?: any
   ): Observable<CarListReadDtoPagingResponseDto>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiCarsIdActivationPut(
+    requestParameters: ApiCarsIdActivationPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiCarsIdApprovementPut(
+    requestParameters: ApiCarsIdApprovementPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
 
   /**
    *

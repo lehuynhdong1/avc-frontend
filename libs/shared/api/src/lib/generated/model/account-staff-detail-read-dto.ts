@@ -21,6 +21,7 @@ export interface AccountStaffDetailReadDto {
   phone?: string | null;
   avatar?: string | null;
   isAvailable?: boolean | null;
+  createdAt?: string;
   managedBy?: AccountNotManagedByReadDto;
   assignedCars?: Array<CarAssignedReadDto> | null;
 }

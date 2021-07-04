@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Actions, ofActionErrored, Store } from '@ngxs/store';
 import {
   CarState,
+  LoadApprovedCars,
   LoadCarById,
   ToggleActivation,
   ToggleApprove
@@ -9,12 +10,12 @@ import {
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom, shareReplay } from 'rxjs/operators';
+import { map, filter, switchMap, withLatestFrom, shareReplay, switchMapTo } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { ConfirmDialogService } from '@admin/core/ui';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ConfirmDialogComponentParams } from '@admin/core/ui';
-import { ShowNotification, hasValue } from '@shared/util';
+import { ShowNotification, hasValue, Empty } from '@shared/util';
 import { IssueReadDto } from '@shared/api';
 import { DynamicTableColumns } from '@shared/ui/dynamic-table';
 
@@ -78,7 +79,7 @@ export class DetailPage {
         )
         .pipe(
           filter((response) => response === 1),
-          map(() => currentValue)
+          switchMapTo(this.isFullPage$)
         )
     )
   );
@@ -93,7 +94,8 @@ export class DetailPage {
           filter((response) => response === 1),
           map(() => currentValue)
         )
-    )
+    ),
+    withLatestFrom(this.id$)
   );
   private whenToggleActivationFailed$ = this.actions.pipe<ToggleActivation>(
     ofActionErrored(ToggleActivation)
@@ -106,15 +108,16 @@ export class DetailPage {
     private store: Store,
     private actions: Actions,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     private confirmDialogService: ConfirmDialogService
   ) {
     this.state.hold(this.id$, (id) => this.store.dispatch(new LoadCarById({ id })));
-    this.state.hold(this.whenClickActivate$, (currentValue) =>
-      this.store.dispatch(new ToggleActivation(currentValue))
-    );
-    this.state.hold(this.whenClickApprove$, (currentValue) =>
-      this.store.dispatch(new ToggleApprove(currentValue))
+    this.state.hold(this.whenClickActivate$, (isFullPage) => {
+      if (!isFullPage) this.store.dispatch(new LoadApprovedCars({ limit: 10 }));
+      this.store.dispatch(new ToggleActivation());
+    });
+    this.state.hold(this.whenClickApprove$, ([currentValue, id]) =>
+      this.store.dispatch(new ToggleApprove({ id, isApproved: !currentValue }))
     );
     this.state.hold(
       this.whenToggleActivationFailed$.pipe(withLatestFrom(this.errorMessage$)),

@@ -12,7 +12,7 @@ import {
   UpdateCarManagedBy,
   LoadApprovedCars
 } from '@shared/features/car/data-access';
-import { hasValue, ShowNotification } from '@shared/util';
+import { hasValue, ShowNotification, Empty } from '@shared/util';
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
@@ -20,7 +20,6 @@ import { LoadManagers, ManagerState } from '@shared/features/manager/data-access
 import { distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
 
 @Component({
-  selector: 'adca-update',
   templateUrl: './update.page.html',
   styleUrls: ['./update.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,7 +46,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
   constructor(
     private store: Store,
     private actions: Actions,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder

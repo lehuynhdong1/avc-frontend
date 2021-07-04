@@ -23,6 +23,7 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
+import { CarActivationDto } from '../model/models';
 import { CarListReadDtoPagingResponseDto } from '../model/models';
 import { CarManagedByUpdateDto } from '../model/models';
 import { CarReadDto } from '../model/models';
@@ -32,6 +33,8 @@ import { Configuration } from '../configuration';
 import {
   CarsServiceInterface,
   ApiCarsGetRequestParams,
+  ApiCarsIdActivationPutRequestParams,
+  ApiCarsIdApprovementPutRequestParams,
   ApiCarsIdGetRequestParams,
   ApiCarsManagedbyPutRequestParams,
   ApiCarsPostRequestParams
@@ -61,6 +64,20 @@ export class CarsService implements CarsServiceInterface {
       this.configuration.basePath = basePath;
     }
     this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+  }
+
+  /**
+   * @param consumes string[] mime-types
+   * @return true: consumes contains 'multipart/form-data', false: otherwise
+   */
+  private canConsumeForm(consumes: string[]): boolean {
+    const form = 'multipart/form-data';
+    for (const consume of consumes) {
+      if (form === consume) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -188,6 +205,218 @@ export class CarsService implements CarsServiceInterface {
       `${this.configuration.basePath}/api/cars`,
       {
         params: queryParameters,
+        responseType: <any>responseType,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiCarsIdActivationPut(
+    requestParameters: ApiCarsIdActivationPutRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any>;
+  public apiCarsIdActivationPut(
+    requestParameters: ApiCarsIdActivationPutRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpResponse<any>>;
+  public apiCarsIdActivationPut(
+    requestParameters: ApiCarsIdActivationPutRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpEvent<any>>;
+  public apiCarsIdActivationPut(
+    requestParameters: ApiCarsIdActivationPutRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any> {
+    const id = requestParameters.id;
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling apiCarsIdActivationPut.'
+      );
+    }
+    const carActivationDto = requestParameters.carActivationDto;
+
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = [];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = [
+      'application/merge-patch+json',
+      'application/json-patch+json',
+      'application/json',
+      'text/json',
+      'application/_*+json'
+    ];
+    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(
+      consumes
+    );
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.put<any>(
+      `${this.configuration.basePath}/api/cars/${encodeURIComponent(String(id))}/activation`,
+      carActivationDto,
+      {
+        responseType: <any>responseType,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiCarsIdApprovementPut(
+    requestParameters: ApiCarsIdApprovementPutRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any>;
+  public apiCarsIdApprovementPut(
+    requestParameters: ApiCarsIdApprovementPutRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpResponse<any>>;
+  public apiCarsIdApprovementPut(
+    requestParameters: ApiCarsIdApprovementPutRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpEvent<any>>;
+  public apiCarsIdApprovementPut(
+    requestParameters: ApiCarsIdApprovementPutRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any> {
+    const id = requestParameters.id;
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling apiCarsIdApprovementPut.'
+      );
+    }
+    const isApproved = requestParameters.isApproved;
+    if (isApproved === null || isApproved === undefined) {
+      throw new Error(
+        'Required parameter isApproved was null or undefined when calling apiCarsIdApprovementPut.'
+      );
+    }
+    const imageFile = requestParameters.imageFile;
+    const name = requestParameters.name;
+    const configFile = requestParameters.configFile;
+    const managedBy = requestParameters.managedBy;
+
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = [];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['multipart/form-data'];
+
+    const canConsumeForm = this.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    let convertFormParamsToString = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+    useForm = canConsumeForm;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new HttpParams({ encoder: this.encoder });
+    }
+
+    if (isApproved !== undefined) {
+      formParams = (formParams.append('IsApproved', <any>isApproved) as any) || formParams;
+    }
+    if (imageFile !== undefined) {
+      formParams = (formParams.append('ImageFile', <any>imageFile) as any) || formParams;
+    }
+    if (name !== undefined) {
+      formParams = (formParams.append('Name', <any>name) as any) || formParams;
+    }
+    if (configFile !== undefined) {
+      formParams = (formParams.append('ConfigFile', <any>configFile) as any) || formParams;
+    }
+    if (managedBy !== undefined) {
+      formParams = (formParams.append('ManagedBy', <any>managedBy) as any) || formParams;
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.put<any>(
+      `${this.configuration.basePath}/api/cars/${encodeURIComponent(String(id))}/approvement`,
+      convertFormParamsToString ? formParams.toString() : formParams,
+      {
         responseType: <any>responseType,
         withCredentials: this.configuration.withCredentials,
         headers: headers,

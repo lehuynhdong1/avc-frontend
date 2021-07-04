@@ -15,12 +15,6 @@ import { ShowNotification } from '@shared/util';
 import { TuiNotification } from '@taiga-ui/core';
 import { RxState } from '@rx-angular/state';
 
-//TODO: config validator
-// const requireEmailValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-//     const email = control.get('email');
-//     return email != null && email.value.lenght != 0 ? {requireEmail: true} : null;
-//   };
-
 export function passwordRequiredValidator(field: AbstractControl): Validators | null {
   return field.value === ''
     ? {
@@ -78,11 +72,9 @@ export class SharedLoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['minhhuy499@gmail.com', [Validators.required, Validators.email]],
       password: ['123456', Validators.required],
-      remember: [false]
+      remember: [true]
     });
   }
-  //TODO: Validator chay bằng Angular
-  // get formControls() { return this.loginForm.controls; }
 
   login() {
     if (this.loginForm.invalid) return;

@@ -8,7 +8,6 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Id, DynamicTableColumns } from '@shared/ui/dynamic-table';
-import { SidebarService } from '@admin/core/ui';
 import { Empty } from '@shared/util';
 
 @Component({
@@ -38,7 +37,6 @@ export class ListingPage {
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
-    private sidebar: SidebarService,
     private router: Router,
     private state: RxState<Empty>
   ) {
@@ -56,7 +54,6 @@ export class ListingPage {
       this.store.dispatch(new LoadIssues({ searchValue, limit: 10 }))
     );
     this.state.hold(this.selectRow$, (id) => {
-      this.sidebar.collapse();
       this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
   }

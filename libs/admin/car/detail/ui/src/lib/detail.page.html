@@ -37,20 +37,30 @@
         <b class="text-gray-600">Device ID</b>
         <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
 
-        <b class="text-gray-600">Config URL</b>
-        <h3 class="mt-0 mb-3">{{ car.configUrl || 'Not yet' }}</h3>
+        <b class="text-gray-600">Configuration</b>
+        <h3 class="mt-0 mb-3">
+          <a
+            class="openable"
+            target="_blank"
+            [href]="car.configUrl"
+            *ngIf="car.configUrl; else notHasConfig"
+            >Open link
+            <tui-svg src="tuiIconExternal" tuiHint="Open config in new tab" class="mb-1"></tui-svg>
+          </a>
+          <ng-template #notHasConfig> None </ng-template>
+        </h3>
 
         <b class="text-gray-600">Managed by</b>
         <h3 class="mt-0 mb-3">
-          <span [routerLink]="'/manager/'+car.managedBy?.id" class="openable">
-            {{car.managedBy ? '': 'Not yet'}} {{ car.managedBy?.firstName }} {{
-            car.managedBy?.lastName }}<tui-svg
+          <a [routerLink]="'/manager/'+car.managedBy?.id" class="openable">
+            {{car.managedBy ? '': 'None'}} {{ car.managedBy?.firstName }} {{ car.managedBy?.lastName
+            }}<tui-svg
               src="tuiIconExternal"
               [tuiHint]="tuiHintManagedBy"
               [routerLink]="'/staff/'+car.managedBy?.id"
               class="mb-1"
             ></tui-svg>
-          </span>
+          </a>
           <ng-template #tuiHintManagedBy>
             <div class="cursor-pointer" [routerLink]="'/manager/'+car.managedBy?.id">
               View
@@ -74,7 +84,7 @@
       <section class="car__information-extend">
         <b class="text-gray-600 mb-1">Connecting Status: </b>
         <tui-badge
-          size="m"
+          size="l"
           [value]="car.isConnecting ? 'Connected': 'Disconnected'"
           [status]="car.isConnecting ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
           class="self-start mb-3"
@@ -84,17 +94,18 @@
           <b class="text-gray-600 mb-1">Approved Status</b>
           <div class="self-start">
             <tui-badge
-              size="m"
+              size="l"
               [value]="car.isApproved === (null || undefined) ? 'Pending' : car.isApproved ? 'Approved' : 'Rejected'"
               [status]="car.isApproved === (null || undefined) ? TUI_STATUS.PRIMARY : car.isApproved ? TUI_STATUS.SUCCESS : TUI_STATUS.WARNING"
               class="mr-2"
             ></tui-badge>
             <button
               tuiButton
-              size="xs"
+              size="s"
               appearance="outline"
               type="button"
               (click)="this.clickApprove$.next(car.isApproved || false)"
+              [class.deactivate]="car.isApproved"
             >
               {{ car.isApproved ? 'Reject' : 'Approve'}}
             </button>
@@ -115,6 +126,7 @@
             appearance="outline"
             type="button"
             (click)="this.clickActivate$.next(car.isAvailable || false)"
+            [class.deactivate]="car.isAvailable"
           >
             {{car.isAvailable ? 'Deactivate': 'Reactivate'}}
           </button>

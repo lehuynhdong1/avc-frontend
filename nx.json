@@ -98,6 +98,8 @@
     "admin-car-unapproved-listing-ui": { "tags": ["scope:admin"] },
     "admin-car-unapproved-listing-feature": { "tags": ["scope:admin"] },
     "shared-auth-forgot-password-data-access": { "tags": ["scope:shared"] },
-    "shared-auth-reset-password-data-access": { "tags": ["scope:shared"] }
+    "shared-auth-reset-password-data-access": { "tags": ["scope:shared"] },
+    "admin-car-approve-ui": { "tags": ["scope:admin"] },
+    "admin-car-approve-feature": { "tags": ["scope:admin"] }
   }
 }

@@ -18,7 +18,9 @@ export interface CarListReadDto {
   isConnecting?: boolean;
   isAvailable?: boolean | null;
   createdAt?: string | null;
+  isRunning?: boolean;
   deviceId?: string | null;
+  isApproved?: boolean | null;
   managedBy?: AccountNotManagedByReadDto;
   assignTo?: AccountStaffAssignToReadDto;
 }

@@ -4,13 +4,11 @@ import { CarListReadDto } from '@shared/api';
 import { FormControl } from '@angular/forms';
 import { hasValue, Empty } from '@shared/util';
 import { Store } from '@ngxs/store';
-import { CarState } from '@shared/features/car/data-access';
+import { CarState, LoadUnapprovedCars } from '@shared/features/car/data-access';
 import { Subject } from 'rxjs';
 import { RxState } from '@rx-angular/state';
-import { SidebarService } from '../../../../../core/ui/src/lib/sidebar/sidebar.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { LoadUnapprovedCars } from '../../../../../../shared/features/car/data-access/src/lib/store/actions';
+import { debounceTime, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   templateUrl: './unapprove.page.html',
@@ -30,12 +28,14 @@ export class UnapprovePage {
     private store: Store,
     router: Router,
     activatedRoute: ActivatedRoute,
-    sidebar: SidebarService,
     state: RxState<Empty>
   ) {
-    state.hold(this.selectRow$, (id) => {
-      sidebar.collapse();
-      router.navigate([id], { relativeTo: activatedRoute });
+    state.hold(this.selectRow$.pipe(withLatestFrom(this.unapprovedCars$)), ([id, cars]) => {
+      const selectedCar = cars?.result?.find((car) => car.id === id);
+      router.navigate(['..', 'approve'], {
+        relativeTo: activatedRoute,
+        queryParams: { id, deviceId: selectedCar?.deviceId }
+      });
     });
     const changeSearchValue$ = this.searchControl.valueChanges.pipe(
       debounceTime(500),

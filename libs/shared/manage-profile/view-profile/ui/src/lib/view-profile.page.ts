@@ -41,7 +41,7 @@ export class ViewProfilePage {
     private state: RxState<Empty>,
     private formBuilder: FormBuilder
   ) {
-    this.state.hold(this.me$, (my) => this.form.get('phone')?.setValue(my?.phone));
+    this.state.hold(this.me$, (my) => this.form.get('phone')?.setValue(my?.phone?.slice(1) ?? ''));
     this.state.hold(
       this.clickChangeAvatar$.pipe(
         filter((event) => !!(event?.target as HTMLInputElement)?.files?.length),

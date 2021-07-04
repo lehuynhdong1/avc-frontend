@@ -11,9 +11,9 @@
  */
 
 export interface InlineObject2 {
-  TypeId?: number;
-  CarId?: number;
-  Description?: string;
-  Location?: string;
-  image?: Blob;
+  IsApproved: boolean;
+  ImageFile?: Blob;
+  Name?: string;
+  ConfigFile?: Blob;
+  ManagedBy?: number;
 }

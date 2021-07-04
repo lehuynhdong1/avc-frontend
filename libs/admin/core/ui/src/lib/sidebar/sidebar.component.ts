@@ -9,6 +9,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith, withLatestFrom } from 'rxjs/operators';
 import { tuiPure } from '@taiga-ui/cdk';
 import { SidebarService } from './sidebar.service';
+import { Empty } from '@shared/util';
 
 export interface NavItem {
   label: string;
@@ -78,7 +79,7 @@ export class SidebarComponent {
   constructor(
     private router: Router,
     private sidebarService: SidebarService,
-    private state: RxState<Record<never, never>>
+    private state: RxState<Empty>
   ) {
     this.state.hold(this.toggleSidebar$.pipe(withLatestFrom(this.collapse$)), ([, isCollapse]) => {
       if (isCollapse) return this.sidebarService.expand();

@@ -13,7 +13,7 @@ import {
   UpdateStaff,
   UpdateStaffManagedBy
 } from '@shared/features/staff/data-access';
-import { hasValue, ShowNotification, Role } from '@shared/util';
+import { hasValue, ShowNotification, Role, Empty } from '@shared/util';
 import { TuiContextWithImplicit, TuiInputType, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
 import { TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
@@ -59,7 +59,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
   constructor(
     private store: Store,
     private actions: Actions,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder

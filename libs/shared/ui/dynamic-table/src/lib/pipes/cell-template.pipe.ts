@@ -14,6 +14,6 @@ export class CellTemplatePipe implements PipeTransform {
       const value = deepProps.reduce((acc: any, prop: string) => acc && acc[prop], obj);
       result = result.replace(match, value ?? '');
     });
-    return result;
+    return result.trim().length > 0 ? result : 'None';
   }
 }

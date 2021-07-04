@@ -1,0 +1,92 @@
+<aside class="flex-grow flex-shrink-0 relative">
+  <tui-svg class="close" src="tuiIconRemoveLarge" routerLink="/car"></tui-svg>
+  <!-- (click)="closeDetail$.next()" -->
+  <form class="p-5 flex flex-col" [formGroup]="form">
+    <h2>Approve Car</h2>
+    <tui-input-file
+      link="Choose an avatar"
+      accept="image/*"
+      formControlName="imageFile"
+      [maxFileSize]="MAXIMUM_IMAGE_SIZE"
+      *ngIf="!form.value.imageFile"
+      class="mb-4"
+    >
+    </tui-input-file>
+    <div class="relative w-40 mb-4" *ngIf="form.value.imageFile">
+      <adc-frontend-avatar
+        [url]=" form.value.imageFile | dataUrl | async"
+        size="xxl"
+      ></adc-frontend-avatar>
+      <input
+        type="file"
+        accept="image/*"
+        class="hidden"
+        (change)="clickChangeAvatar$.next($event)"
+        #inputAvatar
+      />
+      <tui-marker-icon
+        [mode]="MARKER_LINK"
+        src="tuiIconUpload"
+        size="s"
+        class="bottom-right border border-solid border-primary"
+        (click)="inputAvatar.click()"
+      ></tui-marker-icon>
+    </div>
+    <div class="flex flex-col mb-3">
+      <label>Device ID </label>
+      <h2 class="my-0 ml-2">{{(idAndDeviceId$ | async)?.deviceId}}</h2>
+    </div>
+
+    <div class="flex flex-col mb-3">
+      <label>Name </label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="First name here..."
+        formControlName="name"
+      >
+        <span class="text-gray-300">
+          Enter car name here <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+
+    <label class="mb-1">Managed by</label>
+    <tui-select
+      *tuiLet="managers$ | async as managers"
+      tuiTextfieldSize="m"
+      [tuiTextfieldLabelOutside]="true"
+      [tuiTextfieldCleaner]="true"
+      [valueContent]="managers ? stringifyManagers(managers) : loading"
+      tuiTextfieldExampleText="Select manager for this car."
+      formControlName="managedBy"
+      class="mb-3"
+    >
+      <span class="text-gray-300">
+        Select manager for this car
+        <tui-svg src="tuiIconEdit"></tui-svg>
+      </span>
+
+      <ng-template tuiDataList>
+        <tui-data-list *ngIf="managers else loading">
+          <button tuiOption *ngFor="let manager of managers" [value]="manager.id">
+            {{manager.firstName}} {{manager.lastName}}
+          </button>
+        </tui-data-list>
+      </ng-template>
+    </tui-select>
+
+    <button
+      tuiButton
+      (click)="clickApprove$.next()"
+      size="m"
+      [disabled]="form.invalid"
+      class="mb-2"
+    >
+      Approve
+    </button>
+    <button tuiButton (click)="clickDiscard$.next()" size="m" appearance="outline">Discard</button>
+  </form>
+  <ng-template #loading> Loading </ng-template>
+</aside>

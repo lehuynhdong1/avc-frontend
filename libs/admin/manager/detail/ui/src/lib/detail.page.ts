@@ -10,7 +10,7 @@ import { ConfirmDialogService } from '@admin/core/ui';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ConfirmDialogComponentParams } from '@admin/core/ui';
 import { ToggleActivation } from '@shared/features/account/data-access';
-import { ShowNotification, hasValue } from '@shared/util';
+import { ShowNotification, hasValue, Empty } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { AccountReadDto, CarReadDto } from '@shared/api';
 
@@ -49,7 +49,6 @@ export class DetailPage {
   CAR_DYNAMIC_COLUMNS: DynamicTableColumns<CarReadDto> = [
     { key: 'name', title: 'Name', type: 'string' },
     { key: 'deviceId', title: 'Device ID', type: 'string' },
-    { key: 'configUrl', title: 'Configuration URL', type: 'string' },
     { key: 'createdAt', title: 'Created at', type: 'date' },
     {
       key: 'assignTo',
@@ -92,7 +91,7 @@ export class DetailPage {
     private store: Store,
     private actions: Actions,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     private confirmDialogService: ConfirmDialogService,
     router: Router
   ) {

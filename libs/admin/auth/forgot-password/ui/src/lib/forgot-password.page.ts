@@ -2,14 +2,18 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ShowNotification } from '@shared/util';
 import { TuiNotification } from '@taiga-ui/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   templateUrl: './forgot-password.page.html',
   styleUrls: ['./forgot-password.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForgotPasswordPage {
-  constructor(private store: Store, private router: Router) {}
+  constructor(
+    private store: Store,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   whenFailed(error: string): void {
     this.store.dispatch(
@@ -27,6 +31,6 @@ export class ForgotPasswordPage {
         options: { label: 'Send recovery link', status: TuiNotification.Success }
       })
     );
-    this.router.navigate(['..', 'reset-password']);
+    this.router.navigate(['..', 'reset-password'], { relativeTo: this.activatedRoute });
   }
 }

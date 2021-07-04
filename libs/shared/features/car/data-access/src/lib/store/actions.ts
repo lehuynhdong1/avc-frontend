@@ -2,7 +2,8 @@ import { STATE_NAME } from './state.model';
 import {
   ApiCarsIdGetRequestParams,
   ApiCarsGetRequestParams,
-  ApiCarsManagedbyPutRequestParams
+  ApiCarsManagedbyPutRequestParams,
+  ApiCarsIdApprovementPutRequestParams
 } from '@shared/api';
 
 const ACTIONS = {
@@ -38,10 +39,9 @@ export class UpdateCarManagedBy {
 
 export class ToggleActivation {
   static readonly type = ACTIONS.TOGGLE_ACTIVATION;
-  constructor(public readonly currentValue: boolean) {}
 }
 
 export class ToggleApprove {
   static readonly type = ACTIONS.TOGGLE_APPROVE;
-  constructor(public readonly currentValue: boolean) {}
+  constructor(public readonly params: ApiCarsIdApprovementPutRequestParams) {}
 }

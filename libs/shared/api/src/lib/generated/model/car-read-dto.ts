@@ -22,7 +22,7 @@ export interface CarReadDto {
   createdAt?: string | null;
   deviceId?: string | null;
   configUrl?: string | null;
-  isApproved?: boolean;
+  isApproved?: boolean | null;
   managedBy?: AccountNotManagedByReadDto;
   assignTo?: AccountStaffAssignToReadDto;
   issues?: Array<IssueReadDto> | null;

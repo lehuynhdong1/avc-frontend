@@ -85,6 +85,8 @@ module.exports = {
     '<rootDir>/libs/admin/car/unapproved-listing/ui',
     '<rootDir>/libs/admin/car/unapproved-listing/feature',
     '<rootDir>/libs/shared/auth/forgot-password/data-access',
-    '<rootDir>/libs/shared/auth/reset-password/data-access'
+    '<rootDir>/libs/shared/auth/reset-password/data-access',
+    '<rootDir>/libs/admin/car/approve/ui',
+    '<rootDir>/libs/admin/car/approve/feature'
   ]
 };

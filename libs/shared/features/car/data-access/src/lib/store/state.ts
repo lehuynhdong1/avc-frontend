@@ -38,32 +38,30 @@ export class CarState {
 
   constructor(private carsService: CarsService) {}
 
-  @Action(LoadApprovedCars) loadApprovedCars(
-    { patchState }: StateContext<StateModel>,
-    { params }: LoadApprovedCars
-  ) {
+  @Action(LoadApprovedCars, { cancelUncompleted: true })
+  loadApprovedCars({ patchState }: StateContext<StateModel>, { params }: LoadApprovedCars) {
     return this.carsService
-      .apiCarsGet(params)
+      .apiCarsGet({ ...params, isApproved: true })
       .pipe(tap((listing) => patchState({ approvedListing: listing })));
   }
 
-  @Action(LoadUnapprovedCars) loadUnapprovedCars(
+  @Action(LoadUnapprovedCars, { cancelUncompleted: true }) loadUnapprovedCars(
     { patchState }: StateContext<StateModel>,
     { params }: LoadUnapprovedCars
   ) {
     return this.carsService
-      .apiCarsGet(params)
+      .apiCarsGet({ ...params, isApproved: null as never })
       .pipe(tap((listing) => patchState({ unapprovedListing: listing })));
   }
 
-  @Action(LoadCarById) loadCarById(
+  @Action(LoadCarById, { cancelUncompleted: true }) loadCarById(
     { patchState }: StateContext<StateModel>,
     { params }: LoadCarById
   ) {
     return this.carsService.apiCarsIdGet(params).pipe(tap((detail) => patchState({ detail })));
   }
 
-  @Action(UpdateCarManagedBy)
+  @Action(UpdateCarManagedBy, { cancelUncompleted: true })
   updateCarManagedBy({ patchState }: StateContext<StateModel>, { params }: UpdateCarManagedBy) {
     return this.carsService.apiCarsManagedbyPut(params).pipe(
       catchError((error) => {
@@ -75,30 +73,48 @@ export class CarState {
     );
   }
 
-  @Action(ToggleActivation)
-  toggleActivation(
-    { patchState, getState }: StateContext<StateModel>,
-    { currentValue }: ToggleActivation
-  ) {
-    // TODO: Waiting for API & implement this
+  @Action(ToggleActivation, { cancelUncompleted: true })
+  toggleActivation({ patchState, getState }: StateContext<StateModel>) {
+    const { detail } = getState();
+    const currentValue = detail?.isAvailable;
+    // Fake update immediately
     patchState({
       detail: {
-        ...getState().detail,
+        ...detail,
         isAvailable: !currentValue
       }
     });
+    return this.carsService
+      .apiCarsIdActivationPut({
+        id: detail?.id || 0,
+        carActivationDto: { isAvailable: !currentValue || false }
+      })
+      .pipe(
+        catchError((error) => {
+          console.warn(`[${STATE_NAME}] ${ToggleActivation.name} failed with error: `, error);
+          const errorMessage = `${
+            currentValue ? 'Deactivate' : 'Activate'
+          } failed. Sorry, please try again later.`;
+          patchState({
+            detail: {
+              ...detail,
+              isAvailable: currentValue
+            },
+            errorMessage
+          });
+          return throwError(errorMessage);
+        })
+      );
   }
-  @Action(ToggleApprove)
-  toggleApprove(
-    { patchState, getState }: StateContext<StateModel>,
-    { currentValue }: ToggleApprove
-  ) {
-    // TODO: Waiting for API & implement this
-    patchState({
-      detail: {
-        ...getState().detail,
-        isApproved: !currentValue
-      }
-    });
+  @Action(ToggleApprove, { cancelUncompleted: true })
+  toggleApprove({ patchState }: StateContext<StateModel>, { params }: ToggleApprove) {
+    return this.carsService.apiCarsIdApprovementPut(params).pipe(
+      catchError((error) => {
+        console.warn(`[${STATE_NAME}] ${ToggleApprove.name} failed with error: `, error);
+        const errorMessage = `Processing failed. Sorry, please try again later.`;
+        patchState({ errorMessage });
+        return throwError(errorMessage);
+      })
+    );
   }
 }

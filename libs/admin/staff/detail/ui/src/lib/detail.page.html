@@ -39,7 +39,7 @@
         <ng-container *ngIf="staff.managedBy; else notHasManagedBy">
           {{ staff.managedBy?.firstName }} {{ staff.managedBy?.lastName }}
         </ng-container>
-        <ng-template #notHasManagedBy> Not yet </ng-template>
+        <ng-template #notHasManagedBy> None </ng-template>
       </h3>
 
       <b class="text-gray-600 mb-1">Activation Status</b>

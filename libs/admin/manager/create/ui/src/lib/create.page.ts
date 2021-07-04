@@ -7,10 +7,11 @@ import { RxState } from '@rx-angular/state';
 import { withLatestFrom, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TuiNotification } from '@taiga-ui/core';
-import { ShowNotification, hasValue } from '@shared/util';
+import { ShowNotification, hasValue, Empty } from '@shared/util';
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler, TuiInputType } from '@taiga-ui/cdk';
 import { AccountManagerDetailReadDto } from '@shared/api';
 import { CanShowUnsavedDialog } from '@admin/core/util';
+import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
 
 const INIT_FORM_VALUE = {
   firstName: '',
@@ -32,7 +33,7 @@ export class CreatePage implements CanShowUnsavedDialog {
   readonly TUI_INPUT_EMAIL = TuiInputType.Email as const;
   readonly MARKER_LINK = TuiMarkerIconMode.Link as const;
   readonly BADGE_PRIMARY = TuiStatus.Primary as const;
-
+  readonly MAXIMUM_IMAGE_SIZE = MAXIMUM_IMAGE_SIZE;
   willShowUnsavedDialog = false;
 
   readonly form = this.formBuilder.group({
@@ -66,7 +67,7 @@ export class CreatePage implements CanShowUnsavedDialog {
   constructor(
     private store: Store,
     private actions: Actions,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     private formBuilder: FormBuilder
   ) {
     this.store.dispatch(new LoadManagers({ limit: 10 }));
@@ -92,7 +93,6 @@ export class CreatePage implements CanShowUnsavedDialog {
     );
     this.state.hold(whenCreateValid$, (form) => {
       const { firstName, password, email, lastName, avatarImage, phone } = form;
-      console.log(form);
 
       this.store.dispatch(
         new CreateManager({

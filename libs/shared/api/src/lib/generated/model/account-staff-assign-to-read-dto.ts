@@ -17,4 +17,5 @@ export interface AccountStaffAssignToReadDto {
   lastName?: string | null;
   phone?: string | null;
   avatar?: string | null;
+  createdAt?: string;
 }

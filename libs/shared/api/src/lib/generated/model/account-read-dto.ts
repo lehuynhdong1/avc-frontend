@@ -20,5 +20,6 @@ export interface AccountReadDto {
   phone?: string | null;
   avatar?: string | null;
   isAvailable?: boolean | null;
+  createdAt?: string;
   managedBy?: AccountNotManagedByReadDto;
 }

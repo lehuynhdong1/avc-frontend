@@ -5,7 +5,7 @@ import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { hasValue } from '@shared/util';
+import { hasValue, Empty } from '@shared/util';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -27,7 +27,7 @@ export class DetailPage {
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     title: Title
   ) {
     this.state.hold(this.id$, (id) => {

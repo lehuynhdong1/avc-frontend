@@ -12,7 +12,7 @@ import {
   ManagerState,
   UpdateManager
 } from '@shared/features/manager/data-access';
-import { hasValue, ShowNotification, Role } from '@shared/util';
+import { hasValue, ShowNotification, Role, Empty } from '@shared/util';
 import { TuiContextWithImplicit, TuiInputType, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
 import { TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
@@ -57,7 +57,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
   constructor(
     private store: Store,
     private actions: Actions,
-    private state: RxState<Record<string, never>>,
+    private state: RxState<Empty>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder
@@ -88,7 +88,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
     this.state.hold(id$, (id) => this.store.dispatch(new LoadManagerById({ id })));
 
     this.state.hold(this.manager$, ({ firstName, lastName, phone }) => {
-      this.form.patchValue({ firstName, lastName, phone, roleId: Role.MANAGER });
+      this.form.patchValue({ firstName, lastName, phone: phone?.slice(1), roleId: Role.MANAGER });
     });
 
     this.clickUpdateEffects();

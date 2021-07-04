@@ -6,8 +6,9 @@ import { Empty } from '@shared/util';
 import { RxState } from '@rx-angular/state';
 import { Subject } from 'rxjs';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
-import { FormControl, Validators } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 import { TuiInputType } from '@taiga-ui/cdk';
+import { TuiHintMode } from '@taiga-ui/core';
 
 @Component({
   selector: 'adc-frontend-forgot-password',
@@ -31,15 +32,23 @@ export class SharedForgotPasswordComponent {
   @Output() whenSuccess = new EventEmitter<void>();
 
   TUI_INPUT_EMAIL = TuiInputType.Email;
+  TUI_HINT_ERROR = TuiHintMode.Error;
 
-  formControl = new FormControl('', [Validators.required, Validators.email]);
+  form = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]]
+  });
 
   /* Side effects */
 
   /* Actions */
   sendRecoveryLink$ = new Subject<void>();
 
-  constructor(private store: Store, private actions: Actions, state: RxState<Empty>) {
+  constructor(
+    private store: Store,
+    private actions: Actions,
+    state: RxState<Empty>,
+    private formBuilder: FormBuilder
+  ) {
     const whenSendSuccess$ = this.actions.pipe<SendRecoveryLink>(
       ofActionSuccessful(SendRecoveryLink)
     );
@@ -51,7 +60,7 @@ export class SharedForgotPasswordComponent {
     state.hold(whenSendFailed$, (errorMessage) => this.whenFailed.emit(errorMessage || ''));
 
     state.hold(this.sendRecoveryLink$, () => {
-      const email = this.formControl.value;
+      const email = this.form.value.email;
       this.store.dispatch(new SendRecoveryLink({ email }));
     });
   }

@@ -9,7 +9,6 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operato
 import { ActivatedRoute, Router } from '@angular/router';
 import { hasValue, Empty } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
-import { SidebarService } from '@admin/core/ui';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -59,7 +58,6 @@ export class ListingPage {
   constructor(
     private store: Store,
     private router: Router,
-    private sidebar: SidebarService,
     private activatedRoute: ActivatedRoute,
     private state: RxState<Empty>
   ) {
@@ -69,10 +67,9 @@ export class ListingPage {
 
   private declareSideEffects() {
     this.whenFilterChangedEffects();
-    this.state.hold(this.selectRow$, (id) => {
-      this.sidebar.collapse();
-      this.router.navigate([id], { relativeTo: this.activatedRoute });
-    });
+    this.state.hold(this.selectRow$, (id) =>
+      this.router.navigate([id], { relativeTo: this.activatedRoute })
+    );
   }
 
   private whenFilterChangedEffects() {

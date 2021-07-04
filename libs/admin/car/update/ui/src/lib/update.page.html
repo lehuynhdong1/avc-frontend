@@ -4,7 +4,6 @@
     src="tuiIconRemoveLarge"
     routerLink="/car"
   ></tui-svg>
-  <!-- (click)="closeDetail$.next()" -->
   <form class="p-5 flex flex-col" [formGroup]="form" *ngIf="car$| async as car">
     <h2>Update Car</h2>
     <adc-frontend-avatar
