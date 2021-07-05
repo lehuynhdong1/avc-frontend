@@ -6,9 +6,11 @@ import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
 import { CreateNewPassword, ResetPasswordState } from '@shared/auth/reset-password/data-access';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { tuiPure } from '@taiga-ui/cdk';
 import { MatchValidator } from '@shared/auth/util';
+import { ShowNotification } from '@shared/util';
+
 @Component({
   selector: 'adc-frontend-reset-password',
   templateUrl: './reset-password.component.html',
@@ -43,11 +45,12 @@ export class SharedResetPasswordComponent {
   reset$ = new Subject<void>();
 
   constructor(
-    private store: Store,
+    store: Store,
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private state: RxState<{ loading: boolean }>,
-    actions: Actions
+    actions: Actions,
+    router: Router
   ) {
     const emailAndCode$ = this.activatedRoute.queryParams.pipe(
       map(({ email, code }) => ({ email, code }))
@@ -57,23 +60,32 @@ export class SharedResetPasswordComponent {
     const whenSendSuccess$ = actions.pipe<CreateNewPassword>(ofActionSuccessful(CreateNewPassword));
     state.hold(whenSendSuccess$, () => {
       this.state.set({ loading: false });
-      this.whenSuccess.emit();
+      store.dispatch(
+        new ShowNotification({
+          message: "You have reset your password. Let's log in with new password",
+          options: { label: 'Reset Password', status: TuiNotification.Success }
+        })
+      );
+      router.navigate(['..', 'login'], { relativeTo: this.activatedRoute });
     });
 
     const whenSendFailed$ = actions
       .pipe<CreateNewPassword>(ofActionErrored(CreateNewPassword))
-      .pipe(switchMapTo(this.store.select(ResetPasswordState.errorMessage)));
+      .pipe(switchMapTo(store.select(ResetPasswordState.errorMessage)));
     state.hold(whenSendFailed$, (errorMessage) => {
       this.state.set({ loading: false });
-      this.whenFailed.emit(errorMessage || '');
+      store.dispatch(
+        new ShowNotification({
+          message: errorMessage || '',
+          options: { label: 'Reset Password', status: TuiNotification.Error }
+        })
+      );
     });
 
     state.hold(this.reset$, () => {
       this.state.set({ loading: true });
-      console.log(this.form.value);
-
       const { code, password, email } = this.form.value;
-      this.store.dispatch(
+      store.dispatch(
         new CreateNewPassword({ newPasswordDto: { securityKey: code, password, email } })
       );
       this.clickSubmit.emit();

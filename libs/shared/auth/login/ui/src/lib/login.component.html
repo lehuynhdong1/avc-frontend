@@ -1,5 +1,6 @@
 <main class="flex flex-col justify-center w-full">
-  <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in</h1>
+  <img src="assets/images/logo.svg" alt="Autonomous Car Logo" class="w-1/6 self-center" />
+  <h1 class="mt-0 text-center text-3xl font-extrabold text-gray-700">Log in</h1>
   <form class="flex flex-col mb-3 space-y-3" [formGroup]="form" (ngSubmit)="login$.next()">
     <tui-input
       [tuiTextfieldType]="tuiEmailType"

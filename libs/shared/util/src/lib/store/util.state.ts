@@ -1,8 +1,8 @@
-import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { TuiNotificationsService } from '@taiga-ui/core';
-import { ShowNotification } from './util.actions';
-import { STATE_NAME, StateModel, INITIAL_STATE } from './util-state.model';
 import { Injectable } from '@angular/core';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { TuiNotificationsService } from '@taiga-ui/core';
+import { INITIAL_STATE, StateModel, STATE_NAME } from './util-state.model';
+import { ShowNotification } from './util.actions';
 
 @State<StateModel>({
   name: STATE_NAME,

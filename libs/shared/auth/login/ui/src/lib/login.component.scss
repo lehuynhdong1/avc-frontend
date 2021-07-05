@@ -1,11 +1,11 @@
 :host {
-  display: block;
-}
-:host ::ng-deep {
-  tui-input,
-  tui-input-password {
-    tui-wrapper[data-appearance='textfield'] {
-      @apply shadow-none;
+  @apply block w-full max-w-xs;
+  ::ng-deep {
+    tui-input,
+    tui-input-password {
+      tui-wrapper[data-appearance='textfield'] {
+        @apply shadow-none;
+      }
     }
   }
 }
