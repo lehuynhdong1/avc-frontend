@@ -1,1 +1,7 @@
-<adc-frontend-login></adc-frontend-login>
+<main class="min-h-screen flex justify-center items-center bg-gray-50">
+  <adc-frontend-login
+    class="w-full max-w-xs"
+    (whenFailed)="whenFailed($event)"
+    (whenSuccess)="whenSuccess()"
+  ></adc-frontend-login>
+</main>

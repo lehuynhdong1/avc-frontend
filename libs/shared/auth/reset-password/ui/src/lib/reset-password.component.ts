@@ -1,98 +1,87 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  FormBuilder,
-  ValidatorFn,
-  AbstractControl,
-  ValidationErrors
-} from '@angular/forms';
+import { switchMapTo, map } from 'rxjs/operators';
+import { RxState } from '@rx-angular/state';
+import { Actions, Store, ofActionErrored, ofActionSuccessful } from '@ngxs/store';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { TuiNotification } from '@taiga-ui/core';
-
-export const passwordMatchValidator: ValidatorFn = (
-  control: AbstractControl
-): ValidationErrors | null => {
-  const password = control.get('password');
-  const passwordConfrm = control.get('passwordConfrm');
-
-  return password?.value === passwordConfrm?.value
-    ? null
-    : passwordConfrm?.value === ''
-    ? null
-    : { other: 'Password must match' };
-};
-export function passwordRequiredValidator(field: AbstractControl): Validators | null {
-  return field.value === ''
-    ? {
-        other: 'Password is required'
-      }
-    : null;
-}
-export function passwordConfrmRequiredValidator(field: AbstractControl): Validators | null {
-  return field.value === ''
-    ? {
-        other: 'Password confirmation is required'
-      }
-    : null;
-}
-export function verificationCodeRequiredValidator(field: AbstractControl): Validators | null {
-  return field.value === ''
-    ? {
-        other: 'Verification code is required'
-      }
-    : null;
-}
-
+import { Subject } from 'rxjs';
+import { CreateNewPassword, ResetPasswordState } from '@shared/auth/reset-password/data-access';
+import { ActivatedRoute } from '@angular/router';
+import { tuiPure } from '@taiga-ui/cdk';
+import { MatchValidator } from '@shared/auth/util';
 @Component({
   selector: 'adc-frontend-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RxState]
 })
-export class SharedResetPasswordComponent implements OnInit {
-  private TUI_NOTIFICATION_SUCCESS = TuiNotification.Success;
-  private TUI_NOTIFICATION_ERROR = TuiNotification.Error;
-  private TUI_NOTIFICATION_INFOR = TuiNotification.Info;
-  private SUCCESS_MESSAGE = 'Your password has been reset.';
-  private ERROR_MESSAGE = 'Something went wrong. Try again later!';
-  private INFOR_MESSAGE = 'Create a new password for your account';
+export class SharedResetPasswordComponent {
+  @Output() clickSubmit = new EventEmitter<void>();
+  @Output() whenFailed = new EventEmitter<string>();
+  @Output() whenSuccess = new EventEmitter<void>();
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
-  status = this.TUI_NOTIFICATION_INFOR;
-  isSubmitted = false;
-  isReset = false;
-  message = this.INFOR_MESSAGE;
-  resetPwdForm!: FormGroup;
-  passwordConfrm!: FormControl;
-  ngOnInit() {
-    this.resetPwdForm = this.formBuilder.group(
-      {
-        verificationCode: new FormControl('', verificationCodeRequiredValidator),
-        password: new FormControl('', passwordRequiredValidator),
-        passwordConfrm: new FormControl('', passwordConfrmRequiredValidator)
-      },
-      { validators: passwordMatchValidator }
+  TUI_NOTIFICATION_INFOR = TuiNotification.Info;
+
+  form = this.formBuilder.group({
+    email: ['', Validators.required],
+    code: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]],
+    confirmedPassword: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(16),
+        MatchValidator('password')
+      ]
+    ]
+  });
+
+  loading$ = this.state.select('loading');
+
+  reset$ = new Subject<void>();
+
+  constructor(
+    private store: Store,
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private state: RxState<{ loading: boolean }>,
+    actions: Actions
+  ) {
+    const emailAndCode$ = this.activatedRoute.queryParams.pipe(
+      map(({ email, code }) => ({ email, code }))
     );
+    state.hold(emailAndCode$, ({ code, email }) => this.form.patchValue({ code, email }));
+
+    const whenSendSuccess$ = actions.pipe<CreateNewPassword>(ofActionSuccessful(CreateNewPassword));
+    state.hold(whenSendSuccess$, () => {
+      this.state.set({ loading: false });
+      this.whenSuccess.emit();
+    });
+
+    const whenSendFailed$ = actions
+      .pipe<CreateNewPassword>(ofActionErrored(CreateNewPassword))
+      .pipe(switchMapTo(this.store.select(ResetPasswordState.errorMessage)));
+    state.hold(whenSendFailed$, (errorMessage) => {
+      this.state.set({ loading: false });
+      this.whenFailed.emit(errorMessage || '');
+    });
+
+    state.hold(this.reset$, () => {
+      this.state.set({ loading: true });
+      console.log(this.form.value);
+
+      const { code, password, email } = this.form.value;
+      this.store.dispatch(
+        new CreateNewPassword({ newPasswordDto: { securityKey: code, password, email } })
+      );
+      this.clickSubmit.emit();
+    });
   }
 
-  reset() {
-    console.log(this.resetPwdForm.value);
-    this.isSubmitted = true;
-    if (this.resetPwdForm.invalid) {
-      return;
-    }
-    this.isReset = true; //Apply logic check here
-    if (this.isReset) {
-      this.status = this.TUI_NOTIFICATION_SUCCESS;
-      this.message = this.SUCCESS_MESSAGE;
-    } else {
-      this.status = this.TUI_NOTIFICATION_ERROR;
-      this.message = this.ERROR_MESSAGE;
-    }
-
-    //TODO: Add Service
-    // this.authService.reset(this.resetPwdFrom.value);
+  @tuiPure
+  isValid(form: AbstractControl | null | undefined): boolean | undefined {
+    return form?.touched && form?.invalid;
   }
 }

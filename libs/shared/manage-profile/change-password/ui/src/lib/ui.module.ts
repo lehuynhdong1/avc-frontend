@@ -3,14 +3,20 @@ import { CommonModule } from '@angular/common';
 import { ChangePasswordPage } from './change-password.page';
 import { TuiInputPasswordModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiButtonModule, TuiSvgModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiHintControllerModule,
+  TuiSvgModule,
+  TuiTextfieldControllerModule
+} from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 
 const tuiModules = [
   TuiButtonModule,
   TuiSvgModule,
   TuiInputPasswordModule,
-  TuiTextfieldControllerModule
+  TuiTextfieldControllerModule,
+  TuiHintControllerModule
 ];
 @NgModule({
   declarations: [ChangePasswordPage],

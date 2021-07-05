@@ -9,7 +9,7 @@ import {
   TuiTextfieldControllerModule
 } from '@taiga-ui/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiInputModule, TuiFieldErrorModule, TuiBadgeModule } from '@taiga-ui/kit';
+import { TuiInputModule, TuiBadgeModule } from '@taiga-ui/kit';
 import { TuiValidatorModule } from '@taiga-ui/cdk';
 import { RouterModule } from '@angular/router';
 @NgModule({
@@ -25,8 +25,7 @@ import { RouterModule } from '@angular/router';
     TuiTextfieldControllerModule,
     TuiLinkModule,
     TuiHintControllerModule,
-    TuiValidatorModule,
-    TuiFieldErrorModule
+    TuiValidatorModule
   ],
   exports: [SharedForgotPasswordComponent]
 })

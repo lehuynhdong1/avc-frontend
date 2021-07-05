@@ -1,108 +1,62 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
-import {
-  Store,
-  Actions,
-  ofActionSuccessful,
-  ofActionErrored,
-  ofActionDispatched
-} from '@ngxs/store';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { Login, LoginState } from '@shared/auth/login/data-access';
 import { TuiInputType } from '@taiga-ui/cdk';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import { ShowNotification } from '@shared/util';
-import { TuiNotification } from '@taiga-ui/core';
+import { Validators, FormBuilder } from '@angular/forms';
 import { RxState } from '@rx-angular/state';
-
-export function passwordRequiredValidator(field: AbstractControl): Validators | null {
-  return field.value === ''
-    ? {
-        other: 'Password is required'
-      }
-    : null;
-}
-export function emailRequiredValidator(field: AbstractControl): Validators | null {
-  return field.value === ''
-    ? {
-        other: 'Email address is required'
-      }
-    : null;
-}
+import { Subject } from 'rxjs';
+import { filter, switchMapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'adc-frontend-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    RxState,
-    {
-      provide: TUI_VALIDATION_ERRORS,
-      useValue: {
-        required: 'Input value is required!',
-        email: 'Please enter a valid email address'
-      }
-    }
-  ]
+  providers: [RxState]
 })
-export class SharedLoginComponent implements OnInit {
+export class SharedLoginComponent {
+  @Output() clickSubmit = new EventEmitter<void>();
+  @Output() whenFailed = new EventEmitter<string>();
+  @Output() whenSuccess = new EventEmitter<void>();
+
   tuiEmailType = TuiInputType.Email;
-  loginForm!: FormGroup;
+  form = this.formBuilder.group({
+    email: ['minhhuy499@gmail.com', [Validators.required, Validators.email]],
+    password: ['123456', Validators.required],
+    remember: [true]
+  });
 
-  whileLoggingIn$ = this.state.select('whileLoggingIn');
+  loading$ = this.state.select('loading');
 
-  private loginDispatchHandler$ = this.actions.pipe(ofActionDispatched(Login));
-  private loginSuccessHandler$ = this.actions.pipe(ofActionSuccessful(Login));
-  private loginErrorHandler$ = this.actions.pipe(ofActionErrored(Login));
+  login$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
-    private store: Store,
-    private actions: Actions,
-    private state: RxState<{ whileLoggingIn: boolean }>
+    private state: RxState<{ loading: boolean }>,
+    store: Store,
+    actions: Actions
   ) {
-    this.state.hold(this.loginDispatchHandler$, this.handleDispatch.bind(this));
-    this.state.hold(this.loginSuccessHandler$, this.handleSuccess.bind(this));
-    this.state.hold(this.loginErrorHandler$, this.handleError.bind(this));
-  }
-
-  ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      email: ['minhhuy499@gmail.com', [Validators.required, Validators.email]],
-      password: ['123456', Validators.required],
-      remember: [true]
+    this.state.hold(this.login$.pipe(filter(() => this.form.valid)), () => {
+      this.state.set({ loading: true });
+      const payload: Login['payload'] = {
+        email: this.form.value.email,
+        password: this.form.value.password
+      };
+      store.dispatch(new Login(payload));
     });
-  }
 
-  login() {
-    if (this.loginForm.invalid) return;
+    const whenSendFailed$ = actions
+      .pipe<Login>(ofActionErrored(Login))
+      .pipe(switchMapTo(store.select(LoginState.errorMessage)));
+    state.hold(whenSendFailed$, (errorMessage) => {
+      this.state.set({ loading: false });
+      this.whenFailed.emit(errorMessage || '');
+    });
 
-    const payload: Login['payload'] = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password
-    };
-    this.store.dispatch(new Login(payload));
-  }
-
-  private handleDispatch() {
-    this.state.set({ whileLoggingIn: true });
-  }
-
-  private handleError() {
-    this.state.set({ whileLoggingIn: false });
-    const error = this.store.selectSnapshot(LoginState.error);
-    console.warn(error);
-  }
-  private handleSuccess() {
-    this.state.set({ whileLoggingIn: false });
-    this.store.dispatch(
-      new ShowNotification({
-        message: 'Have a good time',
-        options: { label: "You're logged in", status: TuiNotification.Success }
-      })
-    );
-    this.router.navigateByUrl('/');
+    const whenSendSuccess$ = actions.pipe<Login>(ofActionSuccessful(Login));
+    state.hold(whenSendSuccess$, () => {
+      this.state.set({ loading: false });
+      this.whenSuccess.emit();
+    });
   }
 }

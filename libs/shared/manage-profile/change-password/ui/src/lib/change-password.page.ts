@@ -12,6 +12,7 @@ import { TuiNotification } from '@taiga-ui/core';
 import { ShowNotification, hasValue, Empty } from '@shared/util';
 import { CanShowUnsavedDialog } from '@admin/core/util';
 import { TuiInputType } from '@taiga-ui/cdk';
+import { MatchValidator } from '@shared/auth/util';
 
 @Component({
   selector: 'adc-frontend-change-password',
@@ -22,12 +23,21 @@ import { TuiInputType } from '@taiga-ui/cdk';
 })
 export class ChangePasswordPage implements CanShowUnsavedDialog {
   readonly TUI_INPUT_PASSWORD = TuiInputType.Password as const;
+
   willShowUnsavedDialog = false;
 
   readonly form = this.formBuilder.group({
     oldPassword: ['', Validators.required],
-    newPassword: ['', Validators.required],
-    confirmedPassword: ['', Validators.required]
+    newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]],
+    confirmedPassword: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(16),
+        MatchValidator('password')
+      ]
+    ]
   });
 
   private readonly errorMessage$ = this.store

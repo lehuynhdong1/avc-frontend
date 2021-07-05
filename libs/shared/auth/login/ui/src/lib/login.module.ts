@@ -8,13 +8,7 @@ import {
   TuiTextfieldControllerModule
 } from '@taiga-ui/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  TuiInputModule,
-  TuiInputPasswordModule,
-  TuiCheckboxLabeledModule,
-  TuiFieldErrorModule
-} from '@taiga-ui/kit';
-import { TuiValidatorModule } from '@taiga-ui/cdk';
+import { TuiInputModule, TuiInputPasswordModule, TuiCheckboxLabeledModule } from '@taiga-ui/kit';
 import { RouterModule } from '@angular/router';
 
 const tuiModules = [
@@ -24,8 +18,6 @@ const tuiModules = [
   TuiInputPasswordModule,
   TuiCheckboxLabeledModule,
   TuiLinkModule,
-  TuiValidatorModule,
-  TuiFieldErrorModule,
   TuiTextfieldControllerModule
 ];
 @NgModule({

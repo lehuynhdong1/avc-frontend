@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AuthenticationService, Configuration, RolesService } from '@shared/api';
-import { STATE_NAME, INITIAL_STATE, LoginStateModel, ERROR_CODES } from './login-state.model';
+import { STATE_NAME, INITIAL_STATE, LoginStateModel } from './login-state.model';
 import { Login, LoadRoles, UpdateProfile, LoadToken } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { LogoutState } from '@shared/auth/logout/data-access';
@@ -26,8 +26,8 @@ export class LoginState extends LogoutState {
     return roles.result;
   }
   @Selector()
-  static error({ error }: LoginStateModel) {
-    return error;
+  static errorMessage({ errorMessage }: LoginStateModel) {
+    return errorMessage;
   }
 
   constructor(
@@ -47,9 +47,10 @@ export class LoginState extends LogoutState {
       }),
       catchError((error) => {
         console.warn(`[${STATE_NAME}] Login with error: `, error);
+        const errorMessage = 'Your email or password is seem to be wrong. Please try again.';
 
-        patchState({ error: ERROR_CODES.WRONG_USERNAME_OR_PASSWORD });
-        return throwError({ error: ERROR_CODES.WRONG_USERNAME_OR_PASSWORD });
+        patchState({ errorMessage });
+        return throwError(errorMessage);
       })
     );
   }
@@ -60,7 +61,9 @@ export class LoginState extends LogoutState {
       tap((roles: unknown) => patchState({ roles: roles as LoginStateModel['roles'] })),
       catchError((error) => {
         console.warn(`[${STATE_NAME}] Login with error: `, error);
-        return throwError({ error: ERROR_CODES.LOAD_ROLES_FAILED });
+        const errorMessage = 'Load system roles failed.';
+        patchState({ errorMessage });
+        return throwError(errorMessage);
       })
     );
   }

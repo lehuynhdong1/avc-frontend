@@ -5,29 +5,28 @@ import {
   TuiButtonModule,
   TuiSvgModule,
   TuiLinkModule,
-  TuiNotificationModule
+  TuiNotificationModule,
+  TuiTextfieldControllerModule,
+  TuiHintControllerModule
 } from '@taiga-ui/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiInputPasswordModule, TuiFieldErrorModule, TuiInputModule } from '@taiga-ui/kit';
-import { TuiValidatorModule } from '@taiga-ui/cdk';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TuiInputPasswordModule, TuiInputModule } from '@taiga-ui/kit';
 import { RouterModule } from '@angular/router';
+import { DataAccessModule } from '@shared/auth/reset-password/data-access';
 
+const tuiModules = [
+  TuiButtonModule,
+  TuiSvgModule,
+  TuiInputPasswordModule,
+  TuiLinkModule,
+  TuiInputModule,
+  TuiNotificationModule,
+  TuiTextfieldControllerModule,
+  TuiHintControllerModule
+];
 @NgModule({
   declarations: [SharedResetPasswordComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    TuiButtonModule,
-    TuiSvgModule,
-    ReactiveFormsModule,
-    TuiInputPasswordModule,
-    TuiLinkModule,
-    TuiValidatorModule,
-    TuiFieldErrorModule,
-    TuiNotificationModule,
-    TuiInputModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, DataAccessModule, tuiModules],
   exports: [SharedResetPasswordComponent]
 })
 export class SharedResetPasswordModule {}

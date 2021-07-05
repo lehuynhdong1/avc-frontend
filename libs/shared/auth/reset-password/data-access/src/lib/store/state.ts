@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, State, StateContext, Selector } from '@ngxs/store';
 import { STATE_NAME, INITIAL_STATE, StateModel } from './state.model';
 import { CreateNewPassword } from './actions';
 import { AuthenticationService } from '@shared/api';
@@ -9,6 +9,11 @@ import { catchError } from 'rxjs/operators';
 @State<StateModel>({ name: STATE_NAME, defaults: INITIAL_STATE })
 @Injectable()
 export class ResetPasswordState {
+  @Selector()
+  static errorMessage({ errorMessage }: StateModel) {
+    return errorMessage;
+  }
+
   constructor(private authService: AuthenticationService) {}
 
   @Action(CreateNewPassword)

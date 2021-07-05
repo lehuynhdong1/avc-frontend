@@ -1,59 +1,46 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in</h2>
-    </div>
-    <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="login()">
-      <div class="rounded-md space-y-6">
-        <div>
-          <tui-input
-            [tuiTextfieldType]="tuiEmailType"
-            formControlName="email"
-            [tuiTextfieldCleaner]="true"
-            autocomplete="true"
-            >Email</tui-input
-          >
-          <tui-field-error formControlName="email"></tui-field-error>
-        </div>
-        <div>
-          <tui-input-password
-            formControlName="password"
-            tuiHintContent
-            tuiHintDirection="right"
-            tuiHintMode="onDark"
-          >
-            Password
-          </tui-input-password>
-          <tui-field-error formControlName="password"></tui-field-error>
-        </div>
-      </div>
+<main class="flex flex-col justify-center w-full">
+  <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in</h1>
+  <form class="flex flex-col mb-3 space-y-3" [formGroup]="form" (ngSubmit)="login$.next()">
+    <tui-input
+      [tuiTextfieldType]="tuiEmailType"
+      formControlName="email"
+      [tuiTextfieldCleaner]="true"
+      autocomplete="true"
+      >Email</tui-input
+    >
+    <tui-input-password
+      formControlName="password"
+      tuiHintContent
+      tuiHintDirection="right"
+      tuiHintMode="onDark"
+    >
+      Password
+    </tui-input-password>
 
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
-          <tui-checkbox-labeled formControlName="remember">Remember me</tui-checkbox-labeled>
-        </div>
-        <div class="text-sm">
-          <a
-            tuiLink
-            routerLink="/forgot-password"
-            class="font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            Forgot your password?
-          </a>
-        </div>
-      </div>
-
-      <div>
-        <button
-          tuiButton
-          class="tui-form__button relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          size="l"
-          type="submit"
-          [showLoader]="(whileLoggingIn$ | async) || false"
+    <div class="flex justify-between items-center">
+      <tui-checkbox-labeled formControlName="remember">Remember me</tui-checkbox-labeled>
+      <div class="text-sm">
+        <a
+          tuiLink
+          routerLink="/forgot-password"
+          class="font-medium text-indigo-600 hover:text-indigo-500"
         >
-          Log in
-        </button>
+          Forgot your password?
+        </a>
       </div>
-    </form>
-  </div>
-</div>
+    </div>
+
+    <div>
+      <button
+        tuiButton
+        class="tui-form__button relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        size="l"
+        type="submit"
+        [disabled]="form.invalid"
+        [showLoader]="(loading$ | async) || false"
+      >
+        Log in
+      </button>
+    </div>
+  </form>
+</main>
