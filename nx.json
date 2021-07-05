@@ -37,14 +37,8 @@
     "shared-auth-login-data-access": { "tags": ["scope:shared"] },
     "shared-auth-util": { "tags": ["scope:shared"] },
     "shared-auth-logout-data-access": { "tags": ["scope:shared"] },
-    "shared-manage-profile-change-password-ui": { "tags": ["scope:shared"] },
-    "shared-manage-profile-view-profile-ui": { "tags": ["scope:shared"] },
-    "shared-manage-profile-view-profile-data-access": { "tags": ["scope:shared"] },
-    "shared-manage-profile-change-password-data-access": { "tags": ["scope:shared"] },
     "shared-features-staff-data-access": { "tags": ["scope:shared"] },
     "shared-features-car-data-access": { "tags": ["scope:shared"] },
-    "admin-manage-profile-view-profile-feature": { "tags": ["scope:admin"] },
-    "admin-manage-profile-change-password-feature": { "tags": ["scope:admin"] },
     "admin-train-model-label-image-ui": { "tags": ["scope:admin"] },
     "admin-train-model-label-image-feature": { "tags": ["scope:admin"] },
     "admin-train-model-label-image-data-access": { "tags": ["scope:admin"] },
@@ -100,6 +94,9 @@
     "shared-auth-reset-password-data-access": { "tags": ["scope:shared"] },
     "admin-car-approve-ui": { "tags": ["scope:admin"] },
     "admin-car-approve-feature": { "tags": ["scope:admin"] },
-    "shared-ui-confirm-dialog": { "tags": ["scope:shared"] }
+    "shared-ui-confirm-dialog": { "tags": ["scope:shared"] },
+    "shared-features-manage-profile-data-access": { "tags": ["scope:shared"] },
+    "shared-features-manage-profile-ui": { "tags": ["scope:shared"] },
+    "shared-features-manage-profile-feature": { "tags": ["scope:admin"] }
   }
 }

@@ -38,14 +38,8 @@
       "@shared/auth/util": ["libs/shared/auth/util/src/index.ts"],
       "@shared/auth/logout/data-access": ["libs/shared/auth/logout/data-access/src/index.ts"],
       "@shared/profile/ui": ["libs/shared/profile/ui/src/index.ts"],
-      "@shared/manage-profile/change-password/ui": [
-        "libs/shared/manage-profile/change-password/ui/src/index.ts"
-      ],
       "@shared/manage-profile/view-profile/ui": [
         "libs/shared/manage-profile/view-profile/ui/src/index.ts"
-      ],
-      "@shared/manage-profile/view-profile/data-access": [
-        "libs/shared/manage-profile/view-profile/data-access/src/index.ts"
       ],
       "@shared/manage-profile/change-password/data-access": [
         "libs/shared/manage-profile/change-password/data-access/src/index.ts"
@@ -60,9 +54,6 @@
       ],
       "@admin/manage-profile/view-profile/feature": [
         "libs/admin/manage-profile/view-profile/feature/src/index.ts"
-      ],
-      "@admin/manage-profile/change-password/feature": [
-        "libs/admin/manage-profile/change-password/feature/src/index.ts"
       ],
       "@admin/manage-profile/change-password/ui": [
         "libs/admin/manage-profile/change-password/ui/src/index.ts"
@@ -147,7 +138,6 @@
       "@admin/car/update/ui": ["libs/admin/car/update/ui/src/index.ts"],
       "@admin/issue/detail/ui": ["libs/admin/issue/detail/ui/src/index.ts"],
       "@admin/issue/detail/feature": ["libs/admin/issue/detail/feature/src/index.ts"],
-      "@admin/manage-profile/routes": ["libs/admin/manage-profile/routes.ts"],
       "@admin/dashboard/feature": ["libs/admin/dashboard/feature/src/index.ts"],
       "@admin/dashboard/ui": ["libs/admin/dashboard/ui/src/index.ts"],
       "@admin/dashboard/routes": ["libs/admin/dashboard/routes.ts"],
@@ -163,7 +153,14 @@
       ],
       "@admin/car/approve/ui": ["libs/admin/car/approve/ui/src/index.ts"],
       "@admin/car/approve/feature": ["libs/admin/car/approve/feature/src/index.ts"],
-      "@shared/ui/confirm-dialog": ["libs/shared/ui/confirm-dialog/src/index.ts"]
+      "@shared/ui/confirm-dialog": ["libs/shared/ui/confirm-dialog/src/index.ts"],
+      "@shared/features/manage-profile/data-access": [
+        "libs/shared/features/manage-profile/data-access/src/index.ts"
+      ],
+      "@shared/features/manage-profile/ui": ["libs/shared/features/manage-profile/ui/src/index.ts"],
+      "@shared/features/manage-profile/feature": [
+        "libs/shared/features/manage-profile/feature/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -5,7 +5,7 @@ import { authRoutes } from '@admin/auth/routes';
 import { carRoutes } from '@admin/car/routes';
 import { staffRoutes } from '@admin/staff/routes';
 import { issueRoutes } from '@admin/issue/routes';
-import { manageProfileRoutes } from '@admin/manage-profile/routes';
+import { manageProfileRoutes } from '@shared/features/manage-profile/feature';
 import { managerRoutes } from '@admin/manager/routes';
 import { IsLoggedInGuard } from '@shared/auth/util';
 import { dashboardRoutes } from '@admin/dashboard/routes';
