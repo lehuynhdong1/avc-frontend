@@ -1,4 +1,4 @@
-import { CanShowUnsavedDialog } from '@admin/core/util';
+import { CanShowUnsavedDialog } from '@shared/util';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';

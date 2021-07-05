@@ -162,7 +162,8 @@
         "libs/shared/auth/reset-password/data-access/src/index.ts"
       ],
       "@admin/car/approve/ui": ["libs/admin/car/approve/ui/src/index.ts"],
-      "@admin/car/approve/feature": ["libs/admin/car/approve/feature/src/index.ts"]
+      "@admin/car/approve/feature": ["libs/admin/car/approve/feature/src/index.ts"],
+      "@shared/ui/confirm-dialog": ["libs/shared/ui/confirm-dialog/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

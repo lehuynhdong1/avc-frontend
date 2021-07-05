@@ -4,7 +4,7 @@ import {} from '@angular/common';
 import { UiModule, ApprovePage } from '@admin/car/approve/ui';
 import { DataAccessModule as CarDataAccessModule } from '@shared/features/car/data-access';
 import { DataAccessModule as ManagerDataAccessModule } from '@shared/features/manager/data-access';
-import { UnsavedChangesGuard } from '@admin/core/util';
+import { UnsavedChangesGuard } from '@shared/util';
 
 @NgModule({
   imports: [

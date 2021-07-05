@@ -18,6 +18,6 @@ Following the official documentation on https://taiga-ui.dev/icon-set to format 
    {
       "glob": "**/*.svg",
       "input": "libs/admin/core/util/src/assets/icons",
-      "output": "assets/taiga-ui/icons"
+      "output": "assets/adc/icons"
    },
    ```

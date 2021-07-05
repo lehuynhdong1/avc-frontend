@@ -22,37 +22,37 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Dashboard',
     path: '/dashboard',
-    icon: 'assets/taiga-ui/icons/bar-chart-outline.svg#bar-chart-outline',
+    icon: 'assets/adc/icons/bar-chart-outline.svg#bar-chart-outline',
     description: 'Keep track your working process'
   },
   {
     label: 'Manage Cars',
     path: '/car',
-    icon: 'assets/taiga-ui/icons/car-sport-outline.svg#car-sport-outline',
+    icon: 'assets/adc/icons/car-sport-outline.svg#car-sport-outline',
     description: 'Follow any device changes'
   },
   {
     label: 'Manage Managers',
     path: '/manager',
-    icon: 'assets/taiga-ui/icons/ribbon-outline.svg#ribbon-outline',
+    icon: 'assets/adc/icons/ribbon-outline.svg#ribbon-outline',
     description: 'Empower taks through managers'
   },
   {
     label: 'Manage Staffs',
     path: '/staff',
-    icon: 'assets/taiga-ui/icons/people-outline.svg#people-outline',
+    icon: 'assets/adc/icons/people-outline.svg#people-outline',
     description: 'Up to date with your staffs'
   },
   {
     label: 'Issue History',
     path: '/issue',
-    icon: 'assets/taiga-ui/icons/warning-outline.svg#warning-outline',
+    icon: 'assets/adc/icons/warning-outline.svg#warning-outline',
     description: 'Quickly access any system issues'
   },
   {
     label: 'Training Model',
     path: '/training',
-    icon: 'assets/taiga-ui/icons/library-outline.svg#library-outline',
+    icon: 'assets/adc/icons/library-outline.svg#library-outline',
     description: 'Enhance your detection algorithm'
   }
 ];

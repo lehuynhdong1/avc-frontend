@@ -10,7 +10,6 @@ import { TuiSizeXXL, TuiSizeXS } from '@taiga-ui/core';
 export class AvatarComponent {
   @Input() url: string | null | undefined = '';
   @Input() size: TuiSizeXS | TuiSizeXXL = 'm';
-  @Input() placeholderImageAsset =
-    'assets/taiga-ui/icons/personCircleOutline.svg#personCircleOutline';
+  @Input() placeholderImageAsset = 'assets/adc/icons/personCircleOutline.svg#personCircleOutline';
   @Input() placeholderClass = '';
 }

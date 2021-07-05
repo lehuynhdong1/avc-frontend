@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'admin-core-util',
+  displayName: 'shared-ui-confirm-dialog',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -14,7 +14,7 @@ module.exports = {
       }
     }
   },
-  coverageDirectory: '../../../../coverage/libs/admin/core/util',
+  coverageDirectory: '../../../../coverage/libs/shared/ui/confirm-dialog',
   snapshotSerializers: [
     'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
     'jest-preset-angular/build/AngularSnapshotSerializer.js',

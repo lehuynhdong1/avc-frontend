@@ -65,7 +65,6 @@ module.exports = {
     '<rootDir>/libs/shared/features/account/data-access',
     '<rootDir>/libs/admin/staff/create/feature',
     '<rootDir>/libs/admin/staff/create/ui',
-    '<rootDir>/libs/admin/core/util',
     '<rootDir>/libs/admin/staff/update/ui',
     '<rootDir>/libs/admin/staff/update/feature',
     '<rootDir>/libs/shared/features/issue/data-access',
@@ -87,6 +86,7 @@ module.exports = {
     '<rootDir>/libs/shared/auth/forgot-password/data-access',
     '<rootDir>/libs/shared/auth/reset-password/data-access',
     '<rootDir>/libs/admin/car/approve/ui',
-    '<rootDir>/libs/admin/car/approve/feature'
+    '<rootDir>/libs/admin/car/approve/feature',
+    '<rootDir>/libs/shared/ui/confirm-dialog'
   ]
 };

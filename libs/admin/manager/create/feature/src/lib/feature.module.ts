@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CreatePage } from '@admin/manager/create/ui';
 import { DataAccessModule as ManagerDataAccessModule } from '@shared/features/manager/data-access';
-import { UnsavedChangesGuard } from '@admin/core/util';
+import { UnsavedChangesGuard } from '@shared/util';
 
 @NgModule({
   imports: [

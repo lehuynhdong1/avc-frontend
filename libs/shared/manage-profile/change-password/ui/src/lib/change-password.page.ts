@@ -10,7 +10,7 @@ import { withLatestFrom, map, filter, distinctUntilChanged } from 'rxjs/operator
 import { Subject } from 'rxjs';
 import { TuiNotification } from '@taiga-ui/core';
 import { ShowNotification, hasValue, Empty } from '@shared/util';
-import { CanShowUnsavedDialog } from '@admin/core/util';
+import { CanShowUnsavedDialog } from '@shared/util';
 import { TuiInputType } from '@taiga-ui/cdk';
 import { MatchValidator } from '@shared/auth/util';
 
@@ -35,7 +35,7 @@ export class ChangePasswordPage implements CanShowUnsavedDialog {
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(16),
-        MatchValidator('password')
+        MatchValidator('newPassword')
       ]
     ]
   });

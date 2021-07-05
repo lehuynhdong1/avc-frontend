@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ConfirmDialogService, ConfirmDialogComponentParams } from '@admin/core/ui';
+import { ConfirmDialogService, ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
 import { TuiAppearance } from '@taiga-ui/core';
 import { map } from 'rxjs/operators';
 

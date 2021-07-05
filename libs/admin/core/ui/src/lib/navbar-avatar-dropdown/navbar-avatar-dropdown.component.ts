@@ -7,10 +7,10 @@ import { filter, switchMap } from 'rxjs/operators';
 import { Logout } from '@shared/auth/logout/data-access';
 import { LoginState, LoginStateModel } from '@shared/auth/login/data-access';
 import { Observable, Subject } from 'rxjs';
-import { ConfirmDialogComponentParams } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
 import { Router } from '@angular/router';
 import { RxState } from '@rx-angular/state';
-import { ConfirmDialogService } from '../confirm-dialog/confirm-dialog.service';
+import { ConfirmDialogService } from '@shared/ui/confirm-dialog';
 
 const confirmDialogParams: ConfirmDialogComponentParams = {
   content: 'Do you really want to log out?',

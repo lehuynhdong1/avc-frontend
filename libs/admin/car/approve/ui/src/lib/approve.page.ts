@@ -12,7 +12,7 @@ import {
 import { withLatestFrom, filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { TuiNotification } from '@taiga-ui/core';
 import { hasValue, Empty, ShowNotification } from '@shared/util';
-import { CanShowUnsavedDialog } from '@admin/core/util';
+import { CanShowUnsavedDialog } from '@shared/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tuiPure, TuiContextWithImplicit, TuiStringHandler } from '@taiga-ui/cdk';
 import { AccountManagerDetailReadDto } from '@shared/api';

@@ -7,7 +7,7 @@ stages:
 variables:
   # LC_ALL: 'en_US.UTF-8'
   # LANG: 'en_US.UTF-8'
-  # GIT_STRATEGY: clone
+  # GIT_STRATEGY: fetch
   API_URL: 'https://avc-api.azurewebsites.net'
   PRODUCTION: 1
   # MESSAGE_ANDROID: "[*Life on Mobile*]\n*API_URL*: $API_URL\n*Android* has been built successfully: \"$CI_COMMIT_MESSAGE\" Hey <users/104121422729815117160>! Click to download *APK* file http://192.168.9.62/loa/loa-mobile/-/jobs/$CI_JOB_ID/artifacts/download"

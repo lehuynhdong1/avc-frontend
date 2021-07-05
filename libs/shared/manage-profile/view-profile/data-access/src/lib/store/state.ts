@@ -32,7 +32,7 @@ export class ManageProfileState {
     return this.profileService.apiProfilePasswordPut(params).pipe(
       catchError((error) => {
         console.warn(`[${STATE_NAME}] ChangePassword with error: `, error);
-        const errorMessage = 'We missed something. Change password failed, please try again later.';
+        const errorMessage = "Your current password seem to be incorrect. Let's try again.";
         patchState({ errorMessage });
         return throwError(errorMessage);
       })
