@@ -78,6 +78,9 @@ module.exports = {
     '<rootDir>/libs/shared/auth/reset-password/data-access',
     '<rootDir>/libs/admin/car/approve/ui',
     '<rootDir>/libs/admin/car/approve/feature',
-    '<rootDir>/libs/shared/ui/confirm-dialog'
+    '<rootDir>/libs/shared/ui/confirm-dialog',
+    '<rootDir>/libs/mobile/auth/feature',
+    '<rootDir>/libs/mobile/auth/ui',
+    '<rootDir>/libs/mobile/core/ui'
   ]
 };

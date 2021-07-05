@@ -174,31 +174,36 @@
             "assets": [
               "apps/mobile/src/assets",
               {
-                "glob": "**/*.svg",
-                "input": "node_modules/ionicons/dist/ionicons/svg",
-                "output": "./svg"
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              },
+              {
+                "glob": "*.svg",
+                "input": "libs/shared/assets/icons",
+                "output": "assets/adc/icons"
               }
             ],
             "styles": [
               "apps/mobile/src/styles.scss",
-              {
-                "input": "apps/mobile/src/theme/variables.scss"
-              }
+              "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less"
             ],
-            "scripts": []
+            "scripts": ["apps/admin/src/__env__.js"],
+            "allowedCommonJsDependencies": ["angular2-text-mask", "file-saver"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "20mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "10kb"
                 }
               ],
               "outputHashing": "all"
@@ -3233,6 +3238,117 @@
           "outputs": ["coverage/libs/shared/features/car/feature"],
           "options": {
             "jestConfig": "libs/shared/features/car/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-auth-feature": {
+      "projectType": "library",
+      "root": "libs/mobile/auth/feature",
+      "sourceRoot": "libs/mobile/auth/feature/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/auth/feature/tsconfig.lib.json",
+            "project": "libs/mobile/auth/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/auth/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/auth/feature/src/**/*.ts",
+              "libs/mobile/auth/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/auth/feature"],
+          "options": {
+            "jestConfig": "libs/mobile/auth/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-auth-ui": {
+      "projectType": "library",
+      "root": "libs/mobile/auth/ui",
+      "sourceRoot": "libs/mobile/auth/ui/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/auth/ui/tsconfig.lib.json",
+            "project": "libs/mobile/auth/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/auth/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/auth/ui/src/**/*.ts",
+              "libs/mobile/auth/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/auth/ui"],
+          "options": {
+            "jestConfig": "libs/mobile/auth/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-core-ui": {
+      "projectType": "library",
+      "root": "libs/mobile/core/ui",
+      "sourceRoot": "libs/mobile/core/ui/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/core/ui/tsconfig.lib.json",
+            "project": "libs/mobile/core/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/core/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/core/ui/src/**/*.ts",
+              "libs/mobile/core/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/core/ui"],
+          "options": {
+            "jestConfig": "libs/mobile/core/ui/jest.config.js",
             "passWithNoTests": true
           }
         }

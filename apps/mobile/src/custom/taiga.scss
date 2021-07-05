@@ -1,0 +1,24 @@
+:root {
+  --tui-selection: rgba(15, 126, 230, 0.3) !important;
+}
+
+tui-svg {
+  &.size-s {
+    @apply w-6 h-6;
+  }
+  &.size-m {
+    @apply w-10 h-10;
+  }
+  &.size-l {
+    @apply w-14 h-14;
+  }
+  &.size-xl {
+    @apply w-28 h-28;
+  }
+  &.size-xxl {
+    @apply w-40 h-40;
+  }
+}
+* {
+  @apply box-border;
+}

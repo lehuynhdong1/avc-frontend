@@ -16,7 +16,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "adcFrontend",
+            "prefix": "adcm",
             "style": "camelCase"
           }
         ],
@@ -24,7 +24,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "adc-frontend",
+            "prefix": "adcm",
             "style": "kebab-case"
           }
         ],

@@ -89,6 +89,9 @@
     "shared-features-manage-profile-ui": { "tags": ["scope:shared"] },
     "shared-features-manage-profile-feature": { "tags": ["scope:admin"] },
     "shared-features-car-ui": { "tags": ["scope:admin"] },
-    "shared-features-car-feature": { "tags": ["scope:admin"] }
+    "shared-features-car-feature": { "tags": ["scope:admin"] },
+    "mobile-auth-feature": { "tags": ["scope:mobile"] },
+    "mobile-auth-ui": { "tags": ["scope:mobile"] },
+    "mobile-core-ui": { "tags": ["scope:mobile"] }
   }
 }
