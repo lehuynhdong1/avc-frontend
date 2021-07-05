@@ -121,7 +121,6 @@
       ],
       "@admin/staff/create/feature": ["libs/admin/staff/create/feature/src/index.ts"],
       "@admin/staff/create/ui": ["libs/admin/staff/create/ui/src/index.ts"],
-      "@admin/car/routes": ["libs/admin/car/routes.ts"],
       "@admin/core/util": ["libs/admin/core/util/src/index.ts"],
       "@admin/staff/update/ui": ["libs/admin/staff/update/ui/src/index.ts"],
       "@admin/staff/update/feature": ["libs/admin/staff/update/feature/src/index.ts"],
@@ -151,8 +150,6 @@
       "@shared/auth/reset-password/data-access": [
         "libs/shared/auth/reset-password/data-access/src/index.ts"
       ],
-      "@admin/car/approve/ui": ["libs/admin/car/approve/ui/src/index.ts"],
-      "@admin/car/approve/feature": ["libs/admin/car/approve/feature/src/index.ts"],
       "@shared/ui/confirm-dialog": ["libs/shared/ui/confirm-dialog/src/index.ts"],
       "@shared/features/manage-profile/data-access": [
         "libs/shared/features/manage-profile/data-access/src/index.ts"
@@ -160,7 +157,9 @@
       "@shared/features/manage-profile/ui": ["libs/shared/features/manage-profile/ui/src/index.ts"],
       "@shared/features/manage-profile/feature": [
         "libs/shared/features/manage-profile/feature/src/index.ts"
-      ]
+      ],
+      "@shared/features/car/ui": ["libs/shared/features/car/ui/src/index.ts"],
+      "@shared/features/car/feature": ["libs/shared/features/car/feature/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

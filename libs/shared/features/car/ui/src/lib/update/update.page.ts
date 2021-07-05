@@ -6,43 +6,32 @@ import { RxState } from '@rx-angular/state';
 import { RoleReadDto, AccountManagerDetailReadDto } from '@shared/api';
 import { LoginState } from '@shared/auth/login/data-access';
 import {
-  LoadManagerById,
-  LoadManagers,
-  ManagerState,
-  UpdateManager
-} from '@shared/features/manager/data-access';
-import { hasValue, ShowNotification, Role, Empty, CanShowUnsavedDialog } from '@shared/util';
-import { TuiContextWithImplicit, TuiInputType, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
+  LoadCarById,
+  CarState,
+  UpdateCarManagedBy,
+  LoadApprovedCars
+} from '@shared/features/car/data-access';
+import { hasValue, ShowNotification, Empty, CanShowUnsavedDialog } from '@shared/util';
+import { TuiContextWithImplicit, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
-import { TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
 import { Subject } from 'rxjs';
+import { LoadManagers, ManagerState } from '@shared/features/manager/data-access';
 import { distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
 
 @Component({
-  selector: 'adca-update',
   templateUrl: './update.page.html',
   styleUrls: ['./update.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState]
 })
 export class UpdatePage implements CanShowUnsavedDialog {
-  readonly ROLE_STAFF = Role.STAFF as const;
-  readonly TUI_INPUT_PASSWORD = TuiInputType.Password as const;
-  readonly TUI_INPUT_EMAIL = TuiInputType.Email as const;
-  readonly MARKER_LINK = TuiMarkerIconMode.Link as const;
-  readonly BADGE_PRIMARY = TuiStatus.Primary as const;
-
   willShowUnsavedDialog = false;
 
   form = this.formBuilder.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    phone: [''],
-    roleId: ['', Validators.required],
-    managedBy: [null]
+    managedBy: [null, Validators.required]
   });
 
-  manager$ = this.store.select(ManagerState.selectedManager).pipe(hasValue());
+  car$ = this.store.select(CarState.selectedCar).pipe(hasValue());
   roles$ = this.store.select(LoginState.roles).pipe(hasValue());
   managers$ = this.store.select(ManagerState.managers).pipe(
     hasValue(),
@@ -83,65 +72,72 @@ export class UpdatePage implements CanShowUnsavedDialog {
   }
 
   private declareUpdateSideEffects() {
+    this.store.dispatch(new LoadManagers({ limit: 10 }));
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
-    this.state.hold(id$, (id) => this.store.dispatch(new LoadManagerById({ id })));
-
-    this.state.hold(this.manager$, ({ firstName, lastName, phone }) => {
-      this.form.patchValue({ firstName, lastName, phone: phone?.slice(1), roleId: Role.MANAGER });
-    });
+    this.state.hold(id$, (id) => this.store.dispatch(new LoadCarById({ id })));
+    this.state.hold(this.car$, ({ managedBy }) =>
+      this.form.patchValue({ managedBy: managedBy?.id })
+    );
 
     this.clickUpdateEffects();
     this.clickDiscardEffects();
-    this.whenRoleIsStaffEffects();
+    this.updateErrorEffects();
+    this.updateSuccessEffects();
+    this.handleUnsavedChangedDialogEffects();
+  }
 
-    const errorMessage$ = this.store.select(ManagerState.errorMessage).pipe(hasValue());
+  private handleUnsavedChangedDialogEffects() {
+    const formHasChanged$ = this.form.valueChanges.pipe(
+      skip(1),
+      map(() => this.willShowUnsavedDialog),
+      distinctUntilChanged()
+    );
+    this.state.hold(formHasChanged$, () => (this.willShowUnsavedDialog = true));
+  }
+
+  private updateSuccessEffects() {
+    const whenUpdateSuccess$ = this.actions
+      .pipe<UpdateCarManagedBy>(ofActionSuccessful(UpdateCarManagedBy))
+      .pipe(withLatestFrom(this.car$));
+    this.state.hold(whenUpdateSuccess$, ([, car]) => {
+      this.willShowUnsavedDialog = false;
+      this.store.dispatch([
+        new ShowNotification({
+          message: `${car.name ?? ''} has been updated successfully.`,
+          options: { label: 'Update Car', status: TuiNotification.Success, hasIcon: true }
+        }),
+        new LoadApprovedCars({ limit: 10 })
+      ]);
+      this.router.navigateByUrl('/car');
+    });
+  }
+
+  private updateErrorEffects() {
+    const errorMessage$ = this.store.select(CarState.errorMessage).pipe(hasValue());
     const messagesWhenFailed$ = this.actions
-      .pipe<UpdateManager>(ofActionErrored(UpdateManager))
+      .pipe<UpdateCarManagedBy>(ofActionErrored(UpdateCarManagedBy))
       .pipe(withLatestFrom(errorMessage$));
     this.state.hold(messagesWhenFailed$, ([, errorMessage]) => {
       this.store.dispatch(
         new ShowNotification({
           message: errorMessage,
-          options: { label: 'Update Manager', status: TuiNotification.Error }
+          options: { label: 'Update Car', status: TuiNotification.Error }
         })
       );
     });
-
-    const whenUpdateSuccess$ = this.actions.pipe<UpdateManager>(ofActionSuccessful(UpdateManager));
-    this.state.hold(whenUpdateSuccess$, ({ params: { accountUpdateDto } }) => {
-      this.willShowUnsavedDialog = false;
-      this.store.dispatch([
-        new ShowNotification({
-          message: `${accountUpdateDto?.firstName ?? ''} 
-                    ${accountUpdateDto?.lastName ?? ''} has been updated successfully.`,
-          options: { label: 'Update Manager', status: TuiNotification.Success, hasIcon: true }
-        }),
-        new LoadManagers({ limit: 10 })
-      ]);
-      this.router.navigateByUrl('/manager');
-    });
-
-    const formHasChanged$ = this.form.valueChanges.pipe(
-      skip(1), // Skip check for the first time patchValue from Store
-      map(() => this.willShowUnsavedDialog),
-      distinctUntilChanged()
-    );
-
-    this.state.hold(formHasChanged$, () => (this.willShowUnsavedDialog = true));
   }
 
   private clickUpdateEffects() {
     const whenUpdateValid$ = this.clickUpdate$.pipe(
       filter(() => this.form.valid),
       map(() => this.form.value),
-      withLatestFrom(this.manager$)
+      withLatestFrom(this.car$)
     );
-    this.state.hold(whenUpdateValid$, ([form, managerInStore]) => {
-      const { firstName, lastName, phone, roleId } = form;
+    this.state.hold(whenUpdateValid$, ([form, carInStore]) => {
+      const { managedBy } = form;
       this.store.dispatch(
-        new UpdateManager({
-          id: managerInStore.id || 0,
-          accountUpdateDto: { firstName, lastName, phone, roleId }
+        new UpdateCarManagedBy({
+          carManagedByUpdateDto: { carId: carInStore.id, managerId: managedBy }
         })
       );
     });
@@ -152,14 +148,5 @@ export class UpdatePage implements CanShowUnsavedDialog {
       const detailPageRoute = this.router.url.replace('update/', '');
       this.router.navigateByUrl(detailPageRoute);
     });
-  }
-  private whenRoleIsStaffEffects() {
-    const whenIsStaff$ = this.form.get('roleId')?.valueChanges.pipe(
-      filter((roleId) => roleId === Role.STAFF),
-      withLatestFrom(this.store.select(ManagerState.managers)),
-      filter(([, managers]) => !managers)
-    );
-    if (whenIsStaff$)
-      this.state.hold(whenIsStaff$, () => this.store.dispatch(new LoadManagers({ limit: 10 })));
   }
 }
