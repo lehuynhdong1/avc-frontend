@@ -4,4 +4,8 @@
 @import 'tailwindcss/screens';
 /* You can add global styles to this file, and also import other style files */
 
+/* Core CSS required for Ionic components to work properly */
+@import '~@ionic/angular/css/core.css';
+
 @import './custom/taiga.scss';
+@import './custom/ionic.scss';

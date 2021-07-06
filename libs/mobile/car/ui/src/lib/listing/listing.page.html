@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar></ion-toolbar>
+  <ion-toolbar>
+    <ion-title size="large" class="leading-10"> Assigned Cars</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showSearch$.next()"
+        ><ion-icon name="car-sport-outline" class="w-8 h-8 text-gray-800"></ion-icon
+      ></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      showCancelButton="focus"
+      animated
+      placeholder="Find your car by name"
+      [formControl]="searchControl"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true">
+  <ion-list>
+    <ion-list-header class="leading-8"> Running </ion-list-header>
+    <ng-container *ngIf="(runningCars$ |async) || [] as runningCars;else loading">
+      <ng-container *ngIf="runningCars.length > 0; else noRunningCar">
+        <ion-item
+          *ngFor="let car of runningCars; trackBy:trackById"
+          button
+          detail
+          lines="none"
+          [routerLink]="[car.id]"
+        >
+          <ion-avatar slot="start">
+            <img [src]="car.image || 'assets/adc/icons/car-sport-outline.svg'" />
+          </ion-avatar>
+          <ion-label>
+            <h2 class="!font-bold">{{car.name}}</h2>
+            <h3>Device ID: {{car.deviceId}}</h3>
+            <p>Managed by: {{car.managedBy?.firstName}} {{car.managedBy?.lastName}}</p>
+          </ion-label>
+          <ion-icon
+            name="radio-button-on-outline"
+            slot="end"
+            color="success"
+            class="w-10 h-10"
+          ></ion-icon>
+        </ion-item>
+      </ng-container>
+      <ng-template #noRunningCar>
+        <ion-item>
+          <ion-label>
+            <h2>No car in running state</h2>
+          </ion-label>
+        </ion-item>
+      </ng-template>
+    </ng-container>
+
+    <ion-list-header class="leading-8"> Waiting </ion-list-header>
+
+    <ng-container *ngIf="(waitingCars$ |async) || [] as waitingCars;else loading">
+      <ng-container *ngIf="waitingCars.length > 0; else noWaitingCar">
+        <ion-item
+          *ngFor="let car of waitingCars; trackBy:trackById"
+          button
+          detail
+          lines="none"
+          [routerLink]="[car.id]"
+        >
+          <ion-avatar slot="start">
+            <img [src]="car.image || 'assets/adc/icons/car-sport-outline.svg'" />
+          </ion-avatar>
+          <ion-label>
+            <h2 class="!font-bold">{{car.name}}</h2>
+            <h3>Device ID: {{car.deviceId}}</h3>
+            <p>Managed by: {{car.managedBy?.firstName}} {{car.managedBy?.lastName}}</p>
+          </ion-label>
+          <ion-icon
+            name="radio-button-on-outline"
+            slot="end"
+            color="danger"
+            class="w-10 h-10"
+          ></ion-icon>
+        </ion-item>
+      </ng-container>
+      <ng-template #noWaitingCar>
+        <ion-item>
+          <ion-label>
+            <h2>No car in waiting state</h2>
+          </ion-label>
+        </ion-item>
+      </ng-template>
+    </ng-container>
+  </ion-list>
+</ion-content>
+<ng-template #loading><tui-loader></tui-loader></ng-template>

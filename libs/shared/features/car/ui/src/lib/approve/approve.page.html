@@ -4,7 +4,7 @@
   <form class="p-5 flex flex-col" [formGroup]="form">
     <h2>Approve Car</h2>
     <tui-input-file
-      link="Choose an avatar"
+      link="Choose a car image"
       accept="image/*"
       formControlName="imageFile"
       [maxFileSize]="MAXIMUM_IMAGE_SIZE"
@@ -14,7 +14,7 @@
     </tui-input-file>
     <div class="relative w-40 mb-4" *ngIf="form.value.imageFile">
       <adc-frontend-avatar
-        [url]=" form.value.imageFile | dataUrl | async"
+        [url]="form.value.imageFile | dataUrl | async"
         size="xxl"
       ></adc-frontend-avatar>
       <input

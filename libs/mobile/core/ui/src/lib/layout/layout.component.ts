@@ -15,18 +15,18 @@ interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Cars',
-    path: '/car',
-    icon: 'assets/adc/icons/car-sport-outline.svg#car-sport-outline'
+    path: 'car',
+    icon: 'car-sport-outline'
   },
   {
     label: 'Issues',
-    path: '/issue',
-    icon: 'assets/adc/icons/warning-outline.svg#warning-outline'
+    path: 'issue',
+    icon: 'warning-outline'
   },
   {
     label: 'Profile',
-    path: '/profile',
-    icon: 'assets/adc/icons/library-outline.svg#library-outline'
+    path: 'profile',
+    icon: 'person-circle-outline'
   }
 ];
 @Component({

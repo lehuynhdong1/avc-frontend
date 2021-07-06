@@ -81,6 +81,16 @@ module.exports = {
     '<rootDir>/libs/shared/ui/confirm-dialog',
     '<rootDir>/libs/mobile/auth/feature',
     '<rootDir>/libs/mobile/auth/ui',
-    '<rootDir>/libs/mobile/core/ui'
+    '<rootDir>/libs/mobile/core/ui',
+    '<rootDir>/libs/mobile/car/ui',
+    '<rootDir>/libs/mobile/car/feature',
+    '<rootDir>/libs/mobile/manage-profile/feature',
+    '<rootDir>/libs/mobile/manage-profile/ui',
+    '<rootDir>/libs/mobile/issue/ui',
+    '<rootDir>/libs/mobile/issue/feature',
+    '<rootDir>/libs/mobile/manager/feature',
+    '<rootDir>/libs/mobile/manager/ui',
+    '<rootDir>/libs/admin/manage-profile/feature',
+    '<rootDir>/libs/admin/manage-profile/ui'
   ]
 };

@@ -1,0 +1,10 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="car" *ngIf="backTo"></ion-back-button>
+    <ng-content select="#start-button"></ng-content>
+  </ion-buttons>
+  <ion-title collapse="condense">
+    {{ title }}
+  </ion-title>
+  <ng-content select="#end-buttons"></ng-content>
+</ion-toolbar>

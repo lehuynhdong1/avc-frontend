@@ -162,7 +162,19 @@
       "@shared/features/car/feature": ["libs/shared/features/car/feature/src/index.ts"],
       "@mobile/auth/feature": ["libs/mobile/auth/feature/src/index.ts"],
       "@mobile/auth/ui": ["libs/mobile/auth/ui/src/index.ts"],
-      "@mobile/core/ui": ["libs/mobile/core/ui/src/index.ts"]
+      "@mobile/core/ui": ["libs/mobile/core/ui/src/index.ts"],
+      "@mobile/car/ui": ["libs/mobile/car/ui/src/index.ts"],
+      "@mobile/car/feature": ["libs/mobile/car/feature/src/index.ts"],
+      "@mobile/manage-profile/feature": ["libs/mobile/manage-profile/feature/src/index.ts"],
+      "@mobile/manage-profile/ui": ["libs/mobile/manage-profile/ui/src/index.ts"],
+      "@mobile/issue/ui": ["libs/mobile/issue/ui/src/index.ts"],
+      "@mobile/issue/feature": ["libs/mobile/issue/feature/src/index.ts"],
+      "@mobile/manager/feature": ["libs/mobile/manager/feature/src/index.ts"],
+      "@mobile/manager/ui": ["libs/mobile/manager/ui/src/index.ts"],
+      "@admin/manage-profile/feature": ["libs/admin/manage-profile/feature/src/index.ts"],
+      "@admin/manage-profile/ui": ["libs/admin/manage-profile/ui/src/index.ts"],
+      "@admin/car/ui": ["libs/admin/car/ui/src/index.ts"],
+      "@admin/car/feature": ["libs/admin/car/feature/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

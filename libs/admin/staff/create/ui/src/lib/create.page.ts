@@ -97,7 +97,15 @@ export class CreatePage implements CanShowUnsavedDialog {
     this.state.hold(whenCreateValid$, (form) => {
       const { firstName, password, email, lastName, avatarImage, phone, managedBy } = form;
       this.store.dispatch(
-        new CreateStaff({ firstName, password, email, lastName, avatarImage, phone, managedBy })
+        new CreateStaff({
+          firstName,
+          password,
+          email,
+          lastName,
+          avatarImage,
+          phone: phone ? `0${phone.replace('+84', '')}` : undefined,
+          managedBy
+        })
       );
     });
     const messagesWhenFailed$ = this.whenCreateFailed$.pipe(withLatestFrom(this.errorMessage$));

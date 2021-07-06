@@ -87,11 +87,22 @@
     "shared-ui-confirm-dialog": { "tags": ["scope:shared"] },
     "shared-features-manage-profile-data-access": { "tags": ["scope:shared"] },
     "shared-features-manage-profile-ui": { "tags": ["scope:shared"] },
-    "shared-features-manage-profile-feature": { "tags": ["scope:admin"] },
     "shared-features-car-ui": { "tags": ["scope:admin"] },
     "shared-features-car-feature": { "tags": ["scope:admin"] },
     "mobile-auth-feature": { "tags": ["scope:mobile"] },
     "mobile-auth-ui": { "tags": ["scope:mobile"] },
-    "mobile-core-ui": { "tags": ["scope:mobile"] }
+    "mobile-core-ui": { "tags": ["scope:mobile"] },
+    "mobile-car-ui": { "tags": ["scope:mobile"] },
+    "mobile-car-feature": { "tags": ["scope:mobile"] },
+    "mobile-manage-profile-feature": { "tags": ["scope:mobile"] },
+    "mobile-manage-profile-ui": { "tags": ["scope:mobile"] },
+    "mobile-issue-ui": { "tags": ["scope:mobile"] },
+    "mobile-issue-feature": { "tags": ["scope:mobile"] },
+    "mobile-manager-feature": { "tags": ["scope:mobile"] },
+    "mobile-manager-ui": { "tags": ["scope:mobile"] },
+    "admin-manage-profile-feature": { "tags": ["scope:admin"] },
+    "admin-manage-profile-ui": { "tags": ["scope:admin"] },
+    "admin-car-ui": { "tags": ["scope:admin"] },
+    "admin-car-feature": { "tags": ["scope:admin"] }
   }
 }

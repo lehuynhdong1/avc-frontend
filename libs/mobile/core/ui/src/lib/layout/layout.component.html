@@ -1,18 +1,10 @@
-<div class="flex flex-col !min-h-screen bg-gray-100">
-  <tui-scrollbar class="flex-grow px-4">
-    <router-outlet></router-outlet>
-  </tui-scrollbar>
-  <tui-tabs
-    [(activeItemIndex)]="activeItemIndex"
-    class="self-center border-primary border-0 border-t border-solid"
-  >
-    <div *ngFor="let item of navItems" tuiTab>
-      <div [routerLink]="item.path" routerLinkActive="active" class="nav__list-item">
-        <tui-svg
-          [src]="(currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon"
-        ></tui-svg>
-        <span>{{ item.label }}</span>
-      </div>
-    </div>
-  </tui-tabs>
-</div>
+<ion-tabs>
+  <ion-tab-bar slot="bottom" class="pt-1 border-0">
+    <ion-tab-button *ngFor="let item of navItems" [tab]="item.path">
+      <ion-icon
+        [name]="(currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon"
+      ></ion-icon>
+      <ion-label class="-mt-2">{{ item.label }}</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

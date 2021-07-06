@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangePasswordPage } from './change-password.page';
+import { ChangePasswordComponent } from './change-password.component';
 import { TuiInputPasswordModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
@@ -19,8 +19,8 @@ const tuiModules = [
   TuiHintControllerModule
 ];
 @NgModule({
-  declarations: [ChangePasswordPage],
+  declarations: [ChangePasswordComponent],
   imports: [CommonModule, ReactiveFormsModule, RouterModule, tuiModules],
-  exports: [ChangePasswordPage]
+  exports: [ChangePasswordComponent]
 })
-export class ChangePasswordUiModule {}
+export class ChangePasswordComponentModule {}

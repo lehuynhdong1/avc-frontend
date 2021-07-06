@@ -21,6 +21,7 @@ export interface CarListReadDto {
   isRunning?: boolean;
   deviceId?: string | null;
   isApproved?: boolean | null;
+  image?: string | null;
   managedBy?: AccountNotManagedByReadDto;
   assignTo?: AccountStaffAssignToReadDto;
 }

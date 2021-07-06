@@ -1,7 +1,7 @@
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewProfilePage } from './view-profile.page';
+import { ViewProfileComponent } from './view-profile.component';
 import { AvatarModule } from '@shared/ui/avatar';
 import {
   TuiButtonModule,
@@ -26,7 +26,7 @@ const tuiModules = [
 
 @NgModule({
   imports: [CommonModule, AvatarModule, ReactiveFormsModule, RouterModule, tuiModules],
-  declarations: [ViewProfilePage],
-  exports: [ViewProfilePage]
+  declarations: [ViewProfileComponent],
+  exports: [ViewProfileComponent]
 })
-export class ViewProfileUiModule {}
+export class ViewProfileComponentModule {}

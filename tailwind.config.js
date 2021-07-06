@@ -37,6 +37,9 @@ module.exports = {
           hover: 'var(--tui-secondary-hover)',
           active: 'var(--tui-secondary-active)'
         }
+      },
+      spacing: {
+        topbar: '4rem'
       }
     }
   },

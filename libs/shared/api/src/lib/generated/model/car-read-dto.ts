@@ -19,6 +19,7 @@ export interface CarReadDto {
   name?: string | null;
   isConnecting?: boolean;
   isAvailable?: boolean | null;
+  isRunning?: boolean;
   createdAt?: string | null;
   deviceId?: string | null;
   configUrl?: string | null;

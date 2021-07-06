@@ -20,4 +20,5 @@ export interface CarAssignedReadDto {
   deviceId?: string | null;
   configUrl?: string | null;
   isApproved?: boolean | null;
+  isRunning?: boolean;
 }

@@ -1,2 +1,2 @@
-export * from "./change-password.module";
-export * from "./change-password.page";
+export * from './change-password.module';
+export * from './change-password.component';

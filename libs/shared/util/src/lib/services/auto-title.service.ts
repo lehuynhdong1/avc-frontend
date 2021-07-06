@@ -10,7 +10,7 @@ interface SetupAutoTitleParams {
 
 @Injectable({ providedIn: 'root' })
 export class AutoTitleService {
-  constructor(private title: Title, private router: Router) { }
+  constructor(private title: Title, private router: Router) {}
 
   setupAutoTitleListener(params: SetupAutoTitleParams = {}) {
     this.router.events.pipe(filter((event) => event instanceof ResolveEnd)).subscribe((event) => {
@@ -21,9 +21,9 @@ export class AutoTitleService {
   }
 }
 
-const getDeepestChildSnapshot: (snapshot: ActivatedRouteSnapshot) => ActivatedRouteSnapshot = (
-  snapshot
-) => {
+export const getDeepestChildSnapshot: (
+  snapshot: ActivatedRouteSnapshot
+) => ActivatedRouteSnapshot = (snapshot) => {
   let deepestChild = snapshot.firstChild;
   while (deepestChild?.firstChild) {
     deepestChild = deepestChild?.firstChild;

@@ -39,6 +39,13 @@
       "export": true,
       "displayBlock": true
     },
+    "@schematics/angular:module": {
+      "style": "scss",
+      "changeDetection": "OnPush",
+      "skipTests": true,
+      "export": true,
+      "displayBlock": true
+    },
     "@nrwl/angular:component": {
       "style": "scss"
     }
@@ -174,6 +181,11 @@
             "assets": [
               "apps/mobile/src/assets",
               {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              },
+              {
                 "glob": "**/*",
                 "input": "node_modules/@taiga-ui/icons/src",
                 "output": "assets/taiga-ui/icons"
@@ -187,7 +199,10 @@
             "styles": [
               "apps/mobile/src/styles.scss",
               "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
-              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less"
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+              {
+                "input": "apps/mobile/src/theme/variables.scss"
+              }
             ],
             "scripts": ["apps/admin/src/__env__.js"],
             "allowedCommonJsDependencies": ["angular2-text-mask", "file-saver"]
@@ -3126,49 +3141,6 @@
         }
       }
     },
-    "shared-features-manage-profile-feature": {
-      "projectType": "library",
-      "root": "libs/shared/features/manage-profile/feature",
-      "sourceRoot": "libs/shared/features/manage-profile/feature/src",
-      "prefix": "adc-frontend",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/shared/features/manage-profile/feature/tsconfig.lib.json",
-            "project": "libs/shared/features/manage-profile/feature/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/shared/features/manage-profile/feature/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/shared/features/manage-profile/feature/src/**/*.ts",
-              "libs/shared/features/manage-profile/feature/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/features/manage-profile/feature"],
-          "options": {
-            "jestConfig": "libs/shared/features/manage-profile/feature/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "generate-docs": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "command": "npx compodoc -p libs/shared/features/manage-profile/feature/tsconfig.lib.json -d documentation/libs/shared/features/manage-profile/feature/"
-          }
-        }
-      }
-    },
     "shared-features-car-ui": {
       "projectType": "library",
       "root": "libs/shared/features/car/ui",
@@ -3349,6 +3321,447 @@
           "outputs": ["coverage/libs/mobile/core/ui"],
           "options": {
             "jestConfig": "libs/mobile/core/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-car-ui": {
+      "projectType": "library",
+      "root": "libs/mobile/car/ui",
+      "sourceRoot": "libs/mobile/car/ui/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/car/ui/tsconfig.lib.json",
+            "project": "libs/mobile/car/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/car/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/car/ui/src/**/*.ts",
+              "libs/mobile/car/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/car/ui"],
+          "options": {
+            "jestConfig": "libs/mobile/car/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-car-feature": {
+      "projectType": "library",
+      "root": "libs/mobile/car/feature",
+      "sourceRoot": "libs/mobile/car/feature/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/car/feature/tsconfig.lib.json",
+            "project": "libs/mobile/car/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/car/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/car/feature/src/**/*.ts",
+              "libs/mobile/car/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/car/feature"],
+          "options": {
+            "jestConfig": "libs/mobile/car/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-manage-profile-feature": {
+      "projectType": "library",
+      "root": "libs/mobile/manage-profile/feature",
+      "sourceRoot": "libs/mobile/manage-profile/feature/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/manage-profile/feature/tsconfig.lib.json",
+            "project": "libs/mobile/manage-profile/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/manage-profile/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/manage-profile/feature/src/**/*.ts",
+              "libs/mobile/manage-profile/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/manage-profile/feature"],
+          "options": {
+            "jestConfig": "libs/mobile/manage-profile/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-manage-profile-ui": {
+      "projectType": "library",
+      "root": "libs/mobile/manage-profile/ui",
+      "sourceRoot": "libs/mobile/manage-profile/ui/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/manage-profile/ui/tsconfig.lib.json",
+            "project": "libs/mobile/manage-profile/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/manage-profile/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/manage-profile/ui/src/**/*.ts",
+              "libs/mobile/manage-profile/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/manage-profile/ui"],
+          "options": {
+            "jestConfig": "libs/mobile/manage-profile/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-issue-ui": {
+      "projectType": "library",
+      "root": "libs/mobile/issue/ui",
+      "sourceRoot": "libs/mobile/issue/ui/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/issue/ui/tsconfig.lib.json",
+            "project": "libs/mobile/issue/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/issue/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/issue/ui/src/**/*.ts",
+              "libs/mobile/issue/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/issue/ui"],
+          "options": {
+            "jestConfig": "libs/mobile/issue/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-issue-feature": {
+      "projectType": "library",
+      "root": "libs/mobile/issue/feature",
+      "sourceRoot": "libs/mobile/issue/feature/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/issue/feature/tsconfig.lib.json",
+            "project": "libs/mobile/issue/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/issue/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/issue/feature/src/**/*.ts",
+              "libs/mobile/issue/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/issue/feature"],
+          "options": {
+            "jestConfig": "libs/mobile/issue/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-manager-feature": {
+      "projectType": "library",
+      "root": "libs/mobile/manager/feature",
+      "sourceRoot": "libs/mobile/manager/feature/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/manager/feature/tsconfig.lib.json",
+            "project": "libs/mobile/manager/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/manager/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/manager/feature/src/**/*.ts",
+              "libs/mobile/manager/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/manager/feature"],
+          "options": {
+            "jestConfig": "libs/mobile/manager/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-manager-ui": {
+      "projectType": "library",
+      "root": "libs/mobile/manager/ui",
+      "sourceRoot": "libs/mobile/manager/ui/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/manager/ui/tsconfig.lib.json",
+            "project": "libs/mobile/manager/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/manager/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/manager/ui/src/**/*.ts",
+              "libs/mobile/manager/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/manager/ui"],
+          "options": {
+            "jestConfig": "libs/mobile/manager/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manage-profile-feature": {
+      "projectType": "library",
+      "root": "libs/admin/manage-profile/feature",
+      "sourceRoot": "libs/admin/manage-profile/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manage-profile/feature/tsconfig.lib.json",
+            "project": "libs/admin/manage-profile/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manage-profile/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manage-profile/feature/src/**/*.ts",
+              "libs/admin/manage-profile/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manage-profile/feature"],
+          "options": {
+            "jestConfig": "libs/admin/manage-profile/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-manage-profile-ui": {
+      "projectType": "library",
+      "root": "libs/admin/manage-profile/ui",
+      "sourceRoot": "libs/admin/manage-profile/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/manage-profile/ui/tsconfig.lib.json",
+            "project": "libs/admin/manage-profile/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/manage-profile/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/manage-profile/ui/src/**/*.ts",
+              "libs/admin/manage-profile/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/manage-profile/ui"],
+          "options": {
+            "jestConfig": "libs/admin/manage-profile/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-car-ui": {
+      "projectType": "library",
+      "root": "libs/admin/car/ui",
+      "sourceRoot": "libs/admin/car/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/car/ui/tsconfig.lib.json",
+            "project": "libs/admin/car/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/car/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/car/ui/src/**/*.ts", "libs/admin/car/ui/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/car/ui"],
+          "options": {
+            "jestConfig": "libs/admin/car/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-car-feature": {
+      "projectType": "library",
+      "root": "libs/admin/car/feature",
+      "sourceRoot": "libs/admin/car/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/car/feature/tsconfig.lib.json",
+            "project": "libs/admin/car/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/car/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/car/feature/src/**/*.ts",
+              "libs/admin/car/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/car/feature"],
+          "options": {
+            "jestConfig": "libs/admin/car/feature/jest.config.js",
             "passWithNoTests": true
           }
         }

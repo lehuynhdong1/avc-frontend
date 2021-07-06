@@ -12,13 +12,17 @@ import { UtilModule as SharedUtilModule } from '@shared/util';
 import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
+import { IonicModule } from '@ionic/angular';
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    IonicModule.forRoot({
+      hardwareBackButton: false,
+      mode: 'ios'
+    }),
     TuiRootModule,
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' }),
     OpenApiModule.forRoot(() => new Configuration({ basePath: environment.apiUrl })),

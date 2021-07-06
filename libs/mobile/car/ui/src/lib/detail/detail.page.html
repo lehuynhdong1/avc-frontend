@@ -1,0 +1,72 @@
+<ng-container *ngIf="selectedCar$ | async as car; else loading">
+  <adcm-back-bar [title]="car.name || 'Detail Car'" backTo="car"></adcm-back-bar>
+  <ion-content>
+    <main>
+      <adc-frontend-avatar
+        class="tui-space_top-2 self-center"
+        [url]="car.image"
+        placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
+        placeholderImageAsset="assets/adc/icons/car-sport-outline.svg#car-sport-outline"
+        size="xl"
+      ></adc-frontend-avatar>
+      <b class="text-sm text-gray-600">Name </b>
+      <h2 class="my-0">{{ car.name }}</h2>
+      <div class="p-2 relative border border-gray-900"></div>
+      <div class="flex justify-between">
+        <div class="flex flex-col">
+          <b class="text-sm text-gray-600">Device ID</b>
+          <h5 class="mt-0 mb-3">{{ car.deviceId }}</h5>
+          <b class="text-sm text-gray-600">Created at</b>
+          <h5 class="mt-0 mb-3">{{ car.createdAt | date }}</h5>
+        </div>
+        <div class="flex flex-col">
+          <b class="text-sm text-gray-600">Connecting Status: </b>
+          <tui-badge
+            size="m"
+            [value]="car.isConnecting ? 'Connected': 'Disconnected'"
+            [status]="car.isConnecting ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+            class="self-start mb-2"
+          ></tui-badge>
+
+          <b class="text-sm text-gray-600">Running Status: </b>
+          <tui-badge
+            size="m"
+            [value]="car.isRunning ? 'Running': 'Stopping'"
+            [status]="car.isRunning ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+            class="self-start mb-2"
+          ></tui-badge>
+        </div>
+      </div>
+
+      <b class="text-sm text-gray-600 mb-1">Issues</b>
+      <ion-list>
+        <ion-item *ngFor="let issue of car.issues; trackBy:trackById">
+          <ion-avatar slot="start">
+            <img [src]="issue.image || 'assets/adc/icons/car-sport-outline.svg'" />
+          </ion-avatar>
+          <ion-label>
+            <h2 class="font-bold">{{issue.type}}</h2>
+            <h3>Description: {{ issue.description }}</h3>
+            <p>Created at: {{issue.createdAt | date }}</p>
+            <p>Location: {{issue.location }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </main>
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar>
+      <button
+        tuiButton
+        size="m"
+        appearance="primary"
+        type="button"
+        (click)="this.clickActivate$.next()"
+        [class.deactivate]="car.isAvailable"
+      >
+        {{car.isAvailable ? 'Deactivate': 'Reactivate'}}
+      </button>
+    </ion-toolbar>
+  </ion-footer>
+</ng-container>
+<ng-template #loading> <tui-loader></tui-loader> </ng-template>
