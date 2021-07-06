@@ -1,12 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CarState, LoadApprovedCars } from '@shared/features/car/data-access';
-import { Subject } from 'rxjs';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CarListReadDto } from '@shared/api';
+import { Empty } from '@shared/util';
 
 @Component({
   templateUrl: './listing.page.html',
@@ -25,29 +24,13 @@ export class ListingPage {
   readonly waitingCars$ = this.approvedCars$.pipe(
     map((cars) => cars?.result?.filter((car) => !car.isRunning))
   );
-  readonly isShowSearch$ = this.state.select('isShowSearch');
-
-  readonly selectRow$ = new Subject<number>();
-  readonly showSearch$ = new Subject<void>();
-
-  constructor(
-    private store: Store,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private state: RxState<{ isShowSearch: boolean }>
-  ) {
+  constructor(private store: Store, private state: RxState<Empty>) {
     this.store.dispatch(new LoadApprovedCars());
     this.declareSideEffects();
-    this.state.hold(this.showSearch$, () =>
-      this.state.set('isShowSearch', (isShowSearch) => !isShowSearch)
-    );
   }
 
   private declareSideEffects() {
     this.whenFilterChangedEffects();
-    this.state.hold(this.selectRow$, (id) =>
-      this.router.navigate([id], { relativeTo: this.activatedRoute })
-    );
   }
 
   private whenFilterChangedEffects() {

@@ -1,15 +1,34 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Actions, Store, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { LoginState } from '@shared/auth/login/data-access';
+import { Logout } from '@shared/auth/logout/data-access';
 import { Subject } from 'rxjs';
 import { Empty, ShowNotification, hasValue } from '@shared/util';
 import { RxState } from '@rx-angular/state';
-import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { filter, map, withLatestFrom, switchMap } from 'rxjs/operators';
 import { Validators, FormBuilder } from '@angular/forms';
 import { TuiMarkerIconMode } from '@taiga-ui/kit';
-import { TuiNotification } from '@taiga-ui/core';
+import { TuiNotification, TuiAppearance } from '@taiga-ui/core';
 import { ManageProfileState, UpdateProfile } from '@shared/features/manage-profile/data-access';
+import { Router } from '@angular/router';
+import { ConfirmDialogComponentParams, ConfirmDialogService } from '@shared/ui/confirm-dialog';
 
+const confirmDialogParams: ConfirmDialogComponentParams = {
+  content: 'Do you really want to log out?',
+  buttons: [
+    {
+      id: 1,
+      label: 'Logout'
+    },
+    {
+      id: 2,
+      label: 'Cancel',
+      uiOptions: {
+        appearance: TuiAppearance.Outline
+      }
+    }
+  ]
+};
 @Component({
   selector: 'adc-frontend-view-profile',
   templateUrl: './view-profile.component.html',
@@ -29,8 +48,10 @@ export class ViewProfileComponent {
   private readonly errorMessage$ = this.store
     .select(ManageProfileState.errorMessage)
     .pipe(hasValue());
+
   readonly clickChangeAvatar$ = new Subject<Event | null>();
   readonly clickUpdate$ = new Subject<void>();
+  readonly clickLogout$ = new Subject<void>();
 
   /* Side effects */
   private whenUpdateSuccess$ = this.actions.pipe<UpdateProfile>(ofActionSuccessful(UpdateProfile));
@@ -40,7 +61,9 @@ export class ViewProfileComponent {
     private store: Store,
     private actions: Actions,
     private state: RxState<Empty>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmDialog: ConfirmDialogService,
+    private router: Router
   ) {
     this.state.hold(this.me$, (my) => {
       this.form.get('phone')?.setValue(my?.phone?.slice(1) ?? '');
@@ -99,5 +122,23 @@ export class ViewProfileComponent {
         // this.willShowUnsavedDialog = false;
       }
     );
+    this.logoutEffects();
+  }
+
+  private logoutEffects() {
+    const whenLogoutSuccessful$ = this.actions.pipe(ofActionSuccessful(Logout));
+    this.state.hold(whenLogoutSuccessful$, () => {
+      this.router.navigateByUrl('/login');
+    });
+
+    const whenClickLogout$ = this.clickLogout$.pipe(
+      switchMap(() => this.confirmDialog.open('Log out confirmation', confirmDialogParams)),
+      filter((response) => response === 1)
+    );
+    this.state.hold(whenClickLogout$, () => {
+      console.log('=====================');
+
+      this.store.dispatch(new Logout());
+    });
   }
 }

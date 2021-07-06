@@ -5,6 +5,7 @@ import { loader } from './transloco.loader';
 import { tuiPure } from '@taiga-ui/cdk';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map, startWith } from 'rxjs/operators';
+import { BottomBarVisibilityService } from './bottom-bar-visibility.service';
 
 interface NavItem {
   label: string;
@@ -46,7 +47,8 @@ export class LayoutComponent {
     map((currentUrl) => NAV_ITEMS.find((item) => currentUrl.includes(item.path)))
   );
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public bottomBar: BottomBarVisibilityService) {}
+
   @tuiPure
   getFilledIcon(iconSrc: string) {
     return iconSrc.replace(/-outline/gi, '');

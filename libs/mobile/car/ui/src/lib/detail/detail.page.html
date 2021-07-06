@@ -1,7 +1,7 @@
 <ng-container *ngIf="selectedCar$ | async as car; else loading">
   <adcm-back-bar [title]="car.name || 'Detail Car'" backTo="car"></adcm-back-bar>
-  <ion-content>
-    <main>
+  <ion-content fullscreen="true">
+    <main class="flex flex-col flex-wrap px-4 pb-4">
       <adc-frontend-avatar
         class="tui-space_top-2 self-center"
         [url]="car.image"
@@ -9,18 +9,18 @@
         placeholderImageAsset="assets/adc/icons/car-sport-outline.svg#car-sport-outline"
         size="xl"
       ></adc-frontend-avatar>
-      <b class="text-sm text-gray-600">Name </b>
-      <h2 class="my-0">{{ car.name }}</h2>
+      <span class="text-sm text-gray-600">Name </span>
+      <h2 class="my-0 font-bold">{{ car.name }}</h2>
       <div class="p-2 relative border border-gray-900"></div>
       <div class="flex justify-between">
         <div class="flex flex-col">
-          <b class="text-sm text-gray-600">Device ID</b>
-          <h5 class="mt-0 mb-3">{{ car.deviceId }}</h5>
-          <b class="text-sm text-gray-600">Created at</b>
-          <h5 class="mt-0 mb-3">{{ car.createdAt | date }}</h5>
+          <span class="text-sm text-gray-600">Device ID</span>
+          <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
+          <span class="text-sm text-gray-600">Created at</span>
+          <h3 class="mt-0 mb-3">{{ car.createdAt | date }}</h3>
         </div>
         <div class="flex flex-col">
-          <b class="text-sm text-gray-600">Connecting Status: </b>
+          <span class="text-sm text-gray-600">Connecting Status: </span>
           <tui-badge
             size="m"
             [value]="car.isConnecting ? 'Connected': 'Disconnected'"
@@ -28,7 +28,7 @@
             class="self-start mb-2"
           ></tui-badge>
 
-          <b class="text-sm text-gray-600">Running Status: </b>
+          <span class="text-sm text-gray-600">Running Status: </span>
           <tui-badge
             size="m"
             [value]="car.isRunning ? 'Running': 'Stopping'"
@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <b class="text-sm text-gray-600 mb-1">Issues</b>
+      <span class="text-sm text-gray-600 mb-1">Issues</span>
       <ion-list>
         <ion-item *ngFor="let issue of car.issues; trackBy:trackById">
           <ion-avatar slot="start">
@@ -46,9 +46,8 @@
           </ion-avatar>
           <ion-label>
             <h2 class="font-bold">{{issue.type}}</h2>
-            <h3>Description: {{ issue.description }}</h3>
-            <p>Created at: {{issue.createdAt | date }}</p>
-            <p>Location: {{issue.location }}</p>
+            <h3>{{ issue.description }}</h3>
+            <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -56,16 +55,13 @@
   </ion-content>
   <ion-footer>
     <ion-toolbar>
-      <button
-        tuiButton
-        size="m"
-        appearance="primary"
-        type="button"
-        (click)="this.clickActivate$.next()"
-        [class.deactivate]="car.isAvailable"
+      <ion-button
+        (click)="this.toggleRun$.next()"
+        expand="block"
+        [color]="car.isRunning ? 'danger': 'success'"
       >
-        {{car.isAvailable ? 'Deactivate': 'Reactivate'}}
-      </button>
+        {{car.isRunning ? 'Stop': 'Start'}}
+      </ion-button>
     </ion-toolbar>
   </ion-footer>
 </ng-container>

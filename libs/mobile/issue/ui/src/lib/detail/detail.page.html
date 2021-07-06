@@ -1,0 +1,26 @@
+<ng-container *ngIf="selectedIssue$ | async as issue; else loading">
+  <adcm-back-bar [title]="issue.type || 'Detail Issue'" backTo="issue"></adcm-back-bar>
+  <ion-content>
+    <main>
+      <adc-frontend-avatar
+        class="tui-space_top-2 self-center"
+        [url]="issue.image"
+        placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
+        placeholderImageAsset="assets/adc/icons/warning-outline.svg#warning-outline"
+        size="xl"
+      ></adc-frontend-avatar>
+      <b class="text-sm text-gray-600">Type </b>
+      <h2 class="my-0">{{ issue.type }}</h2>
+      <div class="p-2 relative border border-gray-900"></div>
+      <div class="flex justify-between">
+        <div class="flex flex-col">
+          <b class="text-sm text-gray-600">Location</b>
+          <h5 class="mt-0 mb-3">{{ issue.location }}</h5>
+          <b class="text-sm text-gray-600">Created at</b>
+          <h5 class="mt-0 mb-3">{{ issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</h5>
+        </div>
+      </div>
+    </main>
+  </ion-content>
+</ng-container>
+<ng-template #loading> <tui-loader></tui-loader> </ng-template>

@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar></ion-toolbar>
+  <ion-toolbar>
+    <ion-title size="large" class="leading-10"> Issue History</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        ><ion-icon name="warning-outline" class="w-8 h-8 text-gray-800"></ion-icon
+      ></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      showCancelButton="focus"
+      animated
+      placeholder="Type an issue description..."
+      [formControl]="searchControl"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true">
+  <ion-list>
+    <ng-container *ngIf="(issues$ |async) as issues;else loading">
+      <ng-container *ngIf="issues?.result?.length; else noRunningCar">
+        <ion-item
+          *ngFor="let issue of issues.result; trackBy:trackById"
+          button
+          detail
+          lines="none"
+          [routerLink]="[issue.id]"
+        >
+          <ion-avatar slot="start">
+            <img [src]="issue.image || 'assets/adc/icons/issue-sport-outline.svg'" />
+          </ion-avatar>
+          <ion-label>
+            <h2 class="font-bold">{{issue.type}}</h2>
+            <h3>{{ issue.description }}</h3>
+            <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+      <ng-template #noRunningCar>
+        <ion-item>
+          <ion-label>
+            <h2>No issue in running state</h2>
+          </ion-label>
+        </ion-item>
+      </ng-template>
+    </ng-container>
+  </ion-list>
+</ion-content>
+<ng-template #loading><tui-loader></tui-loader></ng-template>

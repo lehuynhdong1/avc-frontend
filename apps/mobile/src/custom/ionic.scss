@@ -1,12 +1,17 @@
-// ion-content {
-//   --background: var(--tui-base-01);
-//   --color: var(--tui-text-01);
-//   --padding-bottom: 4rem;
-// }
+// ion-content,
 // ion-header,
 // ion-toolbar,
-// ion-list,ion-list-header,
+// ion-list,
+// ion-list-header,
 // ion-item {
-//   --background: var(--tui-base-01);
+//   --background: var(--tui-base-02);
 //   --color: var(--tui-text-01);
 // }
+
+// ion-content {
+//   --padding-bottom: 4rem;
+// }
+
+:root {
+  --ion-background-color: var(--tui-base-02);
+}

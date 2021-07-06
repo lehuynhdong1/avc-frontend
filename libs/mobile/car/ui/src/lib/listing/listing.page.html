@@ -3,7 +3,7 @@
   <ion-toolbar>
     <ion-title size="large" class="leading-10"> Assigned Cars</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="showSearch$.next()"
+      <ion-button
         ><ion-icon name="car-sport-outline" class="w-8 h-8 text-gray-800"></ion-icon
       ></ion-button>
     </ion-buttons>
@@ -37,16 +37,11 @@
             <h3>Device ID: {{car.deviceId}}</h3>
             <p>Managed by: {{car.managedBy?.firstName}} {{car.managedBy?.lastName}}</p>
           </ion-label>
-          <ion-icon
-            name="radio-button-on-outline"
-            slot="end"
-            color="success"
-            class="w-10 h-10"
-          ></ion-icon>
+          <ion-icon name="radio-button-on-outline" slot="end" color="success"></ion-icon>
         </ion-item>
       </ng-container>
       <ng-template #noRunningCar>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label>
             <h2>No car in running state</h2>
           </ion-label>
@@ -73,16 +68,11 @@
             <h3>Device ID: {{car.deviceId}}</h3>
             <p>Managed by: {{car.managedBy?.firstName}} {{car.managedBy?.lastName}}</p>
           </ion-label>
-          <ion-icon
-            name="radio-button-on-outline"
-            slot="end"
-            color="danger"
-            class="w-10 h-10"
-          ></ion-icon>
+          <ion-icon name="radio-button-on-outline" slot="end" color="danger"></ion-icon>
         </ion-item>
       </ng-container>
       <ng-template #noWaitingCar>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label>
             <h2>No car in waiting state</h2>
           </ion-label>

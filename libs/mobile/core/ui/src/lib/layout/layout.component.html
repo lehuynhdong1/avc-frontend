@@ -1,5 +1,5 @@
 <ion-tabs>
-  <ion-tab-bar slot="bottom" class="pt-1 border-0">
+  <ion-tab-bar slot="bottom" class="pt-1 border-0" *ngIf="bottomBar.visible$ | async">
     <ion-tab-button *ngFor="let item of navItems" [tab]="item.path">
       <ion-icon
         [name]="(currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon"

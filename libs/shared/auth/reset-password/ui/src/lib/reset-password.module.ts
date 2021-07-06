@@ -4,8 +4,6 @@ import { SharedResetPasswordComponent } from './reset-password.component';
 import {
   TuiButtonModule,
   TuiSvgModule,
-  TuiLinkModule,
-  TuiNotificationModule,
   TuiTextfieldControllerModule,
   TuiHintControllerModule
 } from '@taiga-ui/core';
@@ -18,9 +16,7 @@ const tuiModules = [
   TuiButtonModule,
   TuiSvgModule,
   TuiInputPasswordModule,
-  TuiLinkModule,
   TuiInputModule,
-  TuiNotificationModule,
   TuiTextfieldControllerModule,
   TuiHintControllerModule
 ];

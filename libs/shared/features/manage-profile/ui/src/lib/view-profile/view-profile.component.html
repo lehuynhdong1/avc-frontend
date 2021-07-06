@@ -56,7 +56,7 @@
     appearance="outline"
     type="button"
     (click)="clickUpdate$.next()"
-    class="w-full my-3 primary"
+    class="w-full mb-3 primary"
   >
     Update Profile
   </button>
@@ -66,9 +66,19 @@
     appearance="outline"
     type="button"
     routerLink="change-password"
-    class="w-full danger"
+    class="w-full danger mb-3"
   >
     Change Password
+  </button>
+  <button
+    tuiButton
+    size="m"
+    appearance="outline"
+    type="button"
+    (click)="clickLogout$.next()"
+    class="w-full danger"
+  >
+    Log out
   </button>
 </main>
 <ng-template #loading>

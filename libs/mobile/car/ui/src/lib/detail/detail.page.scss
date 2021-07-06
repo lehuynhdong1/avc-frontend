@@ -1,48 +1,7 @@
-:host {
-  @apply block;
-
-  ::ng-deep button {
-    tui-wrapper[data-appearance='outline'] {
-      @apply text-green-500;
-      &:after {
-        @apply border-green-500;
-      }
-
-      &[data-state='hovered'] {
-        @apply bg-green-50;
-      }
-
-      &[data-state='pressed'] {
-        @apply bg-green-500 text-white;
-      }
-    }
-    &.deactivate {
-      tui-wrapper[data-appearance='outline'] {
-        @apply text-red-500;
-        &:after {
-          @apply border-red-500;
-        }
-
-        &[data-state='hovered'] {
-          @apply bg-red-50;
-        }
-
-        &[data-state='pressed'] {
-          @apply bg-red-500 text-white;
-        }
-      }
-    }
+ion-footer {
+  position: fixed !important;
+  @apply fixed bottom-0 left-0;
+  ion-toolbar {
+    --background: var(--ion-background-color);
   }
-}
-
-main {
-  @apply flex flex-col flex-wrap px-4 pb-4;
-
-  h2 {
-    @apply font-bold;
-  }
-}
-
-.openable {
-  @apply cursor-pointer hover:text-primary no-underline;
 }

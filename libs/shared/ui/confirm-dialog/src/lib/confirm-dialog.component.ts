@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { TuiDialog } from '@taiga-ui/cdk';
 import { TuiAppearance, TuiButtonShape, TuiSizeXL, TuiSizeXS } from '@taiga-ui/core';
 import { PolymorpheusContent, POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
@@ -22,7 +22,7 @@ export interface ConfirmButton {
 }
 
 @Component({
-  selector: 'adca-confirm-dialog',
+  selector: 'adc-frontend-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
