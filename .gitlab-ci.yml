@@ -122,14 +122,16 @@ build_apk:
     - npm run nx -- run mobile:sync:android
     - npm run mobile:deploy:android
     - cp apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk $PWD/adc.apk
-    - curl -X POST -H "Content-Type&#58; application/json" -d '{"text"\&#58; "$MESSAGE_ANDROID"}' $SLACK_WEBHOOK
+    - |
+      curl -X POST 
+      -H "Content-Type: application/json" 
+      -d '{"text": "$MESSAGE_ANDROID"}' $SLACK_WEBHOOK
+
   variables:
     GIT_STRATEGY: none
   only:
     - develop
     - master
-  tags:
-    - nng-ios
   artifacts:
     paths:
       - adc.apk

@@ -13,22 +13,6 @@ import { ManageProfileState, UpdateProfile } from '@shared/features/manage-profi
 import { Router } from '@angular/router';
 import { ConfirmDialogComponentParams, ConfirmDialogService } from '@shared/ui/confirm-dialog';
 
-const confirmDialogParams: ConfirmDialogComponentParams = {
-  content: 'Do you really want to log out?',
-  buttons: [
-    {
-      id: 1,
-      label: 'Logout'
-    },
-    {
-      id: 2,
-      label: 'Cancel',
-      uiOptions: {
-        appearance: TuiAppearance.Outline
-      }
-    }
-  ]
-};
 @Component({
   selector: 'adc-frontend-view-profile',
   templateUrl: './view-profile.component.html',
@@ -122,23 +106,5 @@ export class ViewProfileComponent {
         // this.willShowUnsavedDialog = false;
       }
     );
-    this.logoutEffects();
-  }
-
-  private logoutEffects() {
-    const whenLogoutSuccessful$ = this.actions.pipe(ofActionSuccessful(Logout));
-    this.state.hold(whenLogoutSuccessful$, () => {
-      this.router.navigateByUrl('/login');
-    });
-
-    const whenClickLogout$ = this.clickLogout$.pipe(
-      switchMap(() => this.confirmDialog.open('Log out confirmation', confirmDialogParams)),
-      filter((response) => response === 1)
-    );
-    this.state.hold(whenClickLogout$, () => {
-      console.log('=====================');
-
-      this.store.dispatch(new Logout());
-    });
   }
 }

@@ -1,3 +1,27 @@
 adc-frontend-view-profile {
   --align-items: center;
+  --input-phone-text-align: center;
+}
+
+ion-content {
+  --padding-bottom: 2rem;
+}
+
+:host ::ng-deep button {
+  &.danger {
+    tui-wrapper[data-appearance='primary'] {
+      @apply bg-red-500;
+      &:after {
+        @apply border-red-500;
+      }
+
+      &[data-state='hovered'] {
+        @apply text-red-50;
+      }
+
+      &[data-state='pressed'] {
+        @apply text-red-500 bg-white;
+      }
+    }
+  }
 }

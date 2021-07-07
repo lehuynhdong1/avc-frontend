@@ -1,14 +1,18 @@
 :host {
   @apply flex justify-center;
   --align-items: flex-start;
+  --input-phone-text-align: left;
 
-  main {
+  .basic-information {
     align-items: var(--align-items);
   }
 }
 
 label {
-  @apply text-gray-600 font-bold text-sm;
+  @apply text-gray-600 text-sm;
+}
+h3 {
+  @apply text-gray-700;
 }
 
 tui-marker-icon.bottom-right {
@@ -50,10 +54,16 @@ tui-marker-icon.bottom-right {
   }
 }
 
-:host ::ng-deep tui-input-phone tui-wrapper {
-  @apply shadow-none;
+:host ::ng-deep tui-input-phone {
+  tui-wrapper {
+    @apply shadow-none;
 
-  &:hover {
-    @apply shadow-sm;
+    input {
+      text-align: var(--input-phone-text-align);
+    }
+
+    &:hover {
+      @apply shadow-sm;
+    }
   }
 }

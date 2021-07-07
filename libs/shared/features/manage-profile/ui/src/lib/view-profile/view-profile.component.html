@@ -1,33 +1,49 @@
 <main class="flex flex-col w-full" *ngIf="me$ | async as my; else loading" [formGroup]="form">
-  <label>Full name</label>
-  <h2 class="font-bold my-0">{{ my.firstName }} {{ my.lastName }}</h2>
-  <div class="p-4 border border-gray-900">
-    <div class="relative w-40">
-      <adc-frontend-avatar
-        [url]="(form.value.avatarImage | dataUrl | async) || my.avatar"
-        placeholderClass="!text-primary"
-        size="xxl"
-      ></adc-frontend-avatar>
-      <input
-        type="file"
-        accept="image/*"
-        class="hidden"
-        (change)="clickChangeAvatar$.next($event)"
-        #inputAvatar
-      />
-      <tui-marker-icon
-        [mode]="MARKER_LINK"
-        src="tuiIconUpload"
-        size="s"
-        class="bottom-right border border-solid border-primary"
-        (click)="inputAvatar.click()"
-      ></tui-marker-icon>
+  <section class="flex flex-col basic-information">
+    <label>Full name</label>
+    <h2 class="font-bold my-0">{{ my.firstName }} {{ my.lastName }}</h2>
+    <div class="p-4 border border-gray-900">
+      <div class="relative w-40">
+        <adc-frontend-avatar
+          [url]="(form.value.avatarImage | dataUrl | async) || my.avatar"
+          placeholderClass="!text-primary"
+          size="xxl"
+        ></adc-frontend-avatar>
+        <input
+          type="file"
+          accept="image/*"
+          class="hidden"
+          (change)="clickChangeAvatar$.next($event)"
+          #inputAvatar
+        />
+        <tui-marker-icon
+          [mode]="MARKER_LINK"
+          src="tuiIconUpload"
+          size="s"
+          class="bottom-right border border-solid border-primary"
+          (click)="inputAvatar.click()"
+        ></tui-marker-icon>
+      </div>
     </div>
-  </div>
+  </section>
   <label>Email</label>
   <h3 class="font-bold mt-0">{{ my.email }}</h3>
-  <label>Role</label>
-  <h3 class="font-bold mt-0">{{ my.role }}</h3>
+  <div class="flex space-x-4">
+    <div class="flex flex-col">
+      <label>Role</label>
+      <h3 class="font-bold mt-0">{{ my.role }}</h3>
+    </div>
+    <div class="flex flex-col" *ngIf="my.role === 'Staff'">
+      <label>Managed by</label>
+      <h3 class="font-bold mt-0">
+        <ng-container *ngIf="my.managedBy; else notHasManagedBy">
+          {{ my.managedBy?.firstName }} {{ my.managedBy?.lastName }}
+        </ng-container>
+        <ng-template #notHasManagedBy> None </ng-template>
+      </h3>
+    </div>
+  </div>
+
   <label>Phone</label>
   <tui-input-phone
     tuiTextfieldSize="m"
@@ -40,15 +56,6 @@
     class="w-full mb-3 font-bold"
   >
   </tui-input-phone>
-  <ng-container *ngIf="my.role === 'Staff'">
-    <label>Managed by</label>
-    <h3 class="font-bold mt-0">
-      <ng-container *ngIf="my.managedBy; else notHasManagedBy">
-        {{ my.managedBy?.firstName }} {{ my.managedBy?.lastName }}
-      </ng-container>
-      <ng-template #notHasManagedBy> None </ng-template>
-    </h3>
-  </ng-container>
 
   <button
     tuiButton
@@ -69,16 +76,6 @@
     class="w-full danger mb-3"
   >
     Change Password
-  </button>
-  <button
-    tuiButton
-    size="m"
-    appearance="outline"
-    type="button"
-    (click)="clickLogout$.next()"
-    class="w-full danger"
-  >
-    Log out
   </button>
 </main>
 <ng-template #loading>

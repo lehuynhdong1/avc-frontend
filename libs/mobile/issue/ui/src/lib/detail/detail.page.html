@@ -1,7 +1,7 @@
 <ng-container *ngIf="selectedIssue$ | async as issue; else loading">
   <adcm-back-bar [title]="issue.type || 'Detail Issue'" backTo="issue"></adcm-back-bar>
   <ion-content>
-    <main>
+    <main class="px-4 flex flex-col">
       <adc-frontend-avatar
         class="tui-space_top-2 self-center"
         [url]="issue.image"
@@ -9,16 +9,36 @@
         placeholderImageAsset="assets/adc/icons/warning-outline.svg#warning-outline"
         size="xl"
       ></adc-frontend-avatar>
-      <b class="text-sm text-gray-600">Type </b>
-      <h2 class="my-0">{{ issue.type }}</h2>
-      <div class="p-2 relative border border-gray-900"></div>
-      <div class="flex justify-between">
-        <div class="flex flex-col">
-          <b class="text-sm text-gray-600">Location</b>
-          <h5 class="mt-0 mb-3">{{ issue.location }}</h5>
-          <b class="text-sm text-gray-600">Created at</b>
-          <h5 class="mt-0 mb-3">{{ issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</h5>
-        </div>
+      <span class="text-sm text-gray-600 self-center">Type </span>
+      <h2 class="mt-0 mb-3 self-center text-gray-800">{{ issue.type }}</h2>
+      <div class="flex flex-col">
+        <span class="text-sm text-gray-500">Location</span>
+        <h3>{{ issue.location }}</h3>
+
+        <span class="text-sm text-gray-500">Created at</span>
+        <h3>{{ issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</h3>
+
+        <span class="text-sm text-gray-500">Description</span>
+        <h3>{{ issue.description }}</h3>
+
+        <ng-container *ngIf="selectedCar$ | async as car">
+          <span class="text-sm text-gray-500">Occured by car</span>
+          <ion-item
+            button
+            detail
+            lines="none"
+            [routerLink]="['..','car',car.id]"
+            class="rounded-md"
+          >
+            <ion-avatar slot="start">
+              <img [src]="car.image || 'assets/adc/icons/car-sport-outline.svg'" />
+            </ion-avatar>
+            <ion-label>
+              <h3 class="!mb-0">{{car.name}}</h3>
+              <h4 class="text-gray-600">Device ID: {{car.deviceId}}</h4>
+            </ion-label>
+          </ion-item>
+        </ng-container>
       </div>
     </main>
   </ion-content>

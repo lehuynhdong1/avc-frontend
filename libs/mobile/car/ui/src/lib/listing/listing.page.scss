@@ -1,7 +1,17 @@
+ion-header,
+ion-toolbar {
+  --background: var(--tui-primary);
+  --color: var(--tui-base-01);
+}
+ion-searchbar {
+  --background: var(--tui-base-01);
+  --color: var(--tui-primary-active);
+  --cancel-button-color: var(--tui-base-01);
+}
 ion-list {
   @apply px-2 mt-2;
   ion-item {
-    @apply border border-solid border-gray-400 rounded-md;
+    @apply border border-solid border-gray-200 rounded-md;
     @apply mt-2;
     --background: var(--tui-base-01);
     --padding-end: 1rem;

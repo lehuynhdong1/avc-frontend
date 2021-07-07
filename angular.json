@@ -199,10 +199,7 @@
             "styles": [
               "apps/mobile/src/styles.scss",
               "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
-              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
-              {
-                "input": "apps/mobile/src/theme/variables.scss"
-              }
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less"
             ],
             "scripts": ["apps/admin/src/__env__.js"],
             "allowedCommonJsDependencies": ["angular2-text-mask", "file-saver"]

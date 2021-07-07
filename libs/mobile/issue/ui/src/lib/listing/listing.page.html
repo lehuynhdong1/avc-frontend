@@ -4,7 +4,7 @@
     <ion-title size="large" class="leading-10"> Issue History</ion-title>
     <ion-buttons slot="end">
       <ion-button
-        ><ion-icon name="warning-outline" class="w-8 h-8 text-gray-800"></ion-icon
+        ><ion-icon name="warning-outline" class="w-8 h-8 text-white"></ion-icon
       ></ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -29,11 +29,11 @@
           [routerLink]="[issue.id]"
         >
           <ion-avatar slot="start">
-            <img [src]="issue.image || 'assets/adc/icons/issue-sport-outline.svg'" />
+            <img [src]="issue.image || 'assets/adc/icons/warning-outline.svg'" />
           </ion-avatar>
           <ion-label>
-            <h2 class="font-bold">{{issue.type}}</h2>
-            <h3>{{ issue.description }}</h3>
+            <h2 class="!font-semibold text-gray-700">{{issue.type}}</h2>
+            <h3 class="text-gray-600">{{ issue.description }}</h3>
             <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
           </ion-label>
         </ion-item>

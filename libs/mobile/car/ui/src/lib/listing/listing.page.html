@@ -4,7 +4,7 @@
     <ion-title size="large" class="leading-10"> Assigned Cars</ion-title>
     <ion-buttons slot="end">
       <ion-button
-        ><ion-icon name="car-sport-outline" class="w-8 h-8 text-gray-800"></ion-icon
+        ><ion-icon name="car-sport-outline" class="w-8 h-8 text-white"></ion-icon
       ></ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -64,8 +64,8 @@
             <img [src]="car.image || 'assets/adc/icons/car-sport-outline.svg'" />
           </ion-avatar>
           <ion-label>
-            <h2 class="!font-bold">{{car.name}}</h2>
-            <h3>Device ID: {{car.deviceId}}</h3>
+            <h2 class="!font-semibold text-gray-700">{{car.name}}</h2>
+            <h3 class="text-gray-600">Device ID: {{car.deviceId}}</h3>
             <p>Managed by: {{car.managedBy?.firstName}} {{car.managedBy?.lastName}}</p>
           </ion-label>
           <ion-icon name="radio-button-on-outline" slot="end" color="danger"></ion-icon>
