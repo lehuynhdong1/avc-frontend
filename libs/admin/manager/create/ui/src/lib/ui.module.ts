@@ -10,7 +10,12 @@ import {
   TuiInputPhoneModule
 } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiButtonModule, TuiSvgModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiHintControllerModule,
+  TuiSvgModule,
+  TuiTextfieldControllerModule
+} from '@taiga-ui/core';
 import { UtilModule } from '@shared/util';
 import { AvatarModule } from '@shared/ui/avatar';
 import { RouterModule } from '@angular/router';
@@ -24,7 +29,8 @@ const tuiModules = [
   TuiInputPhoneModule,
   TuiTextfieldControllerModule,
   TuiMarkerIconModule,
-  TuiCheckboxLabeledModule
+  TuiCheckboxLabeledModule,
+  TuiHintControllerModule
 ];
 @NgModule({
   declarations: [CreatePage],

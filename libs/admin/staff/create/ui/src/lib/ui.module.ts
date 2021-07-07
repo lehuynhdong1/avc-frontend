@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {
   TuiButtonModule,
   TuiDataListModule,
+  TuiHintControllerModule,
   TuiSvgModule,
   TuiTextfieldControllerModule
 } from '@taiga-ui/core';
@@ -36,7 +37,8 @@ const tuiModules = [
   TuiSelectModule,
   TuiLetModule,
   TuiMarkerIconModule,
-  TuiCheckboxLabeledModule
+  TuiCheckboxLabeledModule,
+  TuiHintControllerModule
 ];
 @NgModule({
   declarations: [CreatePage],

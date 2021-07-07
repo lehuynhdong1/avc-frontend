@@ -89,8 +89,8 @@
       <label>Password</label>
       <tui-input-password
         tuiTextfieldSize="m"
-        [tuiTextfieldCleaner]="true"
         [tuiTextfieldLabelOutside]="true"
+        [tuiHintContent]="passwordInfo"
         tuiTextfieldExampleText="Password here..."
         formControlName="password"
       >
@@ -154,3 +154,36 @@
   </form>
   <ng-template #loading> Loading </ng-template>
 </aside>
+
+<ng-template #passwordInfo>
+  <section class="flex flex-col flex-wrap">
+    <div>
+      <tui-svg
+        [src]="
+          form?.get('password')?.errors?.required || form?.get('password')?.errors?.minlength
+            ? 'tuiIconCloseCircleLarge'
+            : 'tuiIconCheckCircleLarge'
+        "
+        class="size-s text-green-300"
+        [class.text-red-300]="
+          form?.get('password')?.errors?.required || form?.get('password')?.errors?.minlength
+        "
+      ></tui-svg>
+      Password has 6 characters at least.
+    </div>
+    <div>
+      <tui-svg
+        [src]="
+          form?.get('password')?.errors?.required || form?.get('password')?.errors?.maxlength
+            ? 'tuiIconCloseCircleLarge'
+            : 'tuiIconCheckCircleLarge'
+        "
+        class="size-s text-green-300"
+        [class.text-red-300]="
+          form?.get('password')?.errors?.required || form?.get('password')?.errors?.maxlength
+        "
+      ></tui-svg>
+      Password has 16 characters at max.
+    </div>
+  </section>
+</ng-template>

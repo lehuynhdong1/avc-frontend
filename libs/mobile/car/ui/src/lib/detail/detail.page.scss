@@ -1,3 +1,12 @@
+ion-header,
+ion-toolbar {
+  --background: var(--tui-primary);
+  --color: var(--tui-base-01);
+
+  ion-back-button {
+    --color: var(--tui-base-01);
+  }
+}
 ion-content {
   --padding-bottom: 4rem;
 }

@@ -1,5 +1,24 @@
 <ng-container *ngIf="selectedCar$ | async as car; else loading">
-  <adcm-back-bar [title]="car.name || 'Detail Car'" backTo="car"></adcm-back-bar>
+  <!-- <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="car"></ion-back-button>
+      <ng-content select="#start-button"></ng-content>
+    </ion-buttons>
+    <ion-title collapse="condense"> {{car.name || 'Detail Car'}} </ion-title>
+    <ng-content select="#end-buttons"></ng-content>
+  </ion-toolbar> -->
+
+  <ion-header>
+    <ion-toolbar></ion-toolbar>
+    <ion-toolbar>
+      <ion-title size="large" class="leading-10"> Assigned Cars</ion-title>
+      <ion-buttons slot="end">
+        <ion-button
+          ><ion-icon name="car-sport-outline" class="w-8 h-8 text-white"></ion-icon
+        ></ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
   <ion-content fullscreen="true">
     <main class="flex flex-col flex-wrap px-4 pb-4">
       <section class="flex flex-col self-center text-center">
