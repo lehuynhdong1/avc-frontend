@@ -11,7 +11,7 @@ variables:
   GIT_STRATEGY: fetch
   API_URL: 'https://avc-api.azurewebsites.net'
   PRODUCTION: 1
-  MESSAGE_ANDROID: "*[AVC Mobile]*\n*API_URL*: $API_URL\n*Android* has been built successfully: $CI_COMMIT_MESSAGE.\nClick to download *APK* file <http://gitlab.com/adc/adc-frontend/-/jobs/$CI_JOB_ID/artifacts/download|here>"
+  {MESSAGE_ANDROID}: "*[AVC Mobile]*\n*API_URL*: $API_URL\n*Android* has been built successfully: $CI_COMMIT_MESSAGE.\nClick to download *APK* file <http://gitlab.com/adc/adc-frontend/-/jobs/$CI_JOB_ID/artifacts/download|here>"
   # MESSAGE_IOS: "[*AVC Mobile*]\n*API_URL*: $API_URL\n*iOS* has been built & upload to *TestFlight* successfully: \"$CI_COMMIT_MESSAGE\" Hey <users/104121422729815117160>! Please update & help me test it."
 
 cache:
@@ -124,7 +124,7 @@ build_apk:
     - |
       curl -X POST  \
       -H "Content-Type: application/json"  \
-      -d '{"text": "$MESSAGE_ANDROID"}'  \
+      --data '{"text": ${MESSAGE_ANDROID}}'  \
       https://hooks.slack.com/services/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
 
   variables:
