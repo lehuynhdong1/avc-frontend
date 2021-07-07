@@ -1,17 +1,19 @@
 image: node:latest
 stages:
+  - install
   - build
   - deploy
 # - test
 
 variables:
-  # LC_ALL: 'en_US.UTF-8'
-  # LANG: 'en_US.UTF-8'
-  # GIT_STRATEGY: fetch
+  LC_ALL: 'en_US.UTF-8'
+  LANG: 'en_US.UTF-8'
+  GIT_STRATEGY: fetch
   API_URL: 'https://avc-api.azurewebsites.net'
   PRODUCTION: 1
-  # MESSAGE_ANDROID: "[*Life on Mobile*]\n*API_URL*: $API_URL\n*Android* has been built successfully: \"$CI_COMMIT_MESSAGE\" Hey <users/104121422729815117160>! Click to download *APK* file http://192.168.9.62/loa/loa-mobile/-/jobs/$CI_JOB_ID/artifacts/download"
-  # MESSAGE_IOS: "[*Life on Mobile*]\n*API_URL*: $API_URL\n*iOS* has been built & upload to *TestFlight* successfully: \"$CI_COMMIT_MESSAGE\" Hey <users/104121422729815117160>! Please update & help me test it."
+  MESSAGE_ANDROID: "*[AVC Mobile]*\n*API_URL*: $API_URL\n*Android* has been built successfully: $CI_COMMIT_MESSAGE.\nClick to download *APK* file <http://gitlab.com/adc/adc-frontend/-/jobs/$CI_JOB_ID/artifacts/download|here>"
+  SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+  # MESSAGE_IOS: "[*AVC Mobile*]\n*API_URL*: $API_URL\n*iOS* has been built & upload to *TestFlight* successfully: \"$CI_COMMIT_MESSAGE\" Hey <users/104121422729815117160>! Please update & help me test it."
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -19,20 +21,46 @@ cache:
     - .npm/
 
 #########################
-###### Build Stage ######
+##### Install Stage #####
 #########################
-build_admin:
-  stage: build
+
+install:
+  stage: install
   script:
     - npm ci --cache .npm --prefer-offline
-    - npm run build:prod -- --project=admin
-    - ls .
   only:
     - develop
     - master
   artifacts:
     paths:
-      - www/apps/admin
+      - node_modules
+    expire_in: 24 hrs
+
+#########################
+###### Build Stage ######
+#########################
+# build_admin:
+#   stage: build
+#   script:
+#     - npm run build:prod -- --project=admin
+#   only:
+#     - develop
+#     - master
+#   artifacts:
+#     paths:
+#       - www/apps/admin
+#     expire_in: 24 hrs
+
+build_mobile:
+  stage: build
+  script:
+    - npm run build:prod -- --project=mobile
+  only:
+    - develop
+    - master
+  artifacts:
+    paths:
+      - www/apps/mobile
     expire_in: 24 hrs
 
 #########################
@@ -56,20 +84,20 @@ build_admin:
 ###### Deploy Stage ######
 #########################
 
-pages:
-  stage: deploy
-  script:
-    - echo "----------------------------------------------------------------"
-    - echo "Deploy admin site to Gitlab Pages"
-    - ls .
-    - cp -r www/apps/admin public
-  only:
-    - develop
-    - master
-  artifacts:
-    paths:
-      - public
-    expire_in: 1 hrs
+# pages:
+#   stage: deploy
+#   script:
+#     - echo "----------------------------------------------------------------"
+#     - echo "Deploy admin site to Gitlab Pages"
+#     - ls .
+#     - cp -r www/apps/admin public
+#   only:
+#     - develop
+#     - master
+#   artifacts:
+#     paths:
+#       - public
+#     expire_in: 1 hrs
 # upload_to_testflight:
 #   stage: deploy
 #   script:
@@ -77,7 +105,6 @@ pages:
 #     - echo "Upload to TestFlight by " $FASTLANE_USER
 #     - npm run sync -- ios
 #     - npm run deploy:ios
-#     - curl -G --data-urlencode "project=LOA" --data-urlencode "message=$MESSAGE_IOS" http://rancher.nng.bz:8000/api/notify/
 #   variables:
 #     GIT_STRATEGY: none
 #   retry: 2
@@ -87,23 +114,23 @@ pages:
 #   tags:
 #     - nng-ios
 
-# build_apk:
-#   stage: deploy
-#   script:
-#     - echo "----------------------------------------------------------------"
-#     - echo "Build Android app to APK by " $FASTLANE_USER
-#     - npm run sync -- android
-#     - npm run deploy:android
-#     - cp android/app/build/outputs/apk/debug/app-debug.apk $PWD/loa.apk
-#     - curl -G --data-urlencode "project=LOA" --data-urlencode "message=$MESSAGE_ANDROID" http://rancher.nng.bz:8000/api/notify/
-#   variables:
-#     GIT_STRATEGY: none
-#   only:
-#     - develop
-#     - master
-#   tags:
-#     - nng-ios
-#   artifacts:
-#     paths:
-#       - loa.apk
-#     expire_in: 1 week
+build_apk:
+  stage: deploy
+  script:
+    - echo "----------------------------------------------------------------"
+    - echo "Build Android app to APK by "
+    - npm run nx -- run mobile:sync:android
+    - npm run mobile:deploy:android
+    - cp apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk $PWD/adc.apk
+    - curl -X POST -H "Content-Type&#58; application/json" -d '{"text"\&#58; "$MESSAGE_ANDROID"}' $SLACK_WEBHOOK
+  variables:
+    GIT_STRATEGY: none
+  only:
+    - develop
+    - master
+  tags:
+    - nng-ios
+  artifacts:
+    paths:
+      - adc.apk
+    expire_in: 1 week
