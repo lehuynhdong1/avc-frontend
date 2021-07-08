@@ -4,7 +4,7 @@ import { Logout } from '@shared/auth/logout/data-access';
 import { defer, Subject } from 'rxjs';
 import { Empty } from '@shared/util';
 import { RxState } from '@rx-angular/state';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 @Component({
@@ -58,8 +58,7 @@ export class ViewProfilePage {
     );
     const whenClickLogout$ = this.clickLogout$.pipe(
       switchMap(() => openAlert$),
-      tap(console.log),
-      filter((response: { role: string }) => response.role === 'logout')
+      filter((response) => response.role === 'logout')
     );
     this.state.hold(whenClickLogout$, () => {
       this.store.dispatch(new Logout());

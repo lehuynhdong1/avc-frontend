@@ -69,13 +69,13 @@
     Update Profile
   </button>
   <button
+    *ngIf="showChangePasswordButton"
     tuiButton
     size="m"
     appearance="outline"
     type="button"
     routerLink="change-password"
     class="w-full danger mb-3"
-    [showLoader]="(loading$ | async) || false"
   >
     Change Password
   </button>

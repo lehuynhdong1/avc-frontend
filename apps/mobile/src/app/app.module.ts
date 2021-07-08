@@ -20,10 +20,7 @@ import { getAppConfigProvider } from '@shared/app-config';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    IonicModule.forRoot({
-      hardwareBackButton: false,
-      mode: 'ios'
-    }),
+    IonicModule.forRoot({ mode: 'ios' }),
     TuiRootModule,
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' }),
     OpenApiModule.forRoot(() => new Configuration({ basePath: environment.apiUrl })),

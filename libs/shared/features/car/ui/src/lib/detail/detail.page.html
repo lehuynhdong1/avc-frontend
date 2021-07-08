@@ -54,40 +54,13 @@
 
         <b class="text-gray-600">Managed by</b>
         <h3 class="mt-0 mb-3">
-          <a [routerLink]="'/manager/'+car.managedBy?.id" class="openable">
-            {{car.managedBy ? '': 'None'}} {{ car.managedBy?.firstName }} {{ car.managedBy?.lastName
-            }}<tui-svg
-              src="tuiIconExternal"
-              [tuiHint]="tuiHintManagedBy"
-              [routerLink]="'/staff/'+car.managedBy?.id"
-              class="mb-1"
-            ></tui-svg>
-          </a>
-          <ng-template #tuiHintManagedBy>
-            <div class="cursor-pointer" [routerLink]="'/manager/'+car.managedBy?.id">
-              View
-              <strong>{{car.managedBy?.lastName}} {{car.managedBy?.firstName}}</strong> in detail
-            </div>
-          </ng-template>
+          {{car.managedBy ? '': 'None'}} {{ car.managedBy?.firstName }} {{ car.managedBy?.lastName
+          }}
         </h3>
 
         <b class="text-gray-600">Assigned to</b>
         <h3 class="mt-0 mb-3">
-          <a [routerLink]="'/staff/'+car.assignTo?.id" class="openable">
-            {{car.assignTo ? '': 'None'}} {{ car.assignTo?.firstName }} {{ car.assignTo?.lastName
-            }}<tui-svg
-              src="tuiIconExternal"
-              [tuiHint]="tuiHintManagedBy"
-              [routerLink]="'/staff/'+car.assignTo?.id"
-              class="mb-1"
-            ></tui-svg>
-          </a>
-          <ng-template #tuiHintManagedBy>
-            <div class="cursor-pointer" [routerLink]="'/staff/'+car.assignTo?.id">
-              View
-              <strong>{{car.assignTo?.lastName}} {{car.assignTo?.firstName}}</strong> in detail
-            </div>
-          </ng-template>
+          {{car.assignTo ? '': 'None'}} {{ car.assignTo?.firstName }} {{ car.assignTo?.lastName }}
         </h3>
 
         <ng-container *ngIf="(isFullPage$ | async) === undefined">

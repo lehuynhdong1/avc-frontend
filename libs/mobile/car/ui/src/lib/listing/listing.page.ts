@@ -18,11 +18,11 @@ export class ListingPage {
 
   /* Attribute Streams */
   private readonly approvedCars$ = this.store.select(CarState.approvedCars);
-  readonly runningCars$ = this.approvedCars$.pipe(
-    map((cars) => cars?.result?.filter((car) => car.isRunning))
+  readonly connectingCars$ = this.approvedCars$.pipe(
+    map((cars) => cars?.result?.filter((car) => car.isConnecting))
   );
-  readonly waitingCars$ = this.approvedCars$.pipe(
-    map((cars) => cars?.result?.filter((car) => !car.isRunning))
+  readonly notConnectingCars$ = this.approvedCars$.pipe(
+    map((cars) => cars?.result?.filter((car) => !car.isConnecting))
   );
   constructor(private store: Store, private state: RxState<Empty>) {
     this.store.dispatch(new LoadApprovedCars());

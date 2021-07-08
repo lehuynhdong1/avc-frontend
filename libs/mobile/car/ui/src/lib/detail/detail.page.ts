@@ -42,8 +42,8 @@ export class DetailPage implements ViewWillLeave {
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
     this.state.hold(id$, (id) => this.store.dispatch(new LoadCarById({ id })));
     this.state.hold(this.toggleRun$.pipe(withLatestFrom(this.selectedCar$)), ([, car]) => {
-      if (car?.isRunning) this.store.dispatch(new StartCar({ carId: car.id || 0 }));
-      else this.store.dispatch(new StopCar({ carId: car.id || 0 }));
+      if (car?.isRunning) this.store.dispatch(new StopCar(car.id || 0));
+      else this.store.dispatch(new StartCar(car.id || 0));
     });
   }
 

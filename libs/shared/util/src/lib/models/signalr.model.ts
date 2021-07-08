@@ -32,7 +32,5 @@ type WhenCarStopping = WhenCarConnected;
 
 type ConnectAccountParams = number;
 
-interface StartCarParams {
-  carId: number;
-}
+type StartCarParams = number;
 type StopCarParams = StartCarParams;

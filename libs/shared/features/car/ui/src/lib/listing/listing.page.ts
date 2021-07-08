@@ -5,11 +5,20 @@ import { combineLatest, Subject } from 'rxjs';
 import { CarListReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, startWith, share, filter } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  share,
+  filter,
+  tap
+} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { hasValue, Empty } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { LoginState } from '@shared/auth/login/data-access';
+import { shareReplay } from 'rxjs/operators';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -53,7 +62,7 @@ export class ListingPage {
   );
   readonly isAdmin$ = this.store.select(LoginState.account).pipe(
     map((my) => my?.role === 'Admin'),
-    share()
+    shareReplay({ refCount: true, bufferSize: 1 })
   );
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();

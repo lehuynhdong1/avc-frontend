@@ -19,11 +19,11 @@
 </ion-header>
 <ion-content fullscreen="true">
   <ion-list>
-    <ion-list-header class="leading-8"> Running </ion-list-header>
-    <ng-container *ngIf="(runningCars$ |async) || [] as runningCars;else loading">
-      <ng-container *ngIf="runningCars.length > 0; else noRunningCar">
+    <ion-list-header class="leading-8"> Connecting </ion-list-header>
+    <ng-container *ngIf="(connectingCars$ |async) || [] as connectingCars;else loading">
+      <ng-container *ngIf="connectingCars.length > 0; else noConnectingCar">
         <ion-item
-          *ngFor="let car of runningCars; trackBy:trackById"
+          *ngFor="let car of connectingCars; trackBy:trackById"
           button
           detail
           lines="none"
@@ -40,21 +40,21 @@
           <ion-icon name="radio-button-on-outline" slot="end" color="success"></ion-icon>
         </ion-item>
       </ng-container>
-      <ng-template #noRunningCar>
+      <ng-template #noConnectingCar>
         <ion-item lines="none">
           <ion-label>
-            <h2>No car in running state</h2>
+            <h2>No car in connecting state</h2>
           </ion-label>
         </ion-item>
       </ng-template>
     </ng-container>
 
-    <ion-list-header class="leading-8"> Waiting </ion-list-header>
+    <ion-list-header class="leading-8"> Disconnected </ion-list-header>
 
-    <ng-container *ngIf="(waitingCars$ |async) || [] as waitingCars;else loading">
-      <ng-container *ngIf="waitingCars.length > 0; else noWaitingCar">
+    <ng-container *ngIf="(notConnectingCars$ |async) || [] as notConnectingCars;else loading">
+      <ng-container *ngIf="notConnectingCars.length > 0; else noWaitingCar">
         <ion-item
-          *ngFor="let car of waitingCars; trackBy:trackById"
+          *ngFor="let car of notConnectingCars; trackBy:trackById"
           button
           detail
           lines="none"
@@ -74,7 +74,7 @@
       <ng-template #noWaitingCar>
         <ion-item lines="none">
           <ion-label>
-            <h2>No car in waiting state</h2>
+            <h2>No car in disconnect state</h2>
           </ion-label>
         </ion-item>
       </ng-template>

@@ -1,10 +1,18 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>My Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="change-password">
+        <ion-icon slot="start" name="options-outline" class="text-black"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="max-w-xl">
-  <adc-frontend-view-profile class="mt-4 px-4"></adc-frontend-view-profile>
+  <adc-frontend-view-profile
+    class="mt-4 px-4"
+    [showChangePasswordButton]="false"
+  ></adc-frontend-view-profile>
   <section class="px-4">
     <button
       tuiButton

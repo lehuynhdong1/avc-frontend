@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Actions, Store, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { LoginState } from '@shared/auth/login/data-access';
 import { Subject } from 'rxjs';
@@ -18,6 +18,8 @@ import { ManageProfileState, UpdateProfile } from '@shared/features/manage-profi
   providers: [RxState]
 })
 export class ViewProfileComponent {
+  @Input() showChangePasswordButton = true;
+
   readonly MARKER_LINK = TuiMarkerIconMode.Link as const;
 
   me$ = this.store.select(LoginState.account);

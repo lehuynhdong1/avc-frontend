@@ -9,21 +9,24 @@
   </ion-toolbar> -->
 
   <ion-header>
-    <ion-toolbar></ion-toolbar>
     <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="car"></ion-back-button>
+      </ion-buttons>
+      <ion-title collapse="condense"> {{car.name || 'Detail Car'}} </ion-title>
+    </ion-toolbar>
+    <!-- <ion-toolbar>
       <ion-title size="large" class="leading-10"> Assigned Cars</ion-title>
       <ion-buttons slot="end">
         <ion-button
           ><ion-icon name="car-sport-outline" class="w-8 h-8 text-white"></ion-icon
         ></ion-button>
       </ion-buttons>
-    </ion-toolbar>
+    </ion-toolbar> -->
   </ion-header>
   <ion-content fullscreen="true">
     <main class="flex flex-col flex-wrap px-4 pb-4">
-      <section class="flex flex-col self-center text-center">
-        <span class="text-sm text-gray-600">Name </span>
-        <h2 class="my-0 font-bold">{{ car.name }}</h2>
+      <section class="flex items-center text-center">
         <adc-frontend-avatar
           class="tui-space_top-2"
           [url]="car.image"
@@ -31,6 +34,10 @@
           placeholderImageAsset="assets/adc/icons/car-sport-outline.svg#car-sport-outline"
           size="xl"
         ></adc-frontend-avatar>
+        <div class="text-left ml-4">
+          <span class="text-sm text-gray-600">Name </span>
+          <h2 class="my-0 font-bold">{{ car.name }}</h2>
+        </div>
       </section>
       <div class="p-2 relative border border-gray-900"></div>
       <div class="flex justify-between">
@@ -52,7 +59,7 @@
           <span class="text-sm text-gray-600">Running Status</span>
           <tui-badge
             size="m"
-            [value]="car.isRunning ? 'Running': 'Stopping'"
+            [value]="car.isRunning ? 'Running': 'Stopped'"
             [status]="car.isRunning ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
             class="self-start mb-2"
           ></tui-badge>

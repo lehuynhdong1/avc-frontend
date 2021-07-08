@@ -16,7 +16,14 @@ import { TuiContextWithImplicit, tuiPure, TuiStringHandler } from '@taiga-ui/cdk
 import { TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
 import { LoadManagers, ManagerState } from '@shared/features/manager/data-access';
-import { distinctUntilChanged, filter, map, skip, withLatestFrom, share } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  skip,
+  withLatestFrom,
+  shareReplay
+} from 'rxjs/operators';
 import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
 import { TuiMarkerIconMode } from '@taiga-ui/kit';
 import { LoadStaffs, StaffState } from '@shared/features/staff/data-access';
@@ -52,11 +59,11 @@ export class UpdatePage implements CanShowUnsavedDialog {
   );
   readonly isAdmin$ = this.store.select(LoginState.account).pipe(
     map((my) => my?.role === 'Admin'),
-    share()
+    shareReplay({ refCount: true, bufferSize: 1 })
   );
   readonly isManager$ = this.store.select(LoginState.account).pipe(
     map((my) => my?.role === 'Manager'),
-    share()
+    shareReplay({ refCount: true, bufferSize: 1 })
   );
 
   /* Actions */

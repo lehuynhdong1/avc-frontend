@@ -7,7 +7,7 @@ import { ReceivedMethods } from './../models';
 @Injectable({ providedIn: 'root' })
 export class SignalRService {
   connection: HubConnection = new HubConnectionBuilder()
-    .withUrl(`${this.appConfig.apiUrl}/hub`, {
+    .withUrl(`${this.appConfig.apiUrl}/hub/`, {
       skipNegotiation: true,
       transport: HttpTransportType.WebSockets
     })
