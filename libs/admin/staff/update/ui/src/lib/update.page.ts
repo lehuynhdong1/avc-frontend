@@ -154,7 +154,12 @@ export class UpdatePage implements CanShowUnsavedDialog {
       this.store.dispatch(
         new UpdateStaff({
           id: staffInStore.id || 0,
-          accountUpdateDto: { firstName, lastName, phone, roleId }
+          accountUpdateDto: {
+            firstName,
+            lastName,
+            phone: phone ? phone.replace('+84', '') : undefined,
+            roleId
+          }
         })
       );
     });

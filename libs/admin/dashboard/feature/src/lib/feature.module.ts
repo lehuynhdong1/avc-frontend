@@ -16,7 +16,8 @@ import { DataAccessModule as CarDataAccessModule } from '@shared/features/car/da
       {
         path: '',
         pathMatch: 'full',
-        component: DashboardPage
+        component: DashboardPage,
+        data: { title: 'Dashboard' }
       }
     ])
   ]

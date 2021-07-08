@@ -1,4 +1,4 @@
-import { switchMapTo, map } from 'rxjs/operators';
+import { withLatestFrom, map } from 'rxjs/operators';
 import { RxState } from '@rx-angular/state';
 import { Actions, Store, ofActionErrored, ofActionSuccessful } from '@ngxs/store';
 import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
@@ -71,8 +71,8 @@ export class SharedResetPasswordComponent {
 
     const whenSendFailed$ = actions
       .pipe<CreateNewPassword>(ofActionErrored(CreateNewPassword))
-      .pipe(switchMapTo(store.select(ResetPasswordState.errorMessage)));
-    state.hold(whenSendFailed$, (errorMessage) => {
+      .pipe(withLatestFrom(store.select(ResetPasswordState.errorMessage)));
+    state.hold(whenSendFailed$, ([, errorMessage]) => {
       this.state.set({ loading: false });
       store.dispatch(
         new ShowNotification({

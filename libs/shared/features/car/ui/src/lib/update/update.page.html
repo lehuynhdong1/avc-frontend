@@ -6,23 +6,59 @@
   ></tui-svg>
   <form class="p-5 flex flex-col" [formGroup]="form" *ngIf="car$| async as car">
     <h2>Update Car</h2>
-    <adc-frontend-avatar
-      [url]="car.image"
-      placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
-      placeholderImageAsset="assets/adc/icons/car-sport.svg#car-sport"
-      size="xl"
-      class="mb-3"
-    ></adc-frontend-avatar>
-    <div class="flex flex-col mb-3">
-      <label>Name </label>
-      <h2 class="my-0 ml-2">{{car.name}}</h2>
+    <div class="p-4 flex justify-center items-center relative">
+      <tui-input-file
+        link="Choose an avatar"
+        accept="image/*"
+        formControlName="imageFile"
+        [maxFileSize]="MAXIMUM_IMAGE_SIZE"
+        *ngIf="!form.value.imageFile"
+      >
+      </tui-input-file>
+      <div class="relative" *ngIf="form.value.imageFile">
+        <adc-frontend-avatar
+          [url]=" form.value.imageFile | dataUrl | async"
+          placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
+          placeholderImageAsset="assets/adc/icons/car-sport.svg#car-sport"
+          size="xl"
+        ></adc-frontend-avatar>
+        <input
+          type="file"
+          accept="image/*"
+          class="hidden"
+          (change)="clickChangeAvatar$.next($event)"
+          #inputAvatar
+        />
+        <tui-marker-icon
+          [mode]="MARKER_LINK"
+          src="tuiIconUpload"
+          size="s"
+          class="bottom-right border border-solid border-primary"
+          (click)="inputAvatar.click()"
+        ></tui-marker-icon>
+      </div>
     </div>
     <div class="flex flex-col mb-3">
       <label>Device ID </label>
       <h2 class="my-0 ml-2">{{car.deviceId}}</h2>
     </div>
 
-    <label class="mt-3 mb-2">Managed by</label>
+    <div class="flex flex-col mb-3">
+      <label>Name </label>
+      <tui-input
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="Super Autonomous Car"
+        formControlName="name"
+      >
+        <span class="text-gray-300">
+          Enter car name here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input>
+    </div>
+    <label class="mb-2">Managed by</label>
     <tui-select
       *tuiLet="managers$ | async as managers"
       tuiTextfieldSize="m"

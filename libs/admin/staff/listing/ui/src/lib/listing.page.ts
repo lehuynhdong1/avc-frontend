@@ -20,7 +20,7 @@ export class ListingPage {
   DYNAMIC_COLUMNS: DynamicTableColumns<AccountStaffDetailReadDto> = [
     { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
     { key: 'email', title: 'Email', type: 'string' },
-    { key: 'phone', title: 'Phone', type: 'string' },
+    { key: 'phone', title: 'Phone', type: 'string', cellTemplate: '0#phone' },
     {
       key: 'managedBy',
       title: 'Managed by',

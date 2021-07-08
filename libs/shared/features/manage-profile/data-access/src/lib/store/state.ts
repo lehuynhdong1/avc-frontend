@@ -38,6 +38,7 @@ export class ManageProfileState {
       })
     );
   }
+
   @Action(UpdateProfile)
   updateProfile({ dispatch, patchState }: StateContext<StateModel>, { params }: UpdateProfile) {
     return this.profileService.apiProfilePut(params).pipe(

@@ -5,7 +5,7 @@ import { TuiInputType } from '@taiga-ui/cdk';
 import { Validators, FormBuilder } from '@angular/forms';
 import { RxState } from '@rx-angular/state';
 import { Subject } from 'rxjs';
-import { filter, switchMapTo } from 'rxjs/operators';
+import { filter, withLatestFrom } from 'rxjs/operators';
 import { ShowNotification } from '@shared/util';
 import { TuiNotification } from '@taiga-ui/core';
 import { Router } from '@angular/router';
@@ -36,8 +36,8 @@ export class SharedLoginComponent {
     actions: Actions,
     router: Router
   ) {
-    this.state.hold(this.login$.pipe(filter(() => this.form.valid)), () => {
-      this.state.set({ loading: true });
+    state.hold(this.login$.pipe(filter(() => this.form.valid)), () => {
+      state.set({ loading: true });
       const payload: Login['payload'] = {
         email: this.form.value.email,
         password: this.form.value.password
@@ -47,9 +47,9 @@ export class SharedLoginComponent {
 
     const whenSendFailed$ = actions
       .pipe<Login>(ofActionErrored(Login))
-      .pipe(switchMapTo(store.select(LoginState.errorMessage)));
-    state.hold(whenSendFailed$, (errorMessage) => {
-      this.state.set({ loading: false });
+      .pipe(withLatestFrom(store.select(LoginState.errorMessage)));
+    state.hold(whenSendFailed$, ([, errorMessage]) => {
+      state.set({ loading: false });
       store.dispatch(
         new ShowNotification({
           message: errorMessage || '',
@@ -60,7 +60,7 @@ export class SharedLoginComponent {
 
     const whenSendSuccess$ = actions.pipe<Login>(ofActionSuccessful(Login));
     state.hold(whenSendSuccess$, () => {
-      this.state.set({ loading: false });
+      state.set({ loading: false });
       store.dispatch(
         new ShowNotification({
           message: 'Have a good time',

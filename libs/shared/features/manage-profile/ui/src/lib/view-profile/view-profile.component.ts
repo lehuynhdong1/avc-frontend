@@ -1,17 +1,14 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Actions, Store, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { LoginState } from '@shared/auth/login/data-access';
-import { Logout } from '@shared/auth/logout/data-access';
 import { Subject } from 'rxjs';
-import { Empty, ShowNotification, hasValue } from '@shared/util';
+import { ShowNotification, hasValue } from '@shared/util';
 import { RxState } from '@rx-angular/state';
-import { filter, map, withLatestFrom, switchMap } from 'rxjs/operators';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { Validators, FormBuilder } from '@angular/forms';
 import { TuiMarkerIconMode } from '@taiga-ui/kit';
-import { TuiNotification, TuiAppearance } from '@taiga-ui/core';
+import { TuiNotification } from '@taiga-ui/core';
 import { ManageProfileState, UpdateProfile } from '@shared/features/manage-profile/data-access';
-import { Router } from '@angular/router';
-import { ConfirmDialogComponentParams, ConfirmDialogService } from '@shared/ui/confirm-dialog';
 
 @Component({
   selector: 'adc-frontend-view-profile',
@@ -35,7 +32,7 @@ export class ViewProfileComponent {
 
   readonly clickChangeAvatar$ = new Subject<Event | null>();
   readonly clickUpdate$ = new Subject<void>();
-  readonly clickLogout$ = new Subject<void>();
+  readonly loading$ = this.state.select('loading');
 
   /* Side effects */
   private whenUpdateSuccess$ = this.actions.pipe<UpdateProfile>(ofActionSuccessful(UpdateProfile));
@@ -44,14 +41,10 @@ export class ViewProfileComponent {
   constructor(
     private store: Store,
     private actions: Actions,
-    private state: RxState<Empty>,
-    private formBuilder: FormBuilder,
-    private confirmDialog: ConfirmDialogService,
-    private router: Router
+    private state: RxState<{ loading: boolean }>,
+    private formBuilder: FormBuilder
   ) {
-    this.state.hold(this.me$, (my) => {
-      this.form.get('phone')?.setValue(my?.phone?.slice(1) ?? '');
-    });
+    this.state.hold(this.me$, (my) => this.form.get('phone')?.setValue(my?.phone ?? ''));
     this.state.hold(
       this.clickChangeAvatar$.pipe(
         filter((event) => !!(event?.target as HTMLInputElement)?.files?.length),
@@ -75,30 +68,34 @@ export class ViewProfileComponent {
     );
     this.state.hold(whenUpdateValid$, (form) => {
       const { avatarImage, phone } = form;
+      this.state.set({ loading: true });
 
       this.store.dispatch(
         new UpdateProfile({
           avatarImage: avatarImage ?? undefined,
-          phone: phone ? `0${phone.replace('+84', '')}` : undefined
+          phone: phone ? phone.replace('+84', '') : undefined
         })
       );
     });
     const messagesWhenFailed$ = this.whenUpdateFailed$.pipe(withLatestFrom(this.errorMessage$));
     this.state.hold(messagesWhenFailed$, ([, errorMessage]) => {
+      this.state.set({ loading: false });
       this.store.dispatch(
         new ShowNotification({
           message: errorMessage,
-          options: { label: 'Update Staff', status: TuiNotification.Error }
+          options: { label: 'Update Profile', status: TuiNotification.Error }
         })
       );
     });
-    this.state.hold(this.whenUpdateSuccess$.pipe(withLatestFrom(this.me$)), ([, my]) => {
-      this.store.dispatch([
+    this.state.hold(this.whenUpdateSuccess$, () => {
+      this.state.set({ loading: false });
+
+      this.store.dispatch(
         new ShowNotification({
-          message: `${my?.firstName} ${my?.lastName} has been created successfully.`,
-          options: { label: 'Update Staff', status: TuiNotification.Success, hasIcon: true }
+          message: `Your profile has been updated successfully.`,
+          options: { label: 'Update Profile', status: TuiNotification.Success, hasIcon: true }
         })
-      ]);
+      );
     });
     this.state.hold(
       this.whenUpdateSuccess$.pipe(filter(() => this.form.value.clearWhenSuccess)),

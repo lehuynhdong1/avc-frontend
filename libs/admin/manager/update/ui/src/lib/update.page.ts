@@ -87,7 +87,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
     this.state.hold(id$, (id) => this.store.dispatch(new LoadManagerById({ id })));
 
     this.state.hold(this.manager$, ({ firstName, lastName, phone }) => {
-      this.form.patchValue({ firstName, lastName, phone: phone?.slice(1), roleId: Role.MANAGER });
+      this.form.patchValue({ firstName, lastName, phone, roleId: Role.MANAGER });
     });
 
     this.clickUpdateEffects();
@@ -141,7 +141,12 @@ export class UpdatePage implements CanShowUnsavedDialog {
       this.store.dispatch(
         new UpdateManager({
           id: managerInStore.id || 0,
-          accountUpdateDto: { firstName, lastName, phone, roleId }
+          accountUpdateDto: {
+            firstName,
+            lastName,
+            phone: phone ? phone.replace('+84', '') : undefined,
+            roleId
+          }
         })
       );
     });

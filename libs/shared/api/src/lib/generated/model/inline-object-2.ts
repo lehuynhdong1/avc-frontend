@@ -11,9 +11,5 @@
  */
 
 export interface InlineObject2 {
-  IsApproved: boolean;
-  ImageFile?: Blob;
-  Name?: string;
-  ConfigFile?: Blob;
-  ManagedBy?: number;
+  configFile?: Blob;
 }

@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface CarManagedByUpdateDto {
-  carId: number;
-  managerId?: number | null;
+export interface InlineObject5 {
+  imageFile?: Blob;
 }

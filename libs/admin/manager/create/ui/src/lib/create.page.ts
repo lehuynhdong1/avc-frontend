@@ -100,7 +100,7 @@ export class CreatePage implements CanShowUnsavedDialog {
           email,
           lastName,
           avatarImage,
-          phone: phone ? `0${phone.replace('+84', '')}` : undefined
+          phone: phone ? phone.replace('+84', '') : undefined
         })
       );
     });

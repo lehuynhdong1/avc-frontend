@@ -7,7 +7,9 @@ import { DataAccessModule } from '@shared/features/manage-profile/data-access';
   imports: [
     ViewProfileUiModule,
     DataAccessModule,
-    RouterModule.forChild([{ path: '', pathMatch: 'full', component: ViewProfilePage }])
+    RouterModule.forChild([
+      { path: '', pathMatch: 'full', component: ViewProfilePage, data: { title: 'My Profile' } }
+    ])
   ]
 })
 export class ViewProfileModule {}

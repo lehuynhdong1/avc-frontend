@@ -17,8 +17,14 @@ import { CarActivationDto } from '../model/models';
 import { CarListReadDtoPagingResponseDto } from '../model/models';
 import { CarManagedByUpdateDto } from '../model/models';
 import { CarReadDto } from '../model/models';
+import { CarUpdateDto } from '../model/models';
+import { DefaultCarConfigDto } from '../model/models';
 
 import { Configuration } from '../configuration';
+
+export interface ApiCarsDefaultconfigPutRequestParams {
+  configFile?: Blob;
+}
 
 export interface ApiCarsGetRequestParams {
   isAvailable?: boolean;
@@ -38,12 +44,31 @@ export interface ApiCarsIdApprovementPutRequestParams {
   isApproved: boolean;
   imageFile?: Blob;
   name?: string;
-  configFile?: Blob;
   managedBy?: number;
+}
+
+export interface ApiCarsIdAssignPutRequestParams {
+  id: number;
+  staffId?: number;
+}
+
+export interface ApiCarsIdConfigurationPutRequestParams {
+  id: number;
+  configFile?: Blob;
 }
 
 export interface ApiCarsIdGetRequestParams {
   id: number;
+}
+
+export interface ApiCarsIdImagePutRequestParams {
+  id: number;
+  imageFile?: Blob;
+}
+
+export interface ApiCarsIdPutRequestParams {
+  id: number;
+  carUpdateDto?: CarUpdateDto;
 }
 
 export interface ApiCarsManagedbyPutRequestParams {
@@ -59,6 +84,22 @@ export interface CarsServiceInterface {
   configuration: Configuration;
 
   /**
+   * Get Default Config
+   *
+   */
+  apiCarsDefaultconfigGet(extraHttpRequestParams?: any): Observable<DefaultCarConfigDto>;
+
+  /**
+   * Edit ConfigFile
+   *
+   * @param requestParameters
+   */
+  apiCarsDefaultconfigPut(
+    requestParameters: ApiCarsDefaultconfigPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
    *
    *
    * @param requestParameters
@@ -69,7 +110,7 @@ export interface CarsServiceInterface {
   ): Observable<CarListReadDtoPagingResponseDto>;
 
   /**
-   *
+   * Set Car Activation
    *
    * @param requestParameters
    */
@@ -79,12 +120,32 @@ export interface CarsServiceInterface {
   ): Observable<{}>;
 
   /**
-   *
+   * Approve or reject New Car
    *
    * @param requestParameters
    */
   apiCarsIdApprovementPut(
     requestParameters: ApiCarsIdApprovementPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   * Assign Car for Staff
+   *
+   * @param requestParameters
+   */
+  apiCarsIdAssignPut(
+    requestParameters: ApiCarsIdAssignPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   * Update Car Configuration
+   *
+   * @param requestParameters
+   */
+  apiCarsIdConfigurationPut(
+    requestParameters: ApiCarsIdConfigurationPutRequestParams,
     extraHttpRequestParams?: any
   ): Observable<{}>;
 
@@ -99,7 +160,27 @@ export interface CarsServiceInterface {
   ): Observable<CarReadDto>;
 
   /**
+   * Update Car Image
    *
+   * @param requestParameters
+   */
+  apiCarsIdImagePut(
+    requestParameters: ApiCarsIdImagePutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   * Update Car Name
+   *
+   * @param requestParameters
+   */
+  apiCarsIdPut(
+    requestParameters: ApiCarsIdPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   * Update Car ManagedBy
    *
    * @param requestParameters
    */

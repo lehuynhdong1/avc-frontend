@@ -11,6 +11,5 @@
  */
 
 export interface InlineObject4 {
-  Phone?: string;
-  AvatarImage?: Blob;
+  configFile?: Blob;
 }

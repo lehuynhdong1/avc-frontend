@@ -7,7 +7,14 @@ import { ChangePasswordPage, ChangePasswordUiModule } from '@admin/manage-profil
   imports: [
     DataAccessModule,
     ChangePasswordUiModule,
-    RouterModule.forChild([{ path: '', pathMatch: 'full', component: ChangePasswordPage }])
+    RouterModule.forChild([
+      {
+        path: '',
+        pathMatch: 'full',
+        component: ChangePasswordPage,
+        data: { title: 'Change Password' }
+      }
+    ])
   ]
 })
 export class ChangePasswordModule {}

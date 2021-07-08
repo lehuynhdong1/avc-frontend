@@ -4,7 +4,7 @@ import { ManagerState, LoadManagerById } from '@shared/features/manager/data-acc
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom, switchMapTo, shareReplay } from 'rxjs/operators';
+import { map, filter, switchMap, withLatestFrom, shareReplay } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { ConfirmDialogService } from '@shared/ui/confirm-dialog';
 import { TuiAppearance } from '@taiga-ui/core';
@@ -67,7 +67,7 @@ export class DetailPage {
   STAFF_DYNAMIC_COLUMNS: DynamicTableColumns<AccountReadDto> = [
     { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
     { key: 'email', title: 'Email', type: 'string' },
-    { key: 'phone', title: 'Phone', type: 'string' }
+    { key: 'phone', title: 'Phone', type: 'string', cellTemplate: '0#phone' }
   ];
   readonly selectedManager$ = this.store.select(ManagerState.selectedManager).pipe(hasValue());
   readonly isFullPage$: Observable<boolean> = this.activatedRoute.data.pipe(
@@ -99,17 +99,17 @@ export class DetailPage {
 
     const isAvailable$ = this.selectedManager$.pipe(map((manager) => manager.isAvailable ?? false));
     const whenClickActivate$ = this.clickActivate$.pipe(
-      switchMapTo(isAvailable$),
-      switchMap((currentValue) =>
+      withLatestFrom(isAvailable$),
+      switchMap(([, currentValue]) =>
         this.confirmDialogService.open(
           currentValue ? 'Deactivate car' : 'Activate car',
           getConfirmDialogParams(currentValue)
         )
       ),
       filter((response) => response === 1),
-      switchMapTo(isAvailable$)
+      withLatestFrom(isAvailable$, this.id$)
     );
-    this.state.hold(whenClickActivate$.pipe(withLatestFrom(this.id$)), ([currentStatus, id]) => {
+    this.state.hold(whenClickActivate$, ([, currentStatus, id]) => {
       this.store.dispatch(new ToggleActivation({ id, currentValue: currentStatus }));
     });
     this.state.hold(

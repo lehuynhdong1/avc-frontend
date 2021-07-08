@@ -64,6 +64,7 @@
     type="button"
     (click)="clickUpdate$.next()"
     class="w-full mb-3 primary"
+    [showLoader]="(loading$ | async) || false"
   >
     Update Profile
   </button>
@@ -74,6 +75,7 @@
     type="button"
     routerLink="change-password"
     class="w-full danger mb-3"
+    [showLoader]="(loading$ | async) || false"
   >
     Change Password
   </button>

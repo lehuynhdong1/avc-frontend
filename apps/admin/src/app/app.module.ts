@@ -13,6 +13,7 @@ import { UtilModule as SharedUtilModule } from '@shared/util';
 import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { getAppConfigProvider } from '@shared/app-config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     StateManagementModulesWithConfig(environment),
     LanguageModuleWithConfig({ prodMode: environment.production })
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [getAppConfigProvider(environment)]
 })
 export class AppModule {}

@@ -8,7 +8,7 @@ import { LoginState } from '@shared/auth/login/data-access';
 import {
   LoadCarById,
   CarState,
-  UpdateCarManagedBy,
+  UpdateCar,
   LoadApprovedCars
 } from '@shared/features/car/data-access';
 import { hasValue, ShowNotification, Empty, CanShowUnsavedDialog } from '@shared/util';
@@ -17,6 +17,8 @@ import { TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
 import { LoadManagers, ManagerState } from '@shared/features/manager/data-access';
 import { distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
+import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
+import { TuiMarkerIconMode } from '@taiga-ui/kit';
 
 @Component({
   templateUrl: './update.page.html',
@@ -25,10 +27,16 @@ import { distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/op
   providers: [RxState]
 })
 export class UpdatePage implements CanShowUnsavedDialog {
+  readonly MAXIMUM_IMAGE_SIZE = MAXIMUM_IMAGE_SIZE;
+  readonly MARKER_LINK = TuiMarkerIconMode.Link as const;
   willShowUnsavedDialog = false;
 
   form = this.formBuilder.group({
-    managedBy: [null, Validators.required]
+    name: ['', Validators.required],
+    managedBy: [null],
+    assignedTo: [null],
+    imageFile: [null],
+    configFile: [null]
   });
 
   car$ = this.store.select(CarState.selectedCar).pipe(hasValue());
@@ -41,6 +49,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
   /* Actions */
   clickUpdate$ = new Subject<void>();
   clickDiscard$ = new Subject<void>();
+  clickChangeAvatar$ = new Subject<Event | null>();
 
   constructor(
     private store: Store,
@@ -75,8 +84,14 @@ export class UpdatePage implements CanShowUnsavedDialog {
     this.store.dispatch(new LoadManagers({ limit: 10 }));
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
     this.state.hold(id$, (id) => this.store.dispatch(new LoadCarById({ id })));
-    this.state.hold(this.car$, ({ managedBy }) =>
-      this.form.patchValue({ managedBy: managedBy?.id })
+    this.state.hold(this.car$, ({ name, managedBy, assignTo, configUrl, image }) =>
+      this.form.patchValue({
+        managedBy: managedBy?.id,
+        name,
+        imageFile: image,
+        assignedTo: assignTo,
+        configFile: configUrl
+      })
     );
 
     this.clickUpdateEffects();
@@ -84,6 +99,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
     this.updateErrorEffects();
     this.updateSuccessEffects();
     this.handleUnsavedChangedDialogEffects();
+    this.clickChangeAvatarEffect();
   }
 
   private handleUnsavedChangedDialogEffects() {
@@ -97,7 +113,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
 
   private updateSuccessEffects() {
     const whenUpdateSuccess$ = this.actions
-      .pipe<UpdateCarManagedBy>(ofActionSuccessful(UpdateCarManagedBy))
+      .pipe<UpdateCar>(ofActionSuccessful(UpdateCar))
       .pipe(withLatestFrom(this.car$));
     this.state.hold(whenUpdateSuccess$, ([, car]) => {
       this.willShowUnsavedDialog = false;
@@ -115,7 +131,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
   private updateErrorEffects() {
     const errorMessage$ = this.store.select(CarState.errorMessage).pipe(hasValue());
     const messagesWhenFailed$ = this.actions
-      .pipe<UpdateCarManagedBy>(ofActionErrored(UpdateCarManagedBy))
+      .pipe<UpdateCar>(ofActionErrored(UpdateCar))
       .pipe(withLatestFrom(errorMessage$));
     this.state.hold(messagesWhenFailed$, ([, errorMessage]) => {
       this.store.dispatch(
@@ -134,10 +150,18 @@ export class UpdatePage implements CanShowUnsavedDialog {
       withLatestFrom(this.car$)
     );
     this.state.hold(whenUpdateValid$, ([form, carInStore]) => {
-      const { managedBy } = form;
+      const { managedBy, name, assignedTo, imageFile, configFile } = form;
+      const { id } = carInStore;
+      if (!id) return;
       this.store.dispatch(
-        new UpdateCarManagedBy({
-          carManagedByUpdateDto: { carId: carInStore.id, managerId: managedBy }
+        new UpdateCar({
+          managedBy: managedBy
+            ? { carManagedByUpdateDto: { carId: id, managerId: managedBy } }
+            : undefined,
+          name: name ? { id, carUpdateDto: { name } } : undefined,
+          assignedTo: assignedTo ? { id, staffId: assignedTo } : undefined,
+          image: imageFile ? { id, imageFile } : undefined,
+          config: configFile ? { id, configFile } : undefined
         })
       );
     });
@@ -148,5 +172,15 @@ export class UpdatePage implements CanShowUnsavedDialog {
       const detailPageRoute = this.router.url.replace('update/', '');
       this.router.navigateByUrl(detailPageRoute);
     });
+  }
+
+  private clickChangeAvatarEffect() {
+    this.state.hold(
+      this.clickChangeAvatar$.pipe(
+        filter((event) => !!(event?.target as HTMLInputElement)?.files?.length),
+        map((event) => (event?.target as HTMLInputElement).files)
+      ),
+      (files) => this.form.patchValue({ avatarImage: files && files[0] })
+    );
   }
 }

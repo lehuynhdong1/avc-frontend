@@ -1,4 +1,4 @@
-import { switchMapTo } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs/operators';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, Actions, ofActionErrored, ofActionSuccessful } from '@ngxs/store';
 import { ForgotPasswordState, SendRecoveryLink } from '@shared/auth/forgot-password/data-access';
@@ -57,8 +57,8 @@ export class SharedForgotPasswordComponent {
 
     const whenSendFailed$ = actions
       .pipe<SendRecoveryLink>(ofActionErrored(SendRecoveryLink))
-      .pipe(switchMapTo(this.store.select(ForgotPasswordState.errorMessage)));
-    state.hold(whenSendFailed$, (errorMessage) => {
+      .pipe(withLatestFrom(this.store.select(ForgotPasswordState.errorMessage)));
+    state.hold(whenSendFailed$, ([, errorMessage]) => {
       this.state.set({ loading: false });
       this.store.dispatch(
         new ShowNotification({

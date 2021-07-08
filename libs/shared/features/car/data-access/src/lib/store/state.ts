@@ -4,14 +4,14 @@ import {
   LoadApprovedCars,
   LoadUnapprovedCars,
   LoadCarById,
-  UpdateCarManagedBy,
+  UpdateCar,
   ToggleActivation,
   ToggleApprove
 } from './actions';
 import { CarsService } from '@shared/api';
 import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import { forkJoin, throwError } from 'rxjs';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -61,11 +61,19 @@ export class CarState {
     return this.carsService.apiCarsIdGet(params).pipe(tap((detail) => patchState({ detail })));
   }
 
-  @Action(UpdateCarManagedBy, { cancelUncompleted: true })
-  updateCarManagedBy({ patchState }: StateContext<StateModel>, { params }: UpdateCarManagedBy) {
-    return this.carsService.apiCarsManagedbyPut(params).pipe(
+  @Action(UpdateCar, { cancelUncompleted: true })
+  updateCarManagedBy({ patchState }: StateContext<StateModel>, { params }: UpdateCar) {
+    const updates = [
+      params.managedBy ? this.carsService.apiCarsManagedbyPut(params.managedBy) : undefined,
+      params.assignedTo ? this.carsService.apiCarsIdAssignPut(params.assignedTo) : undefined,
+      params.name ? this.carsService.apiCarsIdPut(params.name) : undefined,
+      params.image ? this.carsService.apiCarsIdImagePut(params.image) : undefined,
+      params.config ? this.carsService.apiCarsIdConfigurationPut(params.config) : undefined
+    ];
+    const forkJoin$ = forkJoin(updates.filter((item) => !!item));
+    return forkJoin$.pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] UpdateCarManagedBy failed with error: `, error);
+        console.warn(`[${STATE_NAME}] UpdateCar failed with error: `, error);
         const errorMessage = 'Update car failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);

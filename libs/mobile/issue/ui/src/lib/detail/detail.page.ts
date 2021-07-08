@@ -3,7 +3,7 @@ import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { IssueState, LoadIssueById } from '@shared/features/issue/data-access';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMapTo } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { hasValue, Empty } from '@shared/util';
 import { BottomBarVisibilityService } from '@mobile/core/ui';
@@ -39,8 +39,8 @@ export class DetailPage implements OnDestroy {
 
     const whenLoadIssueSuccess$ = this.actions
       .pipe<LoadIssueById>(ofActionSuccessful(LoadIssueById))
-      .pipe(switchMapTo(this.selectedIssue$));
-    this.state.hold(whenLoadIssueSuccess$, (issue) =>
+      .pipe(withLatestFrom(this.selectedIssue$));
+    this.state.hold(whenLoadIssueSuccess$, ([, issue]) =>
       this.store.dispatch(new LoadCarById({ id: issue.carId || 0 }))
     );
   }

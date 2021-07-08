@@ -22,7 +22,7 @@ export class ListingPage {
   readonly DYNAMIC_COLUMNS: DynamicTableColumns<AccountManagerDetailReadDto> = [
     { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
     { key: 'email', title: 'Email', type: 'string' },
-    { key: 'phone', title: 'Phone', type: 'string' },
+    { key: 'phone', title: 'Phone', type: 'string', cellTemplate: '0#phone' },
     {
       key: 'isAvailable',
       title: 'Activation Status',

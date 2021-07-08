@@ -3,14 +3,18 @@ import {
   ApiCarsIdGetRequestParams,
   ApiCarsGetRequestParams,
   ApiCarsManagedbyPutRequestParams,
-  ApiCarsIdApprovementPutRequestParams
+  ApiCarsIdApprovementPutRequestParams,
+  ApiCarsIdPutRequestParams,
+  ApiCarsIdAssignPutRequestParams,
+  ApiCarsIdConfigurationPutRequestParams,
+  ApiCarsIdImagePutRequestParams
 } from '@shared/api';
 
 const ACTIONS = {
   LOAD_APPROVED_CARS: `[${STATE_NAME}] Load approved cars`,
   LOAD_UNAPPROVED_CARS: `[${STATE_NAME}] Load unapproved cars`,
   LOAD_CAR_BY_ID: `[${STATE_NAME}] Load car by ID`,
-  UPDATE_CAR_MANAGED_BY: `[${STATE_NAME}] Update car by id & manager id`,
+  UPDATE_CAR: `[${STATE_NAME}] Update car by id & manager id includes (name, managedBy, assignedTo, config)`,
   TOGGLE_ACTIVATION: `[${STATE_NAME}] Toggle activation of a car`,
   TOGGLE_APPROVE: `[${STATE_NAME}] Toggle approve a car`
 };
@@ -32,9 +36,17 @@ export class LoadCarById {
   static readonly type = ACTIONS.LOAD_CAR_BY_ID;
   constructor(public readonly params: ApiCarsIdGetRequestParams) {}
 }
-export class UpdateCarManagedBy {
-  static readonly type = ACTIONS.UPDATE_CAR_MANAGED_BY;
-  constructor(public readonly params: ApiCarsManagedbyPutRequestParams) {}
+export class UpdateCar {
+  static readonly type = ACTIONS.UPDATE_CAR;
+  constructor(
+    public readonly params: {
+      managedBy?: ApiCarsManagedbyPutRequestParams;
+      name?: ApiCarsIdPutRequestParams;
+      assignedTo?: ApiCarsIdAssignPutRequestParams;
+      image?: ApiCarsIdImagePutRequestParams;
+      config?: ApiCarsIdConfigurationPutRequestParams;
+    }
+  ) {}
 }
 
 export class ToggleActivation {

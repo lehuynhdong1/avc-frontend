@@ -5,10 +5,23 @@ import { DetailPage } from './detail.page';
 import { TuiBadgeModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from '@shared/ui/avatar';
-import { TuiButtonModule, TuiLinkModule, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiFormatPhonePipeModule,
+  TuiLinkModule,
+  TuiLoaderModule,
+  TuiSvgModule
+} from '@taiga-ui/core';
 import { DynamicTableModule } from '@shared/ui/dynamic-table';
 
-const tuiModules = [TuiSvgModule, TuiBadgeModule, TuiButtonModule, TuiLinkModule, TuiLoaderModule];
+const tuiModules = [
+  TuiSvgModule,
+  TuiBadgeModule,
+  TuiButtonModule,
+  TuiLinkModule,
+  TuiLoaderModule,
+  TuiFormatPhonePipeModule
+];
 @NgModule({
   declarations: [DetailPage],
   imports: [

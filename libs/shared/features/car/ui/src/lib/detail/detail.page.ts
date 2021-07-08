@@ -10,7 +10,7 @@ import {
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom, shareReplay, switchMapTo } from 'rxjs/operators';
+import { map, filter, switchMap, withLatestFrom, shareReplay } from 'rxjs/operators';
 import { merge, Observable, Subject } from 'rxjs';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ShowNotification, hasValue, Empty } from '@shared/util';
@@ -94,8 +94,8 @@ export class DetailPage {
     );
     this.state.hold(
       merge(whenToggleActivationSuccess$, whenToggleApproveSuccess$).pipe(
-        switchMapTo(this.isFullPage$),
-        filter((isFullPage) => !isFullPage)
+        withLatestFrom(this.isFullPage$),
+        filter(([, isFullPage]) => !isFullPage)
       ),
       () => this.store.dispatch(new LoadApprovedCars({ limit: 10 }))
     );
@@ -103,8 +103,8 @@ export class DetailPage {
   private toggleActivationFailedSuccessEffects() {
     const whenToggleActivationFailed$ = this.actions
       .pipe<ToggleActivation>(ofActionErrored(ToggleActivation))
-      .pipe(switchMapTo(this.errorMessage$));
-    this.state.hold(whenToggleActivationFailed$, (errorMessage) =>
+      .pipe(withLatestFrom(this.errorMessage$));
+    this.state.hold(whenToggleActivationFailed$, ([, errorMessage]) =>
       this.store.dispatch(
         new ShowNotification({
           message: errorMessage ?? 'Error',
@@ -116,8 +116,8 @@ export class DetailPage {
   private toggleApproveSuccessEffects() {
     const whenToggleApproveFailed$ = this.actions
       .pipe<ToggleApprove>(ofActionErrored(ToggleApprove))
-      .pipe(switchMapTo(this.errorMessage$));
-    this.state.hold(whenToggleApproveFailed$, (errorMessage) =>
+      .pipe(withLatestFrom(this.errorMessage$));
+    this.state.hold(whenToggleApproveFailed$, ([, errorMessage]) =>
       this.store.dispatch(
         new ShowNotification({
           message: errorMessage ?? 'Error',
