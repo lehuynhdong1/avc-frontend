@@ -5,7 +5,14 @@
         <tui-svg src="assets/adc/icons/people.svg#people" class="size-m"></tui-svg>
         Manage Staffs
       </h1>
-      <button tuiButton type="button" size="m" icon="tuiIconPlusCircleLarge" routerLink="create">
+      <button
+        *ngIf="isAdmin$ | async"
+        tuiButton
+        type="button"
+        size="m"
+        icon="tuiIconPlusCircleLarge"
+        routerLink="create"
+      >
         Create new
       </button>
     </div>
@@ -16,7 +23,7 @@
           Search by staff name ...
         </tui-input>
         <adca-available-filter
-          class="w-44"
+          [class.w-44]="(isAdmin$ | async)"
           (valueChange)="changeIsAvailable$.next($event)"
         ></adca-available-filter>
       </section>

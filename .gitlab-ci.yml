@@ -124,7 +124,7 @@ build_apk:
     - |
       curl -X POST  \
       -H "Content-Type: application/json"  \
-      --data '{"text": ${MESSAGE_ANDROID}}'  \
+      --data '{"text": "*[AVC Mobile]*\n*API_URL*: ${API_URL}\n*Android* has been built successfully: ${CI_COMMIT_MESSAGE}.\nClick to download *APK* file <http://gitlab.com/adc/adc-frontend/-/jobs/$CI_JOB_ID/artifacts/download|here>"}'  \
       https://hooks.slack.com/services/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
 
   variables:

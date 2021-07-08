@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { map, filter, pairwise } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DynamicTableColumns } from './models/ui-state.model';
+import { LoginState } from '@shared/auth/login/data-access';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'adc-frontend-dynamic-table',
@@ -24,10 +26,13 @@ export class DynamicTableComponent<T extends HasId> {
 
   @Output() selectRow = new EventEmitter<Id>();
 
+  myRole$ = this.store.select(LoginState.account).pipe(map((my) => my?.role));
+
   selectedId$ = this.$.select('selectedId');
   readonly selectRow$ = new Subject<Id>();
 
   constructor(
+    private store: Store,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private $: RxState<DynamicTableUiState>
@@ -67,8 +72,12 @@ export class DynamicTableComponent<T extends HasId> {
     return typeof value;
   }
   @tuiPure
-  getKeys(columns: DynamicTableColumns<T>) {
-    return ['index', ...columns.map((col) => col.key)];
+  getKeys(columns: DynamicTableColumns<T>, role: string) {
+    if (!role) throw new Error('Role not specified');
+    const isAdmin = role === 'Admin';
+    const allCols = ['index', ...columns.map((col) => col.key)];
+    if (isAdmin) return allCols;
+    return allCols.filter((key) => key !== 'isAvailable');
   }
   @tuiPure
   toDate(value: string) {

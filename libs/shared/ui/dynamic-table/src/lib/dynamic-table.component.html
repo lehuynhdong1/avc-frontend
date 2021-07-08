@@ -1,58 +1,60 @@
-<table tuiTable [columns]="getKeys(columns) || []">
-  <thead>
-    <tr tuiThGroup>
-      <ng-container *ngIf="indexable">
-        <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
-      </ng-container>
-      <ng-container *ngFor="let column of columns">
-        <th *tuiHead="column.key" tuiTh [sorter]="null">{{ column.title }}</th>
-      </ng-container>
-    </tr>
-  </thead>
-  <tbody tuiTbody [data]="response?.result || array || []">
-    <tr
-      *tuiRow="let item of response?.result || array || []; let index = index"
-      tuiTr
-      [class.cursor-pointer]="selectable"
-      [class.active]="item.id === (selectedId$ | async)"
-      (click)="selectable && selectRow$.next(item.id || 0)"
-    >
-      <ng-container *ngIf="indexable">
-        <td *tuiCell="'index'" tuiTd>
-          <b>{{ index + 1 }}</b>
-        </td>
-      </ng-container>
-      <ng-container *ngFor="let column of columns">
-        <ng-container *ngIf="column.type === 'boolean'">
-          <td *tuiCell="column.key.toString()" tuiTd>
-            <adc-frontend-boolean-column
-              [item]="item"
-              [column]="column"
-            ></adc-frontend-boolean-column>
+<ng-container *ngIf="myRole$ | async as role">
+  <table tuiTable [columns]="getKeys(columns, role) || []">
+    <thead>
+      <tr tuiThGroup>
+        <ng-container *ngIf="indexable">
+          <th *tuiHead="'index'" tuiTh [sorter]="null">Index</th>
+        </ng-container>
+        <ng-container *ngFor="let column of columns">
+          <th *tuiHead="column.key" tuiTh [sorter]="null">{{ column.title }}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody tuiTbody [data]="response?.result || array || []">
+      <tr
+        *tuiRow="let item of response?.result || array || []; let index = index"
+        tuiTr
+        [class.cursor-pointer]="selectable"
+        [class.active]="item.id === (selectedId$ | async)"
+        (click)="selectable && selectRow$.next(item.id || 0)"
+      >
+        <ng-container *ngIf="indexable">
+          <td *tuiCell="'index'" tuiTd>
+            <b>{{ index + 1 }}</b>
           </td>
         </ng-container>
-        <ng-container *ngIf="column.type === 'date'">
-          <td *tuiCell="column.key.toString()" tuiTd>
-            {{ item[column.key] ? (toDate(item[column.key]) | date) : 'Undefined' }}
-          </td>
+        <ng-container *ngFor="let column of columns">
+          <ng-container *ngIf="column.type === 'boolean'">
+            <td *tuiCell="column.key.toString()" tuiTd>
+              <adc-frontend-boolean-column
+                [item]="item"
+                [column]="column"
+              ></adc-frontend-boolean-column>
+            </td>
+          </ng-container>
+          <ng-container *ngIf="column.type === 'date'">
+            <td *tuiCell="column.key.toString()" tuiTd>
+              {{ item[column.key] ? (toDate(item[column.key]) | date) : 'Undefined' }}
+            </td>
+          </ng-container>
+          <ng-container *ngIf="column.type === 'string'">
+            <td *tuiCell="column.key.toString()" tuiTd>
+              {{
+                column.cellTemplate ? (item | cellTemplate: column.cellTemplate) : item[column.key]
+              }}
+            </td>
+          </ng-container>
         </ng-container>
-        <ng-container *ngIf="column.type === 'string'">
-          <td *tuiCell="column.key.toString()" tuiTd>
-            {{
-              column.cellTemplate ? (item | cellTemplate: column.cellTemplate) : item[column.key]
-            }}
-          </td>
-        </ng-container>
-      </ng-container>
-    </tr>
-  </tbody>
-</table>
-<tui-pagination
-  *ngIf="paginable && (response?.count || array?.length)"
-  [length]="calcTotalPageCount(response?.count || array?.length)"
-  [index]="0"
-  class="mt-3 self-end"
-></tui-pagination>
-<p *ngIf="(response?.result || array)?.length === 0" class="text-red-400 text-base">
-  There is no matching result!
-</p>
+      </tr>
+    </tbody>
+  </table>
+  <tui-pagination
+    *ngIf="paginable && (response?.count || array?.length)"
+    [length]="calcTotalPageCount(response?.count || array?.length)"
+    [index]="0"
+    class="mt-3 self-end"
+  ></tui-pagination>
+  <p *ngIf="(response?.result || array)?.length === 0" class="text-red-400 text-base">
+    There is no matching result!
+  </p>
+</ng-container>

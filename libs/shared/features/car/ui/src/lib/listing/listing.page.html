@@ -12,6 +12,7 @@
         appearance="outline"
         icon="assets/adc/icons/wall-clock.svg#wall-clock"
         routerLink="unapproved"
+        *ngIf="isAdmin$ | async"
       >
         Unapproved Cars ({{unapprovedCarsCount$ | async}})
       </button>
@@ -23,7 +24,7 @@
           Search by car name ...
         </tui-input>
         <adca-available-filter
-          class="w-44"
+          [class.w-44]="(isAdmin$ | async)"
           (valueChange)="changeIsAvailable$.next($event)"
         ></adca-available-filter>
       </section>

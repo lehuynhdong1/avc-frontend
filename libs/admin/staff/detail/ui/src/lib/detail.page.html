@@ -1,20 +1,23 @@
 <aside class="relative" [class.fullpage]="isFullPage$ | async">
   <main *ngIf="selectedStaff$ | async as staff; else loading">
-    <tui-svg
-      class="top-right !right-20 cursor-pointer text-green-600 hover:text-green-800"
-      src="tuiIconExternalLarge"
-      [routerLink]="'/staff/detail/'+staff.id"
-    ></tui-svg>
-    <tui-svg
-      class="top-right !right-12 cursor-pointer text-yellow-400 hover:text-yellow-500"
-      src="tuiIconEditLarge"
-      [routerLink]="'/staff/update/'+staff.id"
-    ></tui-svg>
-    <tui-svg
-      class="top-right cursor-pointer text-red-500 hover:text-red-700"
-      src="tuiIconRemoveLarge"
-      routerLink="/staff"
-    ></tui-svg>
+    <div class="top-right">
+      <tui-svg
+        class="mx-1 cursor-pointer text-green-600 hover:text-green-800"
+        src="tuiIconExternalLarge"
+        [routerLink]="'/staff/detail/'+staff.id"
+      ></tui-svg>
+      <tui-svg
+        class="mx-1 cursor-pointer text-yellow-400 hover:text-yellow-500"
+        src="tuiIconEditLarge"
+        [routerLink]="'/staff/update/'+staff.id"
+        *ngIf="isAdmin$ | async"
+      ></tui-svg>
+      <tui-svg
+        class="mx-1 cursor-pointer text-red-500 hover:text-red-700"
+        src="tuiIconRemoveLarge"
+        routerLink="/staff"
+      ></tui-svg>
+    </div>
     <h1>
       <tui-svg src="assets/adc/icons/people.svg#people" class="size-m"></tui-svg>
       Staff Detail
@@ -42,25 +45,27 @@
         <ng-template #notHasManagedBy> None </ng-template>
       </h3>
 
-      <b class="text-gray-600 mb-1">Activation Status</b>
-      <div class="self-start mb-3">
-        <tui-badge
-          size="l"
-          [value]="staff.isAvailable ? 'Active' : 'Inactive'"
-          [status]="staff.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
-          class="mr-2"
-        ></tui-badge>
-        <button
-          tuiButton
-          size="s"
-          appearance="outline"
-          type="button"
-          (click)="this.clickActivate$.next()"
-          [class.deactivate]="staff.isAvailable"
-        >
-          {{staff.isAvailable ? 'Deactivate': 'Reactivate'}}
-        </button>
-      </div>
+      <ng-container *ngIf="isAdmin$ | async">
+        <b class="text-gray-600 mb-1">Activation Status</b>
+        <div class="self-start mb-3">
+          <tui-badge
+            size="l"
+            [value]="staff.isAvailable ? 'Active' : 'Inactive'"
+            [status]="staff.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+            class="mr-2"
+          ></tui-badge>
+          <button
+            tuiButton
+            size="s"
+            appearance="outline"
+            type="button"
+            (click)="this.clickActivate$.next()"
+            [class.deactivate]="staff.isAvailable"
+          >
+            {{staff.isAvailable ? 'Deactivate': 'Reactivate'}}
+          </button>
+        </div>
+      </ng-container>
 
       <section *ngIf="(isFullPage$ | async) === undefined">
         <label>Assigned Cars ({{staff.assignedCars?.length}})</label>

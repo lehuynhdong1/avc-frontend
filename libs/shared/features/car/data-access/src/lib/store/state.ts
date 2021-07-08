@@ -1,4 +1,4 @@
-import { State, Selector, Action, StateContext } from '@ngxs/store';
+import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
 import {
   LoadApprovedCars,
@@ -12,6 +12,7 @@ import { CarsService } from '@shared/api';
 import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { forkJoin, throwError } from 'rxjs';
+import { LoginState } from '@shared/auth/login/data-access';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -36,12 +37,13 @@ export class CarState {
     return errorMessage;
   }
 
-  constructor(private carsService: CarsService) {}
+  constructor(private carsService: CarsService, private store: Store) {}
 
   @Action(LoadApprovedCars, { cancelUncompleted: true })
   loadApprovedCars({ patchState }: StateContext<StateModel>, { params }: LoadApprovedCars) {
+    const isAdmin = this.store.selectSnapshot(LoginState.account)?.role === 'Admin';
     return this.carsService
-      .apiCarsGet({ ...params, isApproved: true })
+      .apiCarsGet({ ...params, isApproved: true, isAvailable: isAdmin ? undefined : true })
       .pipe(tap((listing) => patchState({ approvedListing: listing })));
   }
 
@@ -49,6 +51,8 @@ export class CarState {
     { patchState }: StateContext<StateModel>,
     { params }: LoadUnapprovedCars
   ) {
+    const isAdmin = this.store.selectSnapshot(LoginState.account)?.role === 'Admin';
+    if (!isAdmin) return;
     return this.carsService
       .apiCarsGet({ ...params, isApproved: null as never })
       .pipe(tap((listing) => patchState({ unapprovedListing: listing })));

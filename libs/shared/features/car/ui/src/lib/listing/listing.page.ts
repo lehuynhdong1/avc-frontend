@@ -5,10 +5,11 @@ import { combineLatest, Subject } from 'rxjs';
 import { CarListReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith, share, filter } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { hasValue, Empty } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
+import { LoginState } from '@shared/auth/login/data-access';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -50,7 +51,10 @@ export class ListingPage {
     hasValue(),
     map((cars) => cars.count)
   );
-
+  readonly isAdmin$ = this.store.select(LoginState.account).pipe(
+    map((my) => my?.role === 'Admin'),
+    share()
+  );
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
   readonly changeIsAvailable$ = new Subject<boolean | undefined>();
@@ -61,7 +65,9 @@ export class ListingPage {
     private activatedRoute: ActivatedRoute,
     private state: RxState<Empty>
   ) {
-    this.store.dispatch(new LoadUnapprovedCars());
+    state.hold(this.isAdmin$.pipe(filter((isAdmin) => isAdmin)), () =>
+      this.store.dispatch(new LoadUnapprovedCars())
+    );
     this.declareSideEffects();
   }
 

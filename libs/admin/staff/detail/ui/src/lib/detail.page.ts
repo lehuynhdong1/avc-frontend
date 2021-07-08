@@ -4,7 +4,7 @@ import { StaffState, LoadStaffById } from '@shared/features/staff/data-access';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom, mapTo, shareReplay } from 'rxjs/operators';
+import { map, filter, switchMap, withLatestFrom, mapTo, shareReplay, share } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { ConfirmDialogService } from '@shared/ui/confirm-dialog';
 import { TuiAppearance } from '@taiga-ui/core';
@@ -14,6 +14,7 @@ import { ShowNotification, hasValue, Empty } from '@shared/util';
 import { Title } from '@angular/platform-browser';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { CarAssignedReadDto } from '@shared/api';
+import { LoginState } from '@shared/auth/login/data-access';
 
 const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
   isActivated
@@ -63,6 +64,10 @@ export class DetailPage {
   readonly isFullPage$: Observable<boolean> = this.activatedRoute.data.pipe(
     map(({ fullPage }) => fullPage),
     shareReplay(1)
+  );
+  readonly isAdmin$ = this.store.select(LoginState.account).pipe(
+    map((my) => my?.role === 'Admin'),
+    share()
   );
   private readonly errorMessage$ = this.store.select(StaffState.errorMessage).pipe(hasValue());
   readonly selectCar$ = new Subject<Id>();

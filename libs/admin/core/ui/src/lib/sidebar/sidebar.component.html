@@ -32,7 +32,7 @@
     <div class="nav__divider"></div>
     <ul class="nav__list">
       <li
-        *ngFor="let item of navItems"
+        *ngFor="let item of navItems$ | async"
         [routerLink]="item.path"
         routerLinkActive="active"
         class="nav__list-item"

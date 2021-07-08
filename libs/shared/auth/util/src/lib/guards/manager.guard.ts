@@ -4,14 +4,12 @@ import { Store } from '@ngxs/store';
 import { LoginState } from '@shared/auth/login/data-access';
 
 @Injectable()
-export class IsLoggedInGuard implements CanActivate {
+export class ManagerGuard implements CanActivate {
   constructor(private router: Router, private _store: Store) {}
 
-  async canActivate() {
-    const isLogined = !!this._store.selectSnapshot(LoginState.token);
-    if (!isLogined) {
-      this.router.navigateByUrl('/login');
-    }
-    return isLogined;
+  async canActivate(): Promise<boolean> {
+    const isManager = this._store.selectSnapshot(LoginState.account)?.role === 'Manager';
+    if (!isManager) return this.router.navigateByUrl('/');
+    return isManager;
   }
 }

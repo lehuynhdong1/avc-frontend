@@ -5,6 +5,7 @@ import { TuiSelectModule, TuiDataListWrapperModule, TuiBadgeModule } from '@taig
 import { TuiDataListModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StatusPipe } from './status.pipe';
+import { CommonModule } from '@angular/common';
 
 const tuiModules = [
   TuiBadgeModule,
@@ -16,7 +17,7 @@ const tuiModules = [
 
 @NgModule({
   declarations: [AvailableFilterComponent, StatusPipe],
-  imports: [tuiModules, ReactiveFormsModule],
+  imports: [CommonModule, tuiModules, ReactiveFormsModule],
   exports: [AvailableFilterComponent]
 })
 export class AvailableFilterModule {}

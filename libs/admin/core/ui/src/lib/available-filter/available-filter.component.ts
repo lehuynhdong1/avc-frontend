@@ -9,8 +9,10 @@ import {
 import { ActivationStatuses, Empty, ActivationStatus } from '@shared/util';
 import { FormControl } from '@angular/forms';
 import { RxState } from '@rx-angular/state';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, map, share } from 'rxjs/operators';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
+import { Store } from '@ngxs/store';
+import { LoginState } from '@shared/auth/login/data-access';
 
 @Component({
   selector: 'adca-available-filter',
@@ -26,9 +28,14 @@ export class AvailableFilterComponent implements OnInit {
   @Input() size: TuiSizeS | TuiSizeL = 'l';
   @Output() valueChange = new EventEmitter<boolean | undefined>();
 
+  readonly isAdmin$ = this.store.select(LoginState.account).pipe(
+    map((my) => my?.role === 'Admin'),
+    share()
+  );
+
   readonly control = new FormControl('');
 
-  constructor(private state: RxState<Empty>) {
+  constructor(private state: RxState<Empty>, private store: Store) {
     this.state.hold(this.control.valueChanges.pipe(debounceTime(200)), (value) => {
       const isAvailableValue = ActivationStatus[value as ActivationStatuses];
       this.valueChange.emit(isAvailableValue);

@@ -5,10 +5,11 @@ import { Subject, combineLatest } from 'rxjs';
 import { AccountStaffDetailReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, startWith, map, share } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { Empty } from '@shared/util';
+import { LoginState } from '@shared/auth/login/data-access';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -39,7 +40,10 @@ export class ListingPage {
 
   /* Attribute Streams */
   readonly staffs$ = this.store.select(StaffState.staffs);
-
+  readonly isAdmin$ = this.store.select(LoginState.account).pipe(
+    map((my) => my?.role === 'Admin'),
+    share()
+  );
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
   readonly changeIsAvailable$ = new Subject<boolean | undefined>();

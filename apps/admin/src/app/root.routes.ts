@@ -7,7 +7,7 @@ import { staffRoutes } from '@admin/staff/routes';
 import { issueRoutes } from '@admin/issue/routes';
 import { manageProfileRoutes } from '@admin/manage-profile/feature';
 import { managerRoutes } from '@admin/manager/routes';
-import { IsLoggedInGuard } from '@shared/auth/util';
+import { IsLoggedInGuard, AdminGuard } from '@shared/auth/util';
 import { dashboardRoutes } from '@admin/dashboard/routes';
 
 export const routes: Routes = [
@@ -30,12 +30,12 @@ export const routes: Routes = [
       {
         path: 'manager',
         children: managerRoutes,
-        canActivate: [IsLoggedInGuard]
+        canActivate: [AdminGuard]
       },
       {
         path: 'training',
         children: trainModelRoutes,
-        canActivate: [IsLoggedInGuard]
+        canActivate: [AdminGuard]
       },
       {
         path: 'issue',
@@ -50,10 +50,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         children: dashboardRoutes,
-        canActivate: [IsLoggedInGuard]
+        canActivate: [AdminGuard]
       },
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' }
-    ]
-    // canActivate: [IsLoggedInGuard]
+    ],
+    canActivate: [IsLoggedInGuard]
   }
 ];

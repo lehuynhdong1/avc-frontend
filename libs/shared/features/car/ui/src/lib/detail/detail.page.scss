@@ -46,7 +46,7 @@ aside {
       @apply flex flex-col w-full;
     }
     section.car__information-extend {
-      @apply flex flex-col;
+      @apply flex flex-col w-full;
     }
 
     h1 {
@@ -61,7 +61,7 @@ aside {
     @apply bg-transparent;
     @apply w-3/4 max-w-full;
 
-    tui-svg.top-right {
+    .top-right {
       @apply hidden;
     }
     main {
@@ -85,7 +85,7 @@ aside {
   }
 }
 
-tui-svg.top-right {
+.top-right {
   @apply absolute top-3 right-3;
 }
 

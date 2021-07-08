@@ -1,4 +1,4 @@
-import { State, Selector, Action, StateContext } from '@ngxs/store';
+import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE, CreateStatus } from './state.model';
 import {
   LoadStaffs,
@@ -13,6 +13,7 @@ import { Injectable } from '@angular/core';
 import { ToggleActivation } from '@shared/features/account/data-access';
 import { throwError } from 'rxjs';
 import { update } from '@rx-angular/state';
+import { LoginState } from '@shared/auth/login/data-access';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -37,14 +38,15 @@ export class StaffState {
     return errorMessage;
   }
 
-  constructor(private accountsService: AccountsService) {}
+  constructor(private accountsService: AccountsService, private store: Store) {}
 
   @Action(LoadStaffs, { cancelUncompleted: true }) loadStaffs(
     { patchState }: StateContext<StateModel>,
     { params }: LoadStaffs
   ) {
+    const isAdmin = this.store.selectSnapshot(LoginState.account)?.role === 'Admin';
     return this.accountsService
-      .apiAccountsStaffsGet(params)
+      .apiAccountsStaffsGet({ ...params, isAvailable: isAdmin ? undefined : true })
       .pipe(tap((listing) => patchState({ listing })));
   }
   @Action(LoadStaffById, { cancelUncompleted: true }) loadStaffById(

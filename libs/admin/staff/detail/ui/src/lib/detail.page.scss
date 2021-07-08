@@ -35,7 +35,7 @@
   }
 }
 
-tui-svg.top-right {
+.top-right {
   @apply absolute top-3 right-3;
 }
 
@@ -68,7 +68,7 @@ aside {
     @apply bg-transparent;
     @apply w-full max-w-full;
 
-    tui-svg.top-right {
+    .top-right {
       @apply hidden;
     }
     main {

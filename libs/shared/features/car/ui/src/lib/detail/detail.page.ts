@@ -10,13 +10,14 @@ import {
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom, shareReplay } from 'rxjs/operators';
+import { map, filter, switchMap, withLatestFrom, shareReplay, share } from 'rxjs/operators';
 import { merge, Observable, Subject } from 'rxjs';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ShowNotification, hasValue, Empty } from '@shared/util';
 import { IssueReadDto } from '@shared/api';
 import { DynamicTableColumns } from '@shared/ui/dynamic-table';
 import { ConfirmDialogService, ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
+import { LoginState } from '@shared/auth/login/data-access';
 
 const getConfirmDialogParams: (
   type: 'isAvailable' | 'isApproved',
@@ -57,6 +58,10 @@ export class DetailPage {
     { key: 'location', title: 'Location', type: 'string' }
   ];
   readonly selectedCar$ = this.store.select(CarState.selectedCar).pipe(hasValue());
+  readonly isAdmin$ = this.store.select(LoginState.account).pipe(
+    map((my) => my?.role === 'Admin'),
+    share()
+  );
   private readonly errorMessage$ = this.store.select(CarState.errorMessage).pipe(hasValue());
   private readonly id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
   readonly isFullPage$: Observable<boolean> = this.activatedRoute.data.pipe(

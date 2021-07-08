@@ -25,8 +25,6 @@ export class ListingPage {
     { key: 'location', title: 'Location', type: 'string' }
   ];
   readonly searchControl = new FormControl('');
-  page = 0;
-  size = 10;
 
   /* Attribute Streams */
   readonly issues$ = this.store.select(IssueState.issues);
