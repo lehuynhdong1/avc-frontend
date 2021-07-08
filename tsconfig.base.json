@@ -174,7 +174,10 @@
       "@admin/manage-profile/feature": ["libs/admin/manage-profile/feature/src/index.ts"],
       "@admin/manage-profile/ui": ["libs/admin/manage-profile/ui/src/index.ts"],
       "@admin/car/ui": ["libs/admin/car/ui/src/index.ts"],
-      "@admin/car/feature": ["libs/admin/car/feature/src/index.ts"]
+      "@admin/car/feature": ["libs/admin/car/feature/src/index.ts"],
+      "@shared/features/signalr/data-access": [
+        "libs/shared/features/signalr/data-access/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

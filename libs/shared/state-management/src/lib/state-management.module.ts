@@ -8,14 +8,21 @@ import {
   DataAccessModule as LoginDataAccessModule
 } from '@shared/auth/login/data-access';
 import { DataAccessModule as LogoutDataAccessModule } from '@shared/auth/logout/data-access';
+import { DataAccessModule as SignalRDataAccessModule } from '@shared/features/signalr/data-access';
+import { DataAccessModule as CarDataAccessModule } from '@shared/features/car/data-access';
 
-const featureStates = [LoginDataAccessModule, LogoutDataAccessModule];
+const featureStates = [
+  LoginDataAccessModule,
+  LogoutDataAccessModule,
+  SignalRDataAccessModule,
+  CarDataAccessModule
+];
 
 export function StateManagementModulesWithConfig(config: AppConfig) {
   return [
     NgxsModule.forRoot([], { developmentMode: !config.production }),
     NgxsStoragePluginModule.forRoot({ key: [LoginState] }),
-    NgxsLoggerPluginModule.forRoot({ disabled: config.production }),
+    NgxsLoggerPluginModule.forRoot({ disabled: true }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: config.production }),
     ...featureStates
   ];

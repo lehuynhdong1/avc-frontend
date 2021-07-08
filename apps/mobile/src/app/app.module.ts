@@ -13,6 +13,7 @@ import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
+import { getAppConfigProvider } from '@shared/app-config';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -31,6 +32,7 @@ import { IonicModule } from '@ionic/angular';
     StateManagementModulesWithConfig(environment),
     LanguageModuleWithConfig({ prodMode: environment.production })
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [getAppConfigProvider(environment)]
 })
 export class AppModule {}

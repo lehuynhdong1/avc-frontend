@@ -30,9 +30,7 @@ type WhenCarDisconnected = WhenCarConnected;
 type WhenCarRunning = WhenCarConnected;
 type WhenCarStopping = WhenCarConnected;
 
-interface ConnectAccountParams {
-  accountId: number;
-}
+type ConnectAccountParams = number;
 
 interface StartCarParams {
   carId: number;

@@ -6,7 +6,7 @@
   ></tui-svg>
   <form class="p-5 flex flex-col" [formGroup]="form" *ngIf="car$| async as car">
     <h2>Update Car</h2>
-    <div class="p-4 flex justify-center items-center relative">
+    <div class="p-4 flex justify-center items-center relative" *ngIf="isAdmin$ | async">
       <tui-input-file
         link="Choose an avatar"
         accept="image/*"
@@ -43,7 +43,7 @@
       <h2 class="my-0 ml-2">{{car.deviceId}}</h2>
     </div>
 
-    <div class="flex flex-col mb-3">
+    <div class="flex flex-col mb-3" *ngIf="isAdmin$ | async">
       <label>Name </label>
       <tui-input
         tuiTextfieldSize="m"
@@ -58,30 +58,58 @@
         </span>
       </tui-input>
     </div>
-    <label class="mb-2">Managed by</label>
-    <tui-select
-      *tuiLet="managers$ | async as managers"
-      tuiTextfieldSize="m"
-      [tuiTextfieldLabelOutside]="true"
-      [tuiTextfieldCleaner]="true"
-      [valueContent]="managers ? stringifyManagers(managers) : loading"
-      tuiTextfieldExampleText="Select manager for this car."
-      formControlName="managedBy"
-      class="mb-3"
-    >
-      <span class="text-gray-300">
-        Select manager for this car
-        <tui-svg src="tuiIconEdit"></tui-svg>
-      </span>
 
-      <ng-template tuiDataList>
-        <tui-data-list *ngIf="managers else loading">
-          <button tuiOption *ngFor="let manager of managers" [value]="manager.id">
-            {{manager.firstName}} {{manager.lastName}}
-          </button>
-        </tui-data-list>
-      </ng-template>
-    </tui-select>
+    <ng-container *ngIf="isAdmin$ | async">
+      <label class="mb-2">Managed by</label>
+      <tui-select
+        *tuiLet="managers$ | async as managers"
+        tuiTextfieldSize="m"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldCleaner]="true"
+        [valueContent]="managers ? stringifyManagers(managers) : loading"
+        tuiTextfieldExampleText="Select manager for this car."
+        formControlName="managedBy"
+        class="mb-3"
+      >
+        <span class="text-gray-300">
+          Select manager for this car
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+        <ng-template tuiDataList>
+          <tui-data-list *ngIf="managers else loading">
+            <button tuiOption *ngFor="let manager of managers" [value]="manager.id">
+              {{manager.firstName}} {{manager.lastName}}
+            </button>
+          </tui-data-list>
+        </ng-template>
+      </tui-select>
+    </ng-container>
+
+    <ng-container *ngIf="isManager$ | async">
+      <label class="mb-2">Assigned to</label>
+      <tui-select
+        *tuiLet="staffs$ | async as staffs"
+        tuiTextfieldSize="m"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldCleaner]="true"
+        [valueContent]="staffs ? stringifyManagers(staffs) : loading"
+        tuiTextfieldExampleText="Select staff for this car."
+        formControlName="assignedTo"
+        class="mb-3"
+      >
+        <span class="text-gray-300">
+          Select staff for this car
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+        <ng-template tuiDataList>
+          <tui-data-list *ngIf="staffs else loading">
+            <button tuiOption *ngFor="let staff of staffs" [value]="staff.id">
+              {{staff.firstName}} {{staff.lastName}}
+            </button>
+          </tui-data-list>
+        </ng-template>
+      </tui-select>
+    </ng-container>
 
     <button tuiButton (click)="clickUpdate$.next()" size="m" [disabled]="form.invalid" class="mb-2">
       Save

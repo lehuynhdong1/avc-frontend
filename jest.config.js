@@ -91,6 +91,7 @@ module.exports = {
     '<rootDir>/libs/mobile/manager/feature',
     '<rootDir>/libs/mobile/manager/ui',
     '<rootDir>/libs/admin/manage-profile/feature',
-    '<rootDir>/libs/admin/manage-profile/ui'
+    '<rootDir>/libs/admin/manage-profile/ui',
+    '<rootDir>/libs/shared/features/signalr/data-access'
   ]
 };

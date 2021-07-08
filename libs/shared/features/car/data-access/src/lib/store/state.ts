@@ -67,12 +67,19 @@ export class CarState {
 
   @Action(UpdateCar, { cancelUncompleted: true })
   updateCarManagedBy({ patchState }: StateContext<StateModel>, { params }: UpdateCar) {
+    const isAdmin = this.store.selectSnapshot(LoginState.account)?.role === 'Admin';
     const updates = [
-      params.managedBy ? this.carsService.apiCarsManagedbyPut(params.managedBy) : undefined,
+      isAdmin && params.managedBy
+        ? this.carsService.apiCarsManagedbyPut(params.managedBy)
+        : undefined,
       params.assignedTo ? this.carsService.apiCarsIdAssignPut(params.assignedTo) : undefined,
-      params.name ? this.carsService.apiCarsIdPut(params.name) : undefined,
-      params.image ? this.carsService.apiCarsIdImagePut(params.image) : undefined,
-      params.config ? this.carsService.apiCarsIdConfigurationPut(params.config) : undefined
+      isAdmin && params.name ? this.carsService.apiCarsIdPut(params.name) : undefined,
+      isAdmin && params.image && typeof params.image.imageFile !== 'string'
+        ? this.carsService.apiCarsIdImagePut(params.image)
+        : undefined,
+      isAdmin && params.config
+        ? this.carsService.apiCarsIdConfigurationPut(params.config)
+        : undefined
     ];
     const forkJoin$ = forkJoin(updates.filter((item) => !!item));
     return forkJoin$.pipe(

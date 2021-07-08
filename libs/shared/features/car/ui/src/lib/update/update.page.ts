@@ -16,9 +16,10 @@ import { TuiContextWithImplicit, tuiPure, TuiStringHandler } from '@taiga-ui/cdk
 import { TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
 import { LoadManagers, ManagerState } from '@shared/features/manager/data-access';
-import { distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, skip, withLatestFrom, share } from 'rxjs/operators';
 import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
 import { TuiMarkerIconMode } from '@taiga-ui/kit';
+import { LoadStaffs, StaffState } from '@shared/features/staff/data-access';
 
 @Component({
   templateUrl: './update.page.html',
@@ -44,6 +45,18 @@ export class UpdatePage implements CanShowUnsavedDialog {
   managers$ = this.store.select(ManagerState.managers).pipe(
     hasValue(),
     map((managers) => managers.result || [])
+  );
+  staffs$ = this.store.select(StaffState.staffs).pipe(
+    hasValue(),
+    map((staffs) => staffs.result || [])
+  );
+  readonly isAdmin$ = this.store.select(LoginState.account).pipe(
+    map((my) => my?.role === 'Admin'),
+    share()
+  );
+  readonly isManager$ = this.store.select(LoginState.account).pipe(
+    map((my) => my?.role === 'Manager'),
+    share()
   );
 
   /* Actions */
@@ -81,7 +94,15 @@ export class UpdatePage implements CanShowUnsavedDialog {
   }
 
   private declareUpdateSideEffects() {
-    this.store.dispatch(new LoadManagers({ limit: 10 }));
+    this.state.hold(this.isAdmin$.pipe(filter((isAdmin) => isAdmin)), () =>
+      this.store.dispatch(new LoadManagers({}))
+    );
+    this.state.hold(
+      this.isManager$.pipe(
+        filter((isManager) => isManager),
+        () => this.store.dispatch(new LoadStaffs({}))
+      )
+    );
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
     this.state.hold(id$, (id) => this.store.dispatch(new LoadCarById({ id })));
     this.state.hold(this.car$, ({ name, managedBy, assignTo, configUrl, image }) =>
@@ -89,7 +110,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
         managedBy: managedBy?.id,
         name,
         imageFile: image,
-        assignedTo: assignTo,
+        assignedTo: assignTo?.id,
         configFile: configUrl
       })
     );

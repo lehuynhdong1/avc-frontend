@@ -10,7 +10,6 @@
         class="mx-1 cursor-pointer text-yellow-400 hover:text-yellow-500"
         src="tuiIconEditLarge"
         [routerLink]="'/car/update/'+car.id"
-        *ngIf="isAdmin$ | async"
       ></tui-svg>
       <tui-svg
         class="mx-1 cursor-pointer text-red-500 hover:text-red-700"
@@ -68,6 +67,25 @@
             <div class="cursor-pointer" [routerLink]="'/manager/'+car.managedBy?.id">
               View
               <strong>{{car.managedBy?.lastName}} {{car.managedBy?.firstName}}</strong> in detail
+            </div>
+          </ng-template>
+        </h3>
+
+        <b class="text-gray-600">Assigned to</b>
+        <h3 class="mt-0 mb-3">
+          <a [routerLink]="'/staff/'+car.assignTo?.id" class="openable">
+            {{car.assignTo ? '': 'None'}} {{ car.assignTo?.firstName }} {{ car.assignTo?.lastName
+            }}<tui-svg
+              src="tuiIconExternal"
+              [tuiHint]="tuiHintManagedBy"
+              [routerLink]="'/staff/'+car.assignTo?.id"
+              class="mb-1"
+            ></tui-svg>
+          </a>
+          <ng-template #tuiHintManagedBy>
+            <div class="cursor-pointer" [routerLink]="'/staff/'+car.assignTo?.id">
+              View
+              <strong>{{car.assignTo?.lastName}} {{car.assignTo?.firstName}}</strong> in detail
             </div>
           </ng-template>
         </h3>

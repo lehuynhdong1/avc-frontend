@@ -3763,6 +3763,43 @@
           }
         }
       }
+    },
+    "shared-features-signalr-data-access": {
+      "projectType": "library",
+      "root": "libs/shared/features/signalr/data-access",
+      "sourceRoot": "libs/shared/features/signalr/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/features/signalr/data-access/tsconfig.lib.json",
+            "project": "libs/shared/features/signalr/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/features/signalr/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/features/signalr/data-access/src/**/*.ts",
+              "libs/shared/features/signalr/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/features/signalr/data-access"],
+          "options": {
+            "jestConfig": "libs/shared/features/signalr/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

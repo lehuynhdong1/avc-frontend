@@ -103,6 +103,7 @@
     "admin-manage-profile-feature": { "tags": ["scope:admin"] },
     "admin-manage-profile-ui": { "tags": ["scope:admin"] },
     "admin-car-ui": { "tags": ["scope:admin"] },
-    "admin-car-feature": { "tags": ["scope:admin"] }
+    "admin-car-feature": { "tags": ["scope:admin"] },
+    "shared-features-signalr-data-access": { "tags": ["scope:shared"] }
   }
 }
