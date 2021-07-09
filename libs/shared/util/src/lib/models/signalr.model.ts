@@ -22,7 +22,7 @@ export type SentParams = {
   [SentMethods.StopCar]: StopCarParams;
 };
 
-interface WhenCarConnected {
+export interface WhenCarConnected {
   accountIdList: number[];
   carId: number;
 }

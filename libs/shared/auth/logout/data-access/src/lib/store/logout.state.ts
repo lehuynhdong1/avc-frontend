@@ -11,6 +11,7 @@ import { Logout } from './logout.actions';
 export class LogoutState {
   @Action(Logout)
   logout({ setState }: StateContext<StateModel>) {
+    localStorage.clear();
     setState(INITIAL_STATE);
   }
 }

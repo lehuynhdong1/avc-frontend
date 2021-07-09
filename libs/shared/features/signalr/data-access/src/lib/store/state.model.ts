@@ -1,10 +1,10 @@
 import { ReceivedResponses, ReceivedMethods } from '@shared/util';
 
 export interface StateModel {
-  whenCarConnected?: ReceivedResponses[ReceivedMethods.WhenCarConnected];
-  whenCarDisconnected?: ReceivedResponses[ReceivedMethods.WhenCarDisconnected];
-  whenCarRunning?: ReceivedResponses[ReceivedMethods.WhenCarRunning];
-  whenCarStopping?: ReceivedResponses[ReceivedMethods.WhenCarStopping];
+  [ReceivedMethods.WhenCarConnected]?: ReceivedResponses[ReceivedMethods.WhenCarConnected];
+  [ReceivedMethods.WhenCarDisconnected]?: ReceivedResponses[ReceivedMethods.WhenCarDisconnected];
+  [ReceivedMethods.WhenCarRunning]?: ReceivedResponses[ReceivedMethods.WhenCarRunning];
+  [ReceivedMethods.WhenCarStopping]?: ReceivedResponses[ReceivedMethods.WhenCarStopping];
   errorMessage?: string;
 }
 

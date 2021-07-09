@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { CarListReadDto } from '@shared/api';
 import { Empty } from '@shared/util';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   templateUrl: './listing.page.html',
@@ -13,7 +14,7 @@ import { Empty } from '@shared/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState]
 })
-export class ListingPage {
+export class ListingPage implements ViewWillEnter {
   readonly searchControl = new FormControl('');
 
   /* Attribute Streams */
@@ -25,8 +26,12 @@ export class ListingPage {
     map((cars) => cars?.result?.filter((car) => !car.isConnecting))
   );
   constructor(private store: Store, private state: RxState<Empty>) {
-    this.store.dispatch(new LoadApprovedCars());
     this.declareSideEffects();
+  }
+
+  ionViewWillEnter(): void {
+    const { value } = this.searchControl;
+    this.store.dispatch(new LoadApprovedCars({ searchValue: value ?? '' }));
   }
 
   private declareSideEffects() {

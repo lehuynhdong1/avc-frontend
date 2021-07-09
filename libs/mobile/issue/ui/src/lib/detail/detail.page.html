@@ -1,18 +1,17 @@
 <ng-container *ngIf="selectedIssue$ | async as issue; else loading">
-  <adcm-back-bar [title]="issue.type || 'Detail Issue'" backTo="issue"></adcm-back-bar>
-  <ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="issue"></ion-back-button>
+      </ion-buttons>
+      <ion-title collapse="condense"> {{issue.type || 'Detail Issue'}} </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content fullscreen="true">
     <main class="px-4 flex flex-col">
       <ion-img
         [src]="issue.image || 'assets/adc/icons/warning-outline.svg#warning-outline'"
       ></ion-img>
-
-      <!-- <adc-frontend-avatar
-        class="tui-space_top-2 self-center"
-        [url]="issue.image"
-        placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
-        placeholderImageAsset="assets/adc/icons/warning-outline.svg#warning-outline"
-        size="xl"
-      ></adc-frontend-avatar> -->
       <div class="flex flex-col">
         <span class="text-sm text-gray-500">Type </span>
         <h3>{{ issue.type }}</h3>

@@ -22,7 +22,7 @@ export function StateManagementModulesWithConfig(config: AppConfig) {
   return [
     NgxsModule.forRoot([], { developmentMode: !config.production }),
     NgxsStoragePluginModule.forRoot({ key: [LoginState] }),
-    NgxsLoggerPluginModule.forRoot({ disabled: true }),
+    NgxsLoggerPluginModule.forRoot({ disabled: config.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: config.production }),
     ...featureStates
   ];

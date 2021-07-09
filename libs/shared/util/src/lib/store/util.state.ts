@@ -10,11 +10,6 @@ import { ShowNotification } from './util.actions';
 })
 @Injectable()
 export class UtilState {
-  @Selector()
-  notiItems() {
-    return this.notifyService.items$.value;
-  }
-
   constructor(private notifyService: TuiNotificationsService) {}
 
   @Action(ShowNotification)

@@ -1,19 +1,22 @@
-import { ReceivedMethods, ReceivedResponses, SentParams, SentMethods } from '@shared/util';
+import { SentParams, SentMethods } from '@shared/util';
 import { STATE_NAME } from './state.model';
 
 const ACTIONS = {
   START_SIGNALR: `${STATE_NAME} Start SignalR`,
+  STOP_SIGNALR: `${STATE_NAME} Stop SignalR`,
   SEND_CONNECT_ACCOUNT: `[${STATE_NAME}] Send connect account`,
   SEND_START_CAR: `[${STATE_NAME}] Send start car`,
   SEND_STOP_CAR: `[${STATE_NAME}] Send stop car`,
-  RECEIVE_WHEN_CAR_CONNECTED: `[${STATE_NAME}] Receive when car connected`,
-  RECEIVE_WHEN_CAR_DISCONNECTED: `[${STATE_NAME}] Receive when car disconnected`,
-  RECEIVE_WHEN_CAR_RUNNING: `[${STATE_NAME}] Receive when car is running`,
-  RECEIVE_WHEN_CAR_STOPPING: `[${STATE_NAME}] Receive when car is stopping`
+  REGISTER_ALL_LISTENERS: `[${STATE_NAME}] Register all listeners`,
+  UNREGISTER_ALL_LISTENERS: `[${STATE_NAME}] Unregister all listeners`
 };
 
 export class StartSignalR {
   static readonly type = ACTIONS.START_SIGNALR;
+}
+
+export class StopSignalR {
+  static readonly type = ACTIONS.STOP_SIGNALR;
 }
 
 export class ConnectAccount {
@@ -31,22 +34,10 @@ export class StopCar {
   constructor(public readonly params: SentParams[SentMethods.StopCar]) {}
 }
 
-export class WhenCarConnected {
-  static readonly type = ACTIONS.RECEIVE_WHEN_CAR_CONNECTED;
-  constructor(public readonly params: ReceivedResponses[ReceivedMethods.WhenCarConnected]) {}
+export class RegisterAllListeners {
+  static readonly type = ACTIONS.REGISTER_ALL_LISTENERS;
 }
 
-export class WhenCarDisconnected {
-  static readonly type = ACTIONS.RECEIVE_WHEN_CAR_DISCONNECTED;
-  constructor(public readonly params: ReceivedResponses[ReceivedMethods.WhenCarDisconnected]) {}
-}
-
-export class WhenCarRunning {
-  static readonly type = ACTIONS.RECEIVE_WHEN_CAR_RUNNING;
-  constructor(public readonly params: ReceivedResponses[ReceivedMethods.WhenCarRunning]) {}
-}
-
-export class WhenCarStopping {
-  static readonly type = ACTIONS.RECEIVE_WHEN_CAR_STOPPING;
-  constructor(public readonly params: ReceivedResponses[ReceivedMethods.WhenCarStopping]) {}
+export class UnregisterAllListeners {
+  static readonly type = ACTIONS.UNREGISTER_ALL_LISTENERS;
 }

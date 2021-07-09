@@ -1,150 +1,112 @@
-import { TuiNotification } from '@taiga-ui/core';
-import { SignalRService, ReceivedMethods } from '@shared/util';
-import { Component } from '@angular/core';
+import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
-import { ShowNotification } from '@shared/util';
-import { CarState, LoadCarById, LoadApprovedCars } from '@shared/features/car/data-access';
-import { withLatestFrom } from 'rxjs/operators';
+import { Logout } from '@shared/auth/logout/data-access';
+import { NetworkService, ShowNotification } from '@shared/util';
+import { filter, withLatestFrom } from 'rxjs/operators';
 import {
   StartSignalR,
-  WhenCarConnected,
   ConnectAccount,
-  WhenCarDisconnected,
-  WhenCarRunning,
-  WhenCarStopping
+  StopSignalR,
+  RegisterAllListeners,
+  UnregisterAllListeners
 } from '@shared/features/signalr/data-access';
 
 @Component({
   selector: 'adca-root',
-  template: '<tui-root class="h-100"><router-outlet></router-outlet></tui-root>'
+  template: '<tui-root class="h-100"><router-outlet></router-outlet></tui-root>',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  constructor(store: Store, actions: Actions, signalr: SignalRService) {
-    store.dispatch([new LoadToken(), new LoadRoles(), new StartSignalR()]);
+  constructor(
+    private store: Store,
+    private actions: Actions,
+    private network: NetworkService,
+    private notifyService: TuiNotificationsService
+  ) {
+    store.dispatch([new LoadToken(), new LoadRoles()]);
 
-    const whenStartSignalRSuccess$ = actions.pipe(ofActionSuccessful(StartSignalR));
-    whenStartSignalRSuccess$.subscribe(() => {
-      const whenLoginSuccess$ = actions.pipe(ofActionSuccessful(Login));
-      whenLoginSuccess$.subscribe(() => {
-        console.log('WhenLoginSuccess ConnectAccount run');
+    this.whenNetworkOffline();
+    this.whenLoginSuccess();
+    this.whenLogoutSuccess();
+    this.whenStartSignalRSuccess();
+    this.whenConnectAccountSuccess();
+    this.whenUnregisterAllListenersSuccess();
+    const myId = store.selectSnapshot(LoginState.account)?.id;
+    if (myId) store.dispatch(new StartSignalR());
+  }
 
-        const myId = store.selectSnapshot(LoginState.account)?.id;
-        if (!myId) return;
-        store.dispatch(new ConnectAccount(myId || 0));
-      });
+  private whenLoginSuccess() {
+    this.actions
+      .pipe<Login>(ofActionSuccessful(Login))
+      .subscribe(() => this.store.dispatch(new StartSignalR()));
+  }
 
-      const whenConnectAccountSuccess$ = actions.pipe(ofActionSuccessful(ConnectAccount));
-
-      whenConnectAccountSuccess$.subscribe(() => {
-        const myId = store.selectSnapshot(LoginState.account)?.id;
-        if (!myId) return;
-        signalr.unregister(ReceivedMethods.WhenCarConnected);
-        signalr.register(ReceivedMethods.WhenCarConnected, (params) => {
-          console.warn('ReceivedMethods.WhenCarConnected', params);
-          if (params.accountIdList.includes(myId))
-            store
-              .dispatch([new LoadApprovedCars(), new LoadCarById({ id: params.carId })])
-
-              .pipe(withLatestFrom(store.select(CarState.selectedCar)))
-              .subscribe(([, car]) => {
-                store.dispatch(
-                  new ShowNotification({
-                    message: `Car "${car?.name}" has been connected.`,
-                    options: { label: 'Car Connected', status: TuiNotification.Success }
-                  })
-                );
-              });
-          // store.dispatch(new WhenCarConnected(params));
-        });
-
-        signalr.unregister(ReceivedMethods.WhenCarDisconnected);
-        signalr.register(ReceivedMethods.WhenCarDisconnected, (params) => {
-          console.warn('ReceivedMethods.WhenCarDisconnected', params);
-
-          if (params.accountIdList.includes(myId)) {
-            store
-              .dispatch([new LoadApprovedCars(), new LoadCarById({ id: params.carId })])
-
-              .pipe(withLatestFrom(store.select(CarState.selectedCar)))
-              .subscribe(([, car]) => {
-                store.dispatch(
-                  new ShowNotification({
-                    message: `Car "${car?.name}" has been disconnected.`,
-                    options: { label: 'Car Disconnected', status: TuiNotification.Error }
-                  })
-                );
-              });
-          }
-          // store.dispatch(new WhenCarDisconnected(params));
-        });
-
-        signalr.unregister(ReceivedMethods.WhenCarRunning);
-        signalr.register(ReceivedMethods.WhenCarRunning, (params) => {
-          console.warn('ReceivedMethods.WhenCarRunning', params);
-
-          if (params.accountIdList.includes(myId)) {
-            store
-              .dispatch([new LoadApprovedCars(), new LoadCarById({ id: params.carId })])
-
-              .pipe(withLatestFrom(store.select(CarState.selectedCar)))
-              .subscribe(([, car]) => {
-                store.dispatch(
-                  new ShowNotification({
-                    message: `Car "${car?.name}" has been running.`,
-                    options: { label: 'Car Start Running', status: TuiNotification.Success }
-                  })
-                );
-              });
-          }
-          // store.dispatch(new WhenCarRunning(params));
-        });
-
-        signalr.unregister(ReceivedMethods.WhenCarStopping);
-        signalr.register(ReceivedMethods.WhenCarStopping, (params) => {
-          console.warn('ReceivedMethods.WhenCarStopping', params);
-
-          if (params.accountIdList.includes(myId)) {
-            store
-              .dispatch([new LoadApprovedCars(), new LoadCarById({ id: params.carId })])
-
-              .pipe(withLatestFrom(store.select(CarState.selectedCar)))
-              .subscribe(([, car]) => {
-                store.dispatch(
-                  new ShowNotification({
-                    message: `Car "${car?.name}" has been stopped.`,
-                    options: { label: 'Car Stopping', status: TuiNotification.Warning }
-                  })
-                );
-              });
-          }
-          // store.dispatch(new WhenCarStopping(params));
-        });
-      });
+  private whenLogoutSuccess(): void {
+    this.actions.pipe<Logout>(ofActionSuccessful(Logout)).subscribe(() => {
+      this.store.dispatch(new StopSignalR());
     });
   }
 
-  // private whenSignalRConnectSuccess() {
-  //   const whenConnectAccountSuccess$ = this.actions.pipe(ofActionSuccessful(ConnectAccount));
+  private whenStartSignalRSuccess() {
+    this.actions.pipe<StartSignalR>(ofActionSuccessful(StartSignalR)).subscribe(() => {
+      const myId = this.store.selectSnapshot(LoginState.account)?.id;
+      if (!myId) throw new Error("Start SignalR Successful but hasn't logged in");
+      this.store.dispatch(new ConnectAccount(myId || 0));
+    });
+  }
 
-  //   whenConnectAccountSuccess$.subscribe(() => {
-  //     this.whenLoginSuccess();
-  //   })
-  // }
-  // private whenLoginSuccess() {const whenLoginSuccess$ = this.actions.pipe(ofActionSuccessful(Login));
-  //   whenLoginSuccess$.subscribe(() => {
-  //     console.log('WhenLoginSuccess ConnectAccount run');
+  private whenConnectAccountSuccess() {
+    this.actions.pipe<ConnectAccount>(ofActionSuccessful(ConnectAccount)).subscribe(() => {
+      this.store.dispatch(new UnregisterAllListeners());
+    });
+  }
 
-  //     const myId = this.store.selectSnapshot(LoginState.account)?.id;
-  //     if (!myId) return;
-  //     this.store.dispatch(new ConnectAccount(myId || 0));
-  //   });}
+  private whenUnregisterAllListenersSuccess() {
+    this.actions
+      .pipe<UnregisterAllListeners>(ofActionSuccessful(UnregisterAllListeners))
+      .subscribe(() => {
+        this.store.dispatch(new RegisterAllListeners());
+      });
+  }
+  private whenNetworkOffline() {
+    this.network.registerListeners();
+    this.network.online$
+      .pipe(
+        filter((online) => online),
+        withLatestFrom(this.notifyService.items$)
+      )
+      .subscribe(([, items]) => {
+        const length = items.length;
 
-  //   private unregisterAll() {
-  //     this.signalr.unregister(ReceivedMethods.WhenCarConnected);
-  //     this.signalr.unregister(ReceivedMethods.WhenCarDisconnected);
-  //     this.signalr.unregister(ReceivedMethods.WhenCarRunning);
-  //     this.signalr.unregister(ReceivedMethods.WhenCarStopping);
-
-  //   }
+        items.forEach((item) => item.observer.complete());
+        if (length > 0)
+          this.store.dispatch(
+            new ShowNotification({
+              message: 'You are reconnected. Please refresh your site to continue.',
+              options: {
+                label: 'Network connected',
+                status: TuiNotification.Success,
+                hasCloseButton: false,
+                autoClose: false
+              }
+            })
+          );
+      });
+    this.network.online$.pipe(filter((online) => !online)).subscribe(() =>
+      this.store.dispatch(
+        new ShowNotification({
+          message:
+            'You are offline. All actions will be discarded. Please reconnect as soon as possible.',
+          options: {
+            label: 'Network disconnected',
+            status: TuiNotification.Error,
+            hasCloseButton: false,
+            autoClose: false
+          }
+        })
+      )
+    );
+  }
 }
