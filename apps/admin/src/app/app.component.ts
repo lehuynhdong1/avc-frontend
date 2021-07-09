@@ -27,7 +27,7 @@ export class AppComponent {
   ) {
     store.dispatch([new LoadToken(), new LoadRoles()]);
 
-    this.whenNetworkOffline();
+    this.whenNetworkChanged();
     this.whenLoginSuccess();
     this.whenLogoutSuccess();
     this.whenStartSignalRSuccess();
@@ -70,7 +70,7 @@ export class AppComponent {
         this.store.dispatch(new RegisterAllListeners());
       });
   }
-  private whenNetworkOffline() {
+  private whenNetworkChanged() {
     this.network.registerListeners();
     this.network.online$
       .pipe(
