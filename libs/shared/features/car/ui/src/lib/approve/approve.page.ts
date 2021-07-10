@@ -16,7 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { tuiPure, TuiContextWithImplicit, TuiStringHandler } from '@taiga-ui/cdk';
 import { AccountManagerDetailReadDto } from '@shared/api';
 import { TuiMarkerIconMode } from '@taiga-ui/kit';
-import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
+import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
 import { ManagerState, LoadManagers } from '@shared/features/manager/data-access';
 
 /*

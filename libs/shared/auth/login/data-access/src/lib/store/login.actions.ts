@@ -5,7 +5,7 @@ const ACTIONS = {
   LOGIN: `[${STATE_NAME}] Login`,
   LOAD_ROLES: `[${STATE_NAME}] Load roles only 1 time`,
   UPDATE_PROFILE: `[${STATE_NAME}] Update profile`,
-  LOAD_TOKEN: `[${STATE_NAME}] Load token`
+  LOAD_TOKEN: `[${STATE_NAME}] Load token to OpenApiModule Configuration`
 };
 
 export class Login {

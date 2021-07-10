@@ -9,7 +9,6 @@ export class AdminGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     const isAdmin = this._store.selectSnapshot(LoginState.account)?.role === 'Admin';
-    console.log('=============isAdmin=', isAdmin);
     if (!isAdmin) return this.router.navigateByUrl('/car');
     return isAdmin;
   }

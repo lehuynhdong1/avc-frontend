@@ -67,7 +67,6 @@
         *tuiLet="roles$ | async as roles"
         tuiTextfieldSize="m"
         [tuiTextfieldLabelOutside]="true"
-        [tuiTextfieldCleaner]="true"
         tuiTextfieldExampleText="Select role for this staff."
         [valueContent]="roles ? stringifyRoles(roles) : loading"
         formControlName="roleId"

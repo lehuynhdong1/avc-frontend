@@ -7,7 +7,8 @@ import {
   TuiButtonModule,
   TuiSvgModule,
   TuiLoaderModule,
-  TuiFormatPhonePipeModule
+  TuiFormatPhonePipeModule,
+  TuiLinkModule
 } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { AvatarModule } from '@shared/ui/avatar';
@@ -18,7 +19,8 @@ const tuiModules = [
   TuiSvgModule,
   TuiButtonModule,
   TuiLoaderModule,
-  TuiFormatPhonePipeModule
+  TuiFormatPhonePipeModule,
+  TuiLinkModule
 ];
 @NgModule({
   declarations: [DetailPage],

@@ -20,6 +20,7 @@ export interface NavItem {
   path: string;
   icon: string;
   description: string;
+  children?: Array<NavItem>;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
@@ -57,7 +58,27 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'Training Model',
     path: '/training',
     icon: 'assets/adc/icons/library-outline.svg#library-outline',
-    description: 'Enhance your detection algorithm'
+    description: 'Enhance your detection algorithm',
+    children: [
+      {
+        label: 'History',
+        path: '/training/history',
+        icon: 'assets/adc/icons/newspaper-outline.svg#newspaper-outline',
+        description: 'Enhance your detection algorithm'
+      },
+      {
+        label: 'Train by ZIP',
+        path: '/training/zip',
+        icon: 'assets/adc/icons/document-attach-outline.svg#document-attach-outline',
+        description: 'Enhance your detection algorithm'
+      },
+      {
+        label: 'Train by images',
+        path: '/training/images',
+        icon: 'assets/adc/icons/images-outline.svg#images-outline',
+        description: 'Enhance your detection algorithm'
+      }
+    ]
   }
 ];
 

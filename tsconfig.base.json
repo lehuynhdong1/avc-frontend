@@ -58,12 +58,8 @@
       "@admin/manage-profile/change-password/ui": [
         "libs/admin/manage-profile/change-password/ui/src/index.ts"
       ],
-      "@admin/train-model/label-image/ui": ["libs/admin/train-model/label-image/ui/src/index.ts"],
       "@admin/train-model/label-image/feature": [
         "libs/admin/train-model/label-image/feature/src/index.ts"
-      ],
-      "@admin/train-model/label-image/data-access": [
-        "libs/admin/train-model/label-image/data-access/src/index.ts"
       ],
       "@admin/train-model/upload-image/ui": ["libs/admin/train-model/upload-image/ui/src/index.ts"],
       "@admin/train-model/upload-image/data-access": [
@@ -71,9 +67,6 @@
       ],
       "@admin/train-model/upload-image/feature": [
         "libs/admin/train-model/upload-image/feature/src/index.ts"
-      ],
-      "@admin/train-model/progress/feature": [
-        "libs/admin/train-model/progress/feature/src/index.ts"
       ],
       "@admin/train-model/history/feature": ["libs/admin/train-model/history/feature/src/index.ts"],
       "@admin/train-model/history-detail/feature": [
@@ -84,9 +77,6 @@
       ],
       "@admin/train-model/history/ui": ["libs/admin/train-model/history/ui/src/index.ts"],
       "@admin/train-model/progress/ui": ["libs/admin/train-model/progress/ui/src/index.ts"],
-      "@admin/train-model/progress/data-access": [
-        "libs/admin/train-model/progress/data-access/src/index.ts"
-      ],
       "@admin/train-model/history/data-access": [
         "libs/admin/train-model/history/data-access/src/index.ts"
       ],
@@ -96,9 +86,6 @@
       "@admin/train-model/routes": ["libs/admin/train-model/routes.ts"],
       "@admin/staff/routes": ["libs/admin/staff/routes.ts"],
       "@admin/auth/routes": ["libs/admin/auth/routes.ts"],
-      "@admin/train-model/label-image/util": [
-        "libs/admin/train-model/label-image/util/src/index.ts"
-      ],
       "@admin/staff/listing/feature": ["libs/admin/staff/listing/feature/src/index.ts"],
       "@admin/staff/listing/ui": ["libs/admin/staff/listing/ui/src/index.ts"],
       "@admin/staff/detail/feature": ["libs/admin/staff/detail/feature/src/index.ts"],
@@ -177,6 +164,27 @@
       "@admin/car/feature": ["libs/admin/car/feature/src/index.ts"],
       "@shared/features/signalr/data-access": [
         "libs/shared/features/signalr/data-access/src/index.ts"
+      ],
+      "@admin/train-model/data-access": ["libs/admin/train-model/data-access/src/index.ts"],
+      "@admin/train-model/ui": ["libs/admin/train-model/ui/src/index.ts"],
+      "@admin/train-model/feature": ["libs/admin/train-model/feature/src/index.ts"],
+      "@admin/train-model/train-by-images/data-access": [
+        "libs/admin/train-model/train-by-images/data-access/src/index.ts"
+      ],
+      "@admin/train-model/train-by-images/util": [
+        "libs/admin/train-model/train-by-images/util/src/index.ts"
+      ],
+      "@admin/train-model/train-by-images/ui": [
+        "libs/admin/train-model/train-by-images/ui/src/index.ts"
+      ],
+      "@admin/train-model/train-by-images/feature": [
+        "libs/admin/train-model/train-by-images/feature/src/index.ts"
+      ],
+      "@admin/train-model/train-by-zip/data-access": [
+        "libs/admin/train-model/train-by-zip/data-access/src/index.ts"
+      ],
+      "@admin/train-model/train-by-zip/feature": [
+        "libs/admin/train-model/train-by-zip/feature/src/index.ts"
       ]
     }
   },

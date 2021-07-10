@@ -44,7 +44,7 @@ export class ListingPage implements ViewWillEnter {
       distinctUntilChanged()
     );
     this.state.hold(changeSearchValue$, (searchValue) =>
-      this.store.dispatch(new LoadApprovedCars({ searchValue, isAvailable: true, limit: 10 }))
+      this.store.dispatch(new LoadApprovedCars({ searchValue, isAvailable: true }))
     );
   }
 

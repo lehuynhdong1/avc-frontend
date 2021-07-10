@@ -15,6 +15,7 @@
           [paginable]="true"
           [selectable]="true"
           (selectRow)="selectRow$.next($event)"
+          (loadPage)="loadPage$.next($event)"
         ></adc-frontend-dynamic-table>
       </ng-container>
     </section>

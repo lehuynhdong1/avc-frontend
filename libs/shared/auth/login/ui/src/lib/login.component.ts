@@ -20,8 +20,8 @@ import { Router } from '@angular/router';
 export class SharedLoginComponent {
   tuiEmailType = TuiInputType.Email;
   form = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+    email: ['minhhuy499@gmail.com', [Validators.required, Validators.email]],
+    password: ['123456', Validators.required],
     remember: [true]
   });
 

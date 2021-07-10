@@ -6,7 +6,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TuiButtonModule, TuiDataListModule, TuiSvgModule, TuiLoaderModule } from '@taiga-ui/core';
 import { TuiDataListWrapperModule, TuiMultiSelectModule } from '@taiga-ui/kit';
 import { RouterModule } from '@angular/router';
-import { AvatarModule } from '@shared/ui/avatar';
 
 const tuiModules = [
   TuiAvatarModule,
@@ -20,7 +19,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [DetailPage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, AvatarModule, tuiModules],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, tuiModules],
   exports: [DetailPage]
 })
 export class UiModule {}

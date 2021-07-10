@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { IssueReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Id, DynamicTableColumns } from '@shared/ui/dynamic-table';
 import { Empty } from '@shared/util';
@@ -31,6 +31,13 @@ export class ListingPage {
 
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
+  readonly loadPage$ = new Subject<number>();
+
+  /* Side effects */
+  readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
+    debounceTime(500),
+    distinctUntilChanged()
+  );
 
   constructor(
     private store: Store,
@@ -40,19 +47,23 @@ export class ListingPage {
   ) {
     this.store.dispatch(new LoadIssues({ limit: 10 }));
     this.declareSideEffects();
+    this.whenLoadPageEffects();
   }
 
   private declareSideEffects() {
-    const searchValueChanged$ = this.searchControl.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged()
-    );
-
-    this.state.hold(searchValueChanged$, (searchValue) =>
+    this.state.hold(this.changeSearchValue$, (searchValue) =>
       this.store.dispatch(new LoadIssues({ searchValue, limit: 10 }))
     );
     this.state.hold(this.selectRow$, (id) => {
       this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
+  }
+
+  private whenLoadPageEffects() {
+    this.state.hold(
+      this.loadPage$.pipe(withLatestFrom(this.changeSearchValue$)),
+      ([index, searchValue]) =>
+        this.store.dispatch(new LoadIssues({ searchValue, limit: 10, page: index + 1 }))
+    );
   }
 }

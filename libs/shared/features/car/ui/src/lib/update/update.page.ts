@@ -24,7 +24,7 @@ import {
   withLatestFrom,
   shareReplay
 } from 'rxjs/operators';
-import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
+import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
 import { TuiMarkerIconMode } from '@taiga-ui/kit';
 import { LoadStaffs, StaffState } from '@shared/features/staff/data-access';
 

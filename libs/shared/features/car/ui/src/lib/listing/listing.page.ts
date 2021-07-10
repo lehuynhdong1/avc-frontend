@@ -10,15 +10,14 @@ import {
   distinctUntilChanged,
   map,
   startWith,
-  share,
   filter,
-  tap
+  shareReplay
 } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { hasValue, Empty } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { LoginState } from '@shared/auth/login/data-access';
-import { shareReplay } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs/operators';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -67,6 +66,14 @@ export class ListingPage {
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
   readonly changeIsAvailable$ = new Subject<boolean | undefined>();
+  readonly loadPage$ = new Subject<number>();
+
+  /* Side effects */
+  readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+    startWith('')
+  );
 
   constructor(
     private store: Store,
@@ -77,27 +84,32 @@ export class ListingPage {
     state.hold(this.isAdmin$.pipe(filter((isAdmin) => isAdmin)), () =>
       this.store.dispatch(new LoadUnapprovedCars())
     );
+    this.whenFilterChangedEffects();
+    this.whenLoadPageEffects();
     this.declareSideEffects();
   }
 
   private declareSideEffects() {
-    this.whenFilterChangedEffects();
     this.state.hold(this.selectRow$, (id) =>
       this.router.navigate([id], { relativeTo: this.activatedRoute })
     );
   }
 
   private whenFilterChangedEffects() {
-    const changeSearchValue$ = this.searchControl.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      startWith('')
-    );
     this.state.hold(
-      combineLatest([changeSearchValue$, this.changeIsAvailable$]),
+      combineLatest([this.changeSearchValue$, this.changeIsAvailable$]),
       ([searchValue, isAvailable]) => {
         this.store.dispatch(new LoadApprovedCars({ searchValue, isAvailable, limit: 10 }));
       }
+    );
+  }
+  private whenLoadPageEffects() {
+    this.state.hold(
+      this.loadPage$.pipe(withLatestFrom(this.changeSearchValue$, this.changeIsAvailable$)),
+      ([index, searchValue, isAvailable]) =>
+        this.store.dispatch(
+          new LoadApprovedCars({ searchValue, isAvailable, limit: 10, page: index + 1 })
+        )
     );
   }
 }

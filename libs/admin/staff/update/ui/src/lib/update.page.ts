@@ -77,7 +77,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
     managers: Array<AccountManagerDetailReadDto>
   ): TuiStringHandler<TuiContextWithImplicit<number>> {
     const map = new Map(
-      managers.map(({ id, firstName, lastName }) => [id, `${firstName} ${lastName}`])
+      managers.map(({ id, firstName, lastName }) => [id, `${firstName ?? ''} ${lastName ?? ''}`])
     );
     return ({ $implicit }: TuiContextWithImplicit<number>) => map.get($implicit) || '';
   }
@@ -147,7 +147,10 @@ export class UpdatePage implements CanShowUnsavedDialog {
       if (staffInStore.managedBy !== managedBy)
         this.store.dispatch(
           new UpdateStaffManagedBy({
-            accountManagedByUpdateDto: { staffId: staffInStore.id, managerId: managedBy }
+            accountManagedByUpdateDto: {
+              staffId: staffInStore.id,
+              managerId: managedBy ? managedBy : null
+            }
           })
         );
 

@@ -48,13 +48,14 @@
       </tr>
     </tbody>
   </table>
+  <p *ngIf="(response?.result || array)?.length === 0" class="text-red-400 text-base">
+    There is no matching result!
+  </p>
   <tui-pagination
     *ngIf="paginable && (response?.count || array?.length)"
     [length]="calcTotalPageCount(response?.count || array?.length)"
     [index]="0"
+    (indexChange)="selectNextPagination$.next($event)"
     class="mt-3 self-end"
   ></tui-pagination>
-  <p *ngIf="(response?.result || array)?.length === 0" class="text-red-400 text-base">
-    There is no matching result!
-  </p>
 </ng-container>

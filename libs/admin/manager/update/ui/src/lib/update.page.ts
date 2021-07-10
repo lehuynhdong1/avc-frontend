@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, ofActionErrored, ofActionSuccessful, Store } from '@ngxs/store';
 import { RxState } from '@rx-angular/state';
-import { RoleReadDto, AccountManagerDetailReadDto } from '@shared/api';
+import { RoleReadDto } from '@shared/api';
 import { LoginState } from '@shared/auth/login/data-access';
 import {
   LoadManagerById,
@@ -38,16 +38,11 @@ export class UpdatePage implements CanShowUnsavedDialog {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     phone: [''],
-    roleId: ['', Validators.required],
-    managedBy: [null]
+    roleId: ['', Validators.required]
   });
 
   manager$ = this.store.select(ManagerState.selectedManager).pipe(hasValue());
   roles$ = this.store.select(LoginState.roles).pipe(hasValue());
-  managers$ = this.store.select(ManagerState.managers).pipe(
-    hasValue(),
-    map((managers) => managers.result || [])
-  );
 
   /* Actions */
   clickUpdate$ = new Subject<void>();
@@ -67,18 +62,6 @@ export class UpdatePage implements CanShowUnsavedDialog {
   @tuiPure
   stringifyRoles(roles: Array<RoleReadDto>): TuiStringHandler<TuiContextWithImplicit<number>> {
     const map = new Map(roles.map(({ id, name }) => [id, name] as [number, string]));
-    return ({ $implicit }: TuiContextWithImplicit<number>) => map.get($implicit) || '';
-  }
-
-  @tuiPure
-  stringifyManagers(
-    managers: Array<AccountManagerDetailReadDto>
-  ): TuiStringHandler<TuiContextWithImplicit<number>> {
-    const map = new Map(
-      managers.map(
-        ({ id, firstName, lastName }) => [id, `${firstName} ${lastName}`] as [number, string]
-      )
-    );
     return ({ $implicit }: TuiContextWithImplicit<number>) => map.get($implicit) || '';
   }
 

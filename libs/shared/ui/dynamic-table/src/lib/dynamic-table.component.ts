@@ -21,15 +21,17 @@ export class DynamicTableComponent<T extends HasId> {
   @Input() response: PagingResponse<T>;
   @Input() array: Array<T>;
   @Input() indexable = true;
-  @Input() paginable = false;
   @Input() selectable = false;
+  @Input() paginable = false;
 
   @Output() selectRow = new EventEmitter<Id>();
+  @Output() loadPage = new EventEmitter<number>();
 
   myRole$ = this.store.select(LoginState.account).pipe(map((my) => my?.role));
 
   selectedId$ = this.$.select('selectedId');
   readonly selectRow$ = new Subject<Id>();
+  readonly selectNextPagination$ = new Subject<number>();
 
   constructor(
     private store: Store,
@@ -60,12 +62,14 @@ export class DynamicTableComponent<T extends HasId> {
       this.selectRow.emit(id);
     });
     this.$.hold(routerEnd$, () => this.$.set({ selectedId: 0 }));
+    this.$.hold(this.selectNextPagination$, (id) => this.loadPage.emit(id));
   }
 
   @tuiPure
   calcTotalPageCount(count: number | undefined) {
     if (!count) return 1;
-    return Math.floor(count / 10) + 1;
+    const isRound = count % 10 === 0;
+    return Math.floor(count / 10) + (isRound ? 0 : 1);
   }
   @tuiPure
   getTypeof(value: number | string | boolean) {

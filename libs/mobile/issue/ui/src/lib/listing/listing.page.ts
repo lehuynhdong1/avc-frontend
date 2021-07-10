@@ -19,7 +19,7 @@ export class ListingPage {
   readonly issues$ = this.store.select(IssueState.issues);
 
   constructor(private store: Store, private state: RxState<Empty>) {
-    this.store.dispatch(new LoadIssues({ limit: 10 }));
+    this.store.dispatch(new LoadIssues({}));
     this.declareSideEffects();
   }
 
@@ -30,7 +30,7 @@ export class ListingPage {
     );
 
     this.state.hold(searchValueChanged$, (searchValue) =>
-      this.store.dispatch(new LoadIssues({ searchValue, limit: 10 }))
+      this.store.dispatch(new LoadIssues({ searchValue }))
     );
   }
 

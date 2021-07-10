@@ -10,7 +10,7 @@ import { TuiNotification } from '@taiga-ui/core';
 import { ShowNotification, hasValue, Empty, CanShowUnsavedDialog } from '@shared/util';
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler, TuiInputType } from '@taiga-ui/cdk';
 import { AccountManagerDetailReadDto } from '@shared/api';
-import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/upload-image/data-access';
+import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
 
 const INIT_FORM_VALUE = {
   firstName: '',

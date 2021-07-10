@@ -66,7 +66,6 @@
         *tuiLet="roles$ | async as roles"
         tuiTextfieldSize="m"
         [tuiTextfieldLabelOutside]="true"
-        [tuiTextfieldCleaner]="true"
         tuiTextfieldExampleText="Select role for this manager."
         [valueContent]="roles ? stringifyRoles(roles) : loading"
         formControlName="roleId"
@@ -81,33 +80,6 @@
           </tui-data-list>
         </ng-template>
       </tui-select>
-
-      <ng-container *ngIf="form.get('roleId')?.value === ROLE_STAFF">
-        <label class="mt-3 mb-2">Managed by</label>
-        <tui-select
-          *tuiLet="managers$ | async as managers"
-          tuiTextfieldSize="m"
-          [tuiTextfieldLabelOutside]="true"
-          [tuiTextfieldCleaner]="true"
-          [valueContent]="managers ? stringifyManagers(managers) : loading"
-          tuiTextfieldExampleText="Select manager for this manager."
-          formControlName="managedBy"
-          class="mb-3"
-        >
-          <span class="text-gray-300">
-            Select manager for this manager
-            <tui-svg src="tuiIconEdit"></tui-svg>
-          </span>
-
-          <ng-template tuiDataList>
-            <tui-data-list *ngIf="managers else loading">
-              <button tuiOption *ngFor="let manager of managers" [value]="manager.id">
-                {{manager.firstName}} {{manager.lastName}}
-              </button>
-            </tui-data-list>
-          </ng-template>
-        </tui-select>
-      </ng-container>
     </div>
 
     <button tuiButton (click)="clickUpdate$.next()" size="m" [disabled]="form.invalid" class="mb-2">

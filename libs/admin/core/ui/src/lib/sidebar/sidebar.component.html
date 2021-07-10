@@ -31,22 +31,41 @@
     </div>
     <div class="nav__divider"></div>
     <ul class="nav__list">
-      <li
-        *ngFor="let item of navItems$ | async"
-        [routerLink]="item.path"
-        routerLinkActive="active"
-        class="nav__list-item"
-      >
-        <tui-svg
-          [src]="(currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon"
-          class="zoom-08"
-          [tuiHint]="item.label"
-          [tuiHintShowDelay]="100"
-          [tuiHintHideDelay]="100"
-          tuiHintDirection="right"
-        ></tui-svg>
-        <span class="nav__list-item-title">{{ item.label }}</span>
-      </li>
+      <ng-container *ngFor="let item of navItems$ | async">
+        <li [routerLink]="item.path" routerLinkActive="active" class="nav__list-item">
+          <tui-svg
+            [src]="
+              (currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon
+            "
+            class="zoom-08"
+            [tuiHint]="item.label"
+            [tuiHintShowDelay]="100"
+            [tuiHintHideDelay]="100"
+            tuiHintDirection="right"
+          ></tui-svg>
+          <span class="nav__list-item-title">{{ item.label }}</span>
+        </li>
+        <ng-container *ngIf="item.children">
+          <li
+            *ngFor="let child of item.children"
+            [routerLink]="child.path"
+            routerLinkActive="active"
+            class="nav__list-item nav__list-item-child"
+          >
+            <tui-svg
+              [src]="
+                (currentItem$ | async)?.path === child.path ? getFilledIcon(child.icon) : child.icon
+              "
+              class="zoom-08"
+              [tuiHint]="child.label"
+              [tuiHintShowDelay]="100"
+              [tuiHintHideDelay]="100"
+              tuiHintDirection="right"
+            ></tui-svg>
+            <span class="nav__list-item-title">{{ child.label }}</span>
+          </li>
+        </ng-container>
+      </ng-container>
     </ul>
   </section>
 </nav>

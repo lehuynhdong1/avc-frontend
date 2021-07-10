@@ -33,8 +33,17 @@ nav {
         @apply font-semibold text-gray-300;
         @apply hover:bg-gray-700 hover:text-gray-100;
 
+        &.nav__list-item-child {
+          @apply ml-4;
+        }
+
         &.active {
           @apply text-white  bg-primary #{!important};
+        }
+
+        &.nav__list-item-child.active {
+          @apply text-gray-900 #{!important};
+          background-color: #b1c2ff !important;
         }
 
         .nav__list-item-title {
@@ -81,6 +90,9 @@ nav.collapse {
         @apply px-1;
         @apply justify-center;
 
+        &.nav__list-item-child {
+          @apply ml-0;
+        }
         .nav__list-item-title {
           @apply hidden;
         }

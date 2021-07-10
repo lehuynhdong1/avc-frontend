@@ -8,16 +8,11 @@
     <section class="p-5 flex flex-col">
       <h1 class="text-xl w-full">Issue Detail</h1>
 
-      <label>Issue ID</label>
-      <h2 class="bold my-0">{{ issue.id }}</h2>
-      <div class="p-4 relative border border-gray-900">
-        <adc-frontend-avatar
-          class="tui-space_top-2"
-          [url]="issue.image || ''"
-          size="xxl"
-        ></adc-frontend-avatar>
-      </div>
-      <!-- <h2 class="bold mt-0">{{ issue.role }}</h2> -->
+      <tui-avatar
+        class="mb-3"
+        [avatarUrl]="issue.image || 'assets/adc/icons/warning.svg'"
+        size="xxl"
+      ></tui-avatar>
       <label>Type</label>
       <h3 class="bold mt-0">{{ issue.type }}</h3>
       <label>Description</label>

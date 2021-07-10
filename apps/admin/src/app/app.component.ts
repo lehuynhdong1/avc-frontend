@@ -1,4 +1,4 @@
-import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { TuiDialogService, TuiNotification } from '@taiga-ui/core';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
@@ -23,7 +23,7 @@ export class AppComponent {
     private store: Store,
     private actions: Actions,
     private network: NetworkService,
-    private notifyService: TuiNotificationsService
+    private dialogService: TuiDialogService
   ) {
     store.dispatch([new LoadToken(), new LoadRoles()]);
 
@@ -70,43 +70,37 @@ export class AppComponent {
         this.store.dispatch(new RegisterAllListeners());
       });
   }
+
   private whenNetworkChanged() {
     this.network.registerListeners();
     this.network.online$
       .pipe(
         filter((online) => online),
-        withLatestFrom(this.notifyService.items$)
+        withLatestFrom(this.dialogService)
       )
-      .subscribe(([, items]) => {
-        const length = items.length;
-
-        items.forEach((item) => item.observer.complete());
-        if (length > 0)
+      .subscribe(([, dialogService]) => {
+        if (dialogService.length) {
+          dialogService.forEach((observer) => observer.completeWith(0));
           this.store.dispatch(
             new ShowNotification({
-              message: 'You are reconnected. Please refresh your site to continue.',
+              message: 'You are reconnected. Please refresh to make sure later processing work.',
               options: {
                 label: 'Network connected',
-                status: TuiNotification.Success,
-                hasCloseButton: false,
-                autoClose: false
+                status: TuiNotification.Success
               }
             })
           );
+        }
       });
-    this.network.online$.pipe(filter((online) => !online)).subscribe(() =>
-      this.store.dispatch(
-        new ShowNotification({
-          message:
-            'You are offline. All actions will be discarded. Please reconnect as soon as possible.',
-          options: {
-            label: 'Network disconnected',
-            status: TuiNotification.Error,
-            hasCloseButton: false,
-            autoClose: false
-          }
-        })
-      )
-    );
+    this.network.online$
+      .pipe(filter((online) => !online))
+      .subscribe(() =>
+        this.dialogService
+          .open(
+            'You are offline. All actions will be discarded. \nPlease reconnect as soon as possible to continue.',
+            { label: 'Network disconnected', closeable: false, dismissible: false, size: 'l' }
+          )
+          .subscribe()
+      );
   }
 }

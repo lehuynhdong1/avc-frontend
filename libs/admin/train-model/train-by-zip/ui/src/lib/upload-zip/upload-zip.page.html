@@ -1,0 +1,39 @@
+<div class="flex items-center mb-6">
+  <div class="flex-grow">
+    <h1 class="mb-2">
+      <tui-svg src="assets/adc/icons/cloud-upload.svg#cloud-upload" class="size-m mr-2"></tui-svg
+      >Train Model by Zip
+    </h1>
+    <p class="mt-0 text-base">Upload then label images online for a better training model.</p>
+  </div>
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    iconRight="tuiIconChevronRight"
+    class="tui-space_right-3 tui-space_bottom-3"
+    appearance="primary"
+    routerLink="../label-image"
+    [disabled]="!(files.value?.length > 0)"
+  >
+    Label Images
+  </button>
+</div>
+<div class="flex flex-col justify-center items-center w-100">
+  <img
+    src="assets/images/upload-image.svg"
+    alt="Upload image"
+    class="w-1/2 mb-6 transition-all"
+    [class.slowly-hide]="!(files.value?.length > 0)"
+  />
+  <tui-input-file
+    link="Choose your training images"
+    label="or drop these here..."
+    [accept]="ACCEPTED_FILE_TYPES"
+    [formControl]="files"
+    [multiple]="true"
+    [maxFileSize]="MAX_FILE_SIZE"
+    size="l"
+  ></tui-input-file>
+</div>
