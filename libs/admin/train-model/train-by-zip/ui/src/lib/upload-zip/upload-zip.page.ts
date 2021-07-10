@@ -1,43 +1,59 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormControl } from '@angular/forms';
-import { Observable, zip } from 'rxjs';
-import { tap, shareReplay, withLatestFrom, takeUntil } from 'rxjs/operators';
-import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
-import {
-  UpdateImages,
-  TrainByImagesState,
-  IMAGE_TYPES,
-  MAXIMUM_IMAGE_SIZE
-} from '@admin/train-model/train-by-images/data-access';
-import { ShowNotification } from '@shared/util';
-import { TuiDestroyService } from '@taiga-ui/cdk';
+import { withLatestFrom } from 'rxjs/operators';
+import { Actions, ofActionErrored, ofActionSuccessful, Store } from '@ngxs/store';
+import { UpdateZip, TrainByZipState } from '@admin/train-model/train-by-zip/data-access';
+import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
+import { Empty, ShowNotification } from '@shared/util';
 import { TuiStatus } from '@taiga-ui/kit';
+import { RxState } from '@rx-angular/state';
+import { TuiNotification } from '@taiga-ui/core';
+import * as prettyBytes from 'pretty-bytes';
+import { Subject } from 'rxjs';
 
 @Component({
   templateUrl: './upload-zip.page.html',
   styleUrls: ['./upload-zip.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RxState]
 })
 export class UploadZipPage {
-  TUI_SUCCESS = TuiStatus.Success;
-  ACCEPTED_FILE_TYPES = IMAGE_TYPES.join(',');
-  MAX_FILE_SIZE = MAXIMUM_IMAGE_SIZE;
+  TUI_STATUS = { Success: TuiStatus.Success, Error: TuiStatus.Error, Primary: TuiStatus.Primary };
+  MAX_FILE_SIZE = MAXIMUM_IMAGE_SIZE * 100;
 
-  readonly files = new FormControl([]);
-  private readonly filesChanged$: Observable<ReadonlyArray<File>> = this.files.valueChanges.pipe(
-    tap((files) => this.store.dispatch(new UpdateImages(files))),
-    shareReplay()
-  );
+  readonly file = new FormControl();
 
-  private readonly whenShowError$ = this.actions.pipe(ofActionSuccessful(ShowNotification));
+  private readonly whenShowError$ = this.actions.pipe<UpdateZip>(ofActionErrored(UpdateZip));
+  private readonly whenShowSuccess$ = this.actions.pipe<UpdateZip>(ofActionSuccessful(UpdateZip));
 
-  // readonly setFilesWhenError$ = zip(this.whenShowError$, this.whenUpdateImages$).pipe(
-  //   withLatestFrom(this.store.select(TrainByImagesState.uploadedImages)),
-  //   tap(([, uploadedImages]) => this.files.patchValue(uploadedImages.map((image) => image.file)))
-  // );
+  rejectFile$ = new Subject();
 
-  constructor(private store: Store, private actions: Actions, private destroy$: TuiDestroyService) {
-    // this.setFilesWhenError$.pipe(takeUntil(this.destroy$)).subscribe();
+  constructor(private store: Store, private actions: Actions, private state: RxState<Empty>) {
+    state.hold(
+      this.whenShowSuccess$.pipe(withLatestFrom(this.store.select(TrainByZipState.uploadedZip))),
+      ([, zip]) =>
+        this.store.dispatch(
+          new ShowNotification({
+            message: `${zip?.name} (${prettyBytes(zip?.size || 0)}) has accepted`,
+            options: { label: 'Upload ZIP Success', status: TuiNotification.Success }
+          })
+        )
+    );
+    state.hold(
+      this.whenShowError$.pipe(withLatestFrom(this.store.select(TrainByZipState.errorMessage))),
+      ([, errorMessage]) =>
+        this.store.dispatch(
+          new ShowNotification({
+            message: errorMessage || '',
+            options: { label: 'Upload ZIP Error', status: TuiNotification.Error }
+          })
+        )
+    );
+
+    state.hold(this.rejectFile$, console.warn);
+    state.hold(this.file.valueChanges, (file) => {
+      this.store.dispatch(new UpdateZip(file));
+    });
   }
 }

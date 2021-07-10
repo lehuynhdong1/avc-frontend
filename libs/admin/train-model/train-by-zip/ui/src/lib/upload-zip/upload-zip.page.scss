@@ -1,3 +1,10 @@
 :host {
   display: block;
 }
+.slowly-hide {
+  @apply h-0 opacity-0 mb-0;
+}
+
+tui-input-file {
+  @apply w-4/5 h-40 text-xl;
+}

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgxsModule } from '@ngxs/store';
+import { TrainByZipState } from './store';
 
 @NgModule({
-  imports: [CommonModule]
+  imports: [NgxsModule.forFeature([TrainByZipState])]
 })
 export class DataAccessModule {}

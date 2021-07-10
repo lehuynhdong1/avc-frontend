@@ -165,9 +165,6 @@
       "@shared/features/signalr/data-access": [
         "libs/shared/features/signalr/data-access/src/index.ts"
       ],
-      "@admin/train-model/data-access": ["libs/admin/train-model/data-access/src/index.ts"],
-      "@admin/train-model/ui": ["libs/admin/train-model/ui/src/index.ts"],
-      "@admin/train-model/feature": ["libs/admin/train-model/feature/src/index.ts"],
       "@admin/train-model/train-by-images/data-access": [
         "libs/admin/train-model/train-by-images/data-access/src/index.ts"
       ],
@@ -185,7 +182,8 @@
       ],
       "@admin/train-model/train-by-zip/feature": [
         "libs/admin/train-model/train-by-zip/feature/src/index.ts"
-      ]
+      ],
+      "@admin/train-model/train-by-zip/ui": ["libs/admin/train-model/train-by-zip/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

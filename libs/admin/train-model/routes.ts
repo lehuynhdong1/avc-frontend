@@ -7,7 +7,8 @@ export const trainModelRoutes: Routes = [
   },
   {
     path: 'zip',
-    loadChildren: () => import('@admin/train-model/history/feature').then((m) => m.FeatureModule)
+    loadChildren: () =>
+      import('@admin/train-model/train-by-zip/feature').then((m) => m.UploadZipModule)
   },
   {
     path: 'images',
