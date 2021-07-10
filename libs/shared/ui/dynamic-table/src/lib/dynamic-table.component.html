@@ -43,9 +43,15 @@
           </ng-container>
           <ng-container *ngIf="column.type === 'string'">
             <td *tuiCell="column.key.toString()" tuiTd>
-              {{
-                column.cellTemplate ? (item | cellTemplate: column.cellTemplate) : item[column.key]
-              }}
+              <ng-container
+                *ngIf="
+                  column.cellTemplate
+                    ? (item | cellTemplate: column.cellTemplate)
+                    : item[column.key] as content
+                "
+              >
+                {{ content | slice: 50 }} {{ content?.length > 50 ? '...' : '' }}
+              </ng-container>
             </td>
           </ng-container>
         </ng-container>
