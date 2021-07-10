@@ -1,7 +1,7 @@
-# admin-car-ui
+# admin-car-approve-ui
 
 This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
 
-Run `nx test admin-car-ui` to execute the unit tests.
+Run `nx test admin-car-approve-ui` to execute the unit tests.

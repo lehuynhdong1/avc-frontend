@@ -1,9 +1,14 @@
 {
   "implicitDependencies": {
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     ".eslintrc.json": "*"
   },
-  "affected": { "defaultBase": "develop" },
+  "affected": {
+    "defaultBase": "develop"
+  },
   "npmScope": "adc-frontend",
   "tasksRunnerOptions": {
     "default": {
@@ -17,87 +22,245 @@
     }
   },
   "projects": {
-    "admin": { "tags": ["scope:admin"] },
-    "mobile": { "tags": ["scope:mobile"] },
-    "shared-language": { "tags": ["scope:shared"] },
-    "shared-state-management": { "tags": ["scope:shared"] },
-    "shared-app-config": { "tags": ["scope:shared"] },
-    "admin-core-ui": { "tags": ["scope:admin"] },
-    "admin-auth-login-ui": { "tags": ["scope:admin"] },
-    "shared-auth-login-ui": { "tags": ["scope:shared"] },
-    "shared-auth-forgot-password-ui": { "tags": ["scope:shared"] },
-    "shared-auth-reset-password-ui": { "tags": ["scope:shared"] },
-    "admin-auth-login-feature": { "tags": ["scope:admin"] },
-    "shared-api": { "tags": ["scope:shared"] },
-    "shared-util": { "tags": ["scope:shared"] },
-    "admin-auth-forgot-password-ui": { "tags": ["scope:admin"] },
-    "admin-auth-reset-password-ui": { "tags": ["scope:admin"] },
-    "admin-auth-reset-password-feature": { "tags": ["scope:admin"] },
-    "admin-auth-forgot-password-feature": { "tags": ["scope:admin"] },
-    "shared-auth-login-data-access": { "tags": ["scope:shared"] },
-    "shared-auth-util": { "tags": ["scope:shared"] },
-    "shared-auth-logout-data-access": { "tags": ["scope:shared"] },
-    "shared-features-staff-data-access": { "tags": ["scope:shared"] },
-    "shared-features-car-data-access": { "tags": ["scope:shared"] },
-    "admin-train-model-history-feature": { "tags": ["scope:admin"] },
-    "admin-train-model-history-ui": { "tags": ["scope:admin"] },
-    "admin-train-model-history-data-access": { "tags": ["scope:admin"] },
-    "admin-staff-listing-feature": { "tags": ["scope:admin"] },
-    "admin-staff-listing-ui": { "tags": ["scope:admin"] },
-    "admin-staff-detail-feature": { "tags": ["scope:admin"] },
-    "admin-staff-detail-ui": { "tags": ["scope:admin"] },
-    "shared-ui-avatar": { "tags": ["scope:shared"] },
-    "shared-features-manager-data-access": { "tags": ["scope:shared"] },
-    "admin-manager-listing-ui": { "tags": ["scope:admin"] },
-    "admin-manager-detail-ui": { "tags": ["scope:admin"] },
-    "admin-manager-detail-feature": { "tags": ["scope:admin"] },
-    "admin-manager-listing-feature": { "tags": ["scope:admin"] },
-    "shared-features-account-data-access": { "tags": ["scope:shared"] },
-    "admin-staff-create-feature": { "tags": ["scope:admin"] },
-    "admin-staff-create-ui": { "tags": ["scope:admin"] },
-    "admin-staff-update-ui": { "tags": ["scope:admin"] },
-    "admin-staff-update-feature": { "tags": ["scope:admin"] },
-    "shared-features-issue-data-access": { "tags": ["scope:shared"] },
-    "admin-issue-listing-ui": { "tags": ["scope:admin"] },
-    "admin-issue-listing-feature": { "tags": ["scope:admin"] },
-    "shared-ui-dynamic-table": { "tags": ["scope:shared"] },
-    "admin-manager-update-feature": { "tags": ["scope:admin"] },
-    "admin-manager-create-feature": { "tags": ["scope:admin"] },
-    "admin-manager-create-ui": { "tags": ["scope:admin"] },
-    "admin-manager-update-ui": { "tags": ["scope:admin"] },
-    "admin-issue-detail-ui": { "tags": ["scope:admin"] },
-    "admin-issue-detail-feature": { "tags": ["scope:admin"] },
-    "admin-dashboard-feature": { "tags": ["scope:admin"] },
-    "admin-dashboard-ui": { "tags": ["scope:admin"] },
-    "shared-auth-forgot-password-data-access": { "tags": ["scope:shared"] },
-    "shared-auth-reset-password-data-access": { "tags": ["scope:shared"] },
-    "shared-ui-confirm-dialog": { "tags": ["scope:shared"] },
-    "shared-features-manage-profile-data-access": { "tags": ["scope:shared"] },
-    "shared-features-manage-profile-ui": { "tags": ["scope:shared"] },
-    "shared-features-car-ui": { "tags": ["scope:admin"] },
-    "shared-features-car-feature": { "tags": ["scope:admin"] },
-    "mobile-auth-feature": { "tags": ["scope:mobile"] },
-    "mobile-auth-ui": { "tags": ["scope:mobile"] },
-    "mobile-core-ui": { "tags": ["scope:mobile"] },
-    "mobile-car-ui": { "tags": ["scope:mobile"] },
-    "mobile-car-feature": { "tags": ["scope:mobile"] },
-    "mobile-manage-profile-feature": { "tags": ["scope:mobile"] },
-    "mobile-manage-profile-ui": { "tags": ["scope:mobile"] },
-    "mobile-issue-ui": { "tags": ["scope:mobile"] },
-    "mobile-issue-feature": { "tags": ["scope:mobile"] },
-    "mobile-manager-feature": { "tags": ["scope:mobile"] },
-    "mobile-manager-ui": { "tags": ["scope:mobile"] },
-    "admin-manage-profile-feature": { "tags": ["scope:admin"] },
-    "admin-manage-profile-ui": { "tags": ["scope:admin"] },
-    "admin-car-ui": { "tags": ["scope:admin"] },
-    "admin-car-feature": { "tags": ["scope:admin"] },
-    "shared-features-signalr-data-access": { "tags": ["scope:shared"] },
-    "admin-train-model-train-by-images-data-access": { "tags": ["scope:admin"] },
-    "admin-train-model-train-by-images-feature": { "tags": ["scope:admin"] },
-    "admin-train-model-train-by-images-util": { "tags": ["scope:admin"] },
-    "admin-train-model-train-by-images-ui": { "tags": ["scope:admin"] },
-    "admin-train-model-train-by-zip-data-access": { "tags": ["scope:admin"] },
-    "admin-train-model-train-by-zip-ui": { "tags": ["scope:admin"] },
-    "admin-train-model-train-by-zip-feature": { "tags": ["scope:admin"] }
+    "admin": {
+      "tags": ["scope:admin"]
+    },
+    "mobile": {
+      "tags": ["scope:mobile"]
+    },
+    "shared-language": {
+      "tags": ["scope:shared"]
+    },
+    "shared-state-management": {
+      "tags": ["scope:shared"]
+    },
+    "shared-app-config": {
+      "tags": ["scope:shared"]
+    },
+    "admin-core-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-auth-login-ui": {
+      "tags": ["scope:admin"]
+    },
+    "shared-auth-login-ui": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-forgot-password-ui": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-reset-password-ui": {
+      "tags": ["scope:shared"]
+    },
+    "admin-auth-login-feature": {
+      "tags": ["scope:admin"]
+    },
+    "shared-api": {
+      "tags": ["scope:shared"]
+    },
+    "shared-util": {
+      "tags": ["scope:shared"]
+    },
+    "admin-auth-forgot-password-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-auth-reset-password-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-auth-reset-password-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-auth-forgot-password-feature": {
+      "tags": ["scope:admin"]
+    },
+    "shared-auth-login-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-util": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-logout-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-staff-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-car-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "admin-train-model-history-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-history-data-access": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-listing-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-listing-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-detail-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-detail-ui": {
+      "tags": ["scope:admin"]
+    },
+    "shared-ui-avatar": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-manager-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "admin-manager-listing-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manager-detail-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manager-detail-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manager-listing-feature": {
+      "tags": ["scope:admin"]
+    },
+    "shared-features-account-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "admin-staff-create-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-create-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-update-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-staff-update-feature": {
+      "tags": ["scope:admin"]
+    },
+    "shared-features-issue-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "admin-issue-listing-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-issue-listing-feature": {
+      "tags": ["scope:admin"]
+    },
+    "shared-ui-dynamic-table": {
+      "tags": ["scope:shared"]
+    },
+    "admin-manager-update-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manager-create-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manager-create-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manager-update-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-issue-detail-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-issue-detail-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-dashboard-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-dashboard-ui": {
+      "tags": ["scope:admin"]
+    },
+    "shared-auth-forgot-password-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-auth-reset-password-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-ui-confirm-dialog": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-manage-profile-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "shared-features-manage-profile-ui": {
+      "tags": ["scope:shared"]
+    },
+    "mobile-auth-feature": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-auth-ui": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-core-ui": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-car-ui": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-car-feature": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-manage-profile-feature": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-manage-profile-ui": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-issue-ui": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-issue-feature": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-manager-feature": {
+      "tags": ["scope:mobile"]
+    },
+    "mobile-manager-ui": {
+      "tags": ["scope:mobile"]
+    },
+    "admin-manage-profile-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-manage-profile-ui": {
+      "tags": ["scope:admin"]
+    },
+    "shared-features-signalr-data-access": {
+      "tags": ["scope:shared"]
+    },
+    "admin-train-model-train-by-images-data-access": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-train-by-images-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-train-by-images-util": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-train-by-images-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-train-by-zip-data-access": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-train-by-zip-ui": {
+      "tags": ["scope:admin"]
+    },
+    "admin-train-model-train-by-zip-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-car-feature": {
+      "tags": ["scope:admin"]
+    },
+    "admin-car-ui": {
+      "tags": ["scope:admin"]
+    }
   }
 }

@@ -1,0 +1,14 @@
+:host ::ng-deep json-editor {
+  .jsoneditor {
+    @apply border-primary rounded-lg overflow-hidden;
+    @apply bg-gray-50;
+
+    .jsoneditor-menu {
+      @apply bg-primary;
+
+      .jsoneditor-search .jsoneditor-frame {
+        @apply rounded-lg overflow-hidden;
+      }
+    }
+  }
+}

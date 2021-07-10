@@ -145,8 +145,6 @@
       "@shared/features/manage-profile/feature": [
         "libs/shared/features/manage-profile/feature/src/index.ts"
       ],
-      "@shared/features/car/ui": ["libs/shared/features/car/ui/src/index.ts"],
-      "@shared/features/car/feature": ["libs/shared/features/car/feature/src/index.ts"],
       "@mobile/auth/feature": ["libs/mobile/auth/feature/src/index.ts"],
       "@mobile/auth/ui": ["libs/mobile/auth/ui/src/index.ts"],
       "@mobile/core/ui": ["libs/mobile/core/ui/src/index.ts"],

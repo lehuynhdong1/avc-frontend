@@ -1207,19 +1207,19 @@
     },
     "shared-features-car-data-access": {
       "projectType": "library",
-      "root": "libs/shared/features/car/data-access",
-      "sourceRoot": "libs/shared/features/car/data-access/src",
+      "root": "libs/admin/car/data-access",
+      "sourceRoot": "libs/admin/car/data-access/src",
       "prefix": "adc-frontend",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:ng-packagr-lite",
           "options": {
-            "tsConfig": "libs/shared/features/car/data-access/tsconfig.lib.json",
-            "project": "libs/shared/features/car/data-access/ng-package.json"
+            "tsConfig": "libs/admin/car/data-access/tsconfig.lib.json",
+            "project": "libs/admin/car/data-access/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "libs/shared/features/car/data-access/tsconfig.lib.prod.json"
+              "tsConfig": "libs/admin/car/data-access/tsconfig.lib.prod.json"
             }
           }
         },
@@ -1227,23 +1227,23 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/shared/features/car/data-access/src/**/*.ts",
-              "libs/shared/features/car/data-access/src/**/*.html"
+              "libs/admin/car/data-access/src/**/*.ts",
+              "libs/admin/car/data-access/src/**/*.html"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/features/car/data-access"],
+          "outputs": ["coverage/libs/admin/car/data-access"],
           "options": {
-            "jestConfig": "libs/shared/features/car/data-access/jest.config.js",
+            "jestConfig": "libs/admin/car/data-access/jest.config.js",
             "passWithNoTests": true
           }
         },
         "generate-docs": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "npx compodoc -p libs/shared/features/car/data-access/tsconfig.lib.json -d documentation/libs/shared/features/car/data-access/"
+            "command": "npx compodoc -p libs/admin/car/data-access/tsconfig.lib.json -d documentation/libs/admin/car/data-access/"
           }
         }
       }
@@ -2585,80 +2585,6 @@
         }
       }
     },
-    "shared-features-car-ui": {
-      "projectType": "library",
-      "root": "libs/shared/features/car/ui",
-      "sourceRoot": "libs/shared/features/car/ui/src",
-      "prefix": "adca",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/shared/features/car/ui/tsconfig.lib.json",
-            "project": "libs/shared/features/car/ui/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/shared/features/car/ui/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/shared/features/car/ui/src/**/*.ts",
-              "libs/shared/features/car/ui/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/features/car/ui"],
-          "options": {
-            "jestConfig": "libs/shared/features/car/ui/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "shared-features-car-feature": {
-      "projectType": "library",
-      "root": "libs/shared/features/car/feature",
-      "sourceRoot": "libs/shared/features/car/feature/src",
-      "prefix": "adca",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/shared/features/car/feature/tsconfig.lib.json",
-            "project": "libs/shared/features/car/feature/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/shared/features/car/feature/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/shared/features/car/feature/src/**/*.ts",
-              "libs/shared/features/car/feature/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/features/car/feature"],
-          "options": {
-            "jestConfig": "libs/shared/features/car/feature/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "mobile-auth-feature": {
       "projectType": "library",
       "root": "libs/mobile/auth/feature",
@@ -3140,77 +3066,6 @@
         }
       }
     },
-    "admin-car-ui": {
-      "projectType": "library",
-      "root": "libs/admin/car/ui",
-      "sourceRoot": "libs/admin/car/ui/src",
-      "prefix": "adca",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/car/ui/tsconfig.lib.json",
-            "project": "libs/admin/car/ui/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/car/ui/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/car/ui/src/**/*.ts", "libs/admin/car/ui/src/**/*.html"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/car/ui"],
-          "options": {
-            "jestConfig": "libs/admin/car/ui/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-car-feature": {
-      "projectType": "library",
-      "root": "libs/admin/car/feature",
-      "sourceRoot": "libs/admin/car/feature/src",
-      "prefix": "adca",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
-          "options": {
-            "tsConfig": "libs/admin/car/feature/tsconfig.lib.json",
-            "project": "libs/admin/car/feature/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/admin/car/feature/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/car/feature/src/**/*.ts",
-              "libs/admin/car/feature/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/car/feature"],
-          "options": {
-            "jestConfig": "libs/admin/car/feature/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "shared-features-signalr-data-access": {
       "projectType": "library",
       "root": "libs/shared/features/signalr/data-access",
@@ -3539,6 +3394,77 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "command": "npx compodoc -p libs/admin/train-model/train-by-zip/feature/tsconfig.lib.json -d documentation/libs/admin/train-model/train-by-zip/feature/"
+          }
+        }
+      }
+    },
+    "admin-car-feature": {
+      "projectType": "library",
+      "root": "libs/admin/car/feature",
+      "sourceRoot": "libs/admin/car/feature/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/car/feature/tsconfig.lib.json",
+            "project": "libs/admin/car/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/car/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/car/feature/src/**/*.ts",
+              "libs/admin/car/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/car/feature"],
+          "options": {
+            "jestConfig": "libs/admin/car/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-car-ui": {
+      "projectType": "library",
+      "root": "libs/admin/car/ui",
+      "sourceRoot": "libs/admin/car/ui/src",
+      "prefix": "adca",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/car/ui/tsconfig.lib.json",
+            "project": "libs/admin/car/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/car/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/car/ui/src/**/*.ts", "libs/admin/car/ui/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/car/ui"],
+          "options": {
+            "jestConfig": "libs/admin/car/ui/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

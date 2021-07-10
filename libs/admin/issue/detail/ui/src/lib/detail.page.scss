@@ -48,3 +48,7 @@ tui-svg.top-right {
 label {
   @apply text-gray-600 font-bold text-sm;
 }
+
+.openable {
+  @apply cursor-pointer hover:text-primary no-underline;
+}

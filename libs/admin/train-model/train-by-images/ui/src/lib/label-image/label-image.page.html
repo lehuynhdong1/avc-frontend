@@ -1,3 +1,7 @@
+<h1 class="mb-2">
+  <tui-svg src="assets/adc/icons/images.svg#images" class="size-m mr-2"></tui-svg>
+  Train by Images
+</h1>
 <tui-stepper [activeItemIndex]="1">
   <button tuiStep [state]="TUI_STEPPER_PASS" (click)="goTo(['..','upload-image'])">
     Upload Images
@@ -7,10 +11,10 @@
 </tui-stepper>
 <div class="flex items-center mb-8">
   <div class="flex-grow">
-    <h1 class="mb-2">
+    <h2 class="mb-2">
       <tui-svg src="assets/adc/icons/scan-circle.svg#scan-circle" class="size-m mr-2"></tui-svg
       >Label Images
-    </h1>
+    </h2>
     <p class="mt-0 text-base">Label images online for a better training model.</p>
   </div>
 

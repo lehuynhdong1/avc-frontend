@@ -1,16 +1,13 @@
 import { ReceivedResponses, SentMethods, SentParams } from './../models/signalr.model';
 import { Injectable, Inject } from '@angular/core';
-import { HubConnectionBuilder, HubConnection, HttpTransportType } from '@microsoft/signalr';
+import { HubConnectionBuilder, HubConnection } from '@microsoft/signalr';
 import { AppConfig, APP_CONFIG } from '@shared/app-config';
 import { ReceivedMethods } from './../models';
 
 @Injectable({ providedIn: 'root' })
 export class SignalRService {
   connection: HubConnection = new HubConnectionBuilder()
-    .withUrl(`${this.appConfig.apiUrl}/hub/`, {
-      skipNegotiation: true,
-      transport: HttpTransportType.WebSockets
-    })
+    .withUrl(`${this.appConfig.apiUrl}/hub/`)
     .withAutomaticReconnect()
     .build();
 

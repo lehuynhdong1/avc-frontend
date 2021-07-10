@@ -1,0 +1,143 @@
+<aside class="relative" [class.fullpage]="isFullPage$ | async">
+  <ng-container *ngIf="selectedCar$ | async as car; else loading">
+    <div class="top-right">
+      <tui-svg
+        class="mx-1 cursor-pointer text-green-600 hover:text-green-800"
+        src="tuiIconExternalLarge"
+        [routerLink]="'/car/detail/'+car.id"
+      ></tui-svg>
+      <tui-svg
+        class="mx-1 cursor-pointer text-yellow-400 hover:text-yellow-500"
+        src="tuiIconEditLarge"
+        [routerLink]="'/car/update/'+car.id"
+      ></tui-svg>
+      <tui-svg
+        class="mx-1 cursor-pointer text-red-500 hover:text-red-700"
+        src="tuiIconRemoveLarge"
+        routerLink="/car"
+      ></tui-svg>
+    </div>
+    <main>
+      <h1>
+        <tui-svg src="assets/adc/icons/car-sport.svg#car-sport" class="size-m"></tui-svg>
+        Car Detail
+      </h1>
+
+      <section class="car__information">
+        <b class="text-gray-600">Name </b>
+        <h2 class="my-0">{{ car.name }}</h2>
+        <div class="p-2 relative border border-gray-900">
+          <adc-frontend-avatar
+            class="tui-space_top-2"
+            [url]="car.image"
+            placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
+            placeholderImageAsset="assets/adc/icons/car-sport.svg#car-sport"
+            size="xl"
+          ></adc-frontend-avatar>
+        </div>
+
+        <b class="text-gray-600">Device ID</b>
+        <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
+
+        <b class="text-gray-600">Configuration</b>
+        <h3 class="mt-0 mb-3">
+          <a class="openable" routerLink="edit-config" *ngIf="car.configUrl; else notHasConfig"
+            >Edit configuration
+            <tui-svg src="tuiIconEdit" tuiHint="Edit" class="mb-1"></tui-svg>
+          </a>
+          <ng-template #notHasConfig> None </ng-template>
+        </h3>
+
+        <b class="text-gray-600">Managed by</b>
+        <h3 class="mt-0 mb-3">
+          {{car.managedBy ? '': 'None'}} {{ car.managedBy?.firstName }} {{ car.managedBy?.lastName
+          }}
+        </h3>
+
+        <b class="text-gray-600">Assigned to</b>
+        <h3 class="mt-0 mb-3">
+          {{car.assignTo ? '': 'None'}} {{ car.assignTo?.firstName }} {{ car.assignTo?.lastName }}
+        </h3>
+
+        <ng-container *ngIf="(isFullPage$ | async) === undefined">
+          <b class="text-gray-600 mb-1">Issues</b>
+          <h3 class="mt-0 mb-3">
+            <span class="openable text-primary" [routerLink]="'/car/detail/'+car.id">Expand</span>
+            to view full car issues.
+          </h3>
+        </ng-container>
+
+        <b class="text-gray-600">Created at</b>
+        <h3 class="mt-0 mb-3">{{ car.createdAt | date }}</h3>
+      </section>
+
+      <section class="car__information-extend">
+        <b class="text-gray-600 mb-1">Connecting Status: </b>
+        <tui-badge
+          size="l"
+          [value]="car.isConnecting ? 'Connected': 'Disconnected'"
+          [status]="car.isConnecting ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+          class="self-start mb-3"
+        ></tui-badge>
+
+        <ng-container *ngIf="isAdmin$ | async">
+          <div class="flex flex-col mb-3">
+            <b class="text-gray-600 mb-1">Approved Status</b>
+            <div class="self-start">
+              <tui-badge
+                size="l"
+                [value]="car.isApproved === (null || undefined) ? 'Pending' : car.isApproved ? 'Approved' : 'Rejected'"
+                [status]="car.isApproved === (null || undefined) ? TUI_STATUS.PRIMARY : car.isApproved ? TUI_STATUS.SUCCESS : TUI_STATUS.WARNING"
+                class="mr-2"
+              ></tui-badge>
+              <button
+                tuiButton
+                size="s"
+                appearance="outline"
+                type="button"
+                (click)="this.clickApprove$.next(car.isApproved || false)"
+                [class.deactivate]="car.isApproved"
+              >
+                {{ car.isApproved ? 'Reject' : 'Approve'}}
+              </button>
+            </div>
+          </div>
+          <b class="text-gray-600 mb-1">Activation Status</b>
+          <div class="self-start mb-3">
+            <tui-badge
+              size="l"
+              [value]="car.isAvailable ? 'Active' : 'Inactive'"
+              [status]="car.isAvailable ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+              class="mr-2"
+            ></tui-badge>
+            <button
+              tuiButton
+              size="s"
+              appearance="outline"
+              type="button"
+              (click)="this.clickActivate$.next(car.isAvailable || false)"
+              [class.deactivate]="car.isAvailable"
+            >
+              {{car.isAvailable ? 'Deactivate': 'Reactivate'}}
+            </button>
+          </div>
+        </ng-container>
+      </section>
+
+      <section class="car__information-table">
+        <b class="text-gray-600 mb-1">Issues</b>
+        <adc-frontend-dynamic-table
+          *ngIf="car.issues; else carHasNoIssue"
+          [columns]="DYNAMIC_COLUMNS"
+          [array]="car.issues || []"
+          [selectable]="true"
+          (selectRow)="selectIssue$.next($event)"
+        ></adc-frontend-dynamic-table>
+        <ng-template #carHasNoIssue>
+          <h3 class="mt-0 mb-3">This car has no issues yet.</h3>
+        </ng-template>
+      </section>
+    </main>
+  </ng-container>
+  <ng-template #loading> <tui-loader></tui-loader> </ng-template>
+</aside>

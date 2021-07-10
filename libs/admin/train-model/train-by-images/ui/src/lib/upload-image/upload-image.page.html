@@ -1,3 +1,7 @@
+<h1 class="mb-2">
+  <tui-svg src="assets/adc/icons/images.svg#images" class="size-m mr-2"></tui-svg>
+  Train by Images
+</h1>
 <tui-stepper [activeItemIndex]="0">
   <button tuiStep icon="assets/adc/icons/cloud-upload.svg#cloud-upload">
     <b class="text-primary">Upload Images</b>
@@ -7,10 +11,10 @@
 </tui-stepper>
 <div class="flex items-center mb-6">
   <div class="flex-grow">
-    <h1 class="mb-2">
+    <h2 class="mb-2">
       <tui-svg src="assets/adc/icons/cloud-upload.svg#cloud-upload" class="size-m mr-2"></tui-svg
       >Upload Images
-    </h1>
+    </h2>
     <p class="mt-0 text-base">Upload then label images online for a better training model.</p>
   </div>
 
@@ -40,7 +44,7 @@
   <img
     src="assets/images/upload-image.svg"
     alt="Upload image"
-    class="w-1/2 mb-6 transition-all"
+    class="w-1/2 max-w-md mb-6 transition-all"
     [class.slowly-hide]="(fileLengthChanged$ | async)"
   />
   <tui-input-file

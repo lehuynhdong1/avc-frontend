@@ -20,7 +20,14 @@
       <label>Location</label>
       <h3 class="bold mt-0">{{ issue.location }}</h3>
       <label>Car</label>
-      <h3 class="bold mt-0">{{ issue.carId }}</h3>
+      <h3
+        class="bold mt-0 openable"
+        [routerLink]="'/car/'+car.id"
+        *ngIf="selectedCar$ | async as car"
+      >
+        {{ car?.name }}
+        <tui-svg src="tuiIconExternal" tuiHint="Open" class="mb-1"></tui-svg>
+      </h3>
       <label>Occured at</label>
       <h3 class="bold mt-0">{{ issue.createdAt | date }}</h3>
     </section>

@@ -1,5 +1,5 @@
 {
-  "name": "@admin/car/feature",
+  "name": "@admin/car/approve/feature",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^11.2.14",

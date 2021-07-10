@@ -1,0 +1,31 @@
+<h1>Edit Car Configuration</h1>
+<ng-container *ngIf="selectedCar$ | async as car">
+  <div class="flex flex-wrap">
+    <adc-frontend-avatar
+      class="tui-space_top-2"
+      [url]="car.image"
+      placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
+      placeholderImageAsset="assets/adc/icons/car-sport.svg#car-sport"
+      size="xl"
+    ></adc-frontend-avatar>
+    <section class="flex flex-col ml-3">
+      <b class="text-gray-600">Device ID</b>
+      <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
+
+      <b class="text-gray-600">Managed by</b>
+      <h3 class="mt-0 mb-3">
+        {{car.managedBy ? '': 'None'}} {{ car.managedBy?.firstName }} {{ car.managedBy?.lastName }}
+      </h3>
+
+      <b class="text-gray-600">Assigned to</b>
+      <h3 class="mt-0 mb-3">
+        {{car.assignTo ? '': 'None'}} {{ car.assignTo?.firstName }} {{ car.assignTo?.lastName }}
+      </h3>
+    </section>
+  </div>
+  <json-editor [options]="EDITOR_OPTIONS" [data]="(config$ | async) || {}" #editor></json-editor>
+  <div class="mt-3 flex justify-end">
+    <button tuiButton size="m" class="mr-3" (click)="save$.next()">Save</button>
+    <button tuiButton appearance="outline" size="m" routerLink="..">Discard</button>
+  </div>
+</ng-container>
