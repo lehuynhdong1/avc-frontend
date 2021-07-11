@@ -53,9 +53,7 @@
             class="nav__list-item nav__list-item-child"
           >
             <tui-svg
-              [src]="
-                (currentItem$ | async)?.path === child.path ? getFilledIcon(child.icon) : child.icon
-              "
+              [src]="child.icon"
               class="zoom-08"
               [tuiHint]="child.label"
               [tuiHintShowDelay]="100"

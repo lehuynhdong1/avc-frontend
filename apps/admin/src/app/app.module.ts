@@ -1,3 +1,4 @@
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,7 +29,8 @@ import { getAppConfigProvider } from '@shared/app-config';
     SharedUtilModule,
     AuthUtilModule,
     StateManagementModulesWithConfig(environment),
-    LanguageModuleWithConfig({ prodMode: environment.production })
+    LanguageModuleWithConfig({ prodMode: environment.production }),
+    NgxChartsModule
   ],
   bootstrap: [AppComponent],
   providers: [getAppConfigProvider(environment)]

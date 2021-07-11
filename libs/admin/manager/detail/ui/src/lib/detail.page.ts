@@ -102,7 +102,7 @@ export class DetailPage {
       withLatestFrom(isAvailable$),
       switchMap(([, currentValue]) =>
         this.confirmDialogService.open(
-          currentValue ? 'Deactivate car' : 'Activate car',
+          currentValue ? 'Deactivate manager' : 'Activate manager',
           getConfirmDialogParams(currentValue)
         )
       ),
