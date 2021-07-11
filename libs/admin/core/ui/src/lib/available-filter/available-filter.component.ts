@@ -9,7 +9,7 @@ import {
 import { ActivationStatuses, Empty, ActivationStatus } from '@shared/util';
 import { FormControl } from '@angular/forms';
 import { RxState } from '@rx-angular/state';
-import { debounceTime, map, share } from 'rxjs/operators';
+import { debounceTime, map, shareReplay } from 'rxjs/operators';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import { Store } from '@ngxs/store';
 import { LoginState } from '@shared/auth/login/data-access';
@@ -30,7 +30,7 @@ export class AvailableFilterComponent implements OnInit {
 
   readonly isAdmin$ = this.store.select(LoginState.account).pipe(
     map((my) => my?.role === 'Admin'),
-    share()
+    shareReplay(1)
   );
 
   readonly control = new FormControl('');

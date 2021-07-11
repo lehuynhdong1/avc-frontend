@@ -10,7 +10,7 @@ import {
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom, shareReplay, share } from 'rxjs/operators';
+import { map, filter, switchMap, withLatestFrom, shareReplay } from 'rxjs/operators';
 import { merge, Observable, Subject } from 'rxjs';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ShowNotification, hasValue, Empty } from '@shared/util';
@@ -60,7 +60,7 @@ export class DetailPage {
   readonly selectedCar$ = this.store.select(CarState.selectedCar).pipe(hasValue());
   readonly isAdmin$ = this.store.select(LoginState.account).pipe(
     map((my) => my?.role === 'Admin'),
-    share()
+    shareReplay(1)
   );
   private readonly errorMessage$ = this.store.select(CarState.errorMessage).pipe(hasValue());
   private readonly id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));

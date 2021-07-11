@@ -4,7 +4,7 @@ import { StaffState, LoadStaffById } from '@shared/features/staff/data-access';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, switchMap, withLatestFrom, mapTo, shareReplay, share } from 'rxjs/operators';
+import { map, filter, switchMap, withLatestFrom, mapTo, shareReplay } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { ConfirmDialogService } from '@shared/ui/confirm-dialog';
 import { TuiAppearance } from '@taiga-ui/core';
@@ -67,7 +67,7 @@ export class DetailPage {
   );
   readonly isAdmin$ = this.store.select(LoginState.account).pipe(
     map((my) => my?.role === 'Admin'),
-    share()
+    shareReplay(1)
   );
   private readonly errorMessage$ = this.store.select(StaffState.errorMessage).pipe(hasValue());
   readonly selectCar$ = new Subject<Id>();
@@ -81,7 +81,7 @@ export class DetailPage {
     switchMap(([, staff]) =>
       this.confirmDialogService
         .open(
-          staff.isAvailable ? 'Deactivate car' : 'Activate car',
+          staff.isAvailable ? 'Deactivate staff' : 'Activate staff',
           getConfirmDialogParams(staff.isAvailable || false)
         )
         .pipe(
