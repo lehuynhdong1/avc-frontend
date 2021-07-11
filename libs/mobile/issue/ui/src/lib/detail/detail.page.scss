@@ -1,11 +1,12 @@
-ion-footer {
-  position: fixed !important;
-  @apply fixed bottom-0 left-0;
-  ion-toolbar {
-    --background: var(--ion-background-color);
+ion-header,
+ion-toolbar {
+  --background: var(--tui-accent);
+  --color: var(--tui-base-01);
+
+  ion-back-button {
+    --color: var(--tui-base-01);
   }
 }
-
 h3 {
   @apply text-gray-700 font-semibold text-base;
   @apply mt-0 mb-3;

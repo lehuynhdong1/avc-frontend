@@ -50,7 +50,7 @@
                     : item[column.key] as content
                 "
               >
-                {{ content | slice: 50 }} {{ content?.length > 50 ? '...' : '' }}
+                {{ content | slice: 0:50 }} {{ content?.length > 50 ? '...' : '' }}
               </ng-container>
             </td>
           </ng-container>

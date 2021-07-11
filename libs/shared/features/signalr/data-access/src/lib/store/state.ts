@@ -1,4 +1,5 @@
-import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { LoginState } from '@shared/auth/login/data-access';
+import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
 import { Injectable } from '@angular/core';
 import { ReceivedMethods, SentMethods, SignalRService } from '@shared/util';
@@ -27,7 +28,7 @@ export class SignalRState {
     return (type: ReceivedMethods) => state[type];
   }
 
-  constructor(private signalr: SignalRService) {}
+  constructor(private signalr: SignalRService, private store: Store) {}
 
   @Action(StartSignalR, { cancelUncompleted: true })
   StartSignalR() {
@@ -55,8 +56,12 @@ export class SignalRState {
   @Action(RegisterAllListeners, { cancelUncompleted: true })
   RegisterAllListeners({ patchState }: StateContext<StateModel>) {
     const keys = Object.keys(ReceivedMethods) as Array<keyof typeof ReceivedMethods>;
+    const me = this.store.selectSnapshot(LoginState.account);
+    if (!me) return;
     keys.forEach((key) =>
-      this.signalr.register(ReceivedMethods[key], (params) => patchState({ [key]: params }))
+      this.signalr.register(ReceivedMethods[key], (params) => {
+        if (params.accountIdList.includes(me.id || 0)) patchState({ [key]: params });
+      })
     );
   }
 

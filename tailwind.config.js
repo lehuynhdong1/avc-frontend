@@ -33,9 +33,9 @@ module.exports = {
           active: 'var(--tui-secondary-active)'
         },
         accent: {
-          DEFAULT: 'var(--tui-secondary)',
-          hover: 'var(--tui-secondary-hover)',
-          active: 'var(--tui-secondary-active)'
+          DEFAULT: 'var(--tui-accent)',
+          hover: 'var(--tui-accent-hover)',
+          active: 'var(--tui-accent-active)'
         }
       },
       spacing: {

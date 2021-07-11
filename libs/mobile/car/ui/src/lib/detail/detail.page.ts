@@ -9,8 +9,6 @@ import { map, withLatestFrom } from 'rxjs/operators';
 import { hasValue, Empty } from '@shared/util';
 import { IssueReadDto } from '@shared/api';
 import { Subject } from 'rxjs';
-import { BottomBarVisibilityService } from '@mobile/core/ui';
-import { ViewWillLeave } from '@ionic/angular';
 
 @Component({
   templateUrl: './detail.page.html',
@@ -18,7 +16,7 @@ import { ViewWillLeave } from '@ionic/angular';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState]
 })
-export class DetailPage implements ViewWillLeave {
+export class DetailPage {
   TUI_STATUS = {
     ERROR: TuiStatus.Error,
     WARNING: TuiStatus.Warning,
@@ -35,10 +33,8 @@ export class DetailPage implements ViewWillLeave {
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Empty>,
-    private bottomBar: BottomBarVisibilityService
+    private state: RxState<Empty>
   ) {
-    bottomBar.hide();
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
     this.state.hold(id$, (id) => this.store.dispatch(new LoadCarById({ id })));
     this.state.hold(this.toggleRun$.pipe(withLatestFrom(this.selectedCar$)), ([, car]) => {
@@ -49,9 +45,5 @@ export class DetailPage implements ViewWillLeave {
 
   trackById(_: number, item: IssueReadDto) {
     return item.id;
-  }
-
-  ionViewWillLeave() {
-    this.bottomBar.show();
   }
 }

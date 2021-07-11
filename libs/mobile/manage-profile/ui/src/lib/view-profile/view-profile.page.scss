@@ -10,9 +10,9 @@ ion-content {
 :host ::ng-deep button {
   &.danger {
     tui-wrapper[data-appearance='primary'] {
-      @apply bg-red-500;
+      @apply bg-accent;
       &:after {
-        @apply border-red-500;
+        @apply border-accent;
       }
 
       &[data-state='hovered'] {
@@ -20,7 +20,7 @@ ion-content {
       }
 
       &[data-state='pressed'] {
-        @apply text-red-500 bg-white;
+        @apply bg-accent-active bg-white;
       }
     }
   }

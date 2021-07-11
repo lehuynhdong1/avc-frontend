@@ -50,24 +50,29 @@
       </div>
 
       <span class="text-sm text-gray-600 mb-1">Issues</span>
-      <ion-list>
-        <ion-item
-          *ngFor="let issue of car.issues; trackBy:trackById"
-          button
-          detail
-          lines="none"
-          [routerLink]="['..','issue',issue.id]"
-        >
-          <ion-avatar slot="start">
-            <img [src]="issue.image || 'assets/adc/icons/car-sport-outline.svg'" />
-          </ion-avatar>
-          <ion-label>
-            <h2 class="!font-semibold text-gray-700">{{issue.type}}</h2>
-            <h3 class="text-gray-600 !mb-0">{{ issue.description }}</h3>
-            <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+      <ng-container *ngIf="(car.issues?.length || 0) > 0; else hasNoIssue">
+        <ion-list>
+          <ion-item
+            *ngFor="let issue of car.issues; trackBy:trackById"
+            button
+            detail
+            lines="none"
+            [routerLink]="['..','issue',issue.id]"
+          >
+            <ion-thumbnail slot="start" class="rounded-md overflow-hidden">
+              <img [src]="issue.image || 'assets/adc/icons/car-sport-outline.svg'" />
+            </ion-thumbnail>
+            <ion-label>
+              <h2 class="!font-semibold text-gray-700">{{issue.type}}</h2>
+              <h3 class="text-gray-600 !mb-0">{{ issue.description }}</h3>
+              <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+      <ng-template #hasNoIssue>
+        <h3 class="text-gray-600 !my-0">This car has no issue yet.</h3>
+      </ng-template>
     </main>
   </ion-content>
   <ion-footer>
@@ -75,10 +80,10 @@
       <ion-button
         (click)="this.toggleRun$.next()"
         expand="block"
-        [color]="car.isRunning ? 'danger': 'success'"
+        [color]="car.isConnecting ? (car.isRunning ? 'danger': 'success') : 'danger'"
         [disabled]="!car.isConnecting"
       >
-        {{car.isRunning ? 'Stop': 'Start'}}
+        {{car.isConnecting ? (car.isRunning ? 'Stop': 'Start') : 'Not connecting'}}
       </ion-button>
     </ion-toolbar>
   </ion-footer>
