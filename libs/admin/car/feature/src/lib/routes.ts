@@ -13,5 +13,10 @@ export const carRoutes: Routes = [
   {
     path: ':id/edit-config',
     loadChildren: () => import('./edit-config.module').then((m) => m.EditConfigModule)
+  },
+  {
+    path: 'detail/:id/edit-config',
+    pathMatch: 'full',
+    redirectTo: ':id/edit-config'
   }
 ];
