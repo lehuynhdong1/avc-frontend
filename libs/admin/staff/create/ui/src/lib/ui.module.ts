@@ -23,6 +23,7 @@ import { UtilModule } from '@shared/util';
 import { AvatarModule } from '@shared/ui/avatar';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { RouterModule } from '@angular/router';
+import { ErrorHintModule } from '@shared/ui/error-hint';
 
 const tuiModules = [
   TuiDataListModule,
@@ -42,7 +43,15 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [CreatePage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, UtilModule, AvatarModule, tuiModules],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    UtilModule,
+    AvatarModule,
+    ErrorHintModule,
+    tuiModules
+  ],
   exports: [CreatePage]
 })
 export class UiModule {}

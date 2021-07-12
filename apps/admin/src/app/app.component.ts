@@ -27,14 +27,14 @@ export class AppComponent {
   ) {
     store.dispatch([new LoadToken(), new LoadRoles()]);
 
-    this.whenNetworkChanged();
-    this.whenLoginSuccess();
-    this.whenLogoutSuccess();
-    this.whenStartSignalRSuccess();
-    this.whenConnectAccountSuccess();
-    this.whenUnregisterAllListenersSuccess();
-    const myId = store.selectSnapshot(LoginState.account)?.id;
-    if (myId) store.dispatch(new StartSignalR());
+    // this.whenNetworkChanged();
+    // this.whenLoginSuccess();
+    // this.whenLogoutSuccess();
+    // this.whenStartSignalRSuccess();
+    // this.whenConnectAccountSuccess();
+    // this.whenUnregisterAllListenersSuccess();
+    // const myId = store.selectSnapshot(LoginState.account)?.id;
+    // if (myId) store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {

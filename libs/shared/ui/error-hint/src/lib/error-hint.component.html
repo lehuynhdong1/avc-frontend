@@ -1,0 +1,34 @@
+<section class="flex flex-col flex-wrap">
+  <div *ngIf="errorChecks?.required">
+    <tui-svg
+      [src]="errors?.required ? 'tuiIconCloseCircleLarge' : 'tuiIconCheckCircleLarge'"
+      class="size-s text-green-300"
+      [class.text-red-300]="errors?.required"
+    ></tui-svg>
+    {{ name }} is required.
+  </div>
+  <div *ngIf="errorChecks?.minlength">
+    <tui-svg
+      [src]="
+        errors?.required || errors?.minlength
+          ? 'tuiIconCloseCircleLarge'
+          : 'tuiIconCheckCircleLarge'
+      "
+      class="size-s text-green-300"
+      [class.text-red-300]="errors?.required || errors?.minlength"
+    ></tui-svg>
+    {{ name }} has 6 characters at least.
+  </div>
+  <div *ngIf="errorChecks?.maxlength">
+    <tui-svg
+      [src]="
+        errors?.required || errors?.maxlength
+          ? 'tuiIconCloseCircleLarge'
+          : 'tuiIconCheckCircleLarge'
+      "
+      class="size-s text-green-300"
+      [class.text-red-300]="errors?.required || errors?.maxlength"
+    ></tui-svg>
+    {{ name }} has 16 characters at max.
+  </div>
+</section>

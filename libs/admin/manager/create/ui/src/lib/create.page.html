@@ -38,11 +38,12 @@
       </div>
     </div>
     <div class="flex flex-col mb-3">
-      <label>First name </label>
+      <label>First name <span class="text-red-500">*</span> </label>
       <tui-input
         tuiTextfieldSize="m"
         [tuiTextfieldCleaner]="true"
         [tuiTextfieldLabelOutside]="true"
+        [tuiHintContent]="firstNameHint"
         tuiTextfieldExampleText="First name here..."
         formControlName="firstName"
       >
@@ -53,11 +54,12 @@
       </tui-input>
     </div>
     <div class="flex flex-col mb-3">
-      <label>Last name</label>
+      <label>Last name <span class="text-red-500">*</span></label>
       <tui-input
         tuiTextfieldSize="m"
         [tuiTextfieldCleaner]="true"
         [tuiTextfieldLabelOutside]="true"
+        [tuiHintContent]="lastNameHint"
         tuiTextfieldExampleText="Last name here..."
         formControlName="lastName"
       >
@@ -69,12 +71,13 @@
     </div>
 
     <div class="flex flex-col mb-3">
-      <label>Email</label>
+      <label>Email <span class="text-red-500">*</span></label>
       <tui-input
         tuiTextfieldSize="m"
         [tuiTextfieldCleaner]="true"
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldType]="TUI_INPUT_EMAIL"
+        [tuiHintContent]="emailHint"
         tuiTextfieldExampleText="Email here..."
         formControlName="email"
       >
@@ -86,11 +89,11 @@
     </div>
 
     <div class="flex flex-col mb-3">
-      <label>Password</label>
+      <label>Password <span class="text-red-500">*</span></label>
       <tui-input-password
         tuiTextfieldSize="m"
         [tuiTextfieldLabelOutside]="true"
-        [tuiHintContent]="passwordInfo"
+        [tuiHintContent]="passwordHint"
         tuiTextfieldExampleText="Password here..."
         formControlName="password"
       >
@@ -109,7 +112,6 @@
         [tuiTextfieldLabelOutside]="true"
         countryCode="+84"
         phoneMaskAfterCountryCode="### ###-###"
-        tuiTextfieldExampleText="Phone here..."
         formControlName="phone"
       >
         <span class="text-gray-300">
@@ -123,41 +125,47 @@
       Clear when creating succeeded.
     </tui-checkbox-labeled>
 
-    <button tuiButton (click)="clickCreate$.next()" size="m" [disabled]="form.invalid">
+    <button
+      tuiButton
+      (click)="clickCreate$.next()"
+      size="m"
+      [disabled]="form.invalid"
+      [showLoader]="(loading$ | async) || false"
+    >
       Create
     </button>
   </form>
   <ng-template #loading> Loading </ng-template>
 </aside>
-<ng-template #passwordInfo>
-  <section class="flex flex-col flex-wrap">
-    <div>
-      <tui-svg
-        [src]="
-          form?.get('password')?.errors?.required || form?.get('password')?.errors?.minlength
-            ? 'tuiIconCloseCircleLarge'
-            : 'tuiIconCheckCircleLarge'
-        "
-        class="size-s text-green-300"
-        [class.text-red-300]="
-          form?.get('password')?.errors?.required || form?.get('password')?.errors?.minlength
-        "
-      ></tui-svg>
-      Password has 6 characters at least.
-    </div>
-    <div>
-      <tui-svg
-        [src]="
-          form?.get('password')?.errors?.required || form?.get('password')?.errors?.maxlength
-            ? 'tuiIconCloseCircleLarge'
-            : 'tuiIconCheckCircleLarge'
-        "
-        class="size-s text-green-300"
-        [class.text-red-300]="
-          form?.get('password')?.errors?.required || form?.get('password')?.errors?.maxlength
-        "
-      ></tui-svg>
-      Password has 16 characters at max.
-    </div>
-  </section>
+
+<ng-template #firstNameHint>
+  <adc-frontend-error-hint
+    name="First name"
+    [errors]="this.form.get('firstName')?.errors"
+    [errorChecks]="{required: true}"
+  ></adc-frontend-error-hint>
+</ng-template>
+
+<ng-template #lastNameHint>
+  <adc-frontend-error-hint
+    name="Last name"
+    [errors]="this.form.get('lastName')?.errors"
+    [errorChecks]="{required: true}"
+  ></adc-frontend-error-hint>
+</ng-template>
+
+<ng-template #emailHint>
+  <adc-frontend-error-hint
+    name="Email"
+    [errors]="this.form.get('email')?.errors"
+    [errorChecks]="{required: true}"
+  ></adc-frontend-error-hint>
+</ng-template>
+
+<ng-template #passwordHint>
+  <adc-frontend-error-hint
+    name="Password"
+    [errors]="this.form.get('password')?.errors"
+    [errorChecks]="{minlength: true, maxlength: true}"
+  ></adc-frontend-error-hint>
 </ng-template>

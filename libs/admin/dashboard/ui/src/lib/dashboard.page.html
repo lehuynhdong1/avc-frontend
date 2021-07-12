@@ -51,17 +51,25 @@
     </section>
   </tui-axes>
 </section>
+
+<p class="b-form">
+  <tui-input-date-range [maxLength]="maxLength" [formControl]="dateRangeControl">
+    Range
+  </tui-input-date-range>
+</p>
+
 <ngx-charts-heat-map
-  [view]="view"
+  [view]="[700, 300]"
   [scheme]="colorScheme"
-  [legend]="legend"
-  [showXAxisLabel]="showXAxisLabel"
-  [showYAxisLabel]="showYAxisLabel"
-  [xAxis]="xAxis"
-  [yAxis]="yAxis"
-  [xAxisLabel]="xAxisLabel"
-  [yAxisLabel]="yAxisLabel"
-  [results]="multi"
+  legend="true"
+  xAxis="true"
+  yAxis="true"
+  showXAxisLabel="true"
+  showYAxisLabel="true"
+  xAxisLabel="Day"
+  yAxisLabel="Issue Count"
+  [results]="data$ | async"
   (select)="onSelect($event)"
+  class="w-full"
 >
 </ngx-charts-heat-map>

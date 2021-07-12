@@ -124,7 +124,7 @@
         </ng-container>
       </section>
 
-      <section class="car__information-table">
+      <section class="car__information-table" *ngIf="(isFullPage$ | async) === true">
         <b class="text-gray-600 mb-1">Issues</b>
         <adc-frontend-dynamic-table
           *ngIf="car.issues; else carHasNoIssue"

@@ -44,7 +44,7 @@
     </div>
 
     <div class="flex flex-col mb-3" *ngIf="isAdmin$ | async">
-      <label>Name </label>
+      <label>Name <span class="text-red-500">*</span> </label>
       <tui-input
         tuiTextfieldSize="m"
         [tuiTextfieldCleaner]="true"

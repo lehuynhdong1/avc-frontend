@@ -1,3 +1,4 @@
+import { ErrorHintModule } from '@shared/ui/error-hint';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreatePage } from './create.page';
@@ -34,7 +35,15 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [CreatePage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, UtilModule, AvatarModule, tuiModules],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    UtilModule,
+    AvatarModule,
+    ErrorHintModule,
+    tuiModules
+  ],
   exports: [CreatePage]
 })
 export class UiModule {}

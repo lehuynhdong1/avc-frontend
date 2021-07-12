@@ -3468,6 +3468,43 @@
           }
         }
       }
+    },
+    "shared-ui-error-hint": {
+      "projectType": "library",
+      "root": "libs/shared/ui/error-hint",
+      "sourceRoot": "libs/shared/ui/error-hint/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/ui/error-hint/tsconfig.lib.json",
+            "project": "libs/shared/ui/error-hint/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/ui/error-hint/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/ui/error-hint/src/**/*.ts",
+              "libs/shared/ui/error-hint/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/ui/error-hint"],
+          "options": {
+            "jestConfig": "libs/shared/ui/error-hint/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

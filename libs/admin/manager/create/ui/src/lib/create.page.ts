@@ -7,7 +7,7 @@ import { RxState } from '@rx-angular/state';
 import { withLatestFrom, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TuiNotification } from '@taiga-ui/core';
-import { ShowNotification, hasValue, Empty, CanShowUnsavedDialog } from '@shared/util';
+import { ShowNotification, hasValue, CanShowUnsavedDialog } from '@shared/util';
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler, TuiInputType } from '@taiga-ui/cdk';
 import { AccountManagerDetailReadDto } from '@shared/api';
 import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
@@ -54,6 +54,7 @@ export class CreatePage implements CanShowUnsavedDialog {
     hasValue(),
     map((managers) => managers.result || [])
   );
+  loading$ = this.state.select('loading');
 
   /* Actions */
   readonly clickCreate$ = new Subject<boolean>();
@@ -66,7 +67,7 @@ export class CreatePage implements CanShowUnsavedDialog {
   constructor(
     private store: Store,
     private actions: Actions,
-    private state: RxState<Empty>,
+    private state: RxState<{ loading: boolean }>,
     private formBuilder: FormBuilder
   ) {
     this.store.dispatch(new LoadManagers({ limit: 10 }));
@@ -91,6 +92,7 @@ export class CreatePage implements CanShowUnsavedDialog {
       map(() => this.form.value)
     );
     this.state.hold(whenCreateValid$, (form) => {
+      this.state.set({ loading: true });
       const { firstName, password, email, lastName, avatarImage, phone } = form;
 
       this.store.dispatch(
@@ -106,6 +108,7 @@ export class CreatePage implements CanShowUnsavedDialog {
     });
     const messagesWhenFailed$ = this.whenCreateFailed$.pipe(withLatestFrom(this.errorMessage$));
     this.state.hold(messagesWhenFailed$, ([, errorMessage]) => {
+      this.state.set({ loading: false });
       this.store.dispatch(
         new ShowNotification({
           message: errorMessage,
@@ -114,6 +117,7 @@ export class CreatePage implements CanShowUnsavedDialog {
       );
     });
     this.state.hold(this.whenCreateSuccess$, ({ params }) => {
+      this.state.set({ loading: false });
       this.store.dispatch([
         new ShowNotification({
           message: `${params?.firstName} ${params?.lastName} has been created successfully.`,

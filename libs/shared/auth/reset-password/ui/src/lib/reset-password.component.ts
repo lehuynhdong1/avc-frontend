@@ -7,7 +7,7 @@ import { TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
 import { CreateNewPassword, ResetPasswordState } from '@shared/auth/reset-password/data-access';
 import { ActivatedRoute, Router } from '@angular/router';
-import { tuiPure } from '@taiga-ui/cdk';
+import { TuiInputMode, tuiPure } from '@taiga-ui/cdk';
 import { MatchValidator } from '@shared/auth/util';
 import { ShowNotification } from '@shared/util';
 
@@ -24,6 +24,7 @@ export class SharedResetPasswordComponent {
   @Output() whenSuccess = new EventEmitter<void>();
 
   TUI_NOTIFICATION_INFOR = TuiNotification.Info;
+  TUI_MODE_NUMBERIC = TuiInputMode.Numeric;
 
   form = this.formBuilder.group({
     email: ['', Validators.required],
