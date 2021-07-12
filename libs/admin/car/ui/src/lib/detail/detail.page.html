@@ -10,6 +10,7 @@
         class="mx-1 cursor-pointer text-yellow-400 hover:text-yellow-500"
         src="tuiIconEditLarge"
         [routerLink]="'/car/update/'+car.id"
+        *ngIf="car.isAvailable"
       ></tui-svg>
       <tui-svg
         class="mx-1 cursor-pointer text-red-500 hover:text-red-700"

@@ -9,6 +9,7 @@
       class="top-right !right-12 cursor-pointer text-yellow-400 hover:text-yellow-500"
       src="tuiIconEditLarge"
       [routerLink]="'/manager/update/'+manager.id"
+      *ngIf="manager.isAvailable"
     ></tui-svg>
     <tui-svg
       class="top-right cursor-pointer text-red-500 hover:text-red-700"
