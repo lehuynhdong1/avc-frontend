@@ -110,13 +110,7 @@
       </ng-container>
     </div>
 
-    <button
-      tuiButton
-      (click)="clickUpdate$.next()"
-      size="m"
-      [disabled]="!managers$ && form.invalid"
-      class="mb-2"
-    >
+    <button tuiButton (click)="clickUpdate$.next()" size="m" [disabled]="form.invalid" class="mb-2">
       Save
     </button>
     <button tuiButton (click)="clickDiscard$.next()" size="m" appearance="outline">Discard</button>
