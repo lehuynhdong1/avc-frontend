@@ -21,7 +21,7 @@ export class TrainByZipState {
   }
 
   @Action(UpdateZip)
-  async updateImages({ patchState }: StateContext<StateModel>, { file }: UpdateZip) {
+  async updateZip({ patchState }: StateContext<StateModel>, { file }: UpdateZip) {
     if (file.type !== 'application/zip') {
       const errorMessage = `${file.name} (${prettyBytes(file.size)}) must be in ZIP type`;
       patchState({ errorMessage });

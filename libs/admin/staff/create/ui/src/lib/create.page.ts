@@ -74,7 +74,7 @@ export class CreatePage implements CanShowUnsavedDialog {
     private state: RxState<{ loading: boolean }>,
     private formBuilder: FormBuilder
   ) {
-    this.store.dispatch(new LoadManagers({ limit: 10 }));
+    this.store.dispatch(new LoadManagers({ isAvailable: true }));
     this.declareCreateSideEffects();
   }
 

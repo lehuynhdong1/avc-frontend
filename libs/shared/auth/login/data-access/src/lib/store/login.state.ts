@@ -46,7 +46,7 @@ export class LoginState extends LogoutState {
         dispatch(new LoadToken());
       }),
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] Login with error: `, error);
+        // console.warn(`[${STATE_NAME}] Login with error: `, error);
         const errorMessage = 'Your email or password is seem to be wrong. Please try again.';
 
         patchState({ errorMessage });
@@ -60,7 +60,7 @@ export class LoginState extends LogoutState {
     return this.rolesService.apiRolesGet().pipe(
       tap((roles: unknown) => patchState({ roles: roles as LoginStateModel['roles'] })),
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] Load roles with error: `, error);
+        // console.warn(`[${STATE_NAME}] Load roles with error: `, error);
         const errorMessage = 'Load system roles failed.';
         patchState({ errorMessage });
         return throwError(errorMessage);

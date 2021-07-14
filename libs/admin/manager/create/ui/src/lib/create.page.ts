@@ -50,10 +50,6 @@ export class CreatePage implements CanShowUnsavedDialog {
     map(() => this.willShowUnsavedDialog),
     distinctUntilChanged()
   );
-  readonly managers$ = this.store.select(ManagerState.managers).pipe(
-    hasValue(),
-    map((managers) => managers.result || [])
-  );
   loading$ = this.state.select('loading');
 
   /* Actions */
@@ -70,7 +66,6 @@ export class CreatePage implements CanShowUnsavedDialog {
     private state: RxState<{ loading: boolean }>,
     private formBuilder: FormBuilder
   ) {
-    this.store.dispatch(new LoadManagers({ limit: 10 }));
     this.declareCreateSideEffects();
   }
 

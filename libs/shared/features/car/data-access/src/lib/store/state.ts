@@ -84,7 +84,7 @@ export class CarState {
     const forkJoin$ = forkJoin(updates.filter((item) => !!item));
     return forkJoin$.pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] UpdateCar failed with error: `, error);
+        // console.warn(`[${STATE_NAME}] UpdateCar failed with error: `, error);
         const errorMessage = 'Update car failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);
@@ -110,7 +110,7 @@ export class CarState {
       })
       .pipe(
         catchError((error) => {
-          console.warn(`[${STATE_NAME}] ${ToggleActivation.name} failed with error: `, error);
+          // console.warn(`[${STATE_NAME}] ${ToggleActivation.name} failed with error: `, error);
           const errorMessage = `${
             currentValue ? 'Deactivate' : 'Activate'
           } failed. Sorry, please try again later.`;
@@ -129,7 +129,7 @@ export class CarState {
   toggleApprove({ patchState }: StateContext<StateModel>, { params }: ToggleApprove) {
     return this.carsService.apiCarsIdApprovementPut(params).pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] ${ToggleApprove.name} failed with error: `, error);
+        // console.warn(`[${STATE_NAME}] ${ToggleApprove.name} failed with error: `, error);
         const errorMessage = `Processing failed. Sorry, please try again later.`;
         patchState({ errorMessage });
         return throwError(errorMessage);

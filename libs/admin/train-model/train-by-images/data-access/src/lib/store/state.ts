@@ -109,13 +109,14 @@ export class TrainByImagesState {
     const { labelledImages, uploadedImages } = getState();
     const labelledImagesArray = dictionaryToArray(labelledImages);
     const zip = new JSZip();
-    labelledImagesArray.forEach((image) => {
+    labelledImagesArray.forEach((image, index) => {
       const imageFile = uploadedImages.find((img) => img.id === image.id);
-      const labelledImagesFolder = zip.folder('labelledImages');
+      const labelledImagesFolder = zip.folder('imgs');
       const labelsFolder = zip.folder('labels');
       const extension = image.adcImage.mimeType.slice(image.adcImage.mimeType.indexOf('/') + 1);
       if (imageFile?.file) labelledImagesFolder?.file(`${image.id}.${extension}`, imageFile?.file);
       labelsFolder?.file(`${image.id}.txt`, imageToString(image));
+      // TODO: Add classes.txt file to zip if (index === 0) labelsFolder?.file(path)
     });
     const now = new Date().toISOString();
     const zipFile = await zip.generateAsync({ type: 'blob' });

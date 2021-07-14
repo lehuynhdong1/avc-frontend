@@ -105,8 +105,11 @@ export class StaffState {
     return this.accountsService.apiAccountsStaffPost(params).pipe(
       tap(() => patchState({ create: { ...create, status: CreateStatus.SUCCESSFUL } })),
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] CreateStaff failed with error: `, error);
-        const errorMessage = 'Create staff failed. Sorry, please try again later.';
+        // console.warn(`[${STATE_NAME}] CreateStaff failed with error: `, error);
+        let errorMessage = 'Create staff failed. Sorry, please try again later.';
+        if (error.status === 409) {
+          errorMessage = 'Email has already existed. Sorry, please enter another one.';
+        }
         patchState({ errorMessage });
         return throwError(errorMessage);
       })
@@ -117,7 +120,7 @@ export class StaffState {
   updateStaff({ patchState }: StateContext<StateModel>, { params }: UpdateStaff) {
     return this.accountsService.apiAccountsIdPatch(params).pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] UpdateStaff failed with error: `, error);
+        // console.warn(`[${STATE_NAME}] UpdateStaff failed with error: `, error);
         const errorMessage = 'Update staff failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);
@@ -129,7 +132,7 @@ export class StaffState {
   updateStaffManagedBy({ patchState }: StateContext<StateModel>, { params }: UpdateStaffManagedBy) {
     return this.accountsService.apiAccountsManagedbyPut(params).pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] UpdateStaffManagedBy failed with error: `, error);
+        // console.warn(`[${STATE_NAME}] UpdateStaffManagedBy failed with error: `, error);
         const errorMessage = 'Update staff failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);

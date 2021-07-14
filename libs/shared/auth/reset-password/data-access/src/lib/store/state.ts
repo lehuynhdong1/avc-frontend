@@ -20,7 +20,7 @@ export class ResetPasswordState {
   sendRecoveryLink({ patchState }: StateContext<StateModel>, { params }: CreateNewPassword) {
     return this.authService.apiAuthenticationNewPasswordPost(params).pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] Reset Password with error: `, error);
+        // console.warn(`[${STATE_NAME}] Reset Password with error: `, error);
         const errorMessage = 'Reset Password failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);

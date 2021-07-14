@@ -181,6 +181,8 @@ export class UpdatePage implements CanShowUnsavedDialog {
       filter(([, managers]) => !managers)
     );
     if (whenIsStaff$)
-      this.state.hold(whenIsStaff$, () => this.store.dispatch(new LoadManagers({ limit: 10 })));
+      this.state.hold(whenIsStaff$, () =>
+        this.store.dispatch(new LoadManagers({ isAvailable: true }))
+      );
   }
 }

@@ -69,7 +69,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
     private activatedRoute: ActivatedRoute,
     private state: RxState<Empty>
   ) {
-    this.store.dispatch(new LoadManagers({ limit: 10 }));
+    this.store.dispatch(new LoadManagers({ isAvailable: true }));
     this.declareSideEffects();
   }
 

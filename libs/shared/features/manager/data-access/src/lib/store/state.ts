@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { ToggleActivation } from '@shared/features/account/data-access';
 import { throwError } from 'rxjs';
 import { update } from '@rx-angular/state';
+import { HttpErrorResponse } from '@angular/common/http';
 @State<StateModel>({
   name: STATE_NAME,
   defaults: INITIAL_STATE
@@ -89,15 +90,16 @@ export class ManagerState {
   createManager({ getState, patchState }: StateContext<StateModel>, { params }: CreateManager) {
     const { create } = getState();
     return this.accountsService.apiAccountsManagerPost(params).pipe(
-      tap(
-        () => patchState({ create }),
-        catchError((error) => {
-          console.warn(`[${STATE_NAME}] CreateManager failed with error: `, error);
-          const errorMessage = 'Create manager failed. Sorry, please try again later.';
-          patchState({ errorMessage });
-          return throwError(errorMessage);
-        })
-      )
+      tap(() => patchState({ create })),
+      catchError((error: HttpErrorResponse) => {
+        // console.warn(`[${STATE_NAME}] CreateManager failed with error: `, error);
+        let errorMessage = 'Create manager failed. Sorry, please try again later.';
+        if (error.status === 409) {
+          errorMessage = 'Email has already existed. Sorry, please enter another one.';
+        }
+        patchState({ errorMessage });
+        return throwError(errorMessage);
+      })
     );
   }
 
@@ -105,7 +107,7 @@ export class ManagerState {
   updateManager({ patchState }: StateContext<StateModel>, { params }: UpdateManager) {
     return this.accountsService.apiAccountsIdPatch(params).pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] UpdateManager failed with error: `, error);
+        // console.warn(`[${STATE_NAME}] UpdateManager failed with error: `, error);
         const errorMessage = 'Update manager failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);

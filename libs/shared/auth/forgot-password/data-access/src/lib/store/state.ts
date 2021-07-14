@@ -25,7 +25,7 @@ export class ForgotPasswordState {
     return this.authService.apiAuthenticationResetPost(params).pipe(
       tap(() => patchState({ email: params.email })),
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] Forgot Password with error: `, error);
+        // console.warn(`[${STATE_NAME}] Forgot Password with error: `, error);
         const errorMessage = 'Forgot Password failed. Sorry, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);

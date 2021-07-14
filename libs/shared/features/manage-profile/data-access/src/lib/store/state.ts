@@ -31,7 +31,7 @@ export class ManageProfileState {
   changePassword({ patchState }: StateContext<StateModel>, { params }: ChangePassword) {
     return this.profileService.apiProfilePasswordPut(params).pipe(
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] ChangePassword with error: `, error);
+        // console.warn(`[${STATE_NAME}] ChangePassword with error: `, error);
         const errorMessage = "Your current password seem to be incorrect. Let's try again.";
         patchState({ errorMessage });
         return throwError(errorMessage);
@@ -44,7 +44,7 @@ export class ManageProfileState {
     return this.profileService.apiProfilePut(params).pipe(
       tap(() => dispatch(new ViewProfile())),
       catchError((error) => {
-        console.warn(`[${STATE_NAME}] UpdateProfile with error: `, error);
+        // console.warn(`[${STATE_NAME}] UpdateProfile with error: `, error);
         const errorMessage = 'We missed something. Update profile failed, please try again later.';
         patchState({ errorMessage });
         return throwError(errorMessage);
