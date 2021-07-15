@@ -36,20 +36,20 @@ export class TrainByZipState {
     const zip = await JSZip.loadAsync(file);
     const fileNames = Object.keys(zip.files);
 
-    const isValid = Object.keys(zip.files).every((filename) => {
+    const isFolderValid = fileNames.every((filename) => {
       const folderFirstClass = filename.slice(0, filename.indexOf('/'));
       return ACCEPTED_FOLDER_NAMES.includes(folderFirstClass);
     });
-    if (!isValid) {
-      const errorMessage = `${file.name} (${prettyBytes(
-        file.size
-      )}) Structure of ZIP file is not appropriate. Please edit an try again.`;
-      patchState({ errorMessage });
-      throw new Error(errorMessage);
+    const isClassesTxtValid = fileNames.includes('labels/classes.txt');
+    if (isFolderValid && isClassesTxtValid) {
+      const imageCount = fileNames.filter((fileName) => fileName.includes('imgs/')).length - 1; // substract 1 for the folder
+      patchState({ uploadedZip: { file, imageCount } });
     }
-
-    const imageCount = fileNames.filter((fileName) => fileName.includes('imgs/')).length - 1; // substract 1 for the folder
-    patchState({ uploadedZip: { file, imageCount } });
+    const errorMessage = `${file.name} (${prettyBytes(
+      file.size
+    )}) Structure of ZIP file is not appropriate. Please edit an try again.`;
+    patchState({ errorMessage });
+    throw new Error(errorMessage);
   }
 
   @Action(DownloadClassesTxt)
