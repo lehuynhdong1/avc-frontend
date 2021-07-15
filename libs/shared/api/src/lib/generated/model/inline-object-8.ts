@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface InlineObject5 {
-  configFile?: Blob;
+export interface InlineObject8 {
+  Phone?: string;
+  AvatarImage?: Blob;
 }

@@ -11,5 +11,5 @@
  */
 
 export interface InlineObject4 {
-  configFile?: Blob;
+  imageFile?: Blob;
 }

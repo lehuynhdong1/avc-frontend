@@ -1,5 +1,5 @@
 :host {
-  @apply block w-full;
+  @apply block;
 
   ::ng-deep button {
     tui-wrapper[data-appearance='outline'] {
@@ -8,7 +8,7 @@
         @apply border-green-500;
       }
 
-      &[data-state='hovegreen'] {
+      &[data-state='hovered'] {
         @apply bg-green-50;
       }
 
@@ -35,37 +35,33 @@
   }
 }
 
-.top-right {
-  @apply absolute top-3 right-3;
-}
-
-label {
-  @apply text-gray-600 font-bold text-sm;
-}
-
 aside {
-  @apply bg-gray-100 w-96 rounded-lg;
+  @apply bg-gray-100 w-full rounded-lg;
   min-width: 15rem;
   max-width: 24rem;
   main {
     @apply flex flex-wrap p-5;
 
-    section.manager__information {
+    section.car__information {
+      @apply flex flex-col w-full max-w-xs;
+      max-width: 15rem;
+    }
+    section.car__information-extend {
       @apply flex flex-col w-full;
+      max-width: 15rem;
     }
 
-    h1 tui-svg {
-      @apply hidden;
+    h1 {
+      @apply text-xl w-full;
+
+      tui-svg {
+        @apply hidden;
+      }
     }
   }
-
   &.fullpage {
     @apply bg-transparent;
     @apply w-full max-w-full;
-
-    .fullpage_w-1\/2 {
-      @apply w-1/2;
-    }
 
     .top-right {
       @apply hidden;
@@ -74,17 +70,27 @@ aside {
       @apply p-0;
       h1 {
         @apply text-2xl;
-
         tui-svg {
           @apply inline-block;
         }
       }
-      section.manager__information {
+      section.car__information {
         @apply md:w-1/4;
       }
-      section.manager__information-extend {
-        @apply md:w-3/4;
+      section.car__information-extend {
+        @apply md:w-1/4;
+      }
+      section.car__information-table {
+        @apply md:w-2/4 flex-grow;
       }
     }
   }
+}
+
+.top-right {
+  @apply absolute top-3 right-3;
+}
+
+.openable {
+  @apply cursor-pointer hover:text-primary no-underline;
 }

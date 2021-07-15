@@ -42,8 +42,9 @@ export class CarState {
   @Action(LoadApprovedCars, { cancelUncompleted: true })
   loadApprovedCars({ patchState }: StateContext<StateModel>, { params }: LoadApprovedCars) {
     const isAdmin = this.store.selectSnapshot(LoginState.account)?.role === 'Admin';
+    const isAvailable = isAdmin ? params.isAvailable : true;
     return this.carsService
-      .apiCarsGet({ ...params, isApproved: true, isAvailable: isAdmin ? undefined : true })
+      .apiCarsGet({ ...params, isApproved: true, isAvailable })
       .pipe(tap((listing) => patchState({ approvedListing: listing })));
   }
 

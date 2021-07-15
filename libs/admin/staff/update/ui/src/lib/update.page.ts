@@ -12,7 +12,14 @@ import {
   UpdateStaff,
   UpdateStaffManagedBy
 } from '@shared/features/staff/data-access';
-import { hasValue, ShowNotification, Role, Empty, CanShowUnsavedDialog } from '@shared/util';
+import {
+  hasValue,
+  ShowNotification,
+  Role,
+  Empty,
+  CanShowUnsavedDialog,
+  getPageIndex
+} from '@shared/util';
 import { TuiContextWithImplicit, TuiInputType, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
 import { TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
@@ -21,7 +28,6 @@ import { LoadManagers, ManagerState } from '@shared/features/manager/data-access
 import { distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
 
 @Component({
-  selector: 'adca-update',
   templateUrl: './update.page.html',
   styleUrls: ['./update.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -113,17 +119,27 @@ export class UpdatePage implements CanShowUnsavedDialog {
       );
     });
 
-    const whenUpdateSuccess$ = this.actions.pipe<UpdateStaff>(ofActionSuccessful(UpdateStaff));
-    this.state.hold(whenUpdateSuccess$, ({ params: { accountUpdateDto } }) => {
+    const whenUpdateSuccess$ = this.actions
+      .pipe<UpdateStaff>(ofActionSuccessful(UpdateStaff))
+      .pipe(withLatestFrom(this.store.select(StaffState.staffs)));
+    this.state.hold(whenUpdateSuccess$, ([payload, staffs]) => {
+      const {
+        params: { accountUpdateDto }
+      } = payload;
       this.willShowUnsavedDialog = false;
-      this.store.dispatch([
+      this.store.dispatch(
         new ShowNotification({
           message: `${accountUpdateDto?.firstName ?? ''} 
                     ${accountUpdateDto?.lastName ?? ''} has been updated successfully.`,
           options: { label: 'Update Staff', status: TuiNotification.Success, hasIcon: true }
-        }),
-        new LoadStaffs({ limit: 10 })
-      ]);
+        })
+      );
+      if (!staffs) return;
+      const { previousPage, nextPage } = staffs;
+      let currentPage = 1;
+      if (previousPage) currentPage = getPageIndex(previousPage) + 1;
+      else if (nextPage) currentPage = getPageIndex(nextPage) - 1;
+      this.store.dispatch(new LoadStaffs({ limit: 10, page: currentPage }));
       this.router.navigateByUrl('/staff');
     });
 

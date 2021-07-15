@@ -1,21 +1,23 @@
 <aside class="relative" [class.fullpage]="isFullPage$ | async">
   <main *ngIf="selectedManager$ | async as manager; else loading">
-    <tui-svg
-      class="top-right !right-20 cursor-pointer text-green-600 hover:text-green-800"
-      src="tuiIconExternalLarge"
-      [routerLink]="'/manager/detail/'+manager.id"
-    ></tui-svg>
-    <tui-svg
-      class="top-right !right-12 cursor-pointer text-yellow-400 hover:text-yellow-500"
-      src="tuiIconEditLarge"
-      [routerLink]="'/manager/update/'+manager.id"
-      *ngIf="manager.isAvailable"
-    ></tui-svg>
-    <tui-svg
-      class="top-right cursor-pointer text-red-500 hover:text-red-700"
-      src="tuiIconRemoveLarge"
-      routerLink="/manager"
-    ></tui-svg>
+    <div class="top-right">
+      <tui-svg
+        class="mx-1 cursor-pointer text-green-600 hover:text-green-800"
+        src="tuiIconExternalLarge"
+        [routerLink]="'/manager/detail/'+manager.id"
+      ></tui-svg>
+      <tui-svg
+        class="mx-1 cursor-pointer text-yellow-400 hover:text-yellow-500"
+        src="tuiIconEditLarge"
+        [routerLink]="'/manager/update/'+manager.id"
+        *ngIf="manager.isAvailable"
+      ></tui-svg>
+      <tui-svg
+        class="mx-1 cursor-pointer text-red-500 hover:text-red-700"
+        src="tuiIconRemoveLarge"
+        routerLink="/manager"
+      ></tui-svg>
+    </div>
     <h1 class="text-xl w-full">
       <tui-svg src="assets/adc/icons/ribbon.svg#ribbon" class="size-m"></tui-svg>
       Manager Detail

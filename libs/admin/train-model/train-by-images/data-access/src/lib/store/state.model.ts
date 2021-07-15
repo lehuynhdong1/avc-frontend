@@ -2,6 +2,7 @@ import { LabelImageFile } from '@admin/train-model/train-by-images/util';
 
 export interface StateModel {
   uploadedImages: ImageFile[];
+  rejectedFiles: { file: File; error: string }[];
   labelledImages: {
     [id: string]: LabelImageFile;
   };
@@ -13,6 +14,7 @@ export const STATE_NAME = 'Shared_TrainModel_Images';
 
 export const INITIAL_STATE: StateModel = {
   uploadedImages: [],
+  rejectedFiles: [],
   labelledImages: {},
   selectedImageId: null
 };

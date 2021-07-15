@@ -9,7 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ModelReadDto } from './model-read-dto';
 
-export interface InlineObject5 {
-  configFile?: Blob;
+export interface ModelReadDtoPagingResponseDto {
+  result?: Array<ModelReadDto> | null;
+  count?: number;
+  nextPage?: string | null;
+  previousPage?: string | null;
 }

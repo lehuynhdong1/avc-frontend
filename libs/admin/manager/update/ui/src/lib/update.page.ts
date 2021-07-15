@@ -11,7 +11,14 @@ import {
   ManagerState,
   UpdateManager
 } from '@shared/features/manager/data-access';
-import { hasValue, ShowNotification, Role, Empty, CanShowUnsavedDialog } from '@shared/util';
+import {
+  hasValue,
+  ShowNotification,
+  Role,
+  Empty,
+  CanShowUnsavedDialog,
+  getPageIndex
+} from '@shared/util';
 import { TuiContextWithImplicit, TuiInputType, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
 import { TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
@@ -19,7 +26,6 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
 
 @Component({
-  selector: 'adca-update',
   templateUrl: './update.page.html',
   styleUrls: ['./update.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -90,17 +96,27 @@ export class UpdatePage implements CanShowUnsavedDialog {
       );
     });
 
-    const whenUpdateSuccess$ = this.actions.pipe<UpdateManager>(ofActionSuccessful(UpdateManager));
-    this.state.hold(whenUpdateSuccess$, ({ params: { accountUpdateDto } }) => {
+    const whenUpdateSuccess$ = this.actions
+      .pipe<UpdateManager>(ofActionSuccessful(UpdateManager))
+      .pipe(withLatestFrom(this.store.select(ManagerState.managers)));
+    this.state.hold(whenUpdateSuccess$, ([payload, managers]) => {
+      const {
+        params: { accountUpdateDto }
+      } = payload;
       this.willShowUnsavedDialog = false;
       this.store.dispatch([
         new ShowNotification({
           message: `${accountUpdateDto?.firstName ?? ''} 
                     ${accountUpdateDto?.lastName ?? ''} has been updated successfully.`,
           options: { label: 'Update Manager', status: TuiNotification.Success, hasIcon: true }
-        }),
-        new LoadManagers({ limit: 10 })
+        })
       ]);
+      if (!managers) return;
+      const { previousPage, nextPage } = managers;
+      let currentPage = 1;
+      if (previousPage) currentPage = getPageIndex(previousPage) + 1;
+      else if (nextPage) currentPage = getPageIndex(nextPage) - 1;
+      this.store.dispatch(new LoadManagers({ limit: 10, page: currentPage }));
       this.router.navigateByUrl('/manager');
     });
 

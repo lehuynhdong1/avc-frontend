@@ -1,0 +1,31 @@
+<main class="flex">
+  <section class="flex-grow">
+    <h1>
+      <tui-svg
+        src="assets/adc/icons/newspaper-outline.svg#newspaper-outline"
+        class="size-m"
+      ></tui-svg>
+      Training History
+    </h1>
+
+    <section class="w-100 flex flex-col items-stretch">
+      <section class="flex">
+        <tui-input tuiTextfieldSize="l" [formControl]="searchControl" class="flex-grow pr-4 mb-4">
+          Search by model name ...
+        </tui-input>
+      </section>
+      <ng-container *ngIf="(models$ | async) as modelResponse">
+        <adc-frontend-dynamic-table
+          [columns]="DYNAMIC_COLUMNS"
+          [response]="modelResponse"
+          [paginable]="true"
+          [selectable]="true"
+          (selectRow)="selectRow$.next($event)"
+          (loadPage)="loadPage$.next($event)"
+        >
+        </adc-frontend-dynamic-table>
+      </ng-container>
+    </section>
+  </section>
+  <div class="pl-4"><router-outlet></router-outlet></div>
+</main>

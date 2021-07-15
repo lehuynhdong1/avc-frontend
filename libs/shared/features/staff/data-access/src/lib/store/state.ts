@@ -45,8 +45,9 @@ export class StaffState {
     { params }: LoadStaffs
   ) {
     const isAdmin = this.store.selectSnapshot(LoginState.account)?.role === 'Admin';
+    const isAvailable = isAdmin ? params.isAvailable : true;
     return this.accountsService
-      .apiAccountsStaffsGet({ ...params, isAvailable: isAdmin ? undefined : true })
+      .apiAccountsStaffsGet({ ...params, isAvailable })
       .pipe(tap((listing) => patchState({ listing })));
   }
   @Action(LoadStaffById, { cancelUncompleted: true }) loadStaffById(

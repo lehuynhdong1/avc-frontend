@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UploadZipPage } from './upload-zip.page';
 import { TuiBadgeModule, TuiInputFileModule } from '@taiga-ui/kit';
-import { TuiButtonModule, TuiNotificationModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiHintModule, TuiSvgModule } from '@taiga-ui/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -11,7 +11,7 @@ const tuiModules = [
   TuiButtonModule,
   TuiBadgeModule,
   TuiSvgModule,
-  TuiNotificationModule
+  TuiHintModule
 ];
 
 @NgModule({

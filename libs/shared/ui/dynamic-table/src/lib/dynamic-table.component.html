@@ -20,7 +20,9 @@
       >
         <ng-container *ngIf="indexable">
           <td *tuiCell="'index'" tuiTd>
-            <b>{{ index + 1 }}</b>
+            <b>{{
+              (getCurrentPage(response?.previousPage, response?.nextPage) - 1) * 10 + index + 1
+            }}</b>
           </td>
         </ng-container>
         <ng-container *ngFor="let column of columns">
@@ -45,9 +47,10 @@
             <td *tuiCell="column.key.toString()" tuiTd>
               <ng-container
                 *ngIf="
-                  column.cellTemplate
+                  (column.cellTemplate
                     ? (item | cellTemplate: column.cellTemplate)
-                    : item[column.key] as content
+                    : item[column.key]
+                  ).toString() as content
                 "
               >
                 {{ content | slice: 0:50 }} {{ content?.length > 50 ? '...' : '' }}

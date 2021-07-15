@@ -11,6 +11,7 @@
  */
 
 export interface InlineObject7 {
-  Phone?: string;
-  AvatarImage?: Blob;
+  zipFile?: Blob;
+  Name?: string;
+  ImageCount?: number;
 }

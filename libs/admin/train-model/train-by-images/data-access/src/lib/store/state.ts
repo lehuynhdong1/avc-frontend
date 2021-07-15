@@ -1,4 +1,3 @@
-import { TuiNotification } from '@taiga-ui/core';
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { INITIAL_STATE, StateModel, STATE_NAME, ImageFile, preCheckFile } from './state.model';
@@ -9,12 +8,10 @@ import {
   DonwloadLabelFiles,
   UpdateImages
 } from './actions';
-import { encodeDataUrl, imageToString } from '@admin/train-model/train-by-images/util';
+import { encodeDataUrl, imageToString, labels } from '@admin/train-model/train-by-images/util';
 import { deleteProp, dictionaryToArray, patch, remove } from '@rx-angular/state';
 import { saveAs } from 'file-saver';
 import * as JSZip from 'jszip';
-import { ShowNotification } from '@shared/util';
-import * as prettyBytes from 'pretty-bytes';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -25,6 +22,10 @@ export class TrainByImagesState {
   @Selector()
   static uploadedImages({ uploadedImages }: StateModel) {
     return uploadedImages;
+  }
+  @Selector()
+  static rejectedFiles({ rejectedFiles }: StateModel) {
+    return rejectedFiles;
   }
   @Selector()
   static labelledImages({ labelledImages }: StateModel) {
@@ -40,9 +41,9 @@ export class TrainByImagesState {
   }
 
   @Action(UpdateImages)
-  updateImages({ patchState, dispatch }: StateContext<StateModel>, { files }: UpdateImages) {
+  updateImages({ patchState }: StateContext<StateModel>, { files }: UpdateImages) {
     const acceptedFiles: ImageFile[] = [];
-    const rejectedFiles: { file: File; error: string }[] = [];
+    const rejectedFiles: StateModel['rejectedFiles'] = [];
     for (const file of files) {
       const currentIds = acceptedFiles.map((imgFile) => imgFile.id);
       const { id, error } = preCheckFile(file, currentIds);
@@ -51,15 +52,8 @@ export class TrainByImagesState {
       }
       if (id) acceptedFiles.push({ id, file });
     }
-    patchState({ uploadedImages: acceptedFiles });
-    rejectedFiles.forEach(({ file, error }) =>
-      dispatch(
-        new ShowNotification({
-          message: `${file.name} (${prettyBytes(file.size)}) ${error}`,
-          options: { label: 'Oops! Invalid Image', status: TuiNotification.Error }
-        })
-      )
-    );
+    patchState({ uploadedImages: acceptedFiles, rejectedFiles });
+    if (rejectedFiles.length > 0) throw new Error('Some files miss match');
   }
 
   @Action(TransferUploadedImages)
@@ -116,7 +110,7 @@ export class TrainByImagesState {
       const extension = image.adcImage.mimeType.slice(image.adcImage.mimeType.indexOf('/') + 1);
       if (imageFile?.file) labelledImagesFolder?.file(`${image.id}.${extension}`, imageFile?.file);
       labelsFolder?.file(`${image.id}.txt`, imageToString(image));
-      // TODO: Add classes.txt file to zip if (index === 0) labelsFolder?.file(path)
+      if (index === 0) labelsFolder?.file('classes.txt', labels.join('\n'));
     });
     const now = new Date().toISOString();
     const zipFile = await zip.generateAsync({ type: 'blob' });

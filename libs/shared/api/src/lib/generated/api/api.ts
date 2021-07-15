@@ -16,6 +16,9 @@ export * from './issue.serviceInterface';
 export * from './issue-types.service';
 import { IssueTypesService } from './issue-types.service';
 export * from './issue-types.serviceInterface';
+export * from './model.service';
+import { ModelService } from './model.service';
+export * from './model.serviceInterface';
 export * from './profile.service';
 import { ProfileService } from './profile.service';
 export * from './profile.serviceInterface';
@@ -29,6 +32,7 @@ export const APIS = [
   CheckService,
   IssueService,
   IssueTypesService,
+  ModelService,
   ProfileService,
   RolesService
 ];

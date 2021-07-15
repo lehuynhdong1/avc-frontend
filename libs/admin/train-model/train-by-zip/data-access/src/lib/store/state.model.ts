@@ -1,5 +1,5 @@
 export interface StateModel {
-  uploadedZip?: File;
+  uploadedZip?: { file: File; imageCount: number };
   errorMessage?: string;
 }
 

@@ -1,0 +1,6 @@
+:host {
+  display: block;
+}
+:host ::ng-deep tui-input tui-wrapper[data-appearance='textfield'] {
+  @apply shadow-none;
+}

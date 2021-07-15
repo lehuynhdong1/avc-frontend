@@ -36,7 +36,6 @@ const getConfirmDialogParams: (
   };
 };
 @Component({
-  selector: 'adca-detail',
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

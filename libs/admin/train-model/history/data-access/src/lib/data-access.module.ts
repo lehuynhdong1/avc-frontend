@@ -1,7 +1,10 @@
+import { NgxsModule } from '@ngxs/store';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { TrainHistoryState } from './store/state';
+import { ModelService } from '@shared/api';
 
 @NgModule({
-  imports: [CommonModule]
+  imports: [NgxsModule.forFeature([TrainHistoryState])],
+  providers: [ModelService]
 })
 export class DataAccessModule {}

@@ -10,6 +10,12 @@
  * Do not edit the class manually.
  */
 
-export interface InlineObject5 {
-  configFile?: Blob;
+export interface ModelReadDto {
+  id?: number;
+  name?: string | null;
+  imageCount?: number | null;
+  statisticUrl?: string | null;
+  createdAt?: string;
+  modelStatus?: string | null;
+  isApplying?: boolean;
 }

@@ -14,8 +14,8 @@
     iconRight="tuiIconChevronRight"
     class="tui-space_right-3 tui-space_bottom-3"
     appearance="primary"
-    routerLink="../train"
-    [disabled]="!(file.value?.length > 0)"
+    (click)="clickTrain$.next()"
+    [disabled]="!(file.value)"
   >
     Go Train
   </button>
@@ -55,8 +55,11 @@
             <tui-badge class="ml-6" [status]="TUI_STATUS.Error" size="l" value="labels">
               <tui-svg src="tuiIconFolder"></tui-svg> </tui-badge
             ><tui-badge
-              class="mt-1 ml-12"
+              class="mt-1 ml-12 cursor-pointer hover:border hover:border-solid hover:border-gray-600"
               [status]="TUI_STATUS.Success"
+              [tuiHint]="toolTip"
+              [tuiHintMode]="TUI_HINT_DARK"
+              tuiHintDirection="top-right"
               size="l"
               value="classes.txt"
             >
@@ -94,3 +97,26 @@
     ></tui-input-file>
   </div>
 </div>
+
+<ng-template #toolTip>
+  <div class="flex flex-col">
+    <div class="my-2 text-gray-600">
+      Please download <b class="text-gray-800">classes.txt</b> add to your ZIP and mark images
+      following those labels for best training performance.
+    </div>
+    <section class="border border-solid border-gray-500 p-2 flex flex-col">
+      <span *ngFor="let label of LABELS">{{label}}</span>
+    </section>
+    <button
+      tuiButton
+      type="button"
+      size="s"
+      iconRight="tuiIconDownload"
+      appearance="primary"
+      class="self-start mt-3"
+      (click)="clickDownload$.next()"
+    >
+      Download
+    </button>
+  </div>
+</ng-template>

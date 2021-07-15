@@ -11,7 +11,13 @@ import {
   UpdateCar,
   LoadApprovedCars
 } from '@shared/features/car/data-access';
-import { hasValue, ShowNotification, Empty, CanShowUnsavedDialog } from '@shared/util';
+import {
+  hasValue,
+  ShowNotification,
+  Empty,
+  CanShowUnsavedDialog,
+  getPageIndex
+} from '@shared/util';
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
@@ -142,16 +148,21 @@ export class UpdatePage implements CanShowUnsavedDialog {
   private updateSuccessEffects() {
     const whenUpdateSuccess$ = this.actions
       .pipe<UpdateCar>(ofActionSuccessful(UpdateCar))
-      .pipe(withLatestFrom(this.car$));
-    this.state.hold(whenUpdateSuccess$, ([, car]) => {
+      .pipe(withLatestFrom(this.car$, this.store.select(CarState.approvedCars)));
+    this.state.hold(whenUpdateSuccess$, ([, car, cars]) => {
       this.willShowUnsavedDialog = false;
       this.store.dispatch([
         new ShowNotification({
           message: `${car.name ?? ''} has been updated successfully.`,
           options: { label: 'Update Car', status: TuiNotification.Success, hasIcon: true }
-        }),
-        new LoadApprovedCars({ limit: 10 })
+        })
       ]);
+      if (!cars) return;
+      const { previousPage, nextPage } = cars;
+      let currentPage = 1;
+      if (previousPage) currentPage = getPageIndex(previousPage) + 1;
+      else if (nextPage) currentPage = getPageIndex(nextPage) - 1;
+      this.store.dispatch(new LoadApprovedCars({ limit: 10, page: currentPage }));
       this.router.navigateByUrl('/car');
     });
   }

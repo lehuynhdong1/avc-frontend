@@ -8,6 +8,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DynamicTableColumns } from './models/ui-state.model';
 import { LoginState } from '@shared/auth/login/data-access';
 import { Store } from '@ngxs/store';
+import { getPageIndex } from '@shared/util';
 
 @Component({
   selector: 'adc-frontend-dynamic-table',
@@ -71,10 +72,12 @@ export class DynamicTableComponent<T extends HasId> {
     const isRound = count % 10 === 0;
     return Math.floor(count / 10) + (isRound ? 0 : 1);
   }
+
   @tuiPure
   getTypeof(value: number | string | boolean) {
     return typeof value;
   }
+
   @tuiPure
   getKeys(columns: DynamicTableColumns<T>, role: string) {
     if (!role) throw new Error('Role not specified');
@@ -83,9 +86,21 @@ export class DynamicTableComponent<T extends HasId> {
     if (isAdmin) return allCols;
     return allCols.filter((key) => key !== 'isAvailable');
   }
+
   @tuiPure
   toDate(value: string) {
     return new Date(value);
+  }
+
+  @tuiPure
+  getCurrentPage(
+    previousPageUrl: string | null | undefined,
+    nextPageUrl: string | null | undefined
+  ) {
+    let currentPage = 1;
+    if (previousPageUrl) currentPage = getPageIndex(previousPageUrl) + 1;
+    else if (nextPageUrl) currentPage = getPageIndex(nextPageUrl) - 1;
+    return currentPage;
   }
 
   trackByType(_: number, item: ColumnType<T>) {
