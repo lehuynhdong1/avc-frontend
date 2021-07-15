@@ -7,9 +7,9 @@ import {
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
-import { TuiDestroyService } from '@taiga-ui/cdk';
+import { TuiDestroyService, tuiPure } from '@taiga-ui/cdk';
 import { TuiDialogService } from '@taiga-ui/core';
-import { TuiStepState } from '@taiga-ui/kit';
+import { TuiStepState, TuiMarkerIconMode } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { map, shareReplay, tap, take } from 'rxjs/operators';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
@@ -25,6 +25,7 @@ import { RxState } from '@rx-angular/state';
 })
 export class LabelImagePage {
   readonly TUI_STEPPER_PASS = TuiStepState.Pass;
+  readonly TUI_STATUS_SUCCESS = TuiMarkerIconMode.Success;
 
   readonly imageFiles$ = this.store.select(TrainByImagesState.labelledImages).pipe(
     map((labelledImages) => Object.values(labelledImages)),
@@ -81,5 +82,13 @@ export class LabelImagePage {
       })
       .pipe(take(1))
       .subscribe();
+  }
+
+  @tuiPure
+  allMarked(imageFiles: LabelImageFile[] | null) {
+    if (!imageFiles) return false;
+    return imageFiles.every(
+      (imageFile) => imageFile.annotations && imageFile.annotations.length > 0
+    );
   }
 }

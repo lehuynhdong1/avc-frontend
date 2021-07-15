@@ -53,18 +53,22 @@
           </div>
           <div class="flex flex-col items-start">
             <tui-badge class="ml-6" [status]="TUI_STATUS.Error" size="l" value="labels">
-              <tui-svg src="tuiIconFolder"></tui-svg> </tui-badge
-            ><tui-badge
-              class="mt-1 ml-12 cursor-pointer hover:border hover:border-solid hover:border-gray-600"
-              [status]="TUI_STATUS.Success"
-              [tuiHint]="toolTip"
-              [tuiHintMode]="TUI_HINT_DARK"
-              tuiHintDirection="top-right"
-              size="l"
-              value="classes.txt"
-            >
-              <tui-svg src="tuiIconFile"></tui-svg>
+              <tui-svg src="tuiIconFolder"></tui-svg>
             </tui-badge>
+            <div class="ml-12 cursor-pointer">
+              <tui-badge
+                class="mt-1 cursor-pointer hover:border hover:border-solid hover:border-gray-600"
+                [status]="TUI_STATUS.Success"
+                [tuiHint]="toolTip"
+                [tuiHintMode]="TUI_HINT_DARK"
+                tuiHintDirection="top-right"
+                size="l"
+                value="classes.txt"
+                class="animate-bounce"
+              >
+                <tui-svg src="tuiIconFile"></tui-svg>
+              </tui-badge>
+            </div>
             <tui-badge
               class="mt-1 ml-12"
               [status]="TUI_STATUS.Success"

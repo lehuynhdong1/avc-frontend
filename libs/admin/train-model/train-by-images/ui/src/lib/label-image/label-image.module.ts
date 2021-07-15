@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LabelImagePage } from './label-image.page';
-import { TuiInputFileModule, TuiStepperModule } from '@taiga-ui/kit';
-import { TuiButtonModule, TuiDialogModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiInputFileModule, TuiMarkerIconModule, TuiStepperModule } from '@taiga-ui/kit';
+import {
+  TuiButtonModule,
+  TuiDialogModule,
+  TuiNotificationModule,
+  TuiSvgModule
+} from '@taiga-ui/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
@@ -13,8 +18,10 @@ const tuiModules = [
   TuiButtonModule,
   TuiStepperModule,
   TuiDialogModule,
+  TuiNotificationModule,
   PolymorpheusModule,
-  TuiSvgModule
+  TuiSvgModule,
+  TuiMarkerIconModule
 ];
 
 @NgModule({

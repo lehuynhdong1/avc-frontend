@@ -7,8 +7,11 @@ import { ListingPage, DetailPage } from '@admin/train-model/history/ui';
   imports: [
     DataAccessModule,
     RouterModule.forChild([
-      { path: '', pathMatch: 'full', component: ListingPage },
-      { path: ':id', pathMatch: 'full', component: DetailPage }
+      {
+        path: '',
+        component: ListingPage,
+        children: [{ path: ':id', pathMatch: 'full', component: DetailPage }]
+      }
     ])
   ]
 })

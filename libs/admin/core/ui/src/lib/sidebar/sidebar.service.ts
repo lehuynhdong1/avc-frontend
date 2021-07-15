@@ -31,12 +31,6 @@ const NAV_ITEMS: Array<NavItem> = [
     description: 'Keep track your working process'
   },
   {
-    label: 'Manage Cars',
-    path: '/car',
-    icon: 'assets/adc/icons/car-sport-outline.svg#car-sport-outline',
-    description: 'Follow any device changes'
-  },
-  {
     label: 'Manage Managers',
     path: '/manager',
     icon: 'assets/adc/icons/ribbon-outline.svg#ribbon-outline',
@@ -47,6 +41,12 @@ const NAV_ITEMS: Array<NavItem> = [
     path: '/staff',
     icon: 'assets/adc/icons/people-outline.svg#people-outline',
     description: 'Up to date with your staffs'
+  },
+  {
+    label: 'Manage Cars',
+    path: '/car',
+    icon: 'assets/adc/icons/car-sport-outline.svg#car-sport-outline',
+    description: 'Follow any device changes'
   },
   {
     label: 'Issue History',
@@ -83,7 +83,7 @@ const NAV_ITEMS: Array<NavItem> = [
 ];
 
 const ROLE_MAPPER = {
-  Manager: [1, 3, 4]
+  Manager: [2, 3]
 };
 
 export const getNavItems = (role: string | null | undefined) => {

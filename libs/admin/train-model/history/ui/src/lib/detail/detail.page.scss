@@ -1,38 +1,5 @@
 :host {
   @apply block;
-
-  ::ng-deep button {
-    tui-wrapper[data-appearance='outline'] {
-      @apply text-green-500;
-      &:after {
-        @apply border-green-500;
-      }
-
-      &[data-state='hovered'] {
-        @apply bg-green-50;
-      }
-
-      &[data-state='pressed'] {
-        @apply bg-green-500 text-white;
-      }
-    }
-    &.deactivate {
-      tui-wrapper[data-appearance='outline'] {
-        @apply text-red-500;
-        &:after {
-          @apply border-red-500;
-        }
-
-        &[data-state='hovered'] {
-          @apply bg-red-50;
-        }
-
-        &[data-state='pressed'] {
-          @apply bg-red-500 text-white;
-        }
-      }
-    }
-  }
 }
 
 aside {
@@ -40,49 +7,10 @@ aside {
   min-width: 15rem;
   max-width: 24rem;
   main {
-    @apply flex flex-wrap p-5;
-
-    section.car__information {
-      @apply flex flex-col w-full max-w-xs;
-      max-width: 15rem;
-    }
-    section.car__information-extend {
-      @apply flex flex-col w-full;
-      max-width: 15rem;
-    }
+    @apply flex flex-col flex-wrap p-5;
 
     h1 {
       @apply text-xl w-full;
-
-      tui-svg {
-        @apply hidden;
-      }
-    }
-  }
-  &.fullpage {
-    @apply bg-transparent;
-    @apply w-full max-w-full;
-
-    .top-right {
-      @apply hidden;
-    }
-    main {
-      @apply p-0;
-      h1 {
-        @apply text-2xl;
-        tui-svg {
-          @apply inline-block;
-        }
-      }
-      section.car__information {
-        @apply md:w-1/4;
-      }
-      section.car__information-extend {
-        @apply md:w-1/4;
-      }
-      section.car__information-table {
-        @apply md:w-2/4 flex-grow;
-      }
     }
   }
 }

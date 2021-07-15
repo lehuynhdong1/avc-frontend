@@ -1,74 +1,87 @@
-<h1 class="mb-2">
-  <tui-svg src="assets/adc/icons/images.svg#images" class="size-m mr-2"></tui-svg>
-  Train by Images
-</h1>
-<tui-stepper [activeItemIndex]="1">
-  <button tuiStep [state]="TUI_STEPPER_PASS" (click)="goTo(['..','upload-image'])">
-    Upload Images
-  </button>
-  <button tuiStep disabled icon="assets/adc/icons/scan-circle.svg#scan-circle">Label Images</button>
-  <button tuiStep disabled icon="assets/adc/icons/speedometer.svg#speedometer">Progress</button>
-</tui-stepper>
-<div class="flex items-center mb-8">
-  <div class="flex-grow">
-    <h2 class="mb-2">
-      <tui-svg src="assets/adc/icons/scan-circle.svg#scan-circle" class="size-m mr-2"></tui-svg
-      >Label Images
-    </h2>
-    <p class="mt-0 text-base">Label images online for a better training model.</p>
-  </div>
+<ng-container *ngIf="{imageFiles: imageFiles$ | async} as view">
+  <h1 class="mb-2">
+    <tui-svg src="assets/adc/icons/images.svg#images" class="size-m mr-2"></tui-svg>
+    Train by Images
+  </h1>
+  <tui-stepper [activeItemIndex]="1">
+    <button tuiStep [state]="TUI_STEPPER_PASS" (click)="goTo(['..','upload-image'])">
+      Upload Images
+    </button>
+    <button tuiStep disabled icon="assets/adc/icons/scan-circle.svg#scan-circle">
+      Label Images
+    </button>
+    <button tuiStep disabled icon="assets/adc/icons/speedometer.svg#speedometer">Progress</button>
+  </tui-stepper>
+  <div class="flex items-center">
+    <div class="flex-grow">
+      <h2 class="mb-2">
+        <tui-svg src="assets/adc/icons/scan-circle.svg#scan-circle" class="size-m mr-2"></tui-svg
+        >Label Images
+      </h2>
+      <p class="mt-0 text-base">Label images online for a better training model.</p>
+    </div>
 
-  <button
-    tuiButton
-    type="button"
-    size="m"
-    class="tui-space_right-3 tui-space_bottom-3"
-    appearance="outline"
-    [disabled]="!(imageFiles$ | async)?.length"
-    (click)="downloadLabelFile()"
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      class="tui-space_right-3 tui-space_bottom-3"
+      appearance="outline"
+      [disabled]="!allMarked(view.imageFiles)"
+      (click)="downloadLabelFile()"
+    >
+      Download package
+    </button>
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      iconRight="tuiIconChevronRight"
+      class="tui-space_right-3 tui-space_bottom-3"
+      appearance="primary"
+      routerLink="../progress"
+      [disabled]="!allMarked(view.imageFiles)"
+    >
+      Go train
+    </button>
+  </div>
+  <tui-notification class="mb-8"
+    >You only can train when every images have been marked.</tui-notification
   >
-    Download package
-  </button>
-  <button
-    tuiButton
-    type="button"
-    size="m"
-    iconRight="tuiIconChevronRight"
-    class="tui-space_right-3 tui-space_bottom-3"
-    appearance="primary"
-    routerLink="../progress"
-    [disabled]="!(imageFiles$ | async)?.length"
-  >
-    Go train
-  </button>
-</div>
-<div class="flex flex-wrap items-center w-full">
-  <div class="flex flex-col items-center w-100" [class.slowly-hide]="(imageFiles$ | async)?.length">
-    <img
-      src="assets/images/upload-image-2.svg"
-      alt="Upload image"
-      class="w-full md:w-3/4 mb-6 transition-all"
-    />
-    <p class="text-base">You doesn't have any uploaded image yet.</p>
-    <div class="flex items-center">
-      <span class="text-base mr-2 mb-3">Let's back to </span>
-      <button
-        tuiButton
-        type="button"
-        class="tui-space_right-3 tui-space_bottom-3"
-        size="m"
-        appearance="primary"
-        routerLink="../upload-image"
-      >
-        Upload Images
-      </button>
+  <div class="flex flex-wrap items-center w-full">
+    <div class="flex flex-col items-center w-100" [class.slowly-hide]="view.imageFiles?.length">
+      <img
+        src="assets/images/upload-image-2.svg"
+        alt="Upload image"
+        class="w-full md:w-3/4 mb-6 transition-all"
+      />
+      <p class="text-base">You doesn't have any uploaded image yet.</p>
+      <div class="flex items-center">
+        <span class="text-base mr-2 mb-3">Let's back to </span>
+        <button
+          tuiButton
+          type="button"
+          class="tui-space_right-3 tui-space_bottom-3"
+          size="m"
+          appearance="primary"
+          routerLink="../upload-image"
+        >
+          Upload Images
+        </button>
+      </div>
+    </div>
+    <div
+      class="image-item"
+      [class.accepted]="imageFile.annotations && imageFile.annotations.length > 0"
+      *ngFor="let imageFile of view.imageFiles"
+      (click)="showDialog(imageFile)"
+    >
+      <img [src]="imageFile.adcImage.dataUrl" alt="" class="object-contain w-full h-full" />
+      <tui-marker-icon
+        class="!absolute top-0 right-0 z-10 opacity-0"
+        size="s"
+        src="tuiIconCheckCircleLarge"
+      ></tui-marker-icon>
     </div>
   </div>
-  <div
-    class="w-40 h-40 shadow cursor-pointer mr-2 mb-2"
-    *ngFor="let imageFile of (imageFiles$ | async)"
-    (click)="showDialog(imageFile)"
-  >
-    <img [src]="imageFile.adcImage.dataUrl" alt="" class="object-contain w-full h-full" />
-  </div>
-</div>
+</ng-container>

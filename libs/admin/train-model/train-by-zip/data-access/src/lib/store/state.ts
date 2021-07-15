@@ -68,7 +68,7 @@ export class TrainByZipState {
     }
     return this.modelService.apiModelPost({
       zipFile: uploadedZip.file,
-      name: `Trained by ZIP "${uploadedZip.file.name}"`,
+      name: `Trained by ZIP - ${uploadedZip.file.name}`,
       imageCount: uploadedZip.imageCount
     });
   }
