@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Inject, AfterViewInit } from '@angu
 import { TuiDialog } from '@taiga-ui/cdk';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { Annotorious } from '@recogito/annotorious';
-import { insert, RxState, patch, update } from '@rx-angular/state';
+import { insert, RxState, patch, update, remove } from '@rx-angular/state';
 import { Observable, Subject } from 'rxjs';
 import { take, withLatestFrom } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
@@ -40,6 +40,7 @@ export class ImageDialogComponent implements AfterViewInit {
 
   private createAnnotation$ = new Subject<Annotation>();
   private updateAnnotation$ = new Subject<Annotation>();
+  private deleteAnnotation$ = new Subject<Annotation>();
 
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT)
@@ -57,6 +58,17 @@ export class ImageDialogComponent implements AfterViewInit {
       this.state.set((oldState) =>
         patch(oldState, {
           annotations: update(
+            oldState.annotations,
+            annotation,
+            (oldAnno, newAnno) => oldAnno.id === newAnno.id
+          )
+        })
+      )
+    );
+    state.hold(this.deleteAnnotation$, (annotation) =>
+      this.state.set((oldState) =>
+        patch(oldState, {
+          annotations: remove(
             oldState.annotations,
             annotation,
             (oldAnno, newAnno) => oldAnno.id === newAnno.id
@@ -82,6 +94,10 @@ export class ImageDialogComponent implements AfterViewInit {
     });
     this.annoLayer.on('updateAnnotation', (annotation: Annotation) => {
       this.updateAnnotation$.next(annotation);
+      this.state.set({ changed: true });
+    });
+    this.annoLayer.on('deleteAnnotation', (annotation: Annotation) => {
+      this.deleteAnnotation$.next(annotation);
       this.state.set({ changed: true });
     });
   }
