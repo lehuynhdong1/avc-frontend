@@ -17,6 +17,7 @@ import { TuiHintMode, TuiNotification } from '@taiga-ui/core';
 import * as prettyBytes from 'pretty-bytes';
 import { Subject } from 'rxjs';
 import { labels } from '@admin/train-model/train-by-images/util';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './upload-zip.page.html',
@@ -35,11 +36,15 @@ export class UploadZipPage {
   private readonly whenShowError$ = this.actions.pipe<UpdateZip>(ofActionErrored(UpdateZip));
   private readonly whenShowSuccess$ = this.actions.pipe<UpdateZip>(ofActionSuccessful(UpdateZip));
 
-  rejectFile$ = new Subject();
   clickTrain$ = new Subject<void>();
   clickDownload$ = new Subject<HTMLTextAreaElement>();
 
-  constructor(private store: Store, private actions: Actions, private state: RxState<Empty>) {
+  constructor(
+    private router: Router,
+    private store: Store,
+    private actions: Actions,
+    private state: RxState<Empty>
+  ) {
     state.hold(
       this.whenShowSuccess$.pipe(withLatestFrom(this.store.select(TrainByZipState.uploadedZip))),
       ([, zip]) =>
@@ -61,9 +66,14 @@ export class UploadZipPage {
         )
     );
 
-    state.hold(this.rejectFile$, console.warn);
     state.hold(this.file.valueChanges, (file) => this.store.dispatch(new UpdateZip(file)));
     state.hold(this.clickDownload$, () => this.store.dispatch(new DownloadClassesTxt()));
     state.hold(this.clickTrain$, () => this.store.dispatch(new Train()));
+    this.trainSuccessEffect();
+  }
+
+  private trainSuccessEffect() {
+    const whenTrainSuccess$ = this.actions.pipe<Train>(ofActionSuccessful(Train));
+    this.state.hold(whenTrainSuccess$, () => this.router.navigateByUrl('/training/history'));
   }
 }

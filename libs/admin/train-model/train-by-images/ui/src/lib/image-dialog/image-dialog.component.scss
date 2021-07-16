@@ -2,5 +2,9 @@
   display: block;
 }
 section > div {
+  tui-badge {
+    min-width: 6rem;
+  }
+
   @apply w-full h-full border border-primary rounded-md p-4 #{!important};
 }

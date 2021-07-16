@@ -6,6 +6,7 @@ export interface StateModel {
   labelledImages: {
     [id: string]: LabelImageFile;
   };
+  zipFile: Blob | null;
   selectedImageId: string | null;
   errorMessage?: string;
 }
@@ -16,6 +17,7 @@ export const INITIAL_STATE: StateModel = {
   uploadedImages: [],
   rejectedFiles: [],
   labelledImages: {},
+  zipFile: null,
   selectedImageId: null
 };
 const KB = 1024;

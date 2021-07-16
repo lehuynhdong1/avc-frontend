@@ -6,7 +6,9 @@ const ACTIONS = {
   TRANSFER_UPLOADED_IMAGES: `[${STATE_NAME}] Transfer uploaded images from Upload Image Page`,
   SET_SELECTED_IMAGE_ID: `[${STATE_NAME}] Set selected image id`,
   LABEL_IMAGE_BY_ID: `[${STATE_NAME}] Label image by ID`,
-  DONWLOAD_LABEL_FILES: `[${STATE_NAME}] Download label files.`
+  CONVERT_TO_ZIP: `[${STATE_NAME}] Convert to zip file.`,
+  DONWLOAD_LABEL_FILES: `[${STATE_NAME}] Download zip.`,
+  TRAIN: `[${STATE_NAME}] Train`
 };
 
 export class UpdateImages {
@@ -29,4 +31,12 @@ export class LabelImageById {
 
 export class DonwloadLabelFiles {
   static readonly type = ACTIONS.DONWLOAD_LABEL_FILES;
+}
+
+export class ConvertToZip {
+  static readonly type = ACTIONS.CONVERT_TO_ZIP;
+}
+
+export class Train {
+  static readonly type = ACTIONS.TRAIN;
 }

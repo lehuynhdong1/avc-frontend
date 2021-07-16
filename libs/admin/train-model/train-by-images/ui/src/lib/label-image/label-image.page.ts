@@ -2,20 +2,26 @@ import {
   TrainByImagesState,
   SetSelectedImageId,
   TransferUploadedImages,
-  DonwloadLabelFiles
+  DonwloadLabelFiles,
+  Train
 } from '@admin/train-model/train-by-images/data-access';
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { TuiDestroyService, tuiPure } from '@taiga-ui/cdk';
 import { TuiDialogService } from '@taiga-ui/core';
-import { TuiStepState, TuiMarkerIconMode } from '@taiga-ui/kit';
+import { TuiStepState, TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { map, shareReplay, tap, take } from 'rxjs/operators';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
-import { LabelImageFile, SelectedLabelImageFile } from '@admin/train-model/train-by-images/util';
-import { ShowNotification } from '@shared/util';
+import {
+  LabelImageFile,
+  SelectedLabelImageFile,
+  labels
+} from '@admin/train-model/train-by-images/util';
+import { ShowNotification, Empty } from '@shared/util';
 import { RxState } from '@rx-angular/state';
+import { Subject } from 'rxjs';
 
 @Component({
   templateUrl: './label-image.page.html',
@@ -26,6 +32,8 @@ import { RxState } from '@rx-angular/state';
 export class LabelImagePage {
   readonly TUI_STEPPER_PASS = TuiStepState.Pass;
   readonly TUI_STATUS_SUCCESS = TuiMarkerIconMode.Success;
+  readonly TUI_BADGE_ERROR = TuiStatus.Error;
+  readonly LABELS = labels;
 
   readonly imageFiles$ = this.store.select(TrainByImagesState.labelledImages).pipe(
     map((labelledImages) => Object.values(labelledImages)),
@@ -45,17 +53,21 @@ export class LabelImagePage {
     )
   );
 
+  clickTrain$ = new Subject<void>();
+
   constructor(
-    public router: Router,
-    public activatedRoute: ActivatedRoute,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     private store: Store,
     private actions: Actions,
     private injector: Injector,
     private dialogService: TuiDialogService,
-    private state: RxState<{ data: string }>
+    private state: RxState<Empty>
   ) {
-    state.hold(this.whenDownloadSuccess$);
     this.store.dispatch(new TransferUploadedImages());
+    state.hold(this.whenDownloadSuccess$);
+    state.hold(this.clickTrain$, () => this.store.dispatch(new Train()));
+    this.trainSuccessEffect();
   }
 
   goTo(path: string[]) {
@@ -76,6 +88,8 @@ export class LabelImagePage {
     };
     this.dialogService
       .open<number>(new PolymorpheusComponent(ImageDialogComponent, this.injector), {
+        dismissible: false,
+        closeable: false,
         size: 'l',
         label: imageFile?.name,
         data: imageDialogParams
@@ -84,11 +98,14 @@ export class LabelImagePage {
       .subscribe();
   }
 
+  private trainSuccessEffect() {
+    const whenTrainSuccess$ = this.actions.pipe<Train>(ofActionSuccessful(Train));
+    this.state.hold(whenTrainSuccess$, () => this.router.navigateByUrl('/training/history'));
+  }
+
   @tuiPure
   allMarked(imageFiles: LabelImageFile[] | null) {
     if (!imageFiles) return false;
-    return imageFiles.every(
-      (imageFile) => imageFile.annotations && imageFile.annotations.length > 0
-    );
+    return imageFiles.every((imageFile) => imageFile.annotations?.length);
   }
 }

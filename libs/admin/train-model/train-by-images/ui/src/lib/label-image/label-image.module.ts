@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LabelImagePage } from './label-image.page';
-import { TuiInputFileModule, TuiMarkerIconModule, TuiStepperModule } from '@taiga-ui/kit';
+import { TuiInputFileModule, TuiMarkerIconModule, TuiBadgeModule } from '@taiga-ui/kit';
 import {
   TuiButtonModule,
   TuiDialogModule,
@@ -16,7 +16,7 @@ import { IMAGE_DIALOG_PROVIDER } from '../image-dialog';
 const tuiModules = [
   TuiInputFileModule,
   TuiButtonModule,
-  TuiStepperModule,
+  TuiBadgeModule,
   TuiDialogModule,
   TuiNotificationModule,
   PolymorpheusModule,

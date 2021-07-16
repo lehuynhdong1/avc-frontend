@@ -1,4 +1,39 @@
 <section class="w-full h-full">
+  <section class="flex justify-between items-center">
+    <div class="flex-grow">
+      Accepted tags:
+      <tui-badge
+        *ngFor="let label of LABELS"
+        [status]="TUI_BADGE_ERROR"
+        size="m"
+        class="mr-1 mb-1"
+        >{{ label }}</tui-badge
+      >
+    </div>
+
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="primary"
+      (click)="clickSave$.next()"
+      class="w-32 mr-2"
+      [disabled]="(changed$ | async) === false"
+    >
+      <tui-svg src="tuiIconCheckCircleLarge" class="mr-2"></tui-svg>
+      Save
+    </button>
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      (click)="clickDiscard$.next()"
+      class="w-32"
+    >
+      Discard
+    </button>
+  </section>
   <img
     [src]="context.data.adcImage.dataUrl"
     [alt]="context.data.name"

@@ -3,15 +3,6 @@
     <tui-svg src="assets/adc/icons/images.svg#images" class="size-m mr-2"></tui-svg>
     Train by Images
   </h1>
-  <tui-stepper [activeItemIndex]="1">
-    <button tuiStep [state]="TUI_STEPPER_PASS" (click)="goTo(['..','upload-image'])">
-      Upload Images
-    </button>
-    <button tuiStep disabled icon="assets/adc/icons/scan-circle.svg#scan-circle">
-      Label Images
-    </button>
-    <button tuiStep disabled icon="assets/adc/icons/speedometer.svg#speedometer">Progress</button>
-  </tui-stepper>
   <div class="flex items-center">
     <div class="flex-grow">
       <h2 class="mb-2">
@@ -39,21 +30,33 @@
       iconRight="tuiIconChevronRight"
       class="tui-space_right-3 tui-space_bottom-3"
       appearance="primary"
-      routerLink="../progress"
       [disabled]="!allMarked(view.imageFiles)"
+      (click)="clickTrain$.next()"
     >
       Go train
     </button>
   </div>
-  <tui-notification class="mb-8"
-    >You only can train when every images have been marked.</tui-notification
-  >
+  <tui-notification class="mb-8">
+    <ul>
+      <li>1. You only can train when every images have been marked.</li>
+      <li>2. Valid labels that you can mark for your images.</li>
+      <li>
+        <tui-badge
+          *ngFor="let label of LABELS"
+          [status]="TUI_BADGE_ERROR"
+          size="m"
+          class="mr-1 mb-1"
+          >{{label}}</tui-badge
+        >
+      </li>
+    </ul>
+  </tui-notification>
   <div class="flex flex-wrap items-center w-full">
-    <div class="flex flex-col items-center w-100" [class.slowly-hide]="view.imageFiles?.length">
+    <div class="flex flex-col items-center w-full" [class.slowly-hide]="view.imageFiles?.length">
       <img
         src="assets/images/upload-image-2.svg"
         alt="Upload image"
-        class="w-full md:w-3/4 mb-6 transition-all"
+        class="w-full md:w-1/2 mb-6 transition-all"
       />
       <p class="text-base">You doesn't have any uploaded image yet.</p>
       <div class="flex items-center">

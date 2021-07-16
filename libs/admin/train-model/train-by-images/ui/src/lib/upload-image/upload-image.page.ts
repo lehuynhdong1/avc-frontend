@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, tap, withLatestFrom, filter, shareReplay, delay } from 'rxjs/operators';
+import { map, withLatestFrom, filter, shareReplay, delay } from 'rxjs/operators';
 import { Actions, ofActionErrored, Store } from '@ngxs/store';
 import {
   UpdateImages,
@@ -29,8 +29,7 @@ export class UploadImagePage {
 
   readonly files = new FormControl([]);
   private readonly filesChanged$: Observable<ReadonlyArray<File>> = this.files.valueChanges.pipe(
-    shareReplay({ refCount: true, bufferSize: 1 }),
-    tap(console.warn)
+    shareReplay({ refCount: true, bufferSize: 1 })
   );
   readonly fileLengthChanged$ = this.filesChanged$.pipe(map((files) => files.length));
   readonly uploadedImages$ = this.store.select(TrainByImagesState.uploadedImages);

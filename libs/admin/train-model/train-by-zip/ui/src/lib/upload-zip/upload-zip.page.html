@@ -95,7 +95,6 @@
       label="or drop these here..."
       accept="application/zip"
       [formControl]="file"
-      (rejectedFiles)="rejectFile$.next($event)"
       [maxFileSize]="MAX_FILE_SIZE"
       size="l"
     ></tui-input-file>

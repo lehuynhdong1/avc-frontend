@@ -12,6 +12,10 @@ import { encodeDataUrl, imageToString, labels } from '@admin/train-model/train-b
 import { deleteProp, dictionaryToArray, patch, remove } from '@rx-angular/state';
 import { saveAs } from 'file-saver';
 import * as JSZip from 'jszip';
+import { ConvertToZip, Train } from './actions';
+import { switchMap, tap, map } from 'rxjs/operators';
+import { ModelService } from '@shared/api';
+import { hasValue, stringifyDate } from '@shared/util';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -40,6 +44,8 @@ export class TrainByImagesState {
       : null;
   }
 
+  constructor(private modelService: ModelService) {}
+
   @Action(UpdateImages)
   updateImages({ patchState }: StateContext<StateModel>, { files }: UpdateImages) {
     const acceptedFiles: ImageFile[] = [];
@@ -52,7 +58,7 @@ export class TrainByImagesState {
       }
       if (id) acceptedFiles.push({ id, file });
     }
-    patchState({ uploadedImages: acceptedFiles, rejectedFiles });
+    patchState({ uploadedImages: acceptedFiles, rejectedFiles, zipFile: null });
     if (rejectedFiles.length > 0) throw new Error('Some files miss match');
   }
 
@@ -78,7 +84,7 @@ export class TrainByImagesState {
     for (const removedId of removedImageIds) {
       labelledImages = deleteProp(labelledImages, removedId);
     }
-    patchState({ labelledImages });
+    patchState({ labelledImages, zipFile: null });
   }
 
   @Action(SetSelectedImageId)
@@ -95,11 +101,27 @@ export class TrainByImagesState {
     const image = labelledImages[id];
     if (!image) return;
     const imageWithNewAnnotations = patch(image, { annotations });
-    patchState({ labelledImages: patch(labelledImages, { [id]: imageWithNewAnnotations }) });
+    patchState({
+      labelledImages: patch(labelledImages, { [id]: imageWithNewAnnotations }),
+      zipFile: null
+    });
   }
 
   @Action(DonwloadLabelFiles)
-  async downloadLabelFiles({ getState }: StateContext<StateModel>) {
+  downloadLabelFiles({ getState, dispatch }: StateContext<StateModel>) {
+    const { zipFile } = getState();
+    const now = new Date().toISOString();
+    if (zipFile) return saveAs(zipFile, now + '.zip');
+    return dispatch(new ConvertToZip())
+      .pipe(
+        map(() => getState().zipFile),
+        hasValue()
+      )
+      .pipe(tap((zip) => saveAs(zip, now + '.zip')));
+  }
+
+  @Action(ConvertToZip)
+  async ConvertToZip({ getState, patchState }: StateContext<StateModel>) {
     const { labelledImages, uploadedImages } = getState();
     const labelledImagesArray = dictionaryToArray(labelledImages);
     const zip = new JSZip();
@@ -112,8 +134,34 @@ export class TrainByImagesState {
       labelsFolder?.file(`${image.id}.txt`, imageToString(image));
       if (index === 0) labelsFolder?.file('classes.txt', labels.join('\n'));
     });
-    const now = new Date().toISOString();
     const zipFile = await zip.generateAsync({ type: 'blob' });
-    return saveAs(zipFile, now + '.zip');
+    patchState({ zipFile });
+  }
+
+  @Action(Train)
+  train({ dispatch, getState }: StateContext<StateModel>) {
+    const { zipFile, uploadedImages } = getState();
+    const imageCount = uploadedImages.length;
+    const now = new Date();
+    if (zipFile)
+      return this.modelService.apiModelPost({
+        imageCount,
+        zipFile,
+        name: `Trained by Images - ${stringifyDate(now)}`
+      });
+    return dispatch(new ConvertToZip())
+      .pipe(
+        map(() => getState().zipFile),
+        hasValue()
+      )
+      .pipe(
+        switchMap((zip) =>
+          this.modelService.apiModelPost({
+            imageCount,
+            zipFile: zip,
+            name: `Trained by Images - ${stringifyDate(now)}`
+          })
+        )
+      );
   }
 }
