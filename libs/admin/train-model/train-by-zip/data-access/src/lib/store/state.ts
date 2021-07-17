@@ -66,9 +66,13 @@ export class TrainByZipState {
       patchState({ errorMessage });
       throw new Error(errorMessage);
     }
+    const fileNameWithoutExtension = uploadedZip.file.name.slice(
+      0,
+      uploadedZip.file.name.length - 4
+    );
     return this.modelService.apiModelPost({
       zipFile: uploadedZip.file,
-      name: `Trained by ZIP - ${uploadedZip.file.name}`,
+      name: `Trained by ZIP - ${fileNameWithoutExtension}`,
       imageCount: uploadedZip.imageCount
     });
   }

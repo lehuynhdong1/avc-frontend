@@ -60,7 +60,7 @@ nav.collapse {
     @apply flex-col my-2 h-auto;
 
     tui-svg[src='tuiIconMenuLarge'] {
-      @apply mt-4 mb-12;
+      @apply mt-4;
     }
 
     .wrapper {

@@ -6,7 +6,6 @@
       [tuiHint]="(collapse$ | async) ? 'Expand' : 'Collapse'"
     ></tui-svg>
     <div class="wrapper">
-      <tui-svg src="tuiIconMailLarge" class="mr-2"></tui-svg>
       <tui-svg src="tuiIconAlertCircleLarge"></tui-svg>
     </div>
   </section>
@@ -32,16 +31,20 @@
     <div class="nav__divider"></div>
     <ul class="nav__list">
       <ng-container *ngFor="let item of navItems$ | async">
-        <li [routerLink]="item.path" routerLinkActive="active" class="nav__list-item">
+        <li
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          class="nav__list-item"
+          [tuiHint]="item.label"
+          [tuiHintShowDelay]="100"
+          [tuiHintHideDelay]="100"
+          tuiHintDirection="right"
+        >
           <tui-svg
             [src]="
               (currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon
             "
             class="zoom-08"
-            [tuiHint]="item.label"
-            [tuiHintShowDelay]="100"
-            [tuiHintHideDelay]="100"
-            tuiHintDirection="right"
           ></tui-svg>
           <span class="nav__list-item-title">{{ item.label }}</span>
         </li>
@@ -51,15 +54,12 @@
             [routerLink]="child.path"
             routerLinkActive="active"
             class="nav__list-item nav__list-item-child"
+            [tuiHint]="child.label"
+            [tuiHintShowDelay]="100"
+            [tuiHintHideDelay]="100"
+            tuiHintDirection="right"
           >
-            <tui-svg
-              [src]="child.icon"
-              class="zoom-08"
-              [tuiHint]="child.label"
-              [tuiHintShowDelay]="100"
-              [tuiHintHideDelay]="100"
-              tuiHintDirection="right"
-            ></tui-svg>
+            <tui-svg [src]="child.icon" class="zoom-08"></tui-svg>
             <span class="nav__list-item-title">{{ child.label }}</span>
           </li>
         </ng-container>

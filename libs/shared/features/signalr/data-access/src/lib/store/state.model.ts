@@ -1,10 +1,6 @@
-import { ReceivedResponses, ReceivedMethods } from '@shared/util';
+import { ReceivedResponses } from '@shared/util';
 
-export interface StateModel {
-  [ReceivedMethods.WhenCarConnected]?: ReceivedResponses[ReceivedMethods.WhenCarConnected];
-  [ReceivedMethods.WhenCarDisconnected]?: ReceivedResponses[ReceivedMethods.WhenCarDisconnected];
-  [ReceivedMethods.WhenCarRunning]?: ReceivedResponses[ReceivedMethods.WhenCarRunning];
-  [ReceivedMethods.WhenCarStopping]?: ReceivedResponses[ReceivedMethods.WhenCarStopping];
+export interface StateModel extends Partial<ReceivedResponses> {
   errorMessage?: string;
 }
 

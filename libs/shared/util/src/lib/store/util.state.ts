@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, State, StateContext, Selector } from '@ngxs/store';
+import { UserNotificationsService } from '@shared/api';
 import { TuiNotificationsService } from '@taiga-ui/core';
 import { INITIAL_STATE, StateModel, STATE_NAME } from './util-state.model';
-import { ShowNotification } from './util.actions';
+import { LoadNotifications, ShowNotification, LoadUnreadCount } from './util.actions';
+import { tap } from 'rxjs/operators';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -10,11 +12,38 @@ import { ShowNotification } from './util.actions';
 })
 @Injectable()
 export class UtilState {
-  constructor(private notifyService: TuiNotificationsService) {}
+  @Selector()
+  static notifications({ notifications }: StateModel) {
+    return notifications;
+  }
+
+  @Selector()
+  static unreadCount({ unreadCount }: StateModel) {
+    return unreadCount;
+  }
+
+  constructor(
+    private notifyService: TuiNotificationsService,
+    private notificationsApiService: UserNotificationsService
+  ) {}
 
   @Action(ShowNotification)
   showNotification(_: StateContext<StateModel>, { payload }: ShowNotification) {
     const { message, options } = payload;
     this.notifyService.show(message, options).subscribe();
+  }
+
+  @Action(LoadNotifications)
+  LoadNotifications({ patchState }: StateContext<StateModel>, { params }: LoadNotifications) {
+    return this.notificationsApiService
+      .apiUsernotificationsGet(params)
+      .pipe(tap((notifications) => patchState({ notifications })));
+  }
+
+  @Action(LoadUnreadCount)
+  LoadUnreadCount({ patchState }: StateContext<StateModel>, { params }: LoadUnreadCount) {
+    return this.notificationsApiService
+      .apiUsernotificationsReceiverIdCountGet(params)
+      .pipe(tap((unreadCount) => patchState({ unreadCount })));
   }
 }

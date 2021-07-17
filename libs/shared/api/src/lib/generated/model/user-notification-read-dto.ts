@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountReadDto } from './account-read-dto';
 
-export interface AccountReadDtoPagingResponseDto {
-  result?: Array<AccountReadDto> | null;
-  count?: number;
-  nextPage?: string | null;
-  previousPage?: string | null;
-  nextPageNumber?: number | null;
-  previousPageNumber?: number | null;
-  totalPage?: number | null;
+export interface UserNotificationReadDto {
+  id?: number;
+  receiverId?: number | null;
+  message?: string | null;
+  type?: string | null;
+  createdAt?: string;
+  isRead?: boolean;
 }

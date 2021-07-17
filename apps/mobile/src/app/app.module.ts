@@ -24,7 +24,7 @@ import { getAppConfigProvider } from '@shared/app-config';
     TuiRootModule,
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' }),
     OpenApiModule.forRoot(() => new Configuration({ basePath: environment.apiUrl })),
-    SharedUtilModule,
+    SharedUtilModule.forRoot(),
     AuthUtilModule,
     StateManagementModulesWithConfig(environment),
     LanguageModuleWithConfig({ prodMode: environment.production })

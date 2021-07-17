@@ -11,6 +11,7 @@ import { IssueTypesService } from './api/issue-types.service';
 import { ModelService } from './api/model.service';
 import { ProfileService } from './api/profile.service';
 import { RolesService } from './api/roles.service';
+import { UserNotificationsService } from './api/user-notifications.service';
 
 @NgModule({
   imports: [],

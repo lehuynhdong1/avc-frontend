@@ -45,6 +45,18 @@
         [status]="model.isApplying ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
         class="self-start mb-3"
       ></tui-badge>
+
+      <button
+        tuiButton
+        size="m"
+        appearance="primary"
+        type="button"
+        *ngIf="!model.isApplying"
+        (click)="clickApply$.next()"
+        [disabled]="model.modelStatus !== 'Succeeded'"
+      >
+        Apply for all
+      </button>
     </main>
   </ng-container>
   <ng-template #loading> <tui-loader></tui-loader> </ng-template>

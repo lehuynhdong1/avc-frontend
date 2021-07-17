@@ -1,8 +1,15 @@
 import { LoginState } from '@shared/auth/login/data-access';
-import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
+import { State, Action, StateContext, Selector, Store, createSelector } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
 import { Injectable } from '@angular/core';
-import { ReceivedMethods, SentMethods, SignalRService } from '@shared/util';
+import {
+  ALL_RECEIVED_METHODS,
+  getReceivedMethods,
+  ReceivedMethodsKey,
+  RoleNameType,
+  SentMethods,
+  SignalRService
+} from '@shared/util';
 import {
   ConnectAccount,
   StartCar,
@@ -19,13 +26,8 @@ import {
 })
 @Injectable()
 export class SignalRState {
-  @Selector()
-  static whenCarConnected(state: StateModel): StateModel['WhenCarConnected'] {
-    return state.WhenCarConnected;
-  }
-  @Selector()
-  static get(state: StateModel) {
-    return (type: ReceivedMethods) => state[type];
+  static get<T extends ReceivedMethodsKey>(type: T) {
+    return createSelector([SignalRState], (state: StateModel) => state[type]);
   }
 
   constructor(private signalr: SignalRService, private store: Store) {}
@@ -55,20 +57,84 @@ export class SignalRState {
 
   @Action(RegisterAllListeners, { cancelUncompleted: true })
   RegisterAllListeners({ patchState }: StateContext<StateModel>) {
-    const keys = Object.keys(ReceivedMethods) as Array<keyof typeof ReceivedMethods>;
     const me = this.store.selectSnapshot(LoginState.account);
     if (!me) return;
-    keys.forEach((key) =>
-      this.signalr.register(ReceivedMethods[key], (params) => {
-        if (params.accountIdList.includes(me.id || 0)) patchState({ [key]: params });
-      })
-    );
+
+    const receivedMethods = getReceivedMethods(me.role as RoleNameType);
+    // const sameParams = [
+    //   'WhenCarConnected',
+    //   'WhenCarDisconnected',
+    //   'WhenCarRunning',
+    //   'WhenCarStopping'
+    // ];
+    if (receivedMethods.includes('WhenCarConnected'))
+      this.signalr.register('WhenCarConnected', (params) => {
+        if (me.id && params.accountIdList.includes(me.id)) patchState({ WhenCarConnected: params });
+      });
+    if (receivedMethods.includes('WhenCarDisconnected'))
+      this.signalr.register('WhenCarDisconnected', (params) => {
+        if (me.id && params.accountIdList.includes(me.id))
+          patchState({ WhenCarDisconnected: params });
+      });
+    if (receivedMethods.includes('WhenCarRunning'))
+      this.signalr.register('WhenCarRunning', (params) => {
+        if (me.id && params.accountIdList.includes(me.id)) patchState({ WhenCarRunning: params });
+      });
+    if (receivedMethods.includes('WhenCarStopping'))
+      this.signalr.register('WhenCarStopping', (params) => {
+        if (me.id && params.accountIdList.includes(me.id)) patchState({ WhenCarStopping: params });
+      });
+
+    if (receivedMethods.includes('WhenAdminChangeCarManagedBy'))
+      this.signalr.register('WhenAdminChangeCarManagedBy', (params) => {
+        if (me.id && params.receiverId === me.id)
+          patchState({ WhenAdminChangeCarManagedBy: params });
+      });
+    if (receivedMethods.includes('WhenAdminChangeStaffManagedBy'))
+      this.signalr.register('WhenAdminChangeStaffManagedBy', (params) => {
+        if (me.id && params.receiverId === me.id)
+          patchState({ WhenAdminChangeStaffManagedBy: params });
+      });
+
+    if (receivedMethods.includes('WhenManagerChangeAssignedCar'))
+      this.signalr.register('WhenManagerChangeAssignedCar', (params) => {
+        if (me.id && params.receiverId === me.id)
+          patchState({ WhenManagerChangeAssignedCar: params });
+      });
+
+    if (receivedMethods.includes('WhenStaffDeactivated'))
+      this.signalr.register('WhenStaffDeactivated', (params) => {
+        if (me.id && params.receiverId === me.id) patchState({ WhenStaffDeactivated: params });
+      });
+
+    if (receivedMethods.includes('WhenManagerDeactivated'))
+      this.signalr.register('WhenManagerDeactivated', (params) => {
+        if (me.id && params.receiverIdList.includes(me.id))
+          patchState({ WhenManagerDeactivated: params });
+      });
+
+    if (receivedMethods.includes('WhenThisAccountDeactivated'))
+      this.signalr.register('WhenThisAccountDeactivated', (params) => {
+        if (me.id && params.receiverId === me.id)
+          patchState({ WhenThisAccountDeactivated: params });
+      });
+
+    if (receivedMethods.includes('WhenCarDeactivated'))
+      this.signalr.register('WhenCarDeactivated', (params) => {
+        if (me.id && params.receiverIdList.includes(me.id))
+          patchState({ WhenCarDeactivated: params });
+      });
+
+    if (receivedMethods.includes('WhenIssueCreated'))
+      this.signalr.register('WhenIssueCreated', (params) => {
+        if (me.id && params.receiverIdList.includes(me.id))
+          patchState({ WhenIssueCreated: params });
+      });
   }
 
   @Action(UnregisterAllListeners, { cancelUncompleted: true })
   UnregisterAllListeners({ setState }: StateContext<StateModel>) {
-    const keys = Object.keys(ReceivedMethods) as Array<keyof typeof ReceivedMethods>;
-    keys.forEach((key) => this.signalr.unregister(ReceivedMethods[key]));
+    ALL_RECEIVED_METHODS.forEach((key) => this.signalr.unregister(key));
     setState({});
   }
 }

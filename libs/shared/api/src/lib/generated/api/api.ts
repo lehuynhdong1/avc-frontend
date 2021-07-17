@@ -25,6 +25,9 @@ export * from './profile.serviceInterface';
 export * from './roles.service';
 import { RolesService } from './roles.service';
 export * from './roles.serviceInterface';
+export * from './user-notifications.service';
+import { UserNotificationsService } from './user-notifications.service';
+export * from './user-notifications.serviceInterface';
 export const APIS = [
   AccountsService,
   AuthenticationService,
@@ -34,5 +37,6 @@ export const APIS = [
   IssueTypesService,
   ModelService,
   ProfileService,
-  RolesService
+  RolesService,
+  UserNotificationsService
 ];

@@ -31,6 +31,7 @@ import { Configuration } from '../configuration';
 import {
   ModelServiceInterface,
   ApiModelGetRequestParams,
+  ApiModelIdApplyingPutRequestParams,
   ApiModelIdFailurePutRequestParams,
   ApiModelIdGetRequestParams,
   ApiModelIdSuccessionPutRequestParams,
@@ -119,6 +120,65 @@ export class ModelService implements ModelServiceInterface {
       throw Error('key may not be null if value is not object or array');
     }
     return httpParams;
+  }
+
+  /**
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiModelApplyingGet(
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<ModelReadDto>;
+  public apiModelApplyingGet(
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpResponse<ModelReadDto>>;
+  public apiModelApplyingGet(
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpEvent<ModelReadDto>>;
+  public apiModelApplyingGet(
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<any> {
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['text/plain', 'application/json', 'text/json'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.get<ModelReadDto>(`${this.configuration.basePath}/api/model/applying`, {
+      responseType: <any>responseType,
+      withCredentials: this.configuration.withCredentials,
+      headers: headers,
+      observe: observe,
+      reportProgress: reportProgress
+    });
   }
 
   /**
@@ -211,6 +271,81 @@ export class ModelService implements ModelServiceInterface {
       `${this.configuration.basePath}/api/model`,
       {
         params: queryParameters,
+        responseType: <any>responseType,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public apiModelIdApplyingPut(
+    requestParameters: ApiModelIdApplyingPutRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any>;
+  public apiModelIdApplyingPut(
+    requestParameters: ApiModelIdApplyingPutRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpResponse<any>>;
+  public apiModelIdApplyingPut(
+    requestParameters: ApiModelIdApplyingPutRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<HttpEvent<any>>;
+  public apiModelIdApplyingPut(
+    requestParameters: ApiModelIdApplyingPutRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined }
+  ): Observable<any> {
+    const id = requestParameters.id;
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling apiModelIdApplyingPut.'
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    // authentication (Bearer) required
+    if (this.configuration.apiKeys) {
+      const key: string | undefined =
+        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
+      if (key) {
+        headers = headers.set('Authorization', key);
+      }
+    }
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = [];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType = 'text';
+    }
+
+    return this.httpClient.put<any>(
+      `${this.configuration.basePath}/api/model/${encodeURIComponent(String(id))}/applying`,
+      null,
+      {
         responseType: <any>responseType,
         withCredentials: this.configuration.withCredentials,
         headers: headers,

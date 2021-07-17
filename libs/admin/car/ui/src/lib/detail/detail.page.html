@@ -96,7 +96,7 @@
                 size="s"
                 appearance="outline"
                 type="button"
-                (click)="this.clickApprove$.next(car.isApproved || false)"
+                (click)="clickApprove$.next(car.isApproved || false)"
                 [class.deactivate]="car.isApproved"
               >
                 {{ car.isApproved ? 'Reject' : 'Approve'}}
@@ -116,7 +116,7 @@
               size="s"
               appearance="outline"
               type="button"
-              (click)="this.clickActivate$.next(car.isAvailable || false)"
+              (click)="clickActivate$.next(car.isAvailable || false)"
               [class.deactivate]="car.isAvailable"
             >
               {{car.isAvailable ? 'Deactivate': 'Reactivate'}}

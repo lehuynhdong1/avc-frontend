@@ -5,9 +5,17 @@ import { LanguageCode } from '@shared/language';
 
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { loader } from './transloco.loader';
-import { Observable } from 'rxjs';
-import { LoginStateModel, LoginState } from '@shared/auth/login/data-access';
-import { shareReplay } from 'rxjs/operators';
+import { LoginState } from '@shared/auth/login/data-access';
+import { LoadNotifications, LoadUnreadCount, UtilState } from '@shared/util';
+
+// export interface UserNotificationReadDto {
+//   id?: number;
+//   receiverId?: number | null;
+//   message?: string | null;
+//   type?: string | null;
+//   createdAt?: string;
+//   isRead?: boolean;
+// }
 
 @Component({
   selector: 'adca-navbar',
@@ -17,10 +25,19 @@ import { shareReplay } from 'rxjs/operators';
   providers: [{ provide: TRANSLOCO_SCOPE, useValue: { scope: 'navbar', loader } }]
 })
 export class NavbarComponent {
-  me$: Observable<LoginStateModel['account']>;
+  me$ = this.store.select(LoginState.account);
+  notifications$ = this.store.select(UtilState.notifications);
+  unreadCount$ = this.store.select(UtilState.unreadCount);
+
+  opened = false;
 
   constructor(private store: Store) {
-    this.me$ = this.store.select(LoginState.account).pipe(shareReplay());
+    const me = this.store.selectSnapshot(LoginState.account);
+    if (!me) return;
+    this.store.dispatch([
+      new LoadNotifications({ receiverId: me.id || 0 }),
+      new LoadUnreadCount({ receiverId: me.id || 0 })
+    ]);
   }
 
   changeLanguage(language: LanguageCode) {

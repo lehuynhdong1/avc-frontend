@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
 import { Logout } from '@shared/auth/logout/data-access';
-import { NetworkService, ShowNotification } from '@shared/util';
+import { hasValue, NetworkService, ShowNotification } from '@shared/util';
 import { filter, switchMap } from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
 import {
@@ -11,9 +11,10 @@ import {
   ConnectAccount,
   StopSignalR,
   RegisterAllListeners,
-  UnregisterAllListeners
+  UnregisterAllListeners,
+  SignalRState
 } from '@shared/features/signalr/data-access';
-import { defer, from } from 'rxjs';
+import { defer, from, merge } from 'rxjs';
 
 @Component({
   selector: 'adcm-root',
@@ -35,6 +36,8 @@ export class AppComponent {
     this.whenStartSignalRSuccess();
     this.whenConnectAccountSuccess();
     this.whenUnregisterAllListenersSuccess();
+    this.whenRegisterAllListenersSuccess();
+
     const myId = store.selectSnapshot(LoginState.account)?.id;
     if (myId) store.dispatch(new StartSignalR());
   }
@@ -103,5 +106,60 @@ export class AppComponent {
       });
       alert.present();
     });
+  }
+
+  private whenRegisterAllListenersSuccess() {
+    const whenCarConnected$ = this.store.select(SignalRState.get('WhenCarConnected'));
+    const whenCarDisconnected$ = this.store.select(SignalRState.get('WhenCarDisconnected'));
+    const whenCarRunning$ = this.store.select(SignalRState.get('WhenCarRunning'));
+    const whenCarStopping$ = this.store.select(SignalRState.get('WhenCarStopping'));
+
+    const whenAdminChangeCarManagedBy$ = this.store.select(
+      SignalRState.get('WhenAdminChangeCarManagedBy')
+    );
+    const whenAdminChangeStaffManagedBy$ = this.store.select(
+      SignalRState.get('WhenAdminChangeStaffManagedBy')
+    );
+    const whenManagerChangeAssignedCar$ = this.store.select(
+      SignalRState.get('WhenManagerChangeAssignedCar')
+    );
+    const whenStaffDeactivated$ = this.store.select(SignalRState.get('WhenStaffDeactivated'));
+    const whenManagerDeactivated$ = this.store.select(SignalRState.get('WhenManagerDeactivated'));
+    const whenThisAccountDeactivated$ = this.store.select(
+      SignalRState.get('WhenThisAccountDeactivated')
+    );
+    const whenCarDeactivated$ = this.store.select(SignalRState.get('WhenCarDeactivated'));
+    const whenIssueCreated$ = this.store.select(SignalRState.get('WhenIssueCreated'));
+    const whenModelStatusChanged$ = this.store.select(SignalRState.get('WhenModelStatusChanged'));
+
+    // const carNotifications$ = merge(whenCarConnected$, whenCarDisconnected$,whenCarRunning$, whenCarStopping$);
+    // TODO: Special b/c no message in response whenThisAccountDeactivated$,
+    const notifications$ = merge(
+      whenAdminChangeCarManagedBy$,
+      whenAdminChangeStaffManagedBy$,
+      whenManagerChangeAssignedCar$,
+      whenStaffDeactivated$,
+      whenManagerDeactivated$,
+      whenCarDeactivated$,
+      whenIssueCreated$,
+      whenModelStatusChanged$
+    );
+
+    this.actions
+      .pipe<RegisterAllListeners>(ofActionSuccessful(RegisterAllListeners))
+      .pipe(switchMap(() => notifications$.pipe(hasValue())))
+      .subscribe(({ message }: any) => {
+        console.log('====================== notifications registered');
+
+        this.store.dispatch(
+          new ShowNotification({
+            message,
+            options: {
+              label: 'Message coming',
+              status: TuiNotification.Success
+            }
+          })
+        );
+      });
   }
 }

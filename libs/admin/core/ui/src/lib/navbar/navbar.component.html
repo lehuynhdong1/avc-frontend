@@ -1,32 +1,65 @@
-<nav class="bg-gray-900 text-gray-50">
-  <div class="max-w-7xl mx-auto px-2">
-    <div class="relative flex items-center justify-between h-topbar">
-      <img
-        class="block h-12 w-auto px-3 flex-shrink-0 cursor-pointer"
-        src="assets/images/logo.svg"
-        alt="Workflow"
-        routerLink="/"
-      />
-      <div class="flex items-center pr-2">
-        <tui-svg src="tuiIconBellLarge" class="cursor-pointer"></tui-svg>
-        <ng-container *ngIf="me$ | async as me; else notAuthen">
-          <div class="ml-3 relative">
-            <adca-navbar-avatar-dropdown></adca-navbar-avatar-dropdown>
+<ng-container
+  *ngIf="{
+    me: me$ | async,
+    notifications: notifications$ | async,
+    unreadCount: unreadCount$ | async
+  } as view"
+>
+  <nav class="bg-gray-900 text-gray-50">
+    <div class="max-w-7xl mx-auto px-2">
+      <div class="relative flex items-center justify-between h-topbar">
+        <img
+          class="block h-12 w-auto px-3 flex-shrink-0 cursor-pointer"
+          src="assets/images/logo.svg"
+          alt="Workflow"
+          routerLink="/"
+        />
+        <div class="flex items-center pr-2 space-x-6">
+          <div class="border-2 rounded-full p-1 relative" [class.border-solid]="view.unreadCount">
+            <tui-svg
+              src="tuiIconBellLarge"
+              class="cursor-pointer"
+              (click)="opened = !opened"
+              [tuiDropdownContent]="dropdownContent"
+              [tuiDropdown]="opened"
+              tuiDropdownAlign="right"
+              tuiDropdownDirection="bottom"
+            >
+            </tui-svg>
+            <tui-badge class="!absolute -top-3 -right-3 !bg-red-600" *ngIf="view.unreadCount"
+              ><b class="text-white">{{ view.unreadCount }}</b></tui-badge
+            >
           </div>
-        </ng-container>
-        <ng-template #notAuthen>
-          <button
-            tuiButton
-            type="button"
-            size="m"
-            appearance="outline"
-            routerLink="/login"
-            class="ml-3"
-          >
-            <span class="text-gray-50">Login</span>
-          </button>
-        </ng-template>
+          <ng-container *ngIf="view.me; else notAuthen">
+            <div class="ml-3 relative">
+              <adca-navbar-avatar-dropdown></adca-navbar-avatar-dropdown>
+            </div>
+          </ng-container>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+
+  <ng-template #notAuthen>
+    <button tuiButton type="button" size="m" appearance="outline" routerLink="/login" class="ml-3">
+      <span class="text-gray-50">Login</span>
+    </button>
+  </ng-template>
+
+  <ng-template #dropdownContent>
+    <tui-data-list
+      #list
+      *ngIf="view.notifications && view.notifications.length > 0; else whenNoNoti"
+    >
+      <ng-container *ngFor="let item of view.notifications">
+        <button tuiOption [value]="item.type" size="s" class="space-x-2 !py-2">
+          <div class="text-sm max-w-10rem">{{ item.message }}</div>
+          <tui-avatar class="avatar" size="s" [text]="item.type || 'A'"></tui-avatar>
+        </button>
+      </ng-container>
+    </tui-data-list>
+    <ng-template #whenNoNoti>
+      <section class="p-4">You don't have any notification</section>
+    </ng-template>
+  </ng-template>
+</ng-container>

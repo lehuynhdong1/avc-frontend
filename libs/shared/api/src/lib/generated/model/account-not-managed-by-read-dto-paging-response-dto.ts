@@ -16,4 +16,7 @@ export interface AccountNotManagedByReadDtoPagingResponseDto {
   count?: number;
   nextPage?: string | null;
   previousPage?: string | null;
+  nextPageNumber?: number | null;
+  previousPageNumber?: number | null;
+  totalPage?: number | null;
 }

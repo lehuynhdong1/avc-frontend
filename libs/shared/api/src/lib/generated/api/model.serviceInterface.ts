@@ -28,6 +28,10 @@ export interface ApiModelGetRequestParams {
   searchValue?: string;
 }
 
+export interface ApiModelIdApplyingPutRequestParams {
+  id: number;
+}
+
 export interface ApiModelIdFailurePutRequestParams {
   id: number;
   failureMessage?: string;
@@ -58,12 +62,28 @@ export interface ModelServiceInterface {
   /**
    *
    *
+   */
+  apiModelApplyingGet(extraHttpRequestParams?: any): Observable<ModelReadDto>;
+
+  /**
+   *
+   *
    * @param requestParameters
    */
   apiModelGet(
     requestParameters: ApiModelGetRequestParams,
     extraHttpRequestParams?: any
   ): Observable<ModelReadDtoPagingResponseDto>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiModelIdApplyingPut(
+    requestParameters: ApiModelIdApplyingPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
 
   /**
    *
