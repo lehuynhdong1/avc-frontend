@@ -97,6 +97,8 @@
     "admin-train-model-train-by-zip-feature": { "tags": ["scope:admin"] },
     "admin-car-feature": { "tags": ["scope:admin"] },
     "admin-car-ui": { "tags": ["scope:admin"] },
-    "shared-ui-error-hint": { "tags": ["scope:shared"] }
+    "shared-ui-error-hint": { "tags": ["scope:shared"] },
+    "mobile-notification-ui": { "tags": ["scope:mobile"] },
+    "mobile-notification-feature": { "tags": ["scope:mobile"] }
   }
 }

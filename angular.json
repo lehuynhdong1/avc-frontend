@@ -3505,6 +3505,80 @@
           }
         }
       }
+    },
+    "mobile-notification-ui": {
+      "projectType": "library",
+      "root": "libs/mobile/notification/ui",
+      "sourceRoot": "libs/mobile/notification/ui/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/notification/ui/tsconfig.lib.json",
+            "project": "libs/mobile/notification/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/notification/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/notification/ui/src/**/*.ts",
+              "libs/mobile/notification/ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/notification/ui"],
+          "options": {
+            "jestConfig": "libs/mobile/notification/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mobile-notification-feature": {
+      "projectType": "library",
+      "root": "libs/mobile/notification/feature",
+      "sourceRoot": "libs/mobile/notification/feature/src",
+      "prefix": "adcm",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/mobile/notification/feature/tsconfig.lib.json",
+            "project": "libs/mobile/notification/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mobile/notification/feature/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/mobile/notification/feature/src/**/*.ts",
+              "libs/mobile/notification/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mobile/notification/feature"],
+          "options": {
+            "jestConfig": "libs/mobile/notification/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

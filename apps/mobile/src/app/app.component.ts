@@ -38,8 +38,8 @@ export class AppComponent {
     this.whenUnregisterAllListenersSuccess();
     this.whenRegisterAllListenersSuccess();
 
-    const myId = store.selectSnapshot(LoginState.account)?.id;
-    if (myId) store.dispatch(new StartSignalR());
+    // const myId = store.selectSnapshot(LoginState.account)?.id;
+    // if (myId) store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {

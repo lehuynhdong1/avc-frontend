@@ -26,7 +26,7 @@ import { getAppConfigProvider } from '@shared/app-config';
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' }),
     OpenApiModule.forRoot(() => new Configuration({ basePath: environment.apiUrl })),
     LayoutModule,
-    SharedUtilModule,
+    SharedUtilModule.forRoot(),
     AuthUtilModule,
     StateManagementModulesWithConfig(environment),
     LanguageModuleWithConfig({ prodMode: environment.production }),

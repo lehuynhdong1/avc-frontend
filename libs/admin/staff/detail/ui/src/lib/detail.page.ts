@@ -34,6 +34,7 @@ const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentPa
     }
   ]
 });
+
 @Component({
   selector: 'adca-detail',
   templateUrl: './detail.page.html',

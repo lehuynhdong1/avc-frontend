@@ -1,0 +1,58 @@
+<ng-container
+  *ngIf="{
+    notifications: notifications$ | async,
+    unreadCount: unreadCount$ | async
+  } as view"
+>
+  <ion-header>
+    <ion-toolbar></ion-toolbar>
+    <ion-toolbar>
+      <ion-title size="large" class="leading-10"> Notification</ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button routerLink="change-password">
+          <ion-icon slot="end" name="notifications-outline" class="w-8 h-8 text-white"></ion-icon
+        ></ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-searchbar
+        showCancelButton="focus"
+        animated
+        placeholder="Find your missed notifications"
+      ></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content fullscreen="true">
+    <ion-list>
+      <ng-container *ngIf="view.notifications; else loading">
+        <ng-container *ngIf="view.notifications.length > 0; else noConnectingCar">
+          <ion-item
+            *ngFor="let noti of view.notifications; trackBy: trackById"
+            button
+            detail
+            lines="none"
+          >
+            <ion-avatar slot="start">
+              <img [src]="noti.type || 'assets/adc/icons/noti-sport-outline.svg'" />
+            </ion-avatar>
+            <ion-label>
+              <h2 class="!font-bold">{{ noti.type }}</h2>
+              <h3>Message: {{ noti.message }}</h3>
+              <p>Occured at: {{ noti.createdAt | date }}</p>
+            </ion-label>
+            <ion-icon name="radio-button-on-outline" slot="end" color="success"></ion-icon>
+          </ion-item>
+        </ng-container>
+        <ng-template #noConnectingCar>
+          <ion-item lines="none">
+            <ion-label>
+              <h2>You don't have any notification</h2>
+            </ion-label>
+          </ion-item>
+        </ng-template>
+      </ng-container>
+    </ion-list>
+  </ion-content>
+  <ng-template #loading><tui-loader></tui-loader></ng-template>
+</ng-container>

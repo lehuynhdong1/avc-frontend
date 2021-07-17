@@ -5,6 +5,7 @@ import { carRoutes } from '@mobile/car/feature';
 import { manageProfileRoutes } from '@mobile/manage-profile/feature';
 import { IsLoggedInGuard } from '@shared/auth/util';
 import { issueRoutes } from '@mobile/issue/feature';
+import { notificationRoutes } from '@mobile/notification/feature';
 
 export const routes: Routes = [
   ...authRoutes,
@@ -18,16 +19,11 @@ export const routes: Routes = [
         children: carRoutes,
         canActivate: [IsLoggedInGuard]
       },
-      // {
-      //   path: 'staff',
-      //   children: staffRoutes,
-      //   canActivate: [IsLoggedInGuard]
-      // },
-      // {
-      //   path: 'manager',
-      //   children: managerRoutes,
-      //   canActivate: [IsLoggedInGuard]
-      // },
+      {
+        path: 'notification',
+        children: notificationRoutes,
+        canActivate: [IsLoggedInGuard]
+      },
       {
         path: 'issue',
         children: issueRoutes,

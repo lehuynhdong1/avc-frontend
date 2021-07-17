@@ -5,6 +5,10 @@
         [name]="(currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon"
       ></ion-icon>
       <ion-label class="-mt-2">{{ item.label }}</ion-label>
+
+      <ion-badge *ngIf="item.path === 'notification'" color="danger">{{
+        unreadCount$ | async
+      }}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

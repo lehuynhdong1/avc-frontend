@@ -83,6 +83,8 @@ module.exports = {
     '<rootDir>/libs/admin/manage-profile/feature',
     '<rootDir>/libs/admin/manage-profile/ui',
     '<rootDir>/libs/shared/features/signalr/data-access',
-    '<rootDir>/libs/shared/ui/error-hint'
+    '<rootDir>/libs/shared/ui/error-hint',
+    '<rootDir>/libs/mobile/notification/ui',
+    '<rootDir>/libs/mobile/notification/feature'
   ]
 };
