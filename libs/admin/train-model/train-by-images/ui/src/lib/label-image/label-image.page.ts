@@ -12,7 +12,7 @@ import { TuiDestroyService, tuiPure } from '@taiga-ui/cdk';
 import { TuiDialogService } from '@taiga-ui/core';
 import { TuiStepState, TuiMarkerIconMode, TuiStatus } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { map, shareReplay, tap, take } from 'rxjs/operators';
+import { map, tap, take } from 'rxjs/operators';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import {
   LabelImageFile,
@@ -35,10 +35,9 @@ export class LabelImagePage {
   readonly TUI_BADGE_ERROR = TuiStatus.Error;
   readonly LABELS = labels;
 
-  readonly imageFiles$ = this.store.select(TrainByImagesState.labelledImages).pipe(
-    map((labelledImages) => Object.values(labelledImages)),
-    shareReplay()
-  );
+  readonly imageFiles$ = this.store
+    .select(TrainByImagesState.labelledImages)
+    .pipe(map((labelledImages) => Object.values(labelledImages)));
 
   readonly whenDownloadSuccess$ = this.actions.pipe(ofActionSuccessful(DonwloadLabelFiles)).pipe(
     tap(() =>

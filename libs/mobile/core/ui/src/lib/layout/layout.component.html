@@ -1,13 +1,19 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom" class="pt-1 border-0" *ngIf="bottomBar.visible$ | async">
+<ion-tabs
+  *ngIf="{
+    navbarVisible: bottomBar.visible$ | async,
+    currentItem: currentItem$ | async,
+    unreadCount: unreadCount$ | async
+  } as view"
+>
+  <ion-tab-bar slot="bottom" class="pt-1 border-0" *ngIf="view.navbarVisible">
     <ion-tab-button *ngFor="let item of navItems" [tab]="item.path">
       <ion-icon
-        [name]="(currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon"
+        [name]="view.currentItem?.path === item.path ? getFilledIcon(item.icon) : item.icon"
       ></ion-icon>
       <ion-label class="-mt-2">{{ item.label }}</ion-label>
 
-      <ion-badge *ngIf="item.path === 'notification'" color="danger">{{
-        unreadCount$ | async
+      <ion-badge *ngIf="item.path === 'notification' && view.unreadCount" color="danger">{{
+        view.unreadCount
       }}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>

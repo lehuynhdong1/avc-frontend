@@ -47,11 +47,8 @@
   </ng-template>
 
   <ng-template #dropdownContent>
-    <tui-data-list
-      #list
-      *ngIf="view.notifications && view.notifications.length > 0; else whenNoNoti"
-    >
-      <ng-container *ngFor="let item of view.notifications">
+    <tui-data-list #list *ngIf="view.notifications?.result?.length; else whenNoNoti">
+      <ng-container *ngFor="let item of view.notifications?.result">
         <button tuiOption [value]="item.type" size="s" class="space-x-2 !py-2">
           <div class="text-sm max-w-10rem">{{ item.message }}</div>
           <tui-avatar class="avatar" size="s" [text]="item.type || 'A'"></tui-avatar>

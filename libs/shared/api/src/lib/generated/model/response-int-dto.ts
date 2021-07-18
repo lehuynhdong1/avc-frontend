@@ -10,6 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface ResponseDto {
-  message?: string | null;
+export interface ResponseIntDto {
+  message?: number;
 }

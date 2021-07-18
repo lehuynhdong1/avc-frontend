@@ -1,11 +1,10 @@
-import { UserNotificationReadDto } from '@shared/api';
+import { UserNotificationReadDtoPagingResponseDto } from '@shared/api';
 
 export type StateModel = {
-  notifications: Array<UserNotificationReadDto>;
+  notifications?: UserNotificationReadDtoPagingResponseDto;
   unreadCount: number;
 };
 export const INITIAL_STATE: StateModel = {
-  notifications: [],
   unreadCount: 0
 };
 export const STATE_NAME = 'Shared_Util';

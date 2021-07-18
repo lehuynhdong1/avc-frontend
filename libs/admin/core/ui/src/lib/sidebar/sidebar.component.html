@@ -1,69 +1,76 @@
-<nav class="w-sidebar" [class.collapse]="collapse$ | async">
-  <section class="nav__support">
-    <tui-svg
-      src="tuiIconMenuLarge"
-      (click)="toggleSidebar$.next()"
-      [tuiHint]="(collapse$ | async) ? 'Expand' : 'Collapse'"
-    ></tui-svg>
-    <div class="wrapper">
-      <tui-svg src="tuiIconAlertCircleLarge"></tui-svg>
-    </div>
-  </section>
-  <section class="nav__personal" *ngIf="me$ | async as me">
-    <adc-frontend-avatar
-      [url]="me.avatar"
-      size="xl"
-      class="hover:animate-pulse cursor-pointer"
-      routerLink="/profile"
-    ></adc-frontend-avatar>
+<ng-container
+  *ngIf="{
+    collapse: collapse$ | async,
+    currentItem: currentItem$ | async,
+    navItems: navItems$ | async,
+    me: me$ | async
+  } as view"
+>
+  <nav class="w-sidebar" [class.collapse]="view.collapse">
+    <section class="nav__support">
+      <tui-svg
+        src="tuiIconMenuLarge"
+        (click)="toggleSidebar$.next()"
+        [tuiHint]="view.collapse ? 'Expand' : 'Collapse'"
+      ></tui-svg>
+      <div class="wrapper">
+        <tui-svg src="tuiIconAlertCircleLarge"></tui-svg>
+      </div>
+    </section>
+    <section class="nav__personal" *ngIf="view.me">
+      <adc-frontend-avatar
+        [url]="view.me.avatar"
+        size="xl"
+        class="hover:animate-pulse cursor-pointer"
+        routerLink="/profile"
+      ></adc-frontend-avatar>
 
-    <b class="text-base hover:text-primary-hover cursor-pointer" routerLink="/profile"
-      >{{ me.firstName }} {{ me.lastName }}</b
-    >
-    <b class="text-sm text-gray-400">{{ me.email }}</b>
-  </section>
+      <b class="text-base hover:text-primary-hover cursor-pointer" routerLink="/profile"
+        >{{ view.me.firstName }} {{ view.me.lastName }}</b
+      >
+      <b class="text-sm text-gray-400">{{ view.me.email }}</b>
+    </section>
 
-  <section class="nav__main">
-    <div class="nav__current" *ngIf="currentItem$ | async as currentItem">
-      <b class="nav__current-title">{{ currentItem.label }}</b>
-      <p class="nav__current-description">{{ currentItem.description }}</p>
-    </div>
-    <div class="nav__divider"></div>
-    <ul class="nav__list">
-      <ng-container *ngFor="let item of navItems$ | async">
-        <li
-          [routerLink]="item.path"
-          routerLinkActive="active"
-          class="nav__list-item"
-          [tuiHint]="item.label"
-          [tuiHintShowDelay]="100"
-          [tuiHintHideDelay]="100"
-          tuiHintDirection="right"
-        >
-          <tui-svg
-            [src]="
-              (currentItem$ | async)?.path === item.path ? getFilledIcon(item.icon) : item.icon
-            "
-            class="zoom-08"
-          ></tui-svg>
-          <span class="nav__list-item-title">{{ item.label }}</span>
-        </li>
-        <ng-container *ngIf="item.children">
+    <section class="nav__main">
+      <div class="nav__current" *ngIf="view.currentItem">
+        <b class="nav__current-title">{{ view.currentItem.label }}</b>
+        <p class="nav__current-description">{{ view.currentItem.description }}</p>
+      </div>
+      <div class="nav__divider"></div>
+      <ul class="nav__list">
+        <ng-container *ngFor="let item of view.navItems">
           <li
-            *ngFor="let child of item.children"
-            [routerLink]="child.path"
+            [routerLink]="item.path"
             routerLinkActive="active"
-            class="nav__list-item nav__list-item-child"
-            [tuiHint]="child.label"
+            class="nav__list-item"
+            [tuiHint]="item.label"
             [tuiHintShowDelay]="100"
             [tuiHintHideDelay]="100"
             tuiHintDirection="right"
           >
-            <tui-svg [src]="child.icon" class="zoom-08"></tui-svg>
-            <span class="nav__list-item-title">{{ child.label }}</span>
+            <tui-svg
+              [src]="view.currentItem?.path === item.path ? getFilledIcon(item.icon) : item.icon"
+              class="zoom-08"
+            ></tui-svg>
+            <span class="nav__list-item-title">{{ item.label }}</span>
           </li>
+          <ng-container *ngIf="item.children">
+            <li
+              *ngFor="let child of item.children"
+              [routerLink]="child.path"
+              routerLinkActive="active"
+              class="nav__list-item nav__list-item-child"
+              [tuiHint]="child.label"
+              [tuiHintShowDelay]="100"
+              [tuiHintHideDelay]="100"
+              tuiHintDirection="right"
+            >
+              <tui-svg [src]="child.icon" class="zoom-08"></tui-svg>
+              <span class="nav__list-item-title">{{ child.label }}</span>
+            </li>
+          </ng-container>
         </ng-container>
-      </ng-container>
-    </ul>
-  </section>
-</nav>
+      </ul>
+    </section>
+  </nav>
+</ng-container>

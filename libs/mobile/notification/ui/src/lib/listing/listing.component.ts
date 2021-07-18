@@ -3,6 +3,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { LoginState } from '@shared/auth/login/data-access';
 import { LoadNotifications, LoadUnreadCount, UtilState } from '@shared/util';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'adcm-listing',
@@ -10,11 +11,13 @@ import { LoadNotifications, LoadUnreadCount, UtilState } from '@shared/util';
   styleUrls: ['./listing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListingComponent {
+export class ListingComponent implements ViewWillEnter {
   notifications$ = this.store.select(UtilState.notifications);
   unreadCount$ = this.store.select(UtilState.unreadCount);
 
-  constructor(private store: Store) {
+  constructor(private store: Store) {}
+
+  ionViewWillEnter() {
     const me = this.store.selectSnapshot(LoginState.account);
     if (!me) return;
     this.store.dispatch([
@@ -22,6 +25,7 @@ export class ListingComponent {
       new LoadUnreadCount({ receiverId: me.id || 0 })
     ]);
   }
+
   trackById(_: number, item: UserNotificationReadDto) {
     return item.id;
   }

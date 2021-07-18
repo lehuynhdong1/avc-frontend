@@ -23,8 +23,8 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ResponseDto } from '../model/models';
-import { UserNotificationReadDto } from '../model/models';
+import { ResponseIntDto } from '../model/models';
+import { UserNotificationReadDtoPagingResponseDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -114,19 +114,19 @@ export class UserNotificationsService implements UserNotificationsServiceInterfa
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<Array<UserNotificationReadDto>>;
+  ): Observable<UserNotificationReadDtoPagingResponseDto>;
   public apiUsernotificationsGet(
     requestParameters: ApiUsernotificationsGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<Array<UserNotificationReadDto>>>;
+  ): Observable<HttpResponse<UserNotificationReadDtoPagingResponseDto>>;
   public apiUsernotificationsGet(
     requestParameters: ApiUsernotificationsGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<Array<UserNotificationReadDto>>>;
+  ): Observable<HttpEvent<UserNotificationReadDtoPagingResponseDto>>;
   public apiUsernotificationsGet(
     requestParameters: ApiUsernotificationsGetRequestParams,
     observe: any = 'body',
@@ -179,7 +179,7 @@ export class UserNotificationsService implements UserNotificationsServiceInterfa
       responseType = 'text';
     }
 
-    return this.httpClient.get<Array<UserNotificationReadDto>>(
+    return this.httpClient.get<UserNotificationReadDtoPagingResponseDto>(
       `${this.configuration.basePath}/api/usernotifications`,
       {
         params: queryParameters,
@@ -202,19 +202,19 @@ export class UserNotificationsService implements UserNotificationsServiceInterfa
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<ResponseDto>;
+  ): Observable<ResponseIntDto>;
   public apiUsernotificationsReceiverIdCountGet(
     requestParameters: ApiUsernotificationsReceiverIdCountGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<ResponseDto>>;
+  ): Observable<HttpResponse<ResponseIntDto>>;
   public apiUsernotificationsReceiverIdCountGet(
     requestParameters: ApiUsernotificationsReceiverIdCountGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<ResponseDto>>;
+  ): Observable<HttpEvent<ResponseIntDto>>;
   public apiUsernotificationsReceiverIdCountGet(
     requestParameters: ApiUsernotificationsReceiverIdCountGetRequestParams,
     observe: any = 'body',
@@ -254,7 +254,7 @@ export class UserNotificationsService implements UserNotificationsServiceInterfa
       responseType = 'text';
     }
 
-    return this.httpClient.get<ResponseDto>(
+    return this.httpClient.get<ResponseIntDto>(
       `${this.configuration.basePath}/api/usernotifications/${encodeURIComponent(
         String(receiverId)
       )}/count`,

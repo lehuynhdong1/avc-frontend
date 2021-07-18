@@ -11,8 +11,11 @@ ion-searchbar {
   --color: var(--tui-primary-active);
   --cancel-button-color: var(--tui-base-01);
 }
+ion-content {
+  --padding-bottom: 5rem;
+}
 ion-list {
-  @apply px-2 mt-2;
+  @apply px-2 mt-2 pb-20;
   ion-item {
     @apply border border-solid border-gray-200 rounded-md;
     @apply mt-2;
