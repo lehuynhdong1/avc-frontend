@@ -107,6 +107,17 @@ export class ImageDialogComponent implements AfterViewInit {
       this.clickSave$.pipe(withLatestFrom(this.annotations$, this.selectedImage$)),
       ([, annotations, selectedImage]) => {
         const action = selectedImage.annotations?.length ? 'updated' : 'created';
+        const hasOneAnnotation = annotations.every((annotation) => annotation.body.length === 1);
+        if (!hasOneAnnotation) {
+          this.store.dispatch(
+            new ShowNotification({
+              message: `There are multiple tags in 1 frame, please make sure each frame has only 1 tag.`,
+              options: { label: 'Invalid tags', status: TuiNotification.Error }
+            })
+          );
+          return;
+        }
+
         const tags = annotations.map((annotation) => annotation.body[0].value);
         const invalidTags = tags.filter((tag) => !labels.includes(tag));
         if (invalidTags.length) {
