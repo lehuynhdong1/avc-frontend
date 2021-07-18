@@ -81,7 +81,14 @@ export class ImageDialogComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.annoLayer = new Annotorious({ image: 'currentImage', readonly: true });
+    this.annoLayer = new Annotorious({
+      image: 'currentImage',
+      readonly: true,
+      messages: {
+        'Add tag...': 'Add only 1 tag per frame',
+        Ok: 'Add'
+      }
+    });
     this.selectedImage$.pipe(take(1)).subscribe(({ annotations }) => {
       this.state.set({ annotations });
       for (const annotation of annotations ?? []) {
