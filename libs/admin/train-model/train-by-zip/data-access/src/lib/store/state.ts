@@ -40,10 +40,11 @@ export class TrainByZipState {
       const folderFirstClass = filename.slice(0, filename.indexOf('/'));
       return ACCEPTED_FOLDER_NAMES.includes(folderFirstClass);
     });
+
     const isClassesTxtValid = fileNames.includes('labels/classes.txt');
     if (isFolderValid && isClassesTxtValid) {
       const imageCount = fileNames.filter((fileName) => fileName.includes('imgs/')).length - 1; // substract 1 for the folder
-      patchState({ uploadedZip: { file, imageCount } });
+      return patchState({ uploadedZip: { file, imageCount } });
     }
     const errorMessage = `${file.name} (${prettyBytes(
       file.size

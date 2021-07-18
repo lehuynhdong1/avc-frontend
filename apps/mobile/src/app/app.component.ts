@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
 import { Logout } from '@shared/auth/logout/data-access';
-import { hasValue, NetworkService, ShowNotification } from '@shared/util';
+import { hasValue, NetworkService, ShowNotification, LoadUnreadCount } from '@shared/util';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
 import {
@@ -186,7 +186,13 @@ export class AppComponent {
           map(({ message }) => ({ message, ...messageMapper[typedKey] }))
         );
       })
-    ).subscribe((params) => this.store.dispatch(new ShowNotification(params)));
+    ).subscribe((params) => {
+      const me = this.store.selectSnapshot(LoginState.account);
+      this.store.dispatch([
+        new ShowNotification(params),
+        new LoadUnreadCount({ receiverId: me?.id || 0 })
+      ]);
+    });
   }
 
   private whenCarNotify() {
@@ -235,7 +241,13 @@ export class AppComponent {
           map(() => messageMapper[typedKey])
         );
       })
-    ).subscribe((params) => this.store.dispatch(new ShowNotification(params)));
+    ).subscribe((params) => {
+      const me = this.store.selectSnapshot(LoginState.account);
+      this.store.dispatch([
+        new ShowNotification(params),
+        new LoadUnreadCount({ receiverId: me?.id || 0 })
+      ]);
+    });
   }
 
   private whenBeDeactivated() {
