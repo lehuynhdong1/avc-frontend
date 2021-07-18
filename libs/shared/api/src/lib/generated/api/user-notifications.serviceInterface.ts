@@ -13,6 +13,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
+import { ResponseDto } from '../model/models';
 import { UserNotificationReadDto } from '../model/models';
 
 import { Configuration } from '../configuration';
@@ -49,5 +50,5 @@ export interface UserNotificationsServiceInterface {
   apiUsernotificationsReceiverIdCountGet(
     requestParameters: ApiUsernotificationsReceiverIdCountGetRequestParams,
     extraHttpRequestParams?: any
-  ): Observable<number>;
+  ): Observable<ResponseDto>;
 }

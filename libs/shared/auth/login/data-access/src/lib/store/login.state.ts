@@ -6,6 +6,7 @@ import { Login, LoadRoles, UpdateProfile, LoadToken } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { LogoutState } from '@shared/auth/logout/data-access';
 import { throwError } from 'rxjs';
+import { RoleNameType } from '@shared/util';
 
 @State<LoginStateModel>({
   name: STATE_NAME,
@@ -40,10 +41,13 @@ export class LoginState extends LogoutState {
 
   @Action(Login, { cancelUncompleted: true })
   login({ patchState, dispatch }: StateContext<LoginStateModel>, { payload }: Login) {
-    return this.authService.apiAuthenticationPost({ authenticationPostDto: payload }).pipe(
+    const { params, acceptedRoles = ['Admin', 'Manager', 'Staff'] } = payload;
+    return this.authService.apiAuthenticationPost({ authenticationPostDto: params }).pipe(
       tap((response) => {
+        const roleName = response.account?.role as RoleNameType;
+        if (!acceptedRoles.includes(roleName)) throw new Error('Role not appropriate');
         patchState(response);
-        dispatch(new LoadToken());
+        return dispatch(new LoadToken());
       }),
       catchError((error) => {
         // console.warn(`[${STATE_NAME}] Login with error: `, error);

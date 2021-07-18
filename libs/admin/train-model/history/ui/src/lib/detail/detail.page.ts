@@ -9,9 +9,10 @@ import {
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom, filter } from 'rxjs/operators';
 import { hasValue, Empty, ShowNotification } from '@shared/util';
 import { Subject } from 'rxjs';
+import { SignalRState } from '@shared/features/signalr/data-access';
 
 @Component({
   templateUrl: './detail.page.html',
@@ -25,6 +26,8 @@ export class DetailPage {
     SUCCESS: TuiStatus.Success
   };
 
+  private id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
+
   readonly selectedModel$ = this.store.select(TrainHistoryState.selectedModel).pipe(hasValue());
   readonly clickApply$ = new Subject<void>();
 
@@ -32,16 +35,16 @@ export class DetailPage {
   constructor(
     private store: Store,
     private actions: Actions,
-    activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private state: RxState<Empty>
   ) {
-    const id$ = activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
-    state.hold(id$, (id) => this.store.dispatch(new LoadModelById({ id })));
-    this.state.hold(this.clickApply$.pipe(withLatestFrom(id$)), ([, id]) =>
+    state.hold(this.id$, (id) => this.store.dispatch(new LoadModelById({ id })));
+    this.state.hold(this.clickApply$.pipe(withLatestFrom(this.id$)), ([, id]) =>
       store.dispatch(new ApplyModelById({ id }))
     );
     this.applySuccessEffect();
     this.applyErrorEffect();
+    this.signalrEffect();
   }
   private applySuccessEffect() {
     const whenApplySuccess$ = this.actions.pipe<ApplyModelById>(ofActionSuccessful(ApplyModelById));
@@ -64,6 +67,19 @@ export class DetailPage {
           options: { label: 'Apply Model', status: TuiNotification.Error }
         })
       )
+    );
+  }
+
+  private signalrEffect() {
+    const whenCarNotifyMustFetchNewData$ = this.store
+      .select(SignalRState.get('WhenModelStatusChanged'))
+      .pipe(
+        hasValue(),
+        withLatestFrom(this.id$),
+        filter(([{ modelId }, id]) => modelId === id)
+      );
+    this.state.hold(whenCarNotifyMustFetchNewData$, ([, id]) =>
+      this.store.dispatch([new LoadModelById({ id })])
     );
   }
 }

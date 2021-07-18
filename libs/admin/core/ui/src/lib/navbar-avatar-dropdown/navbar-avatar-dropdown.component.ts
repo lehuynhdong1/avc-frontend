@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { loader } from './transloco.loader';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
-import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { TuiAppearance } from '@taiga-ui/core';
 import { filter, switchMap } from 'rxjs/operators';
 import { Logout } from '@shared/auth/logout/data-access';
 import { LoginState, LoginStateModel } from '@shared/auth/login/data-access';
 import { Observable, Subject } from 'rxjs';
 import { ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
-import { Router } from '@angular/router';
 import { RxState } from '@rx-angular/state';
 import { ConfirmDialogService } from '@shared/ui/confirm-dialog';
 
@@ -48,15 +47,12 @@ export class NavbarAvatarDropdownComponent {
   readonly clickLogout$ = new Subject();
 
   /* Side effects */
-  private whenLogoutSuccessful$ = this.actions.pipe(ofActionSuccessful(Logout));
   private openConfirmDialog$ = this.confirmDialog.open('Log out confirmation', confirmDialogParams);
   private whenConfirmDialogOk$ = this.openConfirmDialog$.pipe(filter((response) => response === 1));
   private whenClickLogout$ = this.clickLogout$.pipe(switchMap(() => this.whenConfirmDialogOk$));
 
   constructor(
     private store: Store,
-    private actions: Actions,
-    private router: Router,
     private state: RxState<never>,
     private confirmDialog: ConfirmDialogService
   ) {
@@ -64,9 +60,6 @@ export class NavbarAvatarDropdownComponent {
   }
 
   private declareSideEffects() {
-    this.state.hold(this.whenLogoutSuccessful$, () => {
-      this.router.navigateByUrl('/login');
-    });
     this.state.hold(this.whenClickLogout$, () => {
       this.store.dispatch(new Logout());
     });

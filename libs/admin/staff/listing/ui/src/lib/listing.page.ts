@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { StaffState, LoadStaffs } from '@shared/features/staff/data-access';
-import { Subject, combineLatest } from 'rxjs';
+import { Subject, combineLatest, merge } from 'rxjs';
 import { AccountStaffDetailReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
@@ -15,8 +15,9 @@ import {
 } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
-import { Empty } from '@shared/util';
+import { Empty, hasValue } from '@shared/util';
 import { LoginState } from '@shared/auth/login/data-access';
+import { SignalRState } from '@shared/features/signalr/data-access';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -73,6 +74,7 @@ export class ListingPage {
     this.whenFilterChangedEffects();
     this.whenSelectRowEffects();
     this.whenLoadPageEffects();
+    this.signalrEffect();
   }
 
   private whenSelectRowEffects() {
@@ -97,6 +99,25 @@ export class ListingPage {
         this.store.dispatch(
           new LoadStaffs({ searchValue, isAvailable, limit: 10, page: index + 1 })
         )
+    );
+  }
+
+  private signalrEffect() {
+    type WhenCarNotify = 'WhenStaffDeactivated' | 'WhenAdminChangeStaffManagedBy';
+
+    const carNotifys = ['WhenStaffDeactivated', 'WhenAdminChangeStaffManagedBy'];
+
+    // Merge all to archive only 1 subscription for notification
+    const whenCarNotifyMustFetchNewData$ = merge(
+      ...carNotifys.map((key) => {
+        const typedKey = key as WhenCarNotify;
+        return this.store
+          .select(SignalRState.get(typedKey))
+          .pipe(hasValue(), withLatestFrom(this.changeSearchValue$, this.changeIsAvailable$));
+      })
+    );
+    this.state.hold(whenCarNotifyMustFetchNewData$, ([, searchValue, isAvailable]) =>
+      this.store.dispatch([new LoadStaffs({ searchValue, isAvailable, limit: 10 })])
     );
   }
 }

@@ -5,7 +5,7 @@ import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, filter, switchMap, withLatestFrom, mapTo, shareReplay } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, merge } from 'rxjs';
 import { ConfirmDialogService } from '@shared/ui/confirm-dialog';
 import { TuiAppearance } from '@taiga-ui/core';
 import { ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
@@ -15,6 +15,7 @@ import { Title } from '@angular/platform-browser';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { CarAssignedReadDto } from '@shared/api';
 import { LoginState } from '@shared/auth/login/data-access';
+import { SignalRState } from '@shared/features/signalr/data-access';
 
 const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
   isActivated
@@ -71,8 +72,8 @@ export class DetailPage {
     shareReplay(1)
   );
   private readonly errorMessage$ = this.store.select(StaffState.errorMessage).pipe(hasValue());
+  private id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
   readonly selectCar$ = new Subject<Id>();
-
   /* Actions */
   readonly clickActivate$ = new Subject<void>();
 
@@ -104,8 +105,7 @@ export class DetailPage {
     router: Router,
     title: Title
   ) {
-    const id$ = activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
-    this.state.hold(id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
+    this.state.hold(this.id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
     this.state.hold(this.selectedStaff$, (staff) => {
       title.setTitle(staff?.firstName + ' ' + staff?.lastName + ' | AVC');
     });
@@ -130,5 +130,27 @@ export class DetailPage {
       }
     );
     this.state.hold(this.selectCar$, (id) => router.navigateByUrl('/car/' + id));
+    this.signalrEffect();
+  }
+
+  private signalrEffect() {
+    type WhenCarNotify = 'WhenStaffDeactivated' | 'WhenAdminChangeStaffManagedBy';
+
+    const carNotifys = ['WhenStaffDeactivated', 'WhenAdminChangeStaffManagedBy'];
+
+    // Merge all to archive only 1 subscription for notification
+    const whenCarNotifyMustFetchNewData$ = merge(
+      ...carNotifys.map((key) => {
+        const typedKey = key as WhenCarNotify;
+        return this.store.select(SignalRState.get(typedKey)).pipe(
+          hasValue(),
+          withLatestFrom(this.id$),
+          filter(([{ staffId }, id]) => staffId === id)
+        );
+      })
+    );
+    this.state.hold(whenCarNotifyMustFetchNewData$, ([, id]) =>
+      this.store.dispatch([new LoadStaffById({ id })])
+    );
   }
 }

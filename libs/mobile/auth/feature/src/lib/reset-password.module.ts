@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UiModule, ResetPasswordPage } from '@admin/auth/reset-password/ui';
+import { ResetPasswordUiModule, ResetPasswordPage } from '@mobile/auth/ui';
+import { DataAccessModule } from '@shared/auth/reset-password/data-access';
 
 @NgModule({
   imports: [
-    UiModule,
+    DataAccessModule,
+    ResetPasswordUiModule,
     RouterModule.forChild([
       { path: '', component: ResetPasswordPage, data: { title: 'Reset Password' } }
     ])

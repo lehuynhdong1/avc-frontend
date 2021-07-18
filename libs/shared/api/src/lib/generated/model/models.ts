@@ -35,6 +35,7 @@ export * from './model-read-dto-paging-response-dto';
 export * from './new-password-dto';
 export * from './operation-type';
 export * from './profile-password-update-dto';
+export * from './response-dto';
 export * from './role-read-dto';
 export * from './type-read-dto';
 export * from './user-notification-read-dto';

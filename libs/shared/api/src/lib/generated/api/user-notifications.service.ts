@@ -23,6 +23,7 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
+import { ResponseDto } from '../model/models';
 import { UserNotificationReadDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -201,19 +202,19 @@ export class UserNotificationsService implements UserNotificationsServiceInterfa
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<number>;
+  ): Observable<ResponseDto>;
   public apiUsernotificationsReceiverIdCountGet(
     requestParameters: ApiUsernotificationsReceiverIdCountGetRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpResponse<number>>;
+  ): Observable<HttpResponse<ResponseDto>>;
   public apiUsernotificationsReceiverIdCountGet(
     requestParameters: ApiUsernotificationsReceiverIdCountGetRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
-  ): Observable<HttpEvent<number>>;
+  ): Observable<HttpEvent<ResponseDto>>;
   public apiUsernotificationsReceiverIdCountGet(
     requestParameters: ApiUsernotificationsReceiverIdCountGetRequestParams,
     observe: any = 'body',
@@ -253,7 +254,7 @@ export class UserNotificationsService implements UserNotificationsServiceInterfa
       responseType = 'text';
     }
 
-    return this.httpClient.get<number>(
+    return this.httpClient.get<ResponseDto>(
       `${this.configuration.basePath}/api/usernotifications/${encodeURIComponent(
         String(receiverId)
       )}/count`,

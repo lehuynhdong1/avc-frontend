@@ -1,5 +1,5 @@
 import { LoginState } from '@shared/auth/login/data-access';
-import { State, Action, StateContext, Selector, Store, createSelector } from '@ngxs/store';
+import { State, Action, StateContext, Store, createSelector } from '@ngxs/store';
 import { STATE_NAME, StateModel, INITIAL_STATE } from './state.model';
 import { Injectable } from '@angular/core';
 import {
@@ -114,9 +114,8 @@ export class SignalRState {
       });
 
     if (receivedMethods.includes('WhenThisAccountDeactivated'))
-      this.signalr.register('WhenThisAccountDeactivated', (params) => {
-        if (me.id && params.receiverId === me.id)
-          patchState({ WhenThisAccountDeactivated: params });
+      this.signalr.register('WhenThisAccountDeactivated', (receiverId) => {
+        if (me.id && receiverId === me.id) patchState({ WhenThisAccountDeactivated: receiverId });
       });
 
     if (receivedMethods.includes('WhenCarDeactivated'))

@@ -1,10 +1,10 @@
 import { TuiNotification } from '@taiga-ui/core';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
+import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
 import { Logout } from '@shared/auth/logout/data-access';
 import { hasValue, NetworkService, ShowNotification } from '@shared/util';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
 import {
   StartSignalR,
@@ -15,6 +15,7 @@ import {
   SignalRState
 } from '@shared/features/signalr/data-access';
 import { defer, from, merge } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'adcm-root',
@@ -26,7 +27,8 @@ export class AppComponent {
     private store: Store,
     private actions: Actions,
     private network: NetworkService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router
   ) {
     store.dispatch([new LoadToken(), new LoadRoles()]);
 
@@ -34,12 +36,13 @@ export class AppComponent {
     this.whenLoginSuccess();
     this.whenLogoutSuccess();
     this.whenStartSignalRSuccess();
-    this.whenConnectAccountSuccess();
-    this.whenUnregisterAllListenersSuccess();
     this.whenRegisterAllListenersSuccess();
 
-    // const myId = store.selectSnapshot(LoginState.account)?.id;
-    // if (myId) store.dispatch(new StartSignalR());
+    this.whenCarNotify();
+    this.whenBeDeactivated();
+    this.whenManagerDeactivated();
+    const myId = store.selectSnapshot(LoginState.account)?.id;
+    if (myId) store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {
@@ -51,29 +54,33 @@ export class AppComponent {
   private whenLogoutSuccess(): void {
     this.actions.pipe<Logout>(ofActionSuccessful(Logout)).subscribe(() => {
       this.store.dispatch(new StopSignalR());
+      this.router.navigateByUrl('/login');
     });
   }
 
   private whenStartSignalRSuccess() {
-    this.actions.pipe<StartSignalR>(ofActionSuccessful(StartSignalR)).subscribe(() => {
-      const myId = this.store.selectSnapshot(LoginState.account)?.id;
-      if (!myId) throw new Error("Start SignalR Successful but hasn't logged in");
-      this.store.dispatch(new ConnectAccount(myId || 0));
-    });
-  }
-
-  private whenConnectAccountSuccess() {
-    this.actions.pipe<ConnectAccount>(ofActionSuccessful(ConnectAccount)).subscribe(() => {
-      this.store.dispatch(new UnregisterAllListeners());
-    });
-  }
-
-  private whenUnregisterAllListenersSuccess() {
     this.actions
-      .pipe<UnregisterAllListeners>(ofActionSuccessful(UnregisterAllListeners))
-      .subscribe(() => {
-        this.store.dispatch(new RegisterAllListeners());
-      });
+      .pipe<StartSignalR>(ofActionSuccessful(StartSignalR))
+      .pipe(
+        switchMap(() => this.store.select(LoginState.account).pipe(map((account) => account?.id))),
+        hasValue(),
+        switchMap((myId) => this.store.dispatch(new ConnectAccount(myId))),
+        switchMap(() => this.store.dispatch(new UnregisterAllListeners())),
+        switchMap(() => this.store.dispatch(new RegisterAllListeners()))
+      )
+      .subscribe();
+    this.actions.pipe<StartSignalR>(ofActionErrored(StartSignalR)).subscribe(() =>
+      this.store.dispatch([
+        new ShowNotification({
+          message:
+            'Realtime server has been maintained. Sorry for inconvenience, we will automatically reconnect ASAP.',
+          options: {
+            label: 'Realtime Connection',
+            status: TuiNotification.Warning
+          }
+        })
+      ])
+    );
   }
 
   private whenNetworkChanged() {
@@ -109,57 +116,150 @@ export class AppComponent {
   }
 
   private whenRegisterAllListenersSuccess() {
-    const whenCarConnected$ = this.store.select(SignalRState.get('WhenCarConnected'));
-    const whenCarDisconnected$ = this.store.select(SignalRState.get('WhenCarDisconnected'));
-    const whenCarRunning$ = this.store.select(SignalRState.get('WhenCarRunning'));
-    const whenCarStopping$ = this.store.select(SignalRState.get('WhenCarStopping'));
+    const messageMapper = {
+      WhenAdminChangeCarManagedBy: {
+        options: {
+          label: 'Managed Cars Updated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenAdminChangeStaffManagedBy: {
+        options: {
+          label: 'Managed Staffs Updated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenManagerChangeAssignedCar: {
+        options: {
+          label: 'Assigned Cars Updated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenStaffDeactivated: {
+        options: {
+          label: 'Staff Was Deactivated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenManagerDeactivated: {
+        options: {
+          label: 'Your Manager Was Deactivated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenCarDeactivated: {
+        options: {
+          label: 'Your Car Was Deactivated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenIssueCreated: {
+        options: {
+          label: 'New Car Issue',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenModelStatusChanged: {
+        options: {
+          label: 'Training Result',
+          status: TuiNotification.Warning
+        }
+      }
+    };
 
-    const whenAdminChangeCarManagedBy$ = this.store.select(
-      SignalRState.get('WhenAdminChangeCarManagedBy')
-    );
-    const whenAdminChangeStaffManagedBy$ = this.store.select(
-      SignalRState.get('WhenAdminChangeStaffManagedBy')
-    );
-    const whenManagerChangeAssignedCar$ = this.store.select(
-      SignalRState.get('WhenManagerChangeAssignedCar')
-    );
-    const whenStaffDeactivated$ = this.store.select(SignalRState.get('WhenStaffDeactivated'));
-    const whenManagerDeactivated$ = this.store.select(SignalRState.get('WhenManagerDeactivated'));
-    const whenThisAccountDeactivated$ = this.store.select(
-      SignalRState.get('WhenThisAccountDeactivated')
-    );
-    const whenCarDeactivated$ = this.store.select(SignalRState.get('WhenCarDeactivated'));
-    const whenIssueCreated$ = this.store.select(SignalRState.get('WhenIssueCreated'));
-    const whenModelStatusChanged$ = this.store.select(SignalRState.get('WhenModelStatusChanged'));
+    type WhenOtherNotify =
+      | 'WhenAdminChangeCarManagedBy'
+      | 'WhenAdminChangeStaffManagedBy'
+      | 'WhenManagerChangeAssignedCar'
+      | 'WhenStaffDeactivated'
+      | 'WhenManagerDeactivated'
+      | 'WhenCarDeactivated'
+      | 'WhenIssueCreated'
+      | 'WhenModelStatusChanged';
 
-    // const carNotifications$ = merge(whenCarConnected$, whenCarDisconnected$,whenCarRunning$, whenCarStopping$);
-    // TODO: Special b/c no message in response whenThisAccountDeactivated$,
-    const notifications$ = merge(
-      whenAdminChangeCarManagedBy$,
-      whenAdminChangeStaffManagedBy$,
-      whenManagerChangeAssignedCar$,
-      whenStaffDeactivated$,
-      whenManagerDeactivated$,
-      whenCarDeactivated$,
-      whenIssueCreated$,
-      whenModelStatusChanged$
-    );
+    // Merge all to archive only 1 subscription for notification
+    merge(
+      ...Object.keys(messageMapper).map((key) => {
+        const typedKey = key as WhenOtherNotify;
+        return this.store.select(SignalRState.get(typedKey)).pipe(
+          hasValue(),
+          map(({ message }) => ({ message, ...messageMapper[typedKey] }))
+        );
+      })
+    ).subscribe((params) => this.store.dispatch(new ShowNotification(params)));
+  }
 
-    this.actions
-      .pipe<RegisterAllListeners>(ofActionSuccessful(RegisterAllListeners))
-      .pipe(switchMap(() => notifications$.pipe(hasValue())))
-      .subscribe(({ message }: any) => {
-        console.log('====================== notifications registered');
+  private whenCarNotify() {
+    const messageMapper = {
+      WhenCarConnected: {
+        message: 'Just a moment, a new car has been connected. Check it out!',
+        options: {
+          label: 'Car Connected',
+          status: TuiNotification.Success
+        }
+      },
+      WhenCarDisconnected: {
+        message: 'Just a moment, a new car has been disconnected.',
+        options: {
+          label: 'Car Disconnected',
+          status: TuiNotification.Error
+        }
+      },
+      WhenCarRunning: {
+        message: 'Your new car has been started.',
+        options: {
+          label: 'Car Started',
+          status: TuiNotification.Success
+        }
+      },
+      WhenCarStopping: {
+        message: 'Your new car has been stopped.',
+        options: {
+          label: 'Car Stopped',
+          status: TuiNotification.Warning
+        }
+      }
+    };
+    type WhenCarNotify =
+      | 'WhenCarConnected'
+      | 'WhenCarDisconnected'
+      | 'WhenCarRunning'
+      | 'WhenCarStopping';
 
-        this.store.dispatch(
+    // Merge all to archive only 1 subscription for notification
+    merge(
+      ...Object.keys(messageMapper).map((key) => {
+        const typedKey = key as WhenCarNotify;
+        return this.store.select(SignalRState.get(typedKey)).pipe(
+          hasValue(),
+          map(() => messageMapper[typedKey])
+        );
+      })
+    ).subscribe((params) => this.store.dispatch(new ShowNotification(params)));
+  }
+
+  private whenBeDeactivated() {
+    this.store
+      .select(SignalRState.get('WhenThisAccountDeactivated'))
+      .pipe(hasValue())
+      .subscribe(() =>
+        this.store.dispatch([
           new ShowNotification({
-            message,
+            message: 'You have been deactivated. Contact the admin for reactivation.',
             options: {
-              label: 'Message coming',
+              label: 'Account Deactivated',
               status: TuiNotification.Success
             }
-          })
-        );
-      });
+          }),
+          new Logout()
+        ])
+      );
+  }
+
+  private whenManagerDeactivated() {
+    this.store
+      .select(SignalRState.get('WhenManagerDeactivated'))
+      .pipe(hasValue())
+      .subscribe(() => this.store.dispatch(new Logout()));
   }
 }

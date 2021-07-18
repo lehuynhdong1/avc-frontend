@@ -7,9 +7,10 @@ import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Empty } from '@shared/util';
+import { Empty, hasValue } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { withLatestFrom } from 'rxjs/operators';
+import { SignalRState } from '@shared/features/signalr/data-access';
 
 @Component({
   templateUrl: './listing.page.html',
@@ -56,6 +57,7 @@ export class ListingPage {
     this.whenFilterChangedEffects();
     this.whenLoadPageEffects();
     this.declareSideEffects();
+    this.signalrEffect();
   }
 
   private declareSideEffects() {
@@ -74,6 +76,15 @@ export class ListingPage {
       this.loadPage$.pipe(withLatestFrom(this.changeSearchValue$)),
       ([index, searchValue]) =>
         this.store.dispatch(new LoadModels({ searchValue, limit: 10, page: index + 1 }))
+    );
+  }
+
+  private signalrEffect() {
+    const whenCarNotifyMustFetchNewData$ = this.store
+      .select(SignalRState.get('WhenModelStatusChanged'))
+      .pipe(hasValue(), withLatestFrom(this.changeSearchValue$));
+    this.state.hold(whenCarNotifyMustFetchNewData$, ([, searchValue]) =>
+      this.store.dispatch([new LoadModels({ searchValue, limit: 10 })])
     );
   }
 }

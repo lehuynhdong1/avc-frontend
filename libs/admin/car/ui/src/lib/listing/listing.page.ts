@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CarState, LoadApprovedCars, LoadUnapprovedCars } from '@shared/features/car/data-access';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, Subject, merge } from 'rxjs';
 import { CarListReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
@@ -18,6 +18,7 @@ import { hasValue, Empty } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { LoginState } from '@shared/auth/login/data-access';
 import { withLatestFrom } from 'rxjs/operators';
+import { SignalRState } from '@shared/features/signalr/data-access';
 @Component({
   selector: 'adca-listing',
   templateUrl: './listing.page.html',
@@ -93,6 +94,7 @@ export class ListingPage {
     this.state.hold(this.selectRow$, (id) =>
       this.router.navigate([id], { relativeTo: this.activatedRoute })
     );
+    this.signalrEffect();
   }
 
   private whenFilterChangedEffects() {
@@ -110,6 +112,36 @@ export class ListingPage {
         this.store.dispatch(
           new LoadApprovedCars({ searchValue, isAvailable, limit: 10, page: index + 1 })
         )
+    );
+  }
+
+  private signalrEffect() {
+    type WhenCarNotify =
+      | 'WhenCarConnected'
+      | 'WhenCarDisconnected'
+      | 'WhenManagerChangeAssignedCar'
+      | 'WhenAdminChangeCarManagedBy'
+      | 'WhenCarDeactivated';
+
+    const carNotifys = [
+      'WhenCarConnected',
+      'WhenCarDisconnected',
+      'WhenAdminChangeCarManagedBy',
+      'WhenManagerChangeAssignedCar',
+      'WhenCarDeactivated'
+    ];
+
+    // Merge all to archive only 1 subscription for notification
+    const whenCarNotifyMustFetchNewData$ = merge(
+      ...carNotifys.map((key) => {
+        const typedKey = key as WhenCarNotify;
+        return this.store
+          .select(SignalRState.get(typedKey))
+          .pipe(hasValue(), withLatestFrom(this.changeSearchValue$, this.changeIsAvailable$));
+      })
+    );
+    this.state.hold(whenCarNotifyMustFetchNewData$, ([, searchValue, isAvailable]) =>
+      this.store.dispatch([new LoadApprovedCars({ searchValue, isAvailable, limit: 10 })])
     );
   }
 }

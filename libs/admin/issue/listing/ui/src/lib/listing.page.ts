@@ -8,7 +8,8 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Id, DynamicTableColumns } from '@shared/ui/dynamic-table';
-import { Empty } from '@shared/util';
+import { Empty, hasValue } from '@shared/util';
+import { SignalRState } from '@shared/features/signalr/data-access';
 
 @Component({
   selector: 'adca-listing',
@@ -57,6 +58,7 @@ export class ListingPage {
     this.state.hold(this.selectRow$, (id) => {
       this.router.navigate([id], { relativeTo: this.activatedRoute });
     });
+    this.signalrEffect();
   }
 
   private whenLoadPageEffects() {
@@ -64,6 +66,16 @@ export class ListingPage {
       this.loadPage$.pipe(withLatestFrom(this.changeSearchValue$)),
       ([index, searchValue]) =>
         this.store.dispatch(new LoadIssues({ searchValue, limit: 10, page: index + 1 }))
+    );
+  }
+
+  private signalrEffect() {
+    // Merge all to archive only 1 subscription for notification
+    const whenCarNotifyMustFetchNewData$ = this.store
+      .select(SignalRState.get('WhenIssueCreated'))
+      .pipe(hasValue(), withLatestFrom(this.changeSearchValue$));
+    this.state.hold(whenCarNotifyMustFetchNewData$, ([, searchValue]) =>
+      this.store.dispatch([new LoadIssues({ searchValue, limit: 10 })])
     );
   }
 }

@@ -1,5 +1,4 @@
 import { SharedLoginModule } from '@shared/auth/login/ui';
-import {} from '@angular/common';
 import { NgModule } from '@angular/core';
 import { LoginPage } from './login.page';
 

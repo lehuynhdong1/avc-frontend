@@ -2,20 +2,20 @@ import { RoleName, RoleNameType } from '../role.model';
 
 export type ReceivedResponses = {
   // Method Name <> Response Interface <> Role
-  WhenCarConnected: WhenCarConnected; // Manager, Staff
-  WhenCarDisconnected: WhenCarDisconnected; // Manager, Staff
-  WhenCarRunning: WhenCarRunning; // Manager, Staff
-  WhenCarStopping: WhenCarStopping; // Manager, Staff
+  WhenCarConnected: WhenCarConnected; // ✅ Manager, Staff
+  WhenCarDisconnected: WhenCarDisconnected; // ✅ Manager, Staff
+  WhenCarRunning: WhenCarRunning; // ✅ Manager, Staff
+  WhenCarStopping: WhenCarStopping; // ✅ Manager, Staff
 
-  WhenAdminChangeCarManagedBy: WhenAdminChangeCarManagedBy; // Manager
-  WhenAdminChangeStaffManagedBy: WhenAdminChangeStaffManagedBy; // Manager, Staff
-  WhenManagerChangeAssignedCar: WhenManagerChangeAssignedCar; // Staff
-  WhenStaffDeactivated: WhenStaffDeactivated; // Manager
-  WhenManagerDeactivated: WhenManagerDeactivated; // Staff
-  WhenThisAccountDeactivated: WhenThisAccountDeactivated; // Manager, Staff
-  WhenCarDeactivated: WhenCarDeactivated; // Manager, Staff
-  WhenIssueCreated: WhenIssueCreated; // Manager, Staff
-  WhenModelStatusChanged: WhenModelStatusChanged; // Admin
+  WhenAdminChangeCarManagedBy: WhenAdminChangeCarManagedBy; // ✅ Manager
+  WhenAdminChangeStaffManagedBy: WhenAdminChangeStaffManagedBy; // ✅ Manager, Staff
+  WhenManagerChangeAssignedCar: WhenManagerChangeAssignedCar; // ✅ Staff
+  WhenStaffDeactivated: WhenStaffDeactivated; // ✅ Manager
+  WhenManagerDeactivated: WhenManagerDeactivated; // ✅ Staff
+  WhenThisAccountDeactivated: WhenThisAccountDeactivated; // ✅ Manager, Staff
+  WhenCarDeactivated: WhenCarDeactivated; // ✅ Manager, Staff
+  WhenIssueCreated: WhenIssueCreated; // ✅ Manager, Staff
+  WhenModelStatusChanged: WhenModelStatusChanged; // ✅ Admin
 };
 
 export type ReceivedMethodsKey = keyof ReceivedResponses;
@@ -100,7 +100,7 @@ export interface WhenManagerChangeAssignedCar {
 
 export interface WhenStaffDeactivated {
   receiverId: number;
-  deactivatedId: number;
+  staffId: number;
   message: string;
 }
 
@@ -110,9 +110,7 @@ export interface WhenManagerDeactivated {
   message: string;
 }
 
-export interface WhenThisAccountDeactivated {
-  receiverId: number;
-}
+export type WhenThisAccountDeactivated = number;
 export interface WhenCarDeactivated {
   receiverIdList: number[];
   carId: number;

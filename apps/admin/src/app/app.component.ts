@@ -1,17 +1,21 @@
-import { TuiDialogService, TuiNotification } from '@taiga-ui/core';
+import { TuiNotification } from '@taiga-ui/core';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
+import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
 import { Logout } from '@shared/auth/logout/data-access';
-import { NetworkService, ShowNotification } from '@shared/util';
-import { filter, withLatestFrom } from 'rxjs/operators';
+import { hasValue, LoadUnreadCount, NetworkService, ShowNotification } from '@shared/util';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { AlertController } from '@ionic/angular';
 import {
   StartSignalR,
   ConnectAccount,
   StopSignalR,
   RegisterAllListeners,
-  UnregisterAllListeners
+  UnregisterAllListeners,
+  SignalRState
 } from '@shared/features/signalr/data-access';
+import { defer, from, merge } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'adca-root',
@@ -23,18 +27,21 @@ export class AppComponent {
     private store: Store,
     private actions: Actions,
     private network: NetworkService,
-    private dialogService: TuiDialogService
+    private alertCtrl: AlertController,
+    private router: Router
   ) {
     store.dispatch([new LoadToken(), new LoadRoles()]);
 
-    // this.whenNetworkChanged();
-    // this.whenLoginSuccess();
-    // this.whenLogoutSuccess();
-    // this.whenStartSignalRSuccess();
-    // this.whenConnectAccountSuccess();
-    // this.whenUnregisterAllListenersSuccess();
-    // const myId = store.selectSnapshot(LoginState.account)?.id;
-    // if (myId) store.dispatch(new StartSignalR());
+    this.whenNetworkChanged();
+    this.whenLoginSuccess();
+    this.whenLogoutSuccess();
+    this.whenStartSignalRSuccess();
+    this.whenRegisterAllListenersSuccess();
+
+    this.whenCarNotify();
+    this.whenBeDeactivated();
+    const myId = store.selectSnapshot(LoginState.account)?.id;
+    if (myId) store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {
@@ -46,29 +53,33 @@ export class AppComponent {
   private whenLogoutSuccess(): void {
     this.actions.pipe<Logout>(ofActionSuccessful(Logout)).subscribe(() => {
       this.store.dispatch(new StopSignalR());
+      this.router.navigateByUrl('/login');
     });
   }
 
   private whenStartSignalRSuccess() {
-    this.actions.pipe<StartSignalR>(ofActionSuccessful(StartSignalR)).subscribe(() => {
-      const myId = this.store.selectSnapshot(LoginState.account)?.id;
-      if (!myId) throw new Error("Start SignalR Successful but hasn't logged in");
-      this.store.dispatch(new ConnectAccount(myId || 0));
-    });
-  }
-
-  private whenConnectAccountSuccess() {
-    this.actions.pipe<ConnectAccount>(ofActionSuccessful(ConnectAccount)).subscribe(() => {
-      this.store.dispatch(new UnregisterAllListeners());
-    });
-  }
-
-  private whenUnregisterAllListenersSuccess() {
     this.actions
-      .pipe<UnregisterAllListeners>(ofActionSuccessful(UnregisterAllListeners))
-      .subscribe(() => {
-        this.store.dispatch(new RegisterAllListeners());
-      });
+      .pipe<StartSignalR>(ofActionSuccessful(StartSignalR))
+      .pipe(
+        switchMap(() => this.store.select(LoginState.account).pipe(map((account) => account?.id))),
+        hasValue(),
+        switchMap((myId) => this.store.dispatch(new ConnectAccount(myId))),
+        switchMap(() => this.store.dispatch(new UnregisterAllListeners())),
+        switchMap(() => this.store.dispatch(new RegisterAllListeners()))
+      )
+      .subscribe();
+    this.actions.pipe<StartSignalR>(ofActionErrored(StartSignalR)).subscribe(() =>
+      this.store.dispatch([
+        new ShowNotification({
+          message:
+            'Realtime server has been maintained. Sorry for inconvenience, we will automatically reconnect ASAP.',
+          options: {
+            label: 'Realtime Connection',
+            status: TuiNotification.Warning
+          }
+        })
+      ])
+    );
   }
 
   private whenNetworkChanged() {
@@ -76,31 +87,183 @@ export class AppComponent {
     this.network.online$
       .pipe(
         filter((online) => online),
-        withLatestFrom(this.dialogService)
+        switchMap(() => defer(() => from(this.alertCtrl.getTop()))),
+        filter((topAlert) => !!topAlert)
       )
-      .subscribe(([, dialogService]) => {
-        if (dialogService.length) {
-          dialogService.forEach((observer) => observer.completeWith(0));
-          this.store.dispatch(
-            new ShowNotification({
-              message: 'You are reconnected. Please refresh to make sure later processing work.',
-              options: {
-                label: 'Network connected',
-                status: TuiNotification.Success
-              }
-            })
-          );
-        }
+      .subscribe(() => {
+        this.alertCtrl.dismiss();
+        this.store.dispatch(
+          new ShowNotification({
+            message: 'You are reconnected. Please refresh to make sure later processing work.',
+            options: {
+              label: 'Network connected',
+              status: TuiNotification.Success
+            }
+          })
+        );
       });
-    this.network.online$
-      .pipe(filter((online) => !online))
+    this.network.online$.pipe(filter((online) => !online)).subscribe(async () => {
+      const alert = await this.alertCtrl.create({
+        message:
+          'You are offline. All actions will be discarded. \nPlease reconnect as soon as possible to continue.',
+        backdropDismiss: false,
+        header: 'Network disconnected',
+        keyboardClose: true
+      });
+      alert.present();
+    });
+  }
+
+  private whenRegisterAllListenersSuccess() {
+    const messageMapper = {
+      WhenAdminChangeCarManagedBy: {
+        options: {
+          label: 'Managed Cars Updated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenAdminChangeStaffManagedBy: {
+        options: {
+          label: 'Managed Staffs Updated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenManagerChangeAssignedCar: {
+        options: {
+          label: 'Assigned Cars Updated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenStaffDeactivated: {
+        options: {
+          label: 'Staff Was Deactivated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenManagerDeactivated: {
+        options: {
+          label: 'Your Manager Was Deactivated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenCarDeactivated: {
+        options: {
+          label: 'Your Car Was Deactivated',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenIssueCreated: {
+        options: {
+          label: 'New Car Issue',
+          status: TuiNotification.Warning
+        }
+      },
+      WhenModelStatusChanged: {
+        options: {
+          label: 'Training Result',
+          status: TuiNotification.Warning
+        }
+      }
+    };
+
+    type WhenOtherNotify =
+      | 'WhenAdminChangeCarManagedBy'
+      | 'WhenAdminChangeStaffManagedBy'
+      | 'WhenManagerChangeAssignedCar'
+      | 'WhenStaffDeactivated'
+      | 'WhenManagerDeactivated'
+      | 'WhenCarDeactivated'
+      | 'WhenIssueCreated'
+      | 'WhenModelStatusChanged';
+
+    // Merge all to archive only 1 subscription for notification
+    merge(
+      ...Object.keys(messageMapper).map((key) => {
+        const typedKey = key as WhenOtherNotify;
+        return this.store.select(SignalRState.get(typedKey)).pipe(
+          hasValue(),
+          map(({ message }) => ({ message, ...messageMapper[typedKey] }))
+        );
+      })
+    ).subscribe((params) => {
+      const me = this.store.selectSnapshot(LoginState.account);
+      this.store.dispatch([
+        new ShowNotification(params),
+        new LoadUnreadCount({ receiverId: me?.id || 0 })
+      ]);
+    });
+  }
+
+  private whenCarNotify() {
+    const messageMapper = {
+      WhenCarConnected: {
+        message: 'Just a moment, a new car has been connected. Check it out!',
+        options: {
+          label: 'Car Connected',
+          status: TuiNotification.Success
+        }
+      },
+      WhenCarDisconnected: {
+        message: 'Just a moment, a new car has been disconnected.',
+        options: {
+          label: 'Car Disconnected',
+          status: TuiNotification.Error
+        }
+      },
+      WhenCarRunning: {
+        message: 'Your new car has been started.',
+        options: {
+          label: 'Car Started',
+          status: TuiNotification.Success
+        }
+      },
+      WhenCarStopping: {
+        message: 'Your new car has been stopped.',
+        options: {
+          label: 'Car Stopped',
+          status: TuiNotification.Warning
+        }
+      }
+    };
+    type WhenCarNotify =
+      | 'WhenCarConnected'
+      | 'WhenCarDisconnected'
+      | 'WhenCarRunning'
+      | 'WhenCarStopping';
+
+    // Merge all to archive only 1 subscription for notification
+    merge(
+      ...Object.keys(messageMapper).map((key) => {
+        const typedKey = key as WhenCarNotify;
+        return this.store.select(SignalRState.get(typedKey)).pipe(
+          hasValue(),
+          map(() => messageMapper[typedKey])
+        );
+      })
+    ).subscribe((params) => {
+      const me = this.store.selectSnapshot(LoginState.account);
+      this.store.dispatch([
+        new ShowNotification(params),
+        new LoadUnreadCount({ receiverId: me?.id || 0 })
+      ]);
+    });
+  }
+
+  private whenBeDeactivated() {
+    this.store
+      .select(SignalRState.get('WhenThisAccountDeactivated'))
+      .pipe(hasValue())
       .subscribe(() =>
-        this.dialogService
-          .open(
-            'You are offline. All actions will be discarded. \nPlease reconnect as soon as possible to continue.',
-            { label: 'Network disconnected', closeable: false, dismissible: false, size: 'l' }
-          )
-          .subscribe()
+        this.store.dispatch([
+          new ShowNotification({
+            message: 'You have been deactivated. Contact the admin for reactivation.',
+            options: {
+              label: 'Account Deactivated',
+              status: TuiNotification.Success
+            }
+          }),
+          new Logout()
+        ])
       );
   }
 }

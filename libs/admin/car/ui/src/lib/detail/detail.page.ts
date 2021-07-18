@@ -18,6 +18,7 @@ import { IssueReadDto } from '@shared/api';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { ConfirmDialogService, ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
 import { LoginState } from '@shared/auth/login/data-access';
+import { SignalRState } from '@shared/features/signalr/data-access';
 
 const getConfirmDialogParams: (
   type: 'isAvailable' | 'isApproved',
@@ -90,6 +91,7 @@ export class DetailPage {
     this.toggleActivationFailedSuccessEffects();
     this.toggleApproveSuccessEffects();
     this.selectIssueEffect();
+    this.signalrEffect();
   }
 
   private toggleActivationAndApproveSuccessEffects() {
@@ -171,5 +173,55 @@ export class DetailPage {
 
   private selectIssueEffect() {
     this.state.hold(this.selectIssue$, (id) => this.router.navigateByUrl('/issue/' + id));
+  }
+
+  private signalrEffect() {
+    type WhenCarNotify =
+      | 'WhenCarConnected'
+      | 'WhenCarDisconnected'
+      | 'WhenCarRunning'
+      | 'WhenCarStopping'
+      | 'WhenIssueCreated'
+      | 'WhenManagerChangeAssignedCar'
+      | 'WhenCarDeactivated';
+
+    const carNotifys = [
+      'WhenCarConnected',
+      'WhenCarDisconnected',
+      'WhenCarRunning',
+      'WhenCarStopping',
+      'WhenIssueCreated'
+    ];
+    // Merge all to archive only 1 subscription for notification
+    const whenCarNotifyMustFetchNewData$ = merge(
+      ...carNotifys.map((key) => {
+        const typedKey = key as WhenCarNotify;
+        return this.store.select(SignalRState.get(typedKey)).pipe(
+          hasValue(),
+          withLatestFrom(this.id$),
+          filter(([{ carId }, id]) => carId === id)
+        );
+      })
+    );
+    this.state.hold(whenCarNotifyMustFetchNewData$, ([, id]) =>
+      this.store.dispatch(new LoadCarById({ id }))
+    );
+
+    const carNotifyMustBack = ['WhenManagerChangeAssignedCar', 'WhenCarDeactivated'];
+
+    const whenCarNotifyMustBack$ = merge(
+      ...carNotifyMustBack.map((key) => {
+        const typedKey = key as WhenCarNotify;
+        return this.store.select(SignalRState.get(typedKey)).pipe(
+          hasValue(),
+          withLatestFrom(this.id$),
+          filter(([{ carId }, id]) => carId === id)
+        );
+      })
+    );
+    this.state.hold(whenCarNotifyMustBack$, () => {
+      this.store.dispatch(new LoadApprovedCars({ limit: 10 }));
+      this.router.navigateByUrl('/car');
+    });
   }
 }

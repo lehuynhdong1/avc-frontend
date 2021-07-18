@@ -44,6 +44,6 @@ export class UtilState {
   LoadUnreadCount({ patchState }: StateContext<StateModel>, { params }: LoadUnreadCount) {
     return this.notificationsApiService
       .apiUsernotificationsReceiverIdCountGet(params)
-      .pipe(tap((unreadCount) => patchState({ unreadCount })));
+      .pipe(tap((response) => patchState({ unreadCount: parseInt(response.message || '0') })));
   }
 }

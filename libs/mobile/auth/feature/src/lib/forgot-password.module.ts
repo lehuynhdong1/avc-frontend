@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UiModule, ForgotPasswordPage } from '@admin/auth/forgot-password/ui';
+import { ForgotPasswordUiModule, ForgotPasswordPage } from '@mobile/auth/ui';
 import { DataAccessModule } from '@shared/auth/forgot-password/data-access';
-import { UtilModule } from '@shared/util';
 
 @NgModule({
   imports: [
-    UiModule,
-    UtilModule,
     DataAccessModule,
+    ForgotPasswordUiModule,
+
     RouterModule.forChild([
       { path: '', component: ForgotPasswordPage, data: { title: 'Forgot Password' } }
     ])

@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UiModule, LoginPage } from '@admin/auth/login/ui';
+import { LoginUiModule, LoginPage } from '@mobile/auth/ui';
+import { DataAccessModule } from '@shared/auth/login/data-access';
 
 @NgModule({
   imports: [
-    UiModule,
+    DataAccessModule,
+    LoginUiModule,
     RouterModule.forChild([{ path: '', component: LoginPage, data: { title: 'Login' } }])
   ]
 })

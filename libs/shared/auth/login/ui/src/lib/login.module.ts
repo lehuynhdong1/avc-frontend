@@ -7,9 +7,8 @@ import {
   TuiLinkModule,
   TuiTextfieldControllerModule
 } from '@taiga-ui/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TuiInputModule, TuiInputPasswordModule, TuiCheckboxLabeledModule } from '@taiga-ui/kit';
-import { RouterModule } from '@angular/router';
 
 const tuiModules = [
   TuiButtonModule,
@@ -22,7 +21,7 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [SharedLoginComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, tuiModules],
+  imports: [CommonModule, ReactiveFormsModule, tuiModules],
   exports: [SharedLoginComponent]
 })
 export class SharedLoginModule {}

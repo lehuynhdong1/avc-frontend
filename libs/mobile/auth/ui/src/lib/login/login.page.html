@@ -1,3 +1,8 @@
 <main class="min-h-screen flex justify-center items-center bg-gray-50 px-4">
-  <adc-frontend-login></adc-frontend-login>
+  <adc-frontend-login
+    [defaultInfo]="defaultInfo"
+    (login)="login($event)"
+    (whenLoginSuccess)="whenLoginSuccess()"
+    (whenLoginFailed)="whenLoginFailed($event)"
+  ></adc-frontend-login>
 </main>

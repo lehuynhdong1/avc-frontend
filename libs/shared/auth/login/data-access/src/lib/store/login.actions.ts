@@ -1,5 +1,6 @@
 import { STATE_NAME } from './login-state.model';
 import { AuthenticationPostDto, AccountStaffDetailReadDto } from '@shared/api';
+import { RoleNameType } from '@shared/util';
 
 const ACTIONS = {
   LOGIN: `[${STATE_NAME}] Login`,
@@ -10,7 +11,9 @@ const ACTIONS = {
 
 export class Login {
   static readonly type = ACTIONS.LOGIN;
-  constructor(public readonly payload: AuthenticationPostDto) {}
+  constructor(
+    public readonly payload: { params: AuthenticationPostDto; acceptedRoles?: RoleNameType[] }
+  ) {}
 }
 
 export class LoadRoles {
