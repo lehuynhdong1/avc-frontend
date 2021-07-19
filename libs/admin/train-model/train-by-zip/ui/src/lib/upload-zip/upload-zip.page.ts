@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormControl } from '@angular/forms';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom, filter } from 'rxjs/operators';
 import { Actions, ofActionErrored, ofActionSuccessful, Store } from '@ngxs/store';
 import {
   UpdateZip,
@@ -33,47 +33,42 @@ export class UploadZipPage {
 
   readonly file = new FormControl();
 
-  private readonly whenShowError$ = this.actions.pipe<UpdateZip>(ofActionErrored(UpdateZip));
-  private readonly whenShowSuccess$ = this.actions.pipe<UpdateZip>(ofActionSuccessful(UpdateZip));
-
   clickTrain$ = new Subject<void>();
   clickDownload$ = new Subject<HTMLTextAreaElement>();
 
-  constructor(
-    private router: Router,
-    private store: Store,
-    private actions: Actions,
-    private state: RxState<Empty>
-  ) {
-    state.hold(
-      this.whenShowSuccess$.pipe(withLatestFrom(this.store.select(TrainByZipState.uploadedZip))),
-      ([, zip]) =>
-        this.store.dispatch(
-          new ShowNotification({
-            message: `${zip?.file.name} (${prettyBytes(zip?.file.size || 0)}) has accepted`,
-            options: { label: 'Upload ZIP Success', status: TuiNotification.Success }
-          })
-        )
-    );
-    state.hold(
-      this.whenShowError$.pipe(withLatestFrom(this.store.select(TrainByZipState.errorMessage))),
-      ([, errorMessage]) =>
-        this.store.dispatch(
-          new ShowNotification({
-            message: errorMessage || '',
-            options: { label: 'Upload ZIP Error', status: TuiNotification.Error }
-          })
-        )
+  constructor(router: Router, store: Store, actions: Actions, state: RxState<Empty>) {
+    const whenShowSuccess$ = actions
+      .pipe<UpdateZip>(ofActionSuccessful(UpdateZip))
+      .pipe(withLatestFrom(store.select(TrainByZipState.uploadedZip)))
+      .pipe(filter(([, zip]) => !!zip));
+    state.hold(whenShowSuccess$, ([, zip]) =>
+      store.dispatch(
+        new ShowNotification({
+          message: `${zip?.file.name} (${prettyBytes(zip?.file.size || 0)}) has accepted`,
+          options: { label: 'Upload ZIP Success', status: TuiNotification.Success }
+        })
+      )
     );
 
-    state.hold(this.file.valueChanges, (file) => this.store.dispatch(new UpdateZip(file)));
-    state.hold(this.clickDownload$, () => this.store.dispatch(new DownloadClassesTxt()));
-    state.hold(this.clickTrain$, () => this.store.dispatch(new Train()));
-    this.trainSuccessEffect();
-  }
+    const whenShowError$ = actions
+      .pipe<UpdateZip>(ofActionErrored(UpdateZip))
+      .pipe(withLatestFrom(store.select(TrainByZipState.errorMessage)));
+    state.hold(whenShowError$, ([, errorMessage]) => {
+      store.dispatch(
+        new ShowNotification({
+          message: errorMessage || '',
+          options: { label: 'Upload ZIP Error', status: TuiNotification.Error }
+        })
+      );
+      this.file.setValue(null);
+    });
 
-  private trainSuccessEffect() {
-    const whenTrainSuccess$ = this.actions.pipe<Train>(ofActionSuccessful(Train));
-    this.state.hold(whenTrainSuccess$, () => this.router.navigateByUrl('/training/history'));
+    state.hold(this.file.valueChanges, (file) => store.dispatch(new UpdateZip(file)));
+    state.hold(this.clickDownload$, () => store.dispatch(new DownloadClassesTxt()));
+    state.hold(this.clickTrain$, () => store.dispatch(new Train()));
+
+    state.hold(actions.pipe(ofActionSuccessful(Train)), () =>
+      router.navigateByUrl('/training/history')
+    );
   }
 }

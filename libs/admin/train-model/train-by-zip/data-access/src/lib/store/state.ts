@@ -27,21 +27,22 @@ export class TrainByZipState {
 
   @Action(UpdateZip)
   async updateZip({ patchState }: StateContext<StateModel>, { file }: UpdateZip) {
-    if (!file) patchState({ uploadedZip: undefined });
+    if (!file) return patchState({ uploadedZip: undefined });
     if (file.type !== 'application/zip') {
       const errorMessage = `${file.name} (${prettyBytes(file.size)}) must be in ZIP type`;
-      patchState({ errorMessage });
+      patchState({ errorMessage, uploadedZip: undefined });
       throw new Error(errorMessage);
     }
     const zip = await JSZip.loadAsync(file);
     const fileNames = Object.keys(zip.files);
+    const isFolderValid = fileNames.some((filename) =>
+      // console.log(filename);
+      // const folderFirstClass = filename.slice(0, filename.indexOf('/'));
+      ACCEPTED_FOLDER_NAMES.some((acceptedFolderName) => filename.includes(acceptedFolderName))
+    );
 
-    const isFolderValid = fileNames.every((filename) => {
-      const folderFirstClass = filename.slice(0, filename.indexOf('/'));
-      return ACCEPTED_FOLDER_NAMES.includes(folderFirstClass);
-    });
+    const isClassesTxtValid = fileNames.some((fileName) => fileName.includes('labels/classes.txt'));
 
-    const isClassesTxtValid = fileNames.includes('labels/classes.txt');
     if (isFolderValid && isClassesTxtValid) {
       const imageCount = fileNames.filter((fileName) => fileName.includes('imgs/')).length - 1; // substract 1 for the folder
       return patchState({ uploadedZip: { file, imageCount } });
@@ -49,7 +50,7 @@ export class TrainByZipState {
     const errorMessage = `${file.name} (${prettyBytes(
       file.size
     )}) Structure of ZIP file is not appropriate. Please edit an try again.`;
-    patchState({ errorMessage });
+    patchState({ errorMessage, uploadedZip: undefined });
     throw new Error(errorMessage);
   }
 
