@@ -1,2 +1,2 @@
-export * from "./listing.component";
-export * from "./listing.module";
+export * from './listing.page';
+export * from './listing.module';

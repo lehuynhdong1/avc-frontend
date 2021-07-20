@@ -14,6 +14,8 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { getAppConfigProvider } from '@shared/app-config';
+import { TimeagoModule } from 'ngx-timeago';
+import { defaultConfig } from '@shared/timeago';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,7 +29,8 @@ import { getAppConfigProvider } from '@shared/app-config';
     SharedUtilModule.forRoot(),
     AuthUtilModule,
     StateManagementModulesWithConfig(environment),
-    LanguageModuleWithConfig({ prodMode: environment.production })
+    LanguageModuleWithConfig({ prodMode: environment.production }),
+    TimeagoModule.forRoot(defaultConfig)
   ],
   bootstrap: [AppComponent],
   providers: [getAppConfigProvider(environment)]

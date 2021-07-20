@@ -29,12 +29,12 @@
         <ng-container *ngIf="result.length > 0; else noConnectingCar">
           <ion-item *ngFor="let noti of result; trackBy: trackById" lines="none">
             <ion-avatar slot="start">
-              <img [src]="noti.type || 'assets/adc/icons/car-sport.svg'" />
+              <img [src]="(noti | notificationIcon) || 'assets/adc/icons/car-sport.svg'" />
             </ion-avatar>
             <ion-label class="!whitespace-normal">
               <h2 class="!font-bold">{{ noti.type }}</h2>
               <h3>{{ noti.message }}</h3>
-              <p>When: {{ noti.createdAt | date: 'h:mm a, MMM dd, yyyy' }}</p>
+              <p>{{ noti.createdAt | timeago }}</p>
             </ion-label>
           </ion-item>
         </ng-container>

@@ -11,28 +11,30 @@
       </h2>
       <p class="mt-0 text-base">Upload then label images online for a better training model.</p>
     </div>
+    <div class="flex flex-col justify-start">
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        iconRight="tuiIconChevronRight"
+        class="tui-space_right-3 tui-space_bottom-3"
+        appearance="primary"
+        routerLink="../label-image"
+        [disabled]="!view.fileLength"
+      >
+        Label Images
+      </button>
 
-    <tui-badge
-      class="tui-space_right-2"
-      [status]="TUI_SUCCESS"
-      size="l"
-      *ngIf="view.fileLength"
-      [value]="view.fileLength + ' image' + (view.fileLength === 1 ? '': 's' )+' has uploaded.'"
-    >
-      <tui-svg src="tuiIconCheckCircleLarge" class="mr-2"></tui-svg>
-    </tui-badge>
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      iconRight="tuiIconChevronRight"
-      class="tui-space_right-3 tui-space_bottom-3"
-      appearance="primary"
-      routerLink="../label-image"
-      [disabled]="!view.fileLength"
-    >
-      Label Images
-    </button>
+      <tui-badge
+        class="tui-space_right-2"
+        [status]="TUI_SUCCESS"
+        size="l"
+        *ngIf="view.fileLength"
+        [value]="view.fileLength + ' image' + (view.fileLength === 1 ? '': 's' )+' has uploaded.'"
+      >
+        <tui-svg src="tuiIconCheckCircleLarge" class="mr-2"></tui-svg>
+      </tui-badge>
+    </div>
   </div>
   <div class="flex flex-col justify-center items-center w-100">
     <img

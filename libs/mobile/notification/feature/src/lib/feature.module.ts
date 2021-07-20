@@ -1,8 +1,8 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { ListingComponent } from '@mobile/notification/ui';
+import { ListingPage } from '@mobile/notification/ui';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', pathMatch: 'full', component: ListingComponent }])]
+  imports: [RouterModule.forChild([{ path: '', pathMatch: 'full', component: ListingPage }])]
 })
 export class FeatureModule {}

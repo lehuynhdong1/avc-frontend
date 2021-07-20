@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar.component';
 import { LanguageModule } from '@shared/language';
-import { UtilModule as ShareUtilModule } from '@shared/util';
+import { NotificationIconPipeModule } from '@shared/util';
 import {
   TuiButtonModule,
   TuiDataListModule,
@@ -12,6 +12,7 @@ import {
 import { RouterModule } from '@angular/router';
 import { NavbarAvatarDropdownModule } from '../navbar-avatar-dropdown/navbar-avatar-dropdown.module';
 import { TuiAvatarModule, TuiBadgeModule, TuiDataListWrapperModule } from '@taiga-ui/kit';
+import { TimeagoModule } from 'ngx-timeago';
 
 const tuiModules = [
   TuiButtonModule,
@@ -30,7 +31,8 @@ const tuiModules = [
     LanguageModule,
     RouterModule,
     NavbarAvatarDropdownModule,
-    ShareUtilModule,
+    NotificationIconPipeModule,
+    TimeagoModule,
     tuiModules
   ],
   exports: [NavbarComponent]

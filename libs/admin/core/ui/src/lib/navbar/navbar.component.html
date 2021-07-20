@@ -52,14 +52,17 @@
         <button tuiOption [value]="item.type" size="s" class="space-x-2 !py-2">
           <div class="max-w-18rem flex justify-between items-center">
             <img
-              *ngIf="getIcon(item.type) as iconSrc"
+              *ngIf="item | notificationIcon as iconSrc"
               [src]="iconSrc"
               class="w-8 h-8 p-1 -ml-1 mr-2 border border-solid border-primary rounded-full"
               [class.border-red-500]="iconSrc.includes('error')"
               [class.border-green-500]="iconSrc.includes('success')"
             />
-            <span class="flex-grow text-xs">{{ item.message }}</span>
-            <!-- <tui-svg [src]="getIcon(item.type)"></tui-svg> -->
+            <section class="flex-grow flex flex-col">
+              <span class="text-sm">{{ item.message }}</span>
+              <span class="text-xs text-gray-500">{{ item.createdAt | timeago }}</span>
+            </section>
+            <tui-svg src="tuiIconCommentLarge" *ngIf="!item.isRead"></tui-svg>
           </div>
           <!-- <tui-avatar
             class="avatar"

@@ -18,7 +18,7 @@ import {
 import { AvatarModule } from '@shared/ui/avatar';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { RouterModule } from '@angular/router';
-import { UtilModule } from '@shared/util';
+import { DataUrlPipeModule } from '@shared/util';
 
 const tuiModules = [
   TuiDataListModule,
@@ -34,7 +34,14 @@ const tuiModules = [
 ];
 @NgModule({
   declarations: [UpdatePage],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, UtilModule, AvatarModule, tuiModules],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    DataUrlPipeModule,
+    AvatarModule,
+    tuiModules
+  ],
   exports: [UpdatePage]
 })
 export class UpdateUiModule {}

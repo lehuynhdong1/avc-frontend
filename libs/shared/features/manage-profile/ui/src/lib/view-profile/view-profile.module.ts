@@ -11,14 +11,14 @@ import {
 } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { TuiInputInlineModule, TuiInputPhoneModule, TuiMarkerIconModule } from '@taiga-ui/kit';
-import { UtilModule } from '@shared/util';
+import { DataUrlPipeModule } from '@shared/util';
 
 const tuiModules = [
   TuiLoaderModule,
   TuiButtonModule,
   TuiSvgModule,
   TuiMarkerIconModule,
-  UtilModule,
+  DataUrlPipeModule,
   TuiInputPhoneModule,
   TuiInputInlineModule,
   TuiTextfieldControllerModule

@@ -3579,6 +3579,43 @@
           }
         }
       }
+    },
+    "shared-timeago": {
+      "projectType": "library",
+      "root": "libs/shared/timeago",
+      "sourceRoot": "libs/shared/timeago/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/timeago/tsconfig.lib.json",
+            "project": "libs/shared/timeago/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/timeago/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/timeago/src/**/*.ts",
+              "libs/shared/timeago/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/timeago"],
+          "options": {
+            "jestConfig": "libs/shared/timeago/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

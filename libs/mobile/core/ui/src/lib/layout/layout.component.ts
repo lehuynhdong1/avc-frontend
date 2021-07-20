@@ -27,11 +27,11 @@ const NAV_ITEMS: Array<NavItem> = [
     path: 'notification',
     icon: 'notifications-outline'
   },
-  {
-    label: 'Issues',
-    path: 'issue',
-    icon: 'warning-outline'
-  },
+  // {
+  //   label: 'Issues',
+  //   path: 'issue',
+  //   icon: 'warning-outline'
+  // },
   {
     label: 'Profile',
     path: 'profile',

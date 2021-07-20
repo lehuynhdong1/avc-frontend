@@ -149,7 +149,8 @@
       "@admin/train-model/train-by-zip/ui": ["libs/admin/train-model/train-by-zip/ui/src/index.ts"],
       "@shared/ui/error-hint": ["libs/shared/ui/error-hint/src/index.ts"],
       "@mobile/notification/ui": ["libs/mobile/notification/ui/src/index.ts"],
-      "@mobile/notification/feature": ["libs/mobile/notification/feature/src/index.ts"]
+      "@mobile/notification/feature": ["libs/mobile/notification/feature/src/index.ts"],
+      "@shared/timeago": ["libs/shared/timeago/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

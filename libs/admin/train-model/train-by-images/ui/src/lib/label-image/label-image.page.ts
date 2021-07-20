@@ -32,6 +32,7 @@ import { Subject } from 'rxjs';
 export class LabelImagePage {
   readonly TUI_STEPPER_PASS = TuiStepState.Pass;
   readonly TUI_STATUS_SUCCESS = TuiMarkerIconMode.Success;
+  readonly TUI_SUCCESS = TuiStatus.Success;
   readonly TUI_BADGE_ERROR = TuiStatus.Error;
   readonly LABELS = labels;
 

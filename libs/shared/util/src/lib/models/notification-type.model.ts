@@ -24,7 +24,7 @@ export type NotificationType =
 export const NotificationIconMapper = {
   Issue: 'warning-outline',
   'Assign Car': 'car-sport-primary',
-  'Staff Managed By': 'people-success',
+  'Staff Managed By': 'people-primary',
   'Car Managed By': 'car-sport-primary',
   'Train Failed': 'rocket-error',
   'Train Success': 'rocket-success',

@@ -1,21 +1,15 @@
-:host {
-  display: block;
-}
 ion-header,
 ion-toolbar {
-  --background: var(--tui-base-07);
+  --background: var(--tui-accent);
   --color: var(--tui-base-01);
 }
 ion-searchbar {
   --background: var(--tui-base-01);
-  --color: var(--tui-primary-active);
+  --color: var(--tui-base-08);
   --cancel-button-color: var(--tui-base-01);
 }
-ion-content {
-  --padding-bottom: 5rem;
-}
 ion-list {
-  @apply px-2 mt-2 pb-20;
+  @apply px-2 mt-2 pb-4;
   ion-item {
     @apply border border-solid border-gray-200 rounded-md;
     @apply mt-2;

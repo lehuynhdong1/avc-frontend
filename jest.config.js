@@ -85,6 +85,7 @@ module.exports = {
     '<rootDir>/libs/shared/features/signalr/data-access',
     '<rootDir>/libs/shared/ui/error-hint',
     '<rootDir>/libs/mobile/notification/ui',
-    '<rootDir>/libs/mobile/notification/feature'
+    '<rootDir>/libs/mobile/notification/feature',
+    '<rootDir>/libs/shared/timeago'
   ]
 };

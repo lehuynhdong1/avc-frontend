@@ -2,7 +2,7 @@
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="issue"></ion-back-button>
+        <ion-back-button defaultHref="car"></ion-back-button>
       </ion-buttons>
       <ion-title collapse="condense"> {{issue.type || 'Detail Issue'}} </ion-title>
     </ion-toolbar>
@@ -13,7 +13,7 @@
         [src]="issue.image || 'assets/adc/icons/warning-outline.svg#warning-outline'"
         class="-mx-4"
       ></ion-img>
-      <div class="flex flex-col">
+      <div class="flex flex-col mt-4">
         <span class="text-sm text-gray-500">Type </span>
         <h3>{{ issue.type }}</h3>
 
@@ -26,7 +26,7 @@
         <span class="text-sm text-gray-500">Description</span>
         <h3>{{ issue.description }}</h3>
 
-        <ng-container *ngIf="selectedCar$ | async as car">
+        <!-- <ng-container *ngIf="selectedCar$ | async as car">
           <span class="text-sm text-gray-500">Occured by car</span>
           <ion-item
             button
@@ -43,7 +43,7 @@
               <h4 class="text-gray-600">Device ID: {{car.deviceId}}</h4>
             </ion-label>
           </ion-item>
-        </ng-container>
+        </ng-container> -->
       </div>
     </main>
   </ion-content>

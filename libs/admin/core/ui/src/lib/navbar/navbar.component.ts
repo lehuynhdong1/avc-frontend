@@ -6,15 +6,7 @@ import { LanguageCode } from '@shared/language';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { loader } from './transloco.loader';
 import { LoginState } from '@shared/auth/login/data-access';
-import {
-  LoadNotifications,
-  LoadUnreadCount,
-  NotificationIconMapper,
-  NotificationType,
-  UtilState
-} from '@shared/util';
-import { tuiPure } from '@taiga-ui/cdk';
-import { UserNotificationReadDto } from '@shared/api';
+import { LoadNotifications, LoadUnreadCount, UtilState } from '@shared/util';
 
 // export interface UserNotificationReadDto {
 //   id?: number;
@@ -42,10 +34,7 @@ export class NavbarComponent {
   constructor(private store: Store) {
     const me = this.store.selectSnapshot(LoginState.account);
     if (!me) return;
-    this.store.dispatch([
-      new LoadNotifications({ receiverId: me.id || 0 }),
-      new LoadUnreadCount({ receiverId: me.id || 0 })
-    ]);
+    this.store.dispatch(new LoadUnreadCount({ receiverId: me.id || 0 }));
   }
 
   changeLanguage(language: LanguageCode) {
@@ -56,19 +45,11 @@ export class NavbarComponent {
   toggleNotifications() {
     const me = this.store.selectSnapshot(LoginState.account);
     if (!me) return;
-    if (!this.opened) this.store.dispatch(new LoadUnreadCount({ receiverId: me.id || 0 }));
+    this.store.dispatch(
+      this.opened
+        ? new LoadUnreadCount({ receiverId: me.id || 0 })
+        : new LoadNotifications({ receiverId: me.id || 0, limit: 50 })
+    );
     this.opened = !this.opened;
-  }
-
-  @tuiPure
-  getIcon(type: string | null | undefined) {
-    console.log(type);
-    const iconName =
-      NotificationIconMapper[type as NotificationType] ?? NotificationIconMapper.Issue;
-    return `assets/adc/icons/${iconName}.svg#${iconName}`;
-  }
-
-  trackById(_: number, item: UserNotificationReadDto) {
-    return item.type;
   }
 }

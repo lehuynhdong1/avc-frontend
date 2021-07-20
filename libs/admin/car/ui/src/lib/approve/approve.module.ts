@@ -16,7 +16,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AvatarModule } from '@shared/ui/avatar';
-import { UtilModule } from '@shared/util';
+import { DataUrlPipeModule } from '@shared/util';
 import { TuiDataListWrapperModule } from '@taiga-ui/kit';
 import { TuiLetModule } from '@taiga-ui/cdk';
 
@@ -34,7 +34,14 @@ const tuiModules = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, UtilModule, AvatarModule, tuiModules],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    DataUrlPipeModule,
+    AvatarModule,
+    tuiModules
+  ],
   declarations: [ApprovePage],
   exports: [ApprovePage]
 })

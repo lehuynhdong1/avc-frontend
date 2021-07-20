@@ -17,7 +17,7 @@ import {
   TuiSvgModule,
   TuiTextfieldControllerModule
 } from '@taiga-ui/core';
-import { UtilModule } from '@shared/util';
+import { DataUrlPipeModule } from '@shared/util';
 import { AvatarModule } from '@shared/ui/avatar';
 import { RouterModule } from '@angular/router';
 
@@ -39,7 +39,7 @@ const tuiModules = [
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    UtilModule,
+    DataUrlPipeModule,
     AvatarModule,
     ErrorHintModule,
     tuiModules

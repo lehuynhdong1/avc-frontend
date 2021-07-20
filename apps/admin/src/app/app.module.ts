@@ -15,6 +15,8 @@ import { UtilModule as AuthUtilModule } from '@shared/auth/util';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { getAppConfigProvider } from '@shared/app-config';
+import { TimeagoModule } from 'ngx-timeago';
+import { defaultConfig } from '@shared/timeago';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +32,8 @@ import { getAppConfigProvider } from '@shared/app-config';
     AuthUtilModule,
     StateManagementModulesWithConfig(environment),
     LanguageModuleWithConfig({ prodMode: environment.production }),
-    NgxChartsModule
+    NgxChartsModule,
+    TimeagoModule.forRoot(defaultConfig)
   ],
   bootstrap: [AppComponent],
   providers: [getAppConfigProvider(environment)]

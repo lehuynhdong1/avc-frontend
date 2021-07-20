@@ -11,42 +11,54 @@
       </h2>
       <p class="mt-0 text-base">Label images online for a better training model.</p>
     </div>
+    <div class="flex flex-col items-end">
+      <div>
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          class="tui-space_right-3 tui-space_bottom-3"
+          icon="tuiIconChevronLeft"
+          appearance="flat"
+          routerLink="../upload-image"
+        >
+          Upload more
+        </button>
 
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      class="tui-space_right-3 tui-space_bottom-3"
-      icon="tuiIconChevronLeft"
-      appearance="flat"
-      routerLink="../upload-image"
-    >
-      Upload more
-    </button>
-
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      class="tui-space_right-3 tui-space_bottom-3"
-      appearance="secondary"
-      [disabled]="!allMarked(view.imageFiles)"
-      (click)="downloadLabelFile()"
-    >
-      Download package
-    </button>
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      iconRight="tuiIconChevronRight"
-      class="tui-space_right-3 tui-space_bottom-3"
-      appearance="primary"
-      [disabled]="!allMarked(view.imageFiles)"
-      (click)="clickTrain$.next()"
-    >
-      Go train
-    </button>
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          class="tui-space_right-3 tui-space_bottom-3"
+          appearance="secondary"
+          [disabled]="!allMarked(view.imageFiles)"
+          (click)="downloadLabelFile()"
+        >
+          Download package
+        </button>
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          iconRight="tuiIconChevronRight"
+          class="tui-space_right-3 tui-space_bottom-3"
+          appearance="primary"
+          [disabled]="!allMarked(view.imageFiles)"
+          (click)="clickTrain$.next()"
+        >
+          Go train
+        </button>
+      </div>
+      <tui-badge
+        class="tui-space_right-2"
+        [status]="TUI_SUCCESS"
+        size="l"
+        *ngIf="view.imageFiles?.length"
+        [value]="view.imageFiles?.length + ' image' + (view.imageFiles?.length === 1 ? '': 's' )+' has uploaded in total.'"
+      >
+        <tui-svg src="tuiIconCheckCircleLarge" class="mr-2"></tui-svg>
+      </tui-badge>
+    </div>
   </div>
   <tui-notification class="mb-8">
     <ul>

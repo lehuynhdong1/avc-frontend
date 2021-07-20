@@ -99,6 +99,7 @@
     "admin-car-ui": { "tags": ["scope:admin"] },
     "shared-ui-error-hint": { "tags": ["scope:shared"] },
     "mobile-notification-ui": { "tags": ["scope:mobile"] },
-    "mobile-notification-feature": { "tags": ["scope:mobile"] }
+    "mobile-notification-feature": { "tags": ["scope:mobile"] },
+    "shared-timeago": { "tags": ["scope:shared"] }
   }
 }
