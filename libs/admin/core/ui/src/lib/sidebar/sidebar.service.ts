@@ -57,7 +57,7 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Training Model',
     path: '/training',
-    icon: 'assets/adc/icons/library-outline.svg#library-outline',
+    icon: 'assets/adc/icons/rocket-outline.svg#rocket-outline',
     description: 'Enhance your detection algorithm',
     children: [
       {

@@ -33,7 +33,7 @@ export class LoginPage {
     this.store.dispatch(
       new ShowNotification({
         message: errorMessage || '',
-        options: { label: 'Login', status: TuiNotification.Error }
+        options: { label: 'Login failed', status: TuiNotification.Error }
       })
     );
   }

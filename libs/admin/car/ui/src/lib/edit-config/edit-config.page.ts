@@ -87,7 +87,7 @@ export class EditConfigPage {
     state.hold(whenUpdateFailed$, () =>
       this.store.dispatch(
         new ShowNotification({
-          message: 'Our server has been maintainance.',
+          message: 'Our server has been maintainance. Please try again later.',
           options: { label: 'Update Configuration failed', status: TuiNotification.Error }
         })
       )

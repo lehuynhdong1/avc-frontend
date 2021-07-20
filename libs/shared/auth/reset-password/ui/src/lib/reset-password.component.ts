@@ -63,7 +63,7 @@ export class SharedResetPasswordComponent {
       this.state.set({ loading: false });
       store.dispatch(
         new ShowNotification({
-          message: "You have reset your password. Let's log in with new password",
+          message: "You have reseted your password. Let's log in with new password",
           options: { label: 'Reset Password', status: TuiNotification.Success }
         })
       );

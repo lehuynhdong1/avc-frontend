@@ -88,7 +88,7 @@ export class DetailPage {
     this.clickApproveEffects();
     this.clickActivationEffects();
     this.toggleActivationAndApproveSuccessEffects();
-    this.toggleActivationFailedSuccessEffects();
+    this.toggleActivationFailedEffects();
     this.toggleApproveSuccessEffects();
     this.selectIssueEffect();
     this.signalrEffect();
@@ -109,7 +109,7 @@ export class DetailPage {
       () => this.store.dispatch(new LoadApprovedCars({ limit: 10 }))
     );
   }
-  private toggleActivationFailedSuccessEffects() {
+  private toggleActivationFailedEffects() {
     const whenToggleActivationFailed$ = this.actions
       .pipe<ToggleActivation>(ofActionErrored(ToggleActivation))
       .pipe(withLatestFrom(this.errorMessage$));
@@ -207,7 +207,11 @@ export class DetailPage {
       this.store.dispatch(new LoadCarById({ id }))
     );
 
-    const carNotifyMustBack = ['WhenManagerChangeAssignedCar', 'WhenCarDeactivated'];
+    const carNotifyMustBack = [
+      'WhenManagerChangeAssignedCar',
+      'WhenAdminChangeCarManagedBy',
+      'WhenCarDeactivated'
+    ];
 
     const whenCarNotifyMustBack$ = merge(
       ...carNotifyMustBack.map((key) => {

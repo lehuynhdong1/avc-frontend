@@ -35,23 +35,36 @@ export class TrainByZipState {
     }
     const zip = await JSZip.loadAsync(file);
     const fileNames = Object.keys(zip.files);
-    const isFolderValid = fileNames.some((filename) =>
+
+    // TODO: Bug when count file zip tự zip by MacOS, xuất hiện file rác
+    const isFolderValid = ACCEPTED_FOLDER_NAMES.every((acceptedFolderName) =>
       // console.log(filename);
       // const folderFirstClass = filename.slice(0, filename.indexOf('/'));
-      ACCEPTED_FOLDER_NAMES.some((acceptedFolderName) => filename.includes(acceptedFolderName))
+      fileNames.some((filename) => filename.includes(acceptedFolderName))
     );
 
-    const isClassesTxtValid = fileNames.some((fileName) => fileName.includes('labels/classes.txt'));
-
-    if (isFolderValid && isClassesTxtValid) {
-      const imageCount = fileNames.filter((fileName) => fileName.includes('imgs/')).length - 1; // substract 1 for the folder
-      return patchState({ uploadedZip: { file, imageCount } });
+    let isClassesTxtValid = false;
+    let imageCount = 0;
+    for (const fileName of Object.keys(zip.files)) {
+      if (fileName.includes('labels/classes.txt')) isClassesTxtValid = true;
+      if (fileName.includes('imgs/')) imageCount++;
     }
-    const errorMessage = `${file.name} (${prettyBytes(
-      file.size
-    )}) Structure of ZIP file is not appropriate. Please edit an try again.`;
-    patchState({ errorMessage, uploadedZip: undefined });
-    throw new Error(errorMessage);
+    imageCount--; // substract 1 for the folder
+    if (!imageCount) {
+      const errorMessage = `${file.name} (${prettyBytes(
+        file.size
+      )}) There's no image in "imgs" folder. Please edit an try again.`;
+      patchState({ errorMessage, uploadedZip: undefined });
+      throw new Error(errorMessage);
+    }
+    if (!isFolderValid || !isClassesTxtValid) {
+      const errorMessage = `${file.name} (${prettyBytes(
+        file.size
+      )}) Structure of ZIP file is not appropriate. Please edit an try again.`;
+      patchState({ errorMessage, uploadedZip: undefined });
+      throw new Error(errorMessage);
+    }
+    return patchState({ uploadedZip: { file, imageCount } });
   }
 
   @Action(DownloadClassesTxt)
