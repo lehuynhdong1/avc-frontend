@@ -39,6 +39,7 @@ export class ListingPage implements ViewWillEnter, ViewWillLeave {
 
   private whenAnyNotify() {
     const notificationTypes = [
+      'WhenAdminChangeStaffManagedBy',
       'WhenManagerChangeAssignedCar',
       'WhenStaffDeactivated',
       'WhenManagerDeactivated',
@@ -65,7 +66,6 @@ export class ListingPage implements ViewWillEnter, ViewWillLeave {
 }
 
 type WhenOtherNotify =
-  | 'WhenAdminChangeCarManagedBy'
   | 'WhenAdminChangeStaffManagedBy'
   | 'WhenManagerChangeAssignedCar'
   | 'WhenStaffDeactivated'
