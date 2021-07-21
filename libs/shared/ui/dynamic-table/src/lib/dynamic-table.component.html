@@ -38,7 +38,7 @@
             <td *tuiCell="column.key.toString()" tuiTd>
               {{
                 item[column.key]
-                  ? (toDate(item[column.key]) | date: 'h:mm:ss a, MMM dd, yyyy')
+                  ? (toDate(item[column.key] + '') | date: 'h:mm:ss a, MMM dd, yyyy')
                   : 'Undefined'
               }}
             </td>
@@ -49,11 +49,10 @@
                 *ngIf="
                   (column.cellTemplate
                     ? (item | cellTemplate: column.cellTemplate)
-                    : item[column.key]
-                  ).toString() as content
+                    : item[column.key]) + '' as content
                 "
               >
-                {{ content | slice: 0:50 }} {{ content?.length > 50 ? '...' : '' }}
+                {{ content | slice: 0:50 }} {{ content.length > 50 ? '...' : '' }}
               </ng-container>
             </td>
           </ng-container>

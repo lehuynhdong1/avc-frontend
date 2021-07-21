@@ -63,7 +63,7 @@
             "customWebpackConfig": {
               "path": "custom-webpack.config.js"
             },
-            "outputPath": "www/apps/admin",
+            "outputPath": "dist/admin/browser",
             "index": "apps/admin/src/index.html",
             "main": "apps/admin/src/main.ts",
             "polyfills": "apps/admin/src/polyfills.ts",
@@ -94,10 +94,7 @@
               "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
               "node_modules/@recogito/annotorious/dist/annotorious.min.css"
             ],
-            "scripts": [
-              "apps/admin/src/__env__.js",
-              "node_modules/@recogito/annotorious/dist/annotorious.min.js"
-            ],
+            "scripts": ["node_modules/@recogito/annotorious/dist/annotorious.min.js"],
             "allowedCommonJsDependencies": ["angular2-text-mask", "file-saver"],
             "serviceWorker": true,
             "ngswConfigPath": "apps/admin/ngsw-config.json"
@@ -159,6 +156,35 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "command": "npx compodoc -p apps/admin/tsconfig.app.json -d documentation/apps/admin/"
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/admin/server",
+            "main": "apps/admin/src/main.server.ts",
+            "tsConfig": "apps/admin/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
+        "app-shell": {
+          "builder": "@angular-devkit/build-angular:app-shell",
+          "options": {
+            "browserTarget": "admin:build",
+            "serverTarget": "admin:server",
+            "route": "shell"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "admin:build:production",
+              "serverTarget": "admin:server:production"
+            }
           }
         }
       }
