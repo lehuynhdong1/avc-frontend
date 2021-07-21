@@ -5,9 +5,23 @@
     <title>AVC</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="assets/images/logo.svg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#1976d2" />
   </head>
   <body class="dark">
     <adca-root></adca-root>
+
+    <script>
+      (async () => {
+        if ('serviceWorker' in navigator) {
+          try {
+            const serviceWorker = await navigator.serviceWorker.register('./ngsw-worker.js');
+            console.log('serviceWorker registered', serviceWorker);
+          } catch (e) {
+            console.warn(e);
+          }
+        }
+      })();
+    </script>
   </body>
 </html>

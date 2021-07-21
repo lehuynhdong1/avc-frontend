@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { getAppConfigProvider } from '@shared/app-config';
 import { TimeagoModule } from 'ngx-timeago';
 import { defaultConfig } from '@shared/timeago';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +34,13 @@ import { defaultConfig } from '@shared/timeago';
     StateManagementModulesWithConfig(environment),
     LanguageModuleWithConfig({ prodMode: environment.production }),
     NgxChartsModule,
-    TimeagoModule.forRoot(defaultConfig)
+    TimeagoModule.forRoot(defaultConfig),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   bootstrap: [AppComponent],
   providers: [getAppConfigProvider(environment)]

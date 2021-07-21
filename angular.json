@@ -98,7 +98,9 @@
               "apps/admin/src/__env__.js",
               "node_modules/@recogito/annotorious/dist/annotorious.min.js"
             ],
-            "allowedCommonJsDependencies": ["angular2-text-mask", "file-saver"]
+            "allowedCommonJsDependencies": ["angular2-text-mask", "file-saver"],
+            "serviceWorker": true,
+            "ngswConfigPath": "apps/admin/ngsw-config.json"
           },
           "configurations": {
             "production": {
