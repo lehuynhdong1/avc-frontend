@@ -4,7 +4,7 @@ import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
 import { Logout } from '@shared/auth/logout/data-access';
 import { hasValue, LoadUnreadCount, NetworkService, ShowNotification } from '@shared/util';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
 import {
   StartSignalR,
@@ -61,9 +61,13 @@ export class AppComponent {
     this.actions
       .pipe<StartSignalR>(ofActionSuccessful(StartSignalR))
       .pipe(
-        switchMap(() => this.store.select(LoginState.account).pipe(map((account) => account?.id))),
-        hasValue(),
-        switchMap((myId) => this.store.dispatch(new ConnectAccount(myId))),
+        withLatestFrom(
+          this.store
+            .select(LoginState.account)
+            .pipe(map((account) => account?.id))
+            .pipe(hasValue())
+        ),
+        switchMap(([, myId]) => this.store.dispatch(new ConnectAccount(myId))),
         switchMap(() => this.store.dispatch(new UnregisterAllListeners())),
         switchMap(() => this.store.dispatch(new RegisterAllListeners()))
       )

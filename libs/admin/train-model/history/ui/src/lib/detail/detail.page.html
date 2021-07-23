@@ -53,7 +53,7 @@
         type="button"
         *ngIf="!model.isApplying"
         (click)="clickApply$.next()"
-        [disabled]="model.modelStatus !== 'Succeeded'"
+        [disabled]="model.modelStatus !== 'Successed'"
       >
         Apply for all
       </button>
