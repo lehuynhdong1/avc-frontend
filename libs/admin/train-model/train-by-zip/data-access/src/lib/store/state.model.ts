@@ -1,5 +1,6 @@
 export interface StateModel {
   uploadedZip?: { file: File; imageCount: number };
+  uploadProgress?: { loaded: number; total: number | undefined };
   errorMessage?: string;
 }
 

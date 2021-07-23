@@ -13,7 +13,7 @@ import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-acce
 import { Empty, ShowNotification } from '@shared/util';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
-import { TuiHintMode, TuiNotification } from '@taiga-ui/core';
+import { TuiDialogService, TuiHintMode, TuiNotification } from '@taiga-ui/core';
 import * as prettyBytes from 'pretty-bytes';
 import { Subject } from 'rxjs';
 import { labels } from '@admin/train-model/train-by-images/util';
@@ -36,7 +36,13 @@ export class UploadZipPage {
   clickTrain$ = new Subject<void>();
   clickDownload$ = new Subject<HTMLTextAreaElement>();
 
-  constructor(router: Router, store: Store, actions: Actions, state: RxState<Empty>) {
+  constructor(
+    router: Router,
+    store: Store,
+    actions: Actions,
+    state: RxState<Empty>,
+    private dialog: TuiDialogService
+  ) {
     const whenShowSuccess$ = actions
       .pipe<UpdateZip>(ofActionSuccessful(UpdateZip))
       .pipe(withLatestFrom(store.select(TrainByZipState.uploadedZip)))
@@ -65,7 +71,10 @@ export class UploadZipPage {
 
     state.hold(this.file.valueChanges, (file) => store.dispatch(new UpdateZip(file)));
     state.hold(this.clickDownload$, () => store.dispatch(new DownloadClassesTxt()));
-    state.hold(this.clickTrain$, () => store.dispatch(new Train()));
+    state.hold(this.clickTrain$, () => {
+      // dialog.open()
+      store.dispatch(new Train());
+    });
 
     state.hold(actions.pipe(ofActionSuccessful(Train)), () =>
       router.navigateByUrl('/training/history')

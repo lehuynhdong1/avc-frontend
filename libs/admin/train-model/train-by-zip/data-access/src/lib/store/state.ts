@@ -7,6 +7,8 @@ import * as JSZip from 'jszip';
 import * as prettyBytes from 'pretty-bytes';
 import { labels } from '@admin/train-model/train-by-images/util';
 import { ModelService } from '@shared/api';
+import { tap, throttleTime } from 'rxjs/operators';
+import { HttpEventType } from '@angular/common/http';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -85,10 +87,24 @@ export class TrainByZipState {
       0,
       uploadedZip.file.name.length - 4
     );
-    return this.modelService.apiModelPost({
-      zipFile: uploadedZip.file,
-      name: `Trained by ZIP - ${fileNameWithoutExtension}`,
-      imageCount: uploadedZip.imageCount
-    });
+    return this.modelService
+      .apiModelPost(
+        {
+          zipFile: uploadedZip.file,
+          name: `Trained by ZIP - ${fileNameWithoutExtension}`,
+          imageCount: uploadedZip.imageCount
+        },
+        'events',
+        true
+      )
+      .pipe(
+        throttleTime(300),
+        tap((event) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            const { loaded, total } = event;
+            patchState({ uploadProgress: { loaded, total } });
+          }
+        })
+      );
   }
 }
