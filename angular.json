@@ -4,7 +4,7 @@
     "analytics": false,
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "mobile",
+  "defaultProject": "admin",
   "schematics": {
     "@nrwl/angular": {
       "application": {

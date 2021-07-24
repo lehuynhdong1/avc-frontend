@@ -16,6 +16,7 @@ import {
 } from '@shared/features/signalr/data-access';
 import { defer, from, merge } from 'rxjs';
 import { Router } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'adca-root',
@@ -28,10 +29,19 @@ export class AppComponent {
     private actions: Actions,
     private network: NetworkService,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private swUpdate: SwUpdate
   ) {
     store.dispatch([new LoadToken(), new LoadRoles()]);
 
+    swUpdate.available.subscribe((event) => {
+      console.log('current version is', event.current);
+      console.log('available version is', event.available);
+    });
+    swUpdate.activated.subscribe((event) => {
+      console.log('old version was', event.previous);
+      console.log('new version is', event.current);
+    });
     this.whenNetworkChanged();
     this.whenLoginSuccess();
     this.whenLogoutSuccess();
