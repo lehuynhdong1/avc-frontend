@@ -64,8 +64,4 @@ export class DashboardPage {
   constructor(private store: Store, private datePipe: DatePipe) {
     this.store.dispatch([new LoadApprovedCars(), new LoadManagers({}), new LoadStaffs({})]);
   }
-
-  onSelect(data: string): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  }
 }

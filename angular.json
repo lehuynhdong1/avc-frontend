@@ -194,6 +194,11 @@
                 "glob": "*.svg",
                 "input": "libs/shared/assets/icons",
                 "output": "assets/adc/icons"
+              },
+              {
+                "glob": "_redirects",
+                "input": "apps/mobile/src",
+                "output": "/"
               }
             ],
             "styles": [
