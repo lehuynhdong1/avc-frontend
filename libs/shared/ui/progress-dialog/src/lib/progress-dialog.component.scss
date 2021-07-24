@@ -1,0 +1,22 @@
+:host {
+  @apply flex flex-col items-center;
+  min-width: 20rem;
+  @apply w-full;
+
+  .progress-bar-wrapper {
+    @apply w-full h-12;
+    @apply border-2 border-primary border-dashed rounded-full;
+    padding: 0.1rem 0.15rem;
+  }
+  .progress-bar {
+    @apply self-start;
+    @apply w-4 h-10 pr-2 pt-2;
+    @apply rounded-full;
+    @apply bg-primary text-white text-right;
+    @apply transition-all;
+  }
+  .progress-labels {
+    @apply w-full;
+    @apply flex justify-between;
+  }
+}

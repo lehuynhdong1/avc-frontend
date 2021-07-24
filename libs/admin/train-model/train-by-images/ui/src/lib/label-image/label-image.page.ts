@@ -19,7 +19,7 @@ import {
   SelectedLabelImageFile,
   labels
 } from '@admin/train-model/train-by-images/util';
-import { ShowNotification, Empty } from '@shared/util';
+import { ShowNotification } from '@shared/util';
 import { RxState } from '@rx-angular/state';
 import { Subject } from 'rxjs';
 
@@ -36,6 +36,7 @@ export class LabelImagePage {
   readonly TUI_BADGE_ERROR = TuiStatus.Error;
   readonly LABELS = labels;
 
+  loading$ = this.state.select('loading');
   readonly imageFiles$ = this.store
     .select(TrainByImagesState.labelledImages)
     .pipe(map((labelledImages) => Object.values(labelledImages)));
@@ -62,11 +63,14 @@ export class LabelImagePage {
     private actions: Actions,
     private injector: Injector,
     private dialogService: TuiDialogService,
-    private state: RxState<Empty>
+    private state: RxState<{ loading: boolean }>
   ) {
     this.store.dispatch(new TransferUploadedImages());
     state.hold(this.whenDownloadSuccess$);
-    state.hold(this.clickTrain$, () => this.store.dispatch(new Train()));
+    state.hold(this.clickTrain$, () => {
+      this.state.set({ loading: true });
+      this.store.dispatch(new Train());
+    });
     this.trainSuccessEffect();
   }
 
@@ -100,7 +104,10 @@ export class LabelImagePage {
 
   private trainSuccessEffect() {
     const whenTrainSuccess$ = this.actions.pipe<Train>(ofActionSuccessful(Train));
-    this.state.hold(whenTrainSuccess$, () => this.router.navigateByUrl('/training/history'));
+    this.state.hold(whenTrainSuccess$, () => {
+      this.state.set({ loading: false });
+      this.router.navigateByUrl('/training/history');
+    });
   }
 
   @tuiPure

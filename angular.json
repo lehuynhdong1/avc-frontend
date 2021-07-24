@@ -4,7 +4,7 @@
     "analytics": false,
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "mobile",
+  "defaultProject": "admin",
   "schematics": {
     "@nrwl/angular": {
       "application": {
@@ -3612,6 +3612,43 @@
           "outputs": ["coverage/libs/shared/timeago"],
           "options": {
             "jestConfig": "libs/shared/timeago/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-ui-progress-dialog": {
+      "projectType": "library",
+      "root": "libs/shared/ui/progress-dialog",
+      "sourceRoot": "libs/shared/ui/progress-dialog/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/ui/progress-dialog/tsconfig.lib.json",
+            "project": "libs/shared/ui/progress-dialog/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/ui/progress-dialog/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/ui/progress-dialog/src/**/*.ts",
+              "libs/shared/ui/progress-dialog/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/ui/progress-dialog"],
+          "options": {
+            "jestConfig": "libs/shared/ui/progress-dialog/jest.config.js",
             "passWithNoTests": true
           }
         }

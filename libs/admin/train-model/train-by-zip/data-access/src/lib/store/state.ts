@@ -7,8 +7,6 @@ import * as JSZip from 'jszip';
 import * as prettyBytes from 'pretty-bytes';
 import { labels } from '@admin/train-model/train-by-images/util';
 import { ModelService } from '@shared/api';
-import { tap, throttleTime } from 'rxjs/operators';
-import { HttpEventType } from '@angular/common/http';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -21,6 +19,10 @@ export class TrainByZipState {
     return uploadedZip;
   }
   @Selector()
+  static uploadProgress({ uploadProgress }: StateModel) {
+    return uploadProgress;
+  }
+  @Selector()
   static errorMessage({ errorMessage }: StateModel) {
     return errorMessage;
   }
@@ -30,7 +32,7 @@ export class TrainByZipState {
   @Action(UpdateZip)
   async updateZip({ patchState }: StateContext<StateModel>, { file }: UpdateZip) {
     if (!file) return patchState({ uploadedZip: undefined });
-    if (file.type !== 'application/zip') {
+    if (!file.name.endsWith('.zip')) {
       const errorMessage = `${file.name} (${prettyBytes(file.size)}) must be in ZIP type`;
       patchState({ errorMessage, uploadedZip: undefined });
       throw new Error(errorMessage);
@@ -38,10 +40,7 @@ export class TrainByZipState {
     const zip = await JSZip.loadAsync(file);
     const fileNames = Object.keys(zip.files);
 
-    // TODO: Bug when count file zip tự zip by MacOS, xuất hiện file rác
     const isFolderValid = ACCEPTED_FOLDER_NAMES.every((acceptedFolderName) =>
-      // console.log(filename);
-      // const folderFirstClass = filename.slice(0, filename.indexOf('/'));
       fileNames.some((filename) => filename.includes(acceptedFolderName))
     );
 
@@ -49,9 +48,8 @@ export class TrainByZipState {
     let imageCount = 0;
     for (const fileName of Object.keys(zip.files)) {
       if (fileName.includes('labels/classes.txt')) isClassesTxtValid = true;
-      if (fileName.includes('imgs/')) imageCount++;
+      if (fileName.match(/(.+)?imgs\/.+/)) imageCount++;
     }
-    imageCount--; // substract 1 for the folder
     if (!imageCount) {
       const errorMessage = `${file.name} (${prettyBytes(
         file.size
@@ -87,24 +85,21 @@ export class TrainByZipState {
       0,
       uploadedZip.file.name.length - 4
     );
-    return this.modelService
-      .apiModelPost(
-        {
-          zipFile: uploadedZip.file,
-          name: `Trained by ZIP - ${fileNameWithoutExtension}`,
-          imageCount: uploadedZip.imageCount
-        },
-        'events',
-        true
-      )
-      .pipe(
-        throttleTime(300),
-        tap((event) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            const { loaded, total } = event;
-            patchState({ uploadProgress: { loaded, total } });
-          }
-        })
-      );
+    return this.modelService.apiModelPost({
+      zipFile: uploadedZip.file,
+      name: `Trained by ZIP - ${fileNameWithoutExtension}`,
+      imageCount: uploadedZip.imageCount
+    });
+    // .pipe(
+    //   throttleTime(300),
+    //   tap((event) => {
+    //     if (event.type === HttpEventType.UploadProgress) {
+    //       const { loaded, total } = event;
+    //       console.log(event);
+
+    //       patchState({ uploadProgress: { loaded, total } });
+    //     }
+    //   })
+    // );
   }
 }

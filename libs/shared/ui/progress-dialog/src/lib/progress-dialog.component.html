@@ -1,0 +1,18 @@
+<ng-container *ngIf="context.data.progress$ | async as progress">
+  <ng-container
+    *ngIf="(progress.loaded / progress.total) * 100 | number: '0.2-2' as progressPercent"
+  >
+    <h2>Uploading...</h2>
+    <img src="assets/images/uploading.svg" alt="Uploading Illustration" class="w-3/4 mb-3" />
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar" [style.width.%]="progressPercent">
+        <tui-svg src="assets/adc/icons/rocket.svg#rocket" class="w-32 h-32"></tui-svg>
+      </div>
+    </div>
+    <section class="progress-labels">
+      <label>{{ progress.loaded }}</label>
+      <b>{{ progressPercent }} %</b>
+      <label>{{ progress.total }}</label>
+    </section>
+  </ng-container>
+</ng-container>

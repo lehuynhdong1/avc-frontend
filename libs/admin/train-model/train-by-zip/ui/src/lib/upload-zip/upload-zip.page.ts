@@ -10,10 +10,10 @@ import {
   Train
 } from '@admin/train-model/train-by-zip/data-access';
 import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
-import { Empty, ShowNotification } from '@shared/util';
+import { ShowNotification } from '@shared/util';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
-import { TuiDialogService, TuiHintMode, TuiNotification } from '@taiga-ui/core';
+import { TuiHintMode, TuiNotification } from '@taiga-ui/core';
 import * as prettyBytes from 'pretty-bytes';
 import { Subject } from 'rxjs';
 import { labels } from '@admin/train-model/train-by-images/util';
@@ -32,6 +32,7 @@ export class UploadZipPage {
   LABELS = labels;
 
   readonly file = new FormControl();
+  loading$ = this.state.select('loading');
 
   clickTrain$ = new Subject<void>();
   clickDownload$ = new Subject<HTMLTextAreaElement>();
@@ -40,39 +41,40 @@ export class UploadZipPage {
     router: Router,
     store: Store,
     actions: Actions,
-    state: RxState<Empty>,
-    private dialog: TuiDialogService
+    private state: RxState<{ loading: boolean }>
   ) {
     const whenShowSuccess$ = actions
       .pipe<UpdateZip>(ofActionSuccessful(UpdateZip))
       .pipe(withLatestFrom(store.select(TrainByZipState.uploadedZip)))
       .pipe(filter(([, zip]) => !!zip));
-    state.hold(whenShowSuccess$, ([, zip]) =>
+    state.hold(whenShowSuccess$, ([, zip]) => {
+      this.state.set({ loading: false });
       store.dispatch(
         new ShowNotification({
           message: `${zip?.file.name} (${prettyBytes(zip?.file.size || 0)}) has accepted`,
           options: { label: 'Upload ZIP Success', status: TuiNotification.Success }
         })
-      )
-    );
+      );
+    });
 
     const whenShowError$ = actions
       .pipe<UpdateZip>(ofActionErrored(UpdateZip))
       .pipe(withLatestFrom(store.select(TrainByZipState.errorMessage)));
     state.hold(whenShowError$, ([, errorMessage]) => {
+      this.state.set({ loading: false });
       store.dispatch(
         new ShowNotification({
           message: errorMessage || '',
           options: { label: 'Upload ZIP Error', status: TuiNotification.Error }
         })
       );
-      this.file.setValue(null);
+      this.file.setValue(undefined);
     });
 
     state.hold(this.file.valueChanges, (file) => store.dispatch(new UpdateZip(file)));
     state.hold(this.clickDownload$, () => store.dispatch(new DownloadClassesTxt()));
     state.hold(this.clickTrain$, () => {
-      // dialog.open()
+      this.state.set({ loading: true });
       store.dispatch(new Train());
     });
 
