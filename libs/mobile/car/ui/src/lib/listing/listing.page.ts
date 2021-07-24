@@ -33,7 +33,7 @@ export class ListingPage implements ViewWillEnter {
 
   ionViewWillEnter(): void {
     const { value } = this.searchControl;
-    this.store.dispatch(new LoadApprovedCars({ searchValue: value ?? '' }));
+    this.store.dispatch(new LoadApprovedCars({ searchValue: value ?? '', limit: 50 }));
   }
 
   private declareSideEffects() {
@@ -47,7 +47,7 @@ export class ListingPage implements ViewWillEnter {
       distinctUntilChanged()
     );
     this.state.hold(changeSearchValue$, (searchValue) =>
-      this.store.dispatch(new LoadApprovedCars({ searchValue, isAvailable: true }))
+      this.store.dispatch(new LoadApprovedCars({ searchValue, isAvailable: true, limit: 50 }))
     );
   }
 

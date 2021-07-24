@@ -18,7 +18,10 @@ export class ShowNotification {
 
 export class LoadNotifications {
   public static readonly type = ACTIONS.LOAD_NOTIFICATIONS;
-  constructor(public readonly params: ApiUsernotificationsGetRequestParams) {}
+  constructor(
+    public readonly params: ApiUsernotificationsGetRequestParams,
+    public readonly isLoadMore?: boolean
+  ) {}
 }
 
 export class LoadUnreadCount {

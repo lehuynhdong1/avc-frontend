@@ -7,12 +7,14 @@ import {
   TuiButtonModule,
   TuiDataListModule,
   TuiDropdownModule,
+  TuiScrollbarModule,
   TuiSvgModule
 } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { NavbarAvatarDropdownModule } from '../navbar-avatar-dropdown/navbar-avatar-dropdown.module';
-import { TuiAvatarModule, TuiBadgeModule, TuiDataListWrapperModule } from '@taiga-ui/kit';
+import { TuiBadgeModule, TuiDataListWrapperModule } from '@taiga-ui/kit';
 import { TimeagoModule } from 'ngx-timeago';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 const tuiModules = [
   TuiButtonModule,
@@ -20,8 +22,8 @@ const tuiModules = [
   TuiDropdownModule,
   TuiDataListModule,
   TuiDataListWrapperModule,
-  TuiAvatarModule,
-  TuiBadgeModule
+  TuiBadgeModule,
+  TuiScrollbarModule
 ];
 
 @NgModule({
@@ -33,6 +35,7 @@ const tuiModules = [
     NavbarAvatarDropdownModule,
     NotificationIconPipeModule,
     TimeagoModule,
+    ScrollingModule,
     tuiModules
   ],
   exports: [NavbarComponent]

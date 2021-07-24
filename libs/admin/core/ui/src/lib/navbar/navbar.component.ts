@@ -31,10 +31,11 @@ export class NavbarComponent {
 
   opened = false;
 
+  private readonly my = this.store.selectSnapshot(LoginState.account);
+
   constructor(private store: Store) {
-    const me = this.store.selectSnapshot(LoginState.account);
-    if (!me) return;
-    this.store.dispatch(new LoadUnreadCount({ receiverId: me.id || 0 }));
+    if (!this.my) return;
+    this.store.dispatch(new LoadUnreadCount({ receiverId: this.my.id || 0 }));
   }
 
   changeLanguage(language: LanguageCode) {
@@ -43,13 +44,27 @@ export class NavbarComponent {
   }
 
   toggleNotifications() {
-    const me = this.store.selectSnapshot(LoginState.account);
-    if (!me) return;
+    if (!this.my) return;
     this.store.dispatch(
       this.opened
-        ? new LoadUnreadCount({ receiverId: me.id || 0 })
-        : new LoadNotifications({ receiverId: me.id || 0, limit: 50 })
+        ? new LoadUnreadCount({ receiverId: this.my.id || 0 })
+        : new LoadNotifications({ receiverId: this.my.id || 0, limit: 10 })
     );
     this.opened = !this.opened;
+  }
+
+  handler(index: number) {
+    const notifications = this.store.selectSnapshot(UtilState.notifications);
+    if (!this.my || !notifications) return;
+    const { result, nextPageNumber } = notifications;
+
+    if (result?.length && result.length - 3 === index && nextPageNumber) {
+      this.store.dispatch(
+        new LoadNotifications(
+          { receiverId: this.my.id || 0, limit: 10, page: nextPageNumber },
+          true
+        )
+      );
+    }
   }
 }

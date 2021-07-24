@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
-import { UserNotificationsService } from '@shared/api';
+import { UserNotificationsService, UserNotificationReadDtoPagingResponseDto } from '@shared/api';
 import { TuiNotificationsService } from '@taiga-ui/core';
 import { INITIAL_STATE, StateModel, STATE_NAME } from './util-state.model';
 import { LoadNotifications, ShowNotification, LoadUnreadCount } from './util.actions';
@@ -34,10 +34,21 @@ export class UtilState {
   }
 
   @Action(LoadNotifications)
-  LoadNotifications({ patchState }: StateContext<StateModel>, { params }: LoadNotifications) {
-    return this.notificationsApiService
-      .apiUsernotificationsGet(params)
-      .pipe(tap((notifications) => patchState({ notifications })));
+  LoadNotifications(
+    { patchState, getState }: StateContext<StateModel>,
+    { params, isLoadMore = false }: LoadNotifications
+  ) {
+    return this.notificationsApiService.apiUsernotificationsGet(params).pipe(
+      tap((notifications) => {
+        if (!isLoadMore) return patchState({ notifications });
+        const previousResult = getState().notifications?.result;
+        const combinedNotifications: UserNotificationReadDtoPagingResponseDto = {
+          ...notifications,
+          result: [...(previousResult || []), ...(notifications.result || [])]
+        };
+        return patchState({ notifications: combinedNotifications });
+      })
+    );
   }
 
   @Action(LoadUnreadCount)
