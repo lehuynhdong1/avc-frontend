@@ -41,7 +41,7 @@ export class AppComponent {
     this.whenCarNotify();
     this.whenBeDeactivated();
     const myId = store.selectSnapshot(LoginState.account)?.id;
-    // if (myId) store.dispatch(new StartSignalR());
+    if (myId) store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {
