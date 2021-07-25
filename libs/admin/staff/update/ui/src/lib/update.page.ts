@@ -90,6 +90,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
 
   private declareUpdateSideEffects() {
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
+    this.store.dispatch(new LoadManagers({ isAvailable: true, limit: 50 }));
     this.state.hold(id$, (id) => this.store.dispatch(new LoadStaffById({ id })));
 
     this.state.hold(this.staff$, ({ firstName, lastName, phone, managedBy }) => {
@@ -191,14 +192,15 @@ export class UpdatePage implements CanShowUnsavedDialog {
     });
   }
   private whenRoleIsStaffEffects() {
-    const whenIsStaff$ = this.form.get('roleId')?.valueChanges.pipe(
+    const roleIdFormControl = this.form.get('roleId');
+    if (!roleIdFormControl) return;
+    const whenIsStaff$ = roleIdFormControl.valueChanges.pipe(
       filter((roleId) => roleId === Role.STAFF),
       withLatestFrom(this.store.select(ManagerState.managers)),
       filter(([, managers]) => !managers)
     );
-    if (whenIsStaff$)
-      this.state.hold(whenIsStaff$, () =>
-        this.store.dispatch(new LoadManagers({ isAvailable: true }))
-      );
+    this.state.hold(whenIsStaff$, () =>
+      this.store.dispatch(new LoadManagers({ isAvailable: true, limit: 50 }))
+    );
   }
 }

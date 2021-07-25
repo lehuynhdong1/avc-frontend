@@ -19,17 +19,6 @@ import { TuiMarkerIconMode } from '@taiga-ui/kit';
 import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
 import { ManagerState, LoadManagers } from '@shared/features/manager/data-access';
 
-/*
-export interface ApiCarsIdApprovementPutRequestParams {
-  id: number;
-  isApproved: boolean;
-  imageFile?: Blob;
-  name?: string;
-  configFile?: Blob;
-  managedBy?: number;
-}
-*/
-
 @Component({
   templateUrl: './approve.page.html',
   styleUrls: ['./approve.page.scss'],
@@ -131,7 +120,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
         filter((event) => !!(event?.target as HTMLInputElement)?.files?.length),
         map((event) => (event?.target as HTMLInputElement).files)
       ),
-      (files) => this.form.patchValue({ avatarImage: files && files[0] })
+      (files) => this.form.patchValue({ imageFile: files && files[0] })
     );
   }
 

@@ -40,7 +40,7 @@ export class DashboardPage {
       }))
     )
   );
-  readonly value = [
+  readonly value1 = [
     [1, 50] as const,
     [2, 75] as const,
     [3, 50] as const,
@@ -48,6 +48,24 @@ export class DashboardPage {
     [5, 155] as const,
     [6, 190] as const,
     [7, 90] as const
+  ];
+  readonly value2 = [
+    [1, 50] as const,
+    [2, 90] as const,
+    [3, 45] as const,
+    [4, 100] as const,
+    [5, 120] as const,
+    [6, 90] as const,
+    [7, 155] as const
+  ];
+  readonly value3 = [
+    [1, 75] as const,
+    [2, 35] as const,
+    [3, 100] as const,
+    [4, 190] as const,
+    [5, 168] as const,
+    [6, 90] as const,
+    [7, 110] as const
   ];
 
   // options
