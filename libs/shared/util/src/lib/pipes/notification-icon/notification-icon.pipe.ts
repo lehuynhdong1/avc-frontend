@@ -6,8 +6,8 @@ import { UserNotificationReadDto } from '@shared/api';
 export class NotificationIconPipe implements PipeTransform {
   transform({ type, message }: UserNotificationReadDto) {
     let iconName = NotificationIconMapper[type as NotificationType] ?? NotificationIconMapper.Issue;
-    const active = message?.includes('assign') || message?.includes('succee');
-    const negative = message?.includes('remove') || message?.includes('fail');
+    const active = message?.includes('assign');
+    const negative = message?.includes('remove');
 
     if (active) iconName = iconName.replace('primary', 'success');
     if (negative) iconName = iconName.replace('primary', 'error');

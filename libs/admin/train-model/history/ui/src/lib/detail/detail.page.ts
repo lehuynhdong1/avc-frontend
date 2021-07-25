@@ -4,7 +4,8 @@ import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store
 import {
   TrainHistoryState,
   LoadModelById,
-  ApplyModelById
+  ApplyModelById,
+  LoadModels
 } from '@admin/train-model/history/data-access';
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
@@ -49,12 +50,14 @@ export class DetailPage {
   private applySuccessEffect() {
     const whenApplySuccess$ = this.actions.pipe<ApplyModelById>(ofActionSuccessful(ApplyModelById));
     this.state.hold(whenApplySuccess$.pipe(withLatestFrom(this.selectedModel$)), ([, model]) =>
-      this.store.dispatch(
+      this.store.dispatch([
         new ShowNotification({
           message: `Apply ${model.name} successfully. Every system cars will update whenever they restarted.`,
           options: { label: 'Apply Model', status: TuiNotification.Success }
-        })
-      )
+        }),
+        new LoadModelById({ id: model.id || 0 }),
+        new LoadModels({ limit: 10 })
+      ])
     );
   }
 

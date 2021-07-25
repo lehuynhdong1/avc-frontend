@@ -1,85 +1,58 @@
 import { Store } from '@ngxs/store';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CarState, LoadApprovedCars } from '@shared/features/car/data-access';
-import { hasValue } from '@shared/util';
-import { StaffState, LoadStaffs } from '@shared/features/staff/data-access';
-import { ManagerState, LoadManagers } from '@shared/features/manager/data-access';
 import { map } from 'rxjs/operators';
-import { AccountReadDtoPagingResponseDto } from '@shared/api';
-import { TuiDay, TuiDayLike, TuiDayRange } from '@taiga-ui/cdk';
-import { DatePipe } from '@angular/common';
-import { FormControl } from '@angular/forms';
+import { WeekDay } from '@angular/common';
+import { of } from 'rxjs';
 
-function toIdAndName({ result }: AccountReadDtoPagingResponseDto) {
-  if (!result) return [];
-  return result.map(({ id, firstName, lastName }) => ({
-    id,
-    name: `${firstName} ${lastName}`
-  }));
-}
+const mockData = {
+  car: { total: 10, deactivated: 3 },
+  manager: { total: 10, deactivated: 3 },
+  staff: { total: 10, deactivated: 3 },
+  issue: { total: 10, deactivated: 3 },
+  topFiveCarIssue: [
+    { id: 1, name: 'Car Superman', issues: [5, 2, 7, 2, 5, 9, 2] },
+    { id: 2, name: 'Car Batman', issues: [2, 2, 5, 7, 2, 8, 2] },
+    { id: 3, name: 'Car Minion', issues: [3, 4, 4, 1, 5, 6, 7] },
+    { id: 4, name: 'Car Flyen', issues: [1, 2, 4, 2, 1, 2, 2] },
+    { id: 5, name: 'Car Calendar', issues: [2, 6, 7, 3, 8, 2, 2] }
+  ],
+  pieChartCar: { total: 10, connecting: 3, disconnected: 2, unapprovedCount: 1 }
+};
 @Component({
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardPage {
-  approvedCars$ = this.store.select(CarState.approvedCars).pipe(
-    hasValue(),
-    map(({ result }) => result?.map(({ createdAt, name }) => ({ createdAt, name })))
-  );
-  managers$ = this.store.select(ManagerState.managers).pipe(hasValue(), map(toIdAndName));
-  staffs$ = this.store.select(StaffState.staffs).pipe(hasValue(), map(toIdAndName));
-
-  data$ = this.store.select(CarState.approvedCars).pipe(
-    hasValue(),
-    map(({ result }) =>
-      result?.map(({ createdAt }) => ({
-        name: this.datePipe.transform(createdAt, 'dd-MM'),
-        series: result?.map(({ name }) => ({ name, value: 2132 }))
-      }))
-    )
-  );
-  readonly value1 = [
-    [1, 50] as const,
-    [2, 75] as const,
-    [3, 50] as const,
-    [4, 150] as const,
-    [5, 155] as const,
-    [6, 190] as const,
-    [7, 90] as const
-  ];
-  readonly value2 = [
-    [1, 50] as const,
-    [2, 90] as const,
-    [3, 45] as const,
-    [4, 100] as const,
-    [5, 120] as const,
-    [6, 90] as const,
-    [7, 155] as const
-  ];
-  readonly value3 = [
-    [1, 75] as const,
-    [2, 35] as const,
-    [3, 100] as const,
-    [4, 190] as const,
-    [5, 168] as const,
-    [6, 90] as const,
-    [7, 110] as const
-  ];
-
-  // options
+  view: [number, number] = [innerWidth / 1.3, 400];
 
   colorScheme = {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 
-  range = new TuiDayRange(TuiDay.currentLocal(), TuiDay.currentLocal().append({ year: 1 }));
-  dateRangeControl = new FormControl(this.range);
+  mockData$ = of(mockData);
 
-  readonly maxLength: TuiDayLike = { month: 12 };
+  topFiveCarIssues$ = this.mockData$.pipe(
+    map(({ topFiveCarIssue }) => {
+      const today = new Date().getDay();
+      return topFiveCarIssue.map((car) => ({
+        ...car,
+        series: car.issues.map((issueCount, index) => ({
+          name: WeekDay[(today + index) % 7],
+          value: issueCount
+        }))
+      }));
+    })
+  );
 
-  constructor(private store: Store, private datePipe: DatePipe) {
-    this.store.dispatch([new LoadApprovedCars(), new LoadManagers({}), new LoadStaffs({})]);
-  }
+  pieChartCar$ = this.mockData$.pipe(
+    map(({ pieChartCar }) => {
+      type Key = 'total' | 'connecting' | 'disconnected' | 'unapprovedCount';
+      return Object.keys(pieChartCar)
+        .filter((key) => key !== 'total')
+        .map((key) => ({ name: key, value: pieChartCar[key as Key] }));
+    })
+  );
+
+  constructor(private store: Store) {}
 }
