@@ -1,10 +1,12 @@
-<ng-container *ngIf="selectedCar$ | async as car; else loading">
+<ng-container
+  *ngIf="{car: selectedCar$ | async, issueLimit: issueLimit$ | async} as view; else loading"
+>
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button defaultHref="car"></ion-back-button>
       </ion-buttons>
-      <ion-title collapse="condense"> {{car.name || 'Detail Car'}} </ion-title>
+      <ion-title collapse="condense"> {{view.car?.name || 'Detail Car'}} </ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content fullscreen="true">
@@ -12,63 +14,72 @@
       <section class="flex items-center text-center">
         <adc-frontend-avatar
           class="tui-space_top-2"
-          [url]="car.image"
+          [url]="view.car?.image"
           placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
           placeholderImageAsset="assets/adc/icons/car-sport-outline.svg#car-sport-outline"
           size="xl"
         ></adc-frontend-avatar>
         <div class="text-left ml-4">
           <span class="text-sm text-gray-600">Name </span>
-          <h2 class="my-0 font-bold">{{ car.name }}</h2>
+          <h2 class="my-0 font-bold">{{ view.car?.name }}</h2>
         </div>
       </section>
       <div class="p-2 relative border border-gray-900"></div>
       <div class="flex justify-between infomation">
         <div class="flex flex-col">
           <span class="text-sm text-gray-600">Device ID</span>
-          <h3 class="max-w-xs">{{ car.deviceId }}</h3>
+          <h3 class="max-w-xs">{{ view.car?.deviceId }}</h3>
           <span class="text-sm text-gray-600">Created at</span>
-          <h3>{{ car.createdAt | date }}</h3>
+          <h3>{{ view.car?.createdAt | date }}</h3>
         </div>
         <div class="flex flex-col">
           <span class="text-sm text-gray-600">Connecting Status</span>
           <tui-badge
             size="m"
-            [value]="car.isConnecting ? 'Connected': 'Disconnected'"
-            [status]="car.isConnecting ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+            [value]="view.car?.isConnecting ? 'Connected': 'Disconnected'"
+            [status]="view.car?.isConnecting ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
             class="self-start mb-2"
           ></tui-badge>
 
           <span class="text-sm text-gray-600">Running Status</span>
           <tui-badge
             size="m"
-            [value]="car.isRunning ? 'Running': 'Stopped'"
-            [status]="car.isRunning ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+            [value]="view.car?.isRunning ? 'Running': 'Stopped'"
+            [status]="view.car?.isRunning ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
             class="self-start mb-2"
           ></tui-badge>
         </div>
       </div>
 
       <span class="text-sm text-gray-600 mb-1">Issues</span>
-      <ng-container *ngIf="(car.issues?.length || 0) > 0; else hasNoIssue">
-        <ion-list>
-          <ion-item
-            *ngFor="let issue of car.issues; trackBy:trackById"
-            button
-            detail
-            lines="none"
-            [routerLink]="['..','issue',issue.id]"
-          >
-            <ion-thumbnail slot="start" class="rounded-md overflow-hidden">
-              <img [src]="issue.image || 'assets/adc/icons/car-sport-outline.svg'" />
-            </ion-thumbnail>
-            <ion-label>
-              <h2 class="!font-semibold text-gray-700">{{issue.type}}</h2>
-              <h3 class="text-gray-600 !mb-0">{{ issue.description }}</h3>
-              <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
-            </ion-label>
-          </ion-item>
+      <ng-container *ngIf="(view.car?.issues?.length || 0) > 0; else hasNoIssue">
+        <ion-list *ngIf="view.car?.issues">
+          <ng-container *ngFor="let issue of view.car?.issues; index as i; trackBy:trackById">
+            <ion-item
+              *ngIf="i < (view.issueLimit || 5)"
+              button
+              detail
+              lines="none"
+              [routerLink]="['..','issue',issue.id]"
+            >
+              <ion-thumbnail slot="start" class="rounded-md overflow-hidden">
+                <img [src]="issue.image || 'assets/adc/icons/car-sport-outline.svg'" />
+              </ion-thumbnail>
+              <ion-label>
+                <h2 class="!font-semibold text-gray-700">{{issue.type}}</h2>
+                <h3 class="text-gray-600 !mb-0">{{ issue.description }}</h3>
+                <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
+              </ion-label>
+            </ion-item>
+          </ng-container>
         </ion-list>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" class="mt-6">
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Fetching more issues..."
+          >
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ng-container>
       <ng-template #hasNoIssue>
         <h3 class="text-gray-600 !my-0">This car has no issue yet.</h3>
@@ -80,10 +91,10 @@
       <ion-button
         (click)="this.toggleRun$.next()"
         expand="block"
-        [color]="car.isConnecting ? (car.isRunning ? 'danger': 'success') : 'danger'"
-        [disabled]="!car.isConnecting"
+        [color]="view.car?.isConnecting ? (view.car?.isRunning ? 'danger': 'success') : 'danger'"
+        [disabled]="!view.car?.isConnecting"
       >
-        {{car.isConnecting ? (car.isRunning ? 'Stop': 'Start') : 'Not connecting'}}
+        {{view.car?.isConnecting ? (view.car?.isRunning ? 'Stop': 'Start') : 'Not connecting'}}
       </ion-button>
     </ion-toolbar>
   </ion-footer>
