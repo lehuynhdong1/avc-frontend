@@ -10,15 +10,10 @@
  * Do not edit the class manually.
  */
 
-export interface ModelReadDto {
-  id?: number;
-  name?: string | null;
-  modelUrl?: string | null;
-  loss?: number | null;
-  map?: number | null;
-  imageCount?: number | null;
-  statisticUrl?: string | null;
-  createdAt?: string;
-  modelStatus?: string | null;
-  isApplying?: boolean;
+export interface PieChartCar {
+  total?: number;
+  unapprovedCount?: number;
+  connecting?: number;
+  disconnected?: number;
+  rejected?: number;
 }

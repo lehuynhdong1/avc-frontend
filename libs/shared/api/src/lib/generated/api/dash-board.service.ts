@@ -23,14 +23,16 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
+import { DashBoardDto } from '../model/models';
+
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
-import { CheckServiceInterface } from './check.serviceInterface';
+import { DashBoardServiceInterface } from './dash-board.serviceInterface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CheckService implements CheckServiceInterface {
+export class DashBoardService implements DashBoardServiceInterface {
   protected basePath = 'http://localhost';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
@@ -100,25 +102,25 @@ export class CheckService implements CheckServiceInterface {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public apiCheckGet(
+  public apiDashboardGet(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: undefined }
-  ): Observable<any>;
-  public apiCheckGet(
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<DashBoardDto>;
+  public apiDashboardGet(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: undefined }
-  ): Observable<HttpResponse<any>>;
-  public apiCheckGet(
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpResponse<DashBoardDto>>;
+  public apiDashboardGet(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: undefined }
-  ): Observable<HttpEvent<any>>;
-  public apiCheckGet(
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
+  ): Observable<HttpEvent<DashBoardDto>>;
+  public apiDashboardGet(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: undefined }
+    options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
     let headers = this.defaultHeaders;
 
@@ -134,7 +136,7 @@ export class CheckService implements CheckServiceInterface {
     let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
     if (httpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = [];
+      const httpHeaderAccepts: string[] = ['text/plain', 'application/json', 'text/json'];
       httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
     if (httpHeaderAcceptSelected !== undefined) {
@@ -146,66 +148,7 @@ export class CheckService implements CheckServiceInterface {
       responseType = 'text';
     }
 
-    return this.httpClient.get<any>(`${this.configuration.basePath}/api/check`, {
-      responseType: <any>responseType,
-      withCredentials: this.configuration.withCredentials,
-      headers: headers,
-      observe: observe,
-      reportProgress: reportProgress
-    });
-  }
-
-  /**
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public apiCheckLogGet(
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: undefined }
-  ): Observable<any>;
-  public apiCheckLogGet(
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: undefined }
-  ): Observable<HttpResponse<any>>;
-  public apiCheckLogGet(
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: undefined }
-  ): Observable<HttpEvent<any>>;
-  public apiCheckLogGet(
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: undefined }
-  ): Observable<any> {
-    let headers = this.defaultHeaders;
-
-    // authentication (Bearer) required
-    if (this.configuration.apiKeys) {
-      const key: string | undefined =
-        this.configuration.apiKeys['Bearer'] || this.configuration.apiKeys['Authorization'];
-      if (key) {
-        headers = headers.set('Authorization', key);
-      }
-    }
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = [];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    let responseType: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType = 'text';
-    }
-
-    return this.httpClient.get<any>(`${this.configuration.basePath}/api/check/log`, {
+    return this.httpClient.get<DashBoardDto>(`${this.configuration.basePath}/api/dashboard`, {
       responseType: <any>responseType,
       withCredentials: this.configuration.withCredentials,
       headers: headers,

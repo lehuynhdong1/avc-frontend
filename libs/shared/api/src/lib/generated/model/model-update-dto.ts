@@ -10,15 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface ModelReadDto {
-  id?: number;
-  name?: string | null;
-  modelUrl?: string | null;
+export interface ModelUpdateDto {
   loss?: number | null;
   map?: number | null;
-  imageCount?: number | null;
   statisticUrl?: string | null;
-  createdAt?: string;
-  modelStatus?: string | null;
-  isApplying?: boolean;
 }

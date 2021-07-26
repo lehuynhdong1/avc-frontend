@@ -9,9 +9,10 @@
       <h1 class="text-xl w-full">Issue Detail</h1>
 
       <tui-avatar
-        class="mb-3"
+        class="mb-3 cursor-pointer"
         [avatarUrl]="issue.image || 'assets/adc/icons/warning.svg'"
         size="xxl"
+        (click)="openImage(template)"
       ></tui-avatar>
       <label>Type</label>
       <h3 class="bold mt-0">{{ issue.type }}</h3>
@@ -31,8 +32,16 @@
       <label>Occured at</label>
       <h3 class="bold mt-0">{{ issue.createdAt | date }}</h3>
     </section>
+    <ng-template #template>
+      <h2 class="bold mt-0">{{issue.type}}</h2>
+      <p class="text-sm text-gray-600">{{ issue.description}}</p>
+      <div class="w-full flex justify-center mb-2">
+        <img [src]="issue.image" alt="" class="rounded" />
+      </div>
+    </ng-template>
   </ng-container>
-  <ng-template #loading>
-    <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
-  </ng-template>
 </aside>
+
+<ng-template #loading>
+  <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
+</ng-template>

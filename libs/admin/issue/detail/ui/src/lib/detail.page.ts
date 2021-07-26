@@ -3,11 +3,13 @@ import { Store, ofActionSuccessful, Actions } from '@ngxs/store';
 import { IssueState, LoadIssueById } from '@shared/features/issue/data-access';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { hasValue, Empty } from '@shared/util';
 import { Title } from '@angular/platform-browser';
 import { CarState, LoadCarById } from '@shared/features/car/data-access';
+import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
+import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
 
 @Component({
   selector: 'adca-detail',
@@ -31,6 +33,7 @@ export class DetailPage {
     private actions: Actions,
     private activatedRoute: ActivatedRoute,
     private state: RxState<Empty>,
+    private dialog: TuiDialogService,
     title: Title
   ) {
     this.state.hold(this.id$, (id) => {
@@ -43,5 +46,9 @@ export class DetailPage {
       this.store.dispatch(new LoadCarById({ id: issue.carId || 0 }))
     );
     this.state.hold(this.selectedIssue$, (issue) => title.setTitle(issue.type + ' | AVC'));
+  }
+
+  openImage(template: PolymorpheusContent<TuiDialogContext>) {
+    this.dialog.open(template, { size: 'l' }).pipe(take(1)).subscribe();
   }
 }

@@ -20,22 +20,24 @@ import { ConfirmDialogService, ConfirmDialogComponentParams } from '@shared/ui/c
 import { LoginState } from '@shared/auth/login/data-access';
 import { SignalRState } from '@shared/features/signalr/data-access';
 
-const getConfirmDialogParams: (
-  type: 'isAvailable' | 'isApproved',
-  isActivated: boolean
-) => ConfirmDialogComponentParams = (type, isActivated) => {
-  const mapper = {
-    isAvailable: ['Activate', 'Deactivate'],
-    isApproved: ['Approve', 'Reject']
-  };
-  return {
-    content: `Do you really want to ${isActivated ? mapper[type][1] : mapper[type][0]} this car?`,
-    buttons: [
-      { id: 1, label: isActivated ? mapper[type][1] : mapper[type][0] },
-      { id: 2, label: 'Cancel', uiOptions: { appearance: TuiAppearance.Outline } }
-    ]
-  };
-};
+const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
+  isActivated
+) => ({
+  content: `Do you really want to ${isActivated ? 'deactivate' : 'activate'} this car?`,
+  buttons: [
+    {
+      id: 1,
+      label: isActivated ? 'Deactivate' : 'Activate'
+    },
+    {
+      id: 2,
+      label: 'Cancel',
+      uiOptions: {
+        appearance: TuiAppearance.Outline
+      }
+    }
+  ]
+});
 @Component({
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
@@ -71,7 +73,6 @@ export class DetailPage {
 
   /* Actions */
   readonly clickActivate$ = new Subject<boolean>();
-  readonly clickApprove$ = new Subject<boolean>();
   readonly selectIssue$ = new Subject<Id>();
 
   /* Side effects */
@@ -85,11 +86,9 @@ export class DetailPage {
   ) {
     this.state.hold(this.id$, (id) => this.store.dispatch(new LoadCarById({ id })));
 
-    this.clickApproveEffects();
     this.clickActivationEffects();
     this.toggleActivationAndApproveSuccessEffects();
     this.toggleActivationFailedEffects();
-    this.toggleApproveSuccessEffects();
     this.selectIssueEffect();
     this.signalrEffect();
   }
@@ -122,46 +121,13 @@ export class DetailPage {
       )
     );
   }
-  private toggleApproveSuccessEffects() {
-    const whenToggleApproveFailed$ = this.actions
-      .pipe<ToggleApprove>(ofActionErrored(ToggleApprove))
-      .pipe(withLatestFrom(this.errorMessage$));
-    this.state.hold(whenToggleApproveFailed$, ([, errorMessage]) =>
-      this.store.dispatch(
-        new ShowNotification({
-          message: errorMessage ?? 'Error',
-          options: { label: errorMessage }
-        })
-      )
-    );
-  }
-  private clickApproveEffects() {
-    const whenClickApprove$ = this.clickApprove$.pipe(
-      switchMap((currentValue) =>
-        this.confirmDialogService
-          .open(
-            currentValue ? 'Reject car' : 'Approve car',
-            getConfirmDialogParams('isApproved', currentValue)
-          )
-          .pipe(
-            filter((response) => response === 1),
-            map(() => currentValue)
-          )
-      ),
-      withLatestFrom(this.id$)
-    );
-
-    this.state.hold(whenClickApprove$, ([currentValue, id]) =>
-      this.store.dispatch(new ToggleApprove({ id, isApproved: !currentValue }))
-    );
-  }
   private clickActivationEffects() {
     const whenClickActivate$ = this.clickActivate$.pipe(
       switchMap((currentValue) =>
         this.confirmDialogService
           .open(
             currentValue ? 'Deactivate car' : 'Activate car',
-            getConfirmDialogParams('isAvailable', currentValue)
+            getConfirmDialogParams(currentValue)
           )
           .pipe(filter((response) => response === 1))
       )

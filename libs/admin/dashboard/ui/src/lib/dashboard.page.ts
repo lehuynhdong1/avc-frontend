@@ -1,58 +1,70 @@
 import { Store } from '@ngxs/store';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { WeekDay } from '@angular/common';
-import { of } from 'rxjs';
+import { DashboardState, LoadDashboard, StateModel } from '@admin/dashboard/data-access';
+import { hasValue } from '@shared/util';
+import { IssueState, LoadIssues } from '@shared/features/issue/data-access';
 
-const mockData = {
-  car: { total: 10, deactivated: 3 },
-  manager: { total: 10, deactivated: 3 },
-  staff: { total: 10, deactivated: 3 },
-  issue: { total: 10, deactivated: 3 },
-  topFiveCarIssue: [
-    { id: 1, name: 'Car Superman', issues: [5, 2, 7, 2, 5, 9, 2] },
-    { id: 2, name: 'Car Batman', issues: [2, 2, 5, 7, 2, 8, 2] },
-    { id: 3, name: 'Car Minion', issues: [3, 4, 4, 1, 5, 6, 7] },
-    { id: 4, name: 'Car Flyen', issues: [1, 2, 4, 2, 1, 2, 2] },
-    { id: 5, name: 'Car Calendar', issues: [2, 6, 7, 3, 8, 2, 2] }
-  ],
-  pieChartCar: { total: 10, connecting: 3, disconnected: 2, unapprovedCount: 1 }
+const pieChartTitleMapper = {
+  connecting: 'Connecting',
+  disconnected: 'Disconnected',
+  rejected: 'Rejected',
+  total: 'Total',
+  unapprovedCount: 'Pending'
 };
+type PieChartKey = keyof typeof pieChartTitleMapper;
+
 @Component({
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardPage {
-  view: [number, number] = [innerWidth / 1.3, 400];
+  viewSize: [number, number] = [innerWidth / 1.3, 400];
+  pieChartViewSize: [number, number] = [((innerWidth / 1.3) * 2) / 3, 400];
+  horizontalChartViewSize: [number, number] = [innerWidth / 1.3, 200];
 
   colorScheme = {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 
-  mockData$ = of(mockData);
+  data$ = this.store.select(DashboardState.dashboard).pipe(hasValue());
+  issues$ = this.store.select(IssueState.issues);
 
-  topFiveCarIssues$ = this.mockData$.pipe(
-    map(({ topFiveCarIssue }) => {
-      const today = new Date().getDay();
-      return topFiveCarIssue.map((car) => ({
-        ...car,
-        series: car.issues.map((issueCount, index) => ({
-          name: WeekDay[(today + index) % 7],
-          value: issueCount
-        }))
+  readonly topFiveCarIssuesMapper = (dashboard: StateModel['dashboard'] | null) => {
+    if (!dashboard) return;
+    const { topFiveCarIssue } = dashboard;
+    const today = new Date().getDay();
+    return topFiveCarIssue?.map((car) => ({
+      ...car,
+      series: car.issues?.map((issueCount, index) => ({
+        name: WeekDay[(today + index) % 7],
+        value: issueCount
+      }))
+    }));
+  };
+
+  readonly pieChartMapper = (dashboard: StateModel['dashboard'] | null) => {
+    if (!dashboard?.pieChartCar) return;
+    const { pieChartCar } = dashboard;
+    return Object.keys(pieChartCar)
+      .filter((key) => key !== 'total')
+      .map((key) => ({
+        name: pieChartTitleMapper[key as PieChartKey],
+        value: pieChartCar[key as PieChartKey]
       }));
-    })
-  );
+  };
 
-  pieChartCar$ = this.mockData$.pipe(
-    map(({ pieChartCar }) => {
-      type Key = 'total' | 'connecting' | 'disconnected' | 'unapprovedCount';
-      return Object.keys(pieChartCar)
-        .filter((key) => key !== 'total')
-        .map((key) => ({ name: key, value: pieChartCar[key as Key] }));
-    })
-  );
+  readonly horizontalChartMapper = (dashboard: StateModel['dashboard'] | null) => {
+    if (!dashboard?.topFiveCarIssue) return;
+    const { topFiveCarIssue } = dashboard;
+    return topFiveCarIssue?.map((car, index) => ({
+      name: `[${index + 1}] ${car.name}`,
+      value: car.issues?.length
+    }));
+  };
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+    this.store.dispatch([new LoadDashboard(), new LoadIssues({ limit: 5 })]);
+  }
 }

@@ -10,15 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface ModelReadDto {
+export interface TopFiveCarIssue {
   id?: number;
   name?: string | null;
-  modelUrl?: string | null;
-  loss?: number | null;
-  map?: number | null;
-  imageCount?: number | null;
-  statisticUrl?: string | null;
-  createdAt?: string;
-  modelStatus?: string | null;
-  isApplying?: boolean;
+  issues?: Array<number> | null;
 }

@@ -3658,6 +3658,43 @@
           }
         }
       }
+    },
+    "admin-dashboard-data-access": {
+      "projectType": "library",
+      "root": "libs/admin/dashboard/data-access",
+      "sourceRoot": "libs/admin/dashboard/data-access/src",
+      "prefix": "adc-frontend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/admin/dashboard/data-access/tsconfig.lib.json",
+            "project": "libs/admin/dashboard/data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/admin/dashboard/data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/dashboard/data-access/src/**/*.ts",
+              "libs/admin/dashboard/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/dashboard/data-access"],
+          "options": {
+            "jestConfig": "libs/admin/dashboard/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

@@ -34,7 +34,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
   form = this.formBuilder.group({
     imageFile: [null],
     name: ['', Validators.required],
-    managedBy: [null]
+    managedBy: [undefined]
   });
 
   idAndDeviceId$ = this.activatedRoute.queryParams.pipe(
@@ -47,6 +47,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
 
   /* Actions */
   readonly clickApprove$ = new Subject<void>();
+  readonly clickReject$ = new Subject<void>();
   readonly clickChangeAvatar$ = new Subject<Event | null>();
   readonly clickDiscard$ = new Subject<void>();
 
@@ -76,6 +77,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
 
   private declareSideEffects() {
     this.clickApproveEffects();
+    this.clickRejectEffects();
     this.clickDiscardEffects();
     this.updateErrorEffects();
     this.updateSuccessEffects();
@@ -146,10 +148,16 @@ export class ApprovePage implements CanShowUnsavedDialog {
           isApproved: true,
           name,
           imageFile,
-          managedBy
+          managedBy: managedBy ?? undefined
         })
       );
     });
+  }
+  private clickRejectEffects() {
+    const whenRejectValid$ = this.clickReject$.pipe(withLatestFrom(this.idAndDeviceId$));
+    this.state.hold(whenRejectValid$, ([, { id }]) =>
+      this.store.dispatch(new ToggleApprove({ id, isApproved: false }))
+    );
   }
 
   private clickDiscardEffects() {

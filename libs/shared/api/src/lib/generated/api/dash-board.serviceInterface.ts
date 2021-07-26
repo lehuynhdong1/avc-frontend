@@ -13,9 +13,11 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
+import { DashBoardDto } from '../model/models';
+
 import { Configuration } from '../configuration';
 
-export interface CheckServiceInterface {
+export interface DashBoardServiceInterface {
   defaultHeaders: HttpHeaders;
   configuration: Configuration;
 
@@ -23,11 +25,5 @@ export interface CheckServiceInterface {
    *
    *
    */
-  apiCheckGet(extraHttpRequestParams?: any): Observable<{}>;
-
-  /**
-   *
-   *
-   */
-  apiCheckLogGet(extraHttpRequestParams?: any): Observable<{}>;
+  apiDashboardGet(extraHttpRequestParams?: any): Observable<DashBoardDto>;
 }

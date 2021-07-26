@@ -151,7 +151,8 @@
       "@mobile/notification/ui": ["libs/mobile/notification/ui/src/index.ts"],
       "@mobile/notification/feature": ["libs/mobile/notification/feature/src/index.ts"],
       "@shared/timeago": ["libs/shared/timeago/src/index.ts"],
-      "@shared/ui/progress-dialog": ["libs/shared/ui/progress-dialog/src/index.ts"]
+      "@shared/ui/progress-dialog": ["libs/shared/ui/progress-dialog/src/index.ts"],
+      "@admin/dashboard/data-access": ["libs/admin/dashboard/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

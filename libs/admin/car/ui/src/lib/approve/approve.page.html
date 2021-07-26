@@ -38,7 +38,7 @@
     </div>
 
     <div class="flex flex-col mb-3">
-      <label>Name </label>
+      <label>Name <span class="text-red-500">*</span></label>
       <tui-input
         tuiTextfieldSize="m"
         [tuiTextfieldCleaner]="true"
@@ -81,12 +81,26 @@
       tuiButton
       (click)="clickApprove$.next()"
       size="m"
+      type="submit"
       [disabled]="form.invalid"
       class="mb-2"
     >
       Approve
     </button>
-    <button tuiButton (click)="clickDiscard$.next()" size="m" appearance="outline">Discard</button>
+
+    <button
+      tuiButton
+      (click)="clickReject$.next()"
+      size="m"
+      type="button"
+      appearance="outline"
+      class="mb-2 danger"
+    >
+      Reject
+    </button>
+    <button tuiButton (click)="clickDiscard$.next()" type="button" size="m" appearance="outline">
+      Discard
+    </button>
   </form>
   <ng-template #loading> Loading </ng-template>
 </aside>
