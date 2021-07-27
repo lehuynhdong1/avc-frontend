@@ -58,10 +58,15 @@ export class DashboardPage {
   readonly horizontalChartMapper = (dashboard: StateModel['dashboard'] | null) => {
     if (!dashboard?.topFiveCarIssue) return;
     const { topFiveCarIssue } = dashboard;
-    return topFiveCarIssue?.map((car, index) => ({
-      name: `[${index + 1}] ${car.name}`,
-      value: car.issues?.length
-    }));
+    return topFiveCarIssue
+      ?.map((car) => ({
+        name: car.name,
+        value: car.issues?.reduce((acc, issueCount) => acc + issueCount)
+      }))
+      .sort(({ value }, { value: nextValue }) => {
+        if (value && nextValue) return nextValue - value;
+        return 0;
+      });
   };
 
   constructor(private store: Store) {

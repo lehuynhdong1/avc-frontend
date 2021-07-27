@@ -1,30 +1,39 @@
 export interface CarConfig {
-  hardwareConfig: HardwareConfig;
-  detectLaneConfig: DetectLaneConfig;
-  speedConfig: SpeedConfig;
+  hardware_config: HardwareConfig;
+  detect_lane_config: DetectLaneConfig;
+  speed_config: SpeedConfig;
+  servo_config: ServoConfig;
 }
 
 export interface DetectLaneConfig {
-  HEIGHT_CENTER_POINT: number;
-  WIDTH_CENTER_POINT: number;
-  LOW_H: number;
-  HIGH_H: number;
+  height_center_point: number;
+  width_center_point: number;
+  low_h: number;
+  high_h: number;
+  threshold_lane_px: number;
 }
 
 export interface HardwareConfig {
-  CAMERA_INDEX: number;
-  MOTOR_PORT: number;
-  SERVO_PORT: number;
-  GPIO_TRIGGER: number;
-  MOTOR_PREPAIR_VALUE: number;
+  camera_index: number;
+  motor_port: number;
+  servo_port: number;
+  trigger_port: number;
+  echo_port: number;
+}
+
+export interface ServoConfig {
+  center_servo: number;
+  range_value: number;
 }
 
 export interface SpeedConfig {
-  SPEED_UP_SPEED_VAL: number;
-  SLOW_DOWN_SPEED_VAL: number;
-  NORMAL_SPEED_VAL: number;
-  PAUSE_SPEED_VAL: number;
-  BACKWARD_SPEED_VAL: number;
+  speed_up_speed_val: number;
+  slow_down_speed_val: number;
+  slow_down_speed_turn: number;
+  normal_speed_val: number;
+  pause_speed_val: number;
+  backward_speed_val: number;
+  motor_prepair_value: number;
 }
 
 const NUMBER_JSON_SCHEMA = {
@@ -33,43 +42,58 @@ const NUMBER_JSON_SCHEMA = {
   readOnly: true,
   additionalProperties: false
 };
+
 export const CAR_CONFIG_SCHEMA = {
   title: 'CAR_CONFIG_SCHEMA',
   description: 'A simple form example.',
   type: 'object',
   additionalProperties: false,
   properties: {
-    hardwareConfig: {
-      title: 'hardwareConfig',
+    hardware_config: {
+      title: 'hardware_config',
       type: 'object',
       additionalProperties: false,
       properties: {
-        CAMERA_INDEX: NUMBER_JSON_SCHEMA,
-        MOTOR_PORT: NUMBER_JSON_SCHEMA,
-        SERVO_PORT: NUMBER_JSON_SCHEMA,
-        GPIO_TRIGGER: NUMBER_JSON_SCHEMA,
-        MOTOR_PREPAIR_VALUE: NUMBER_JSON_SCHEMA
+        camera_index: NUMBER_JSON_SCHEMA,
+        motor_port: NUMBER_JSON_SCHEMA,
+        servo_port: NUMBER_JSON_SCHEMA,
+        trigger_port: NUMBER_JSON_SCHEMA,
+        echo_port: NUMBER_JSON_SCHEMA
       }
     },
-    detectLaneConfig: {
-      title: 'detectLaneConfig',
+    detect_lane_config: {
+      title: 'detect_lane_config',
       type: 'object',
+      additionalProperties: false,
       properties: {
-        HEIGHT_CENTER_POINT: NUMBER_JSON_SCHEMA,
-        WIDTH_CENTER_POINT: NUMBER_JSON_SCHEMA,
-        LOW_H: NUMBER_JSON_SCHEMA,
-        HIGH_H: NUMBER_JSON_SCHEMA
+        height_center_point: NUMBER_JSON_SCHEMA,
+        width_center_point: NUMBER_JSON_SCHEMA,
+        low_h: NUMBER_JSON_SCHEMA,
+        high_h: NUMBER_JSON_SCHEMA,
+        threshold_lane_px: NUMBER_JSON_SCHEMA
       }
     },
-    speedConfig: {
-      title: 'speedConfig',
+    speed_config: {
+      title: 'speed_config',
       type: 'object',
+      additionalProperties: false,
       properties: {
-        SPEED_UP_SPEED_VAL: NUMBER_JSON_SCHEMA,
-        SLOW_DOWN_SPEED_VAL: NUMBER_JSON_SCHEMA,
-        NORMAL_SPEED_VAL: NUMBER_JSON_SCHEMA,
-        PAUSE_SPEED_VAL: NUMBER_JSON_SCHEMA,
-        BACKWARD_SPEED_VAL: NUMBER_JSON_SCHEMA
+        speed_up_speed_val: NUMBER_JSON_SCHEMA,
+        slow_down_speed_val: NUMBER_JSON_SCHEMA,
+        slow_down_speed_turn: NUMBER_JSON_SCHEMA,
+        normal_speed_val: NUMBER_JSON_SCHEMA,
+        pause_speed_val: NUMBER_JSON_SCHEMA,
+        backward_speed_val: NUMBER_JSON_SCHEMA,
+        motor_prepair_value: NUMBER_JSON_SCHEMA
+      }
+    },
+    servo_config: {
+      title: 'servo_config',
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        center_servo: NUMBER_JSON_SCHEMA,
+        range_value: NUMBER_JSON_SCHEMA
       }
     }
   }

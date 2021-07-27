@@ -1,4 +1,4 @@
-import { TuiNotification } from '@taiga-ui/core';
+import { TuiDialogContext, TuiDialogService, TuiNotification } from '@taiga-ui/core';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import {
@@ -10,10 +10,11 @@ import {
 import { TuiStatus } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, withLatestFrom, filter } from 'rxjs/operators';
+import { map, withLatestFrom, filter, take } from 'rxjs/operators';
 import { hasValue, Empty, ShowNotification } from '@shared/util';
 import { Subject } from 'rxjs';
 import { SignalRState } from '@shared/features/signalr/data-access';
+import { PolymorpheusTemplate } from '@tinkoff/ng-polymorpheus';
 
 @Component({
   templateUrl: './detail.page.html',
@@ -37,7 +38,8 @@ export class DetailPage {
     private store: Store,
     private actions: Actions,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Empty>
+    private state: RxState<Empty>,
+    private tuiDialogService: TuiDialogService
   ) {
     state.hold(this.id$, (id) => this.store.dispatch(new LoadModelById({ id })));
     this.state.hold(this.clickApply$.pipe(withLatestFrom(this.id$)), ([, id]) =>
@@ -84,5 +86,9 @@ export class DetailPage {
     this.state.hold(whenCarNotifyMustFetchNewData$, ([, id]) =>
       this.store.dispatch([new LoadModelById({ id })])
     );
+  }
+
+  openLog(template: PolymorpheusTemplate<TuiDialogContext>) {
+    this.tuiDialogService.open(template, { size: 'l' }).pipe(take(1)).subscribe();
   }
 }
