@@ -9,11 +9,13 @@
       <h1 class="text-xl w-full">Issue Detail</h1>
 
       <tui-avatar
-        class="mb-3 cursor-pointer"
+        class="mb-3 cursor-pointer hover:filter hover:drop-shadow-xl hover:brightness-150"
         [avatarUrl]="issue.image || 'assets/adc/icons/warning.svg'"
         size="xxl"
+        title="Click here to expand"
         (click)="openImage(template)"
-      ></tui-avatar>
+      >
+      </tui-avatar>
       <label>Type</label>
       <h3 class="bold mt-0">{{ issue.type }}</h3>
       <label>Description</label>

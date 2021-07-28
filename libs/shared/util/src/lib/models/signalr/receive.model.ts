@@ -16,6 +16,7 @@ export type ReceivedResponses = {
   WhenCarDeactivated: WhenCarDeactivated; // ✅ Manager, Staff
   WhenIssueCreated: WhenIssueCreated; // ✅ Manager, Staff
   WhenModelStatusChanged: WhenModelStatusChanged; // ✅ Admin
+  WhenNewCarRegistered: string; // ✅ Admin
 };
 
 export type ReceivedMethodsKey = keyof ReceivedResponses;
@@ -23,7 +24,7 @@ export type ReceivedMethodsKey = keyof ReceivedResponses;
 export function getReceivedMethods(roleId: RoleNameType): ReadonlyArray<ReceivedMethodsKey> {
   switch (roleId) {
     case RoleName.Admin:
-      return ['WhenModelStatusChanged'];
+      return ['WhenModelStatusChanged', 'WhenNewCarRegistered'];
     case RoleName.Manager:
       return [
         'WhenCarConnected',

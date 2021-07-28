@@ -1,10 +1,6 @@
-<h1 class="flex items-center">
-  <tui-svg
-    src="assets/adc/icons/personCircleOutline.svg#personCircleOutline"
-    class="size-m mr-2"
-  ></tui-svg>
-  <span>My Profile</span>
-</h1>
-<main class="max-w-xs">
-  <adc-frontend-view-profile></adc-frontend-view-profile>
-</main>
+<adc-frontend-view-profile [showChangePasswordButton]="false"></adc-frontend-view-profile>
+<a
+  (click)="clickChangePassword$.next()"
+  class="block text-center text-red-500 font-bold cursor-pointer hover:text-red-600"
+  >Change Password</a
+>

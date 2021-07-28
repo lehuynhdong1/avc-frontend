@@ -37,10 +37,6 @@
       "@shared/auth/login/data-access": ["libs/shared/auth/login/data-access/src/index.ts"],
       "@shared/auth/util": ["libs/shared/auth/util/src/index.ts"],
       "@shared/auth/logout/data-access": ["libs/shared/auth/logout/data-access/src/index.ts"],
-      "@shared/profile/ui": ["libs/shared/profile/ui/src/index.ts"],
-      "@shared/manage-profile/view-profile/ui": [
-        "libs/shared/manage-profile/view-profile/ui/src/index.ts"
-      ],
       "@shared/features/staff/data-access": ["libs/shared/features/staff/data-access/src/index.ts"],
       "@shared/features/car/data-access": ["libs/shared/features/car/data-access/src/index.ts"],
       "@admin/train-model/history/feature": ["libs/admin/train-model/history/feature/src/index.ts"],

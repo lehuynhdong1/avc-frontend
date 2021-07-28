@@ -83,7 +83,7 @@ export class ListingPage {
     private state: RxState<Empty>
   ) {
     state.hold(this.isAdmin$.pipe(filter((isAdmin) => isAdmin)), () =>
-      this.store.dispatch(new LoadUnapprovedCars())
+      this.store.dispatch(new LoadUnapprovedCars({ limit: 50 }))
     );
     this.whenFilterChangedEffects();
     this.whenLoadPageEffects();
@@ -143,5 +143,10 @@ export class ListingPage {
     this.state.hold(whenCarNotifyMustFetchNewData$, ([, searchValue, isAvailable]) =>
       this.store.dispatch([new LoadApprovedCars({ searchValue, isAvailable, limit: 10 })])
     );
+
+    this.store
+      .select(SignalRState.get('WhenNewCarRegistered'))
+      .pipe(hasValue())
+      .subscribe(() => this.store.dispatch(new LoadUnapprovedCars({ limit: 50 })));
   }
 }

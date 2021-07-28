@@ -129,6 +129,11 @@ export class SignalRState {
         if (me.id && params.receiverIdList.includes(me.id))
           patchState({ WhenIssueCreated: params });
       });
+
+    if (receivedMethods.includes('WhenNewCarRegistered'))
+      this.signalr.register('WhenNewCarRegistered', (params) =>
+        patchState({ WhenNewCarRegistered: params })
+      );
   }
 
   @Action(UnregisterAllListeners, { cancelUncompleted: true })

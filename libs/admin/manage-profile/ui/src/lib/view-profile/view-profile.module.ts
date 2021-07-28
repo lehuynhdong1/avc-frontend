@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { ViewProfilePage } from './view-profile.page';
 import { TuiSvgModule } from '@taiga-ui/core';
-import { ViewProfileComponentModule } from '@shared/features/manage-profile/ui';
+import {
+  ViewProfileComponentModule,
+  ChangePasswordComponentModule
+} from '@shared/features/manage-profile/ui';
 
 const tuiModules = [TuiSvgModule];
 
 @NgModule({
-  imports: [ViewProfileComponentModule, tuiModules],
+  imports: [ViewProfileComponentModule, tuiModules, ChangePasswordComponentModule],
   declarations: [ViewProfilePage],
   exports: [ViewProfilePage]
 })

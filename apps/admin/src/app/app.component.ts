@@ -41,7 +41,7 @@ export class AppComponent {
     this.whenCarNotify();
     this.whenBeDeactivated();
     const myId = store.selectSnapshot(LoginState.account)?.id;
-    if (myId) store.dispatch(new StartSignalR());
+    // if (myId) store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {
@@ -196,6 +196,22 @@ export class AppComponent {
         new LoadUnreadCount({ receiverId: me?.id || 0 })
       ]);
     });
+    this.store
+      .select(SignalRState.get('WhenNewCarRegistered'))
+      .pipe(hasValue())
+      .subscribe((message) => {
+        const me = this.store.selectSnapshot(LoginState.account);
+        this.store.dispatch([
+          new ShowNotification({
+            message,
+            options: {
+              label: 'New Car Request',
+              status: TuiNotification.Info
+            }
+          }),
+          new LoadUnreadCount({ receiverId: me?.id || 0 })
+        ]);
+      });
   }
 
   private whenCarNotify() {

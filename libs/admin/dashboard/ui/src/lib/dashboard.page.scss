@@ -1,5 +1,5 @@
 .card {
-  @apply w-1/4 max-w-xs py-3 pl-5 pr-3;
+  @apply w-1/4 max-w-sm py-3 pl-5 pr-3;
   @apply flex flex-col items-center;
   @apply text-gray-700 text-lg;
   @apply border border-solid border-gray-300 rounded-3xl;

@@ -25,7 +25,14 @@ export class DashboardPage {
   horizontalChartViewSize: [number, number] = [innerWidth / 1.3, 200];
 
   colorScheme = {
-    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+    domain: [
+      'var(--tui-support-08)',
+      'var(--tui-support-04)',
+      'var(--tui-support-06)',
+      'var(--tui-support-02)',
+      'var(--tui-support-10)',
+      'var(--tui-support-12)'
+    ]
   };
 
   data$ = this.store.select(DashboardState.dashboard).pipe(hasValue());
