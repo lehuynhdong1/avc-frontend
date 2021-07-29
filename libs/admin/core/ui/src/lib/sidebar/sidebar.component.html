@@ -116,7 +116,7 @@
     <cdk-virtual-scroll-viewport
       tuiScrollable
       [itemSize]="view.notifications?.result?.length"
-      class="h-60 w-80 tui-zero-scrollbar"
+      class="h-80 w-80"
       (scrolledIndexChange)="handler($event)"
     >
       <tui-data-list #list *ngIf="view.notifications?.result?.length; else whenNoNoti">

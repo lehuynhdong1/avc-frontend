@@ -15,7 +15,7 @@
       <tui-svg
         class="mx-1 cursor-pointer text-red-500 hover:text-red-700"
         src="tuiIconRemoveLarge"
-        routerLink="/staff"
+        [routerLink]="(backTo$ | async) || '/staff'"
       ></tui-svg>
     </div>
     <h1>
@@ -25,13 +25,7 @@
     <section class="staff__information">
       <label>Full name</label>
       <h2 class="bold my-0">{{ staff.firstName }} {{ staff.lastName }}</h2>
-      <div class="p-4 relative border border-gray-900">
-        <adc-frontend-avatar
-          class="tui-space_top-2"
-          [url]="staff.avatar || ''"
-          size="xxl"
-        ></adc-frontend-avatar>
-      </div>
+      <adc-frontend-avatar class="my-4" [url]="staff.avatar || ''" size="xxl"></adc-frontend-avatar>
       <!-- <h2 class="bold mt-0">{{ staff.role }}</h2> -->
       <label>Email</label>
       <h3 class="bold mt-0">{{ staff.email }}</h3>
@@ -85,6 +79,7 @@
           [columns]="CAR_DYNAMIC_COLUMNS"
           [array]="staff.assignedCars || []"
           [selectable]="true"
+          [paginable]="true"
           (selectRow)="selectCar$.next($event)"
         ></adc-frontend-dynamic-table>
       </ng-container>
@@ -92,6 +87,10 @@
         <h3 class="mt-0 mb-3">This staff has no car yet.</h3>
       </ng-template>
     </section>
+
+    <div class="px-4 md:w-1/4">
+      <router-outlet></router-outlet>
+    </div>
   </main>
   <ng-template #loading>
     <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>

@@ -3,10 +3,10 @@
     <tui-svg
       class="top-right cursor-pointer text-red-500 hover:text-red-700"
       src="tuiIconRemoveLarge"
-      routerLink="/issue"
+      [routerLink]="(backTo$ | async) || '/issue'"
     ></tui-svg>
     <section class="p-5 flex flex-col">
-      <h1 class="text-xl w-full">Issue Detail</h1>
+      <h1 class="text-xl -mt-2 mb-6 w-full">Issue Detail</h1>
 
       <tui-avatar
         class="mb-3 cursor-pointer hover:filter hover:drop-shadow-xl hover:brightness-150"

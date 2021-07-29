@@ -21,6 +21,7 @@ import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
 export class DetailPage {
   readonly selectedIssue$ = this.store.select(IssueState.selectedIssue).pipe(hasValue());
   readonly selectedCar$ = this.store.select(CarState.selectedCar).pipe(hasValue());
+  readonly backTo$ = this.activatedRoute.queryParams.pipe(map(({ backTo }) => backTo));
   private readonly id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
 
   /* Actions */

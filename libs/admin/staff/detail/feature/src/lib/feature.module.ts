@@ -7,7 +7,18 @@ import { DataAccessModule } from '@shared/features/staff/data-access';
   imports: [
     UiModule,
     DataAccessModule,
-    RouterModule.forChild([{ path: '', pathMatch: 'full', component: DetailPage }])
+    RouterModule.forChild([
+      {
+        path: '',
+        component: DetailPage,
+        children: [
+          {
+            path: 'cars/:id',
+            loadChildren: () => import('@admin/car/feature').then((m) => m.DetailModule)
+          }
+        ]
+      }
+    ])
   ]
 })
 export class FeatureModule {}

@@ -67,7 +67,14 @@ export class DetailPage {
   STAFF_DYNAMIC_COLUMNS: DynamicTableColumns<AccountReadDto> = [
     { key: 'firstName', title: 'Full Name', type: 'string', cellTemplate: '#firstName #lastName' },
     { key: 'email', title: 'Email', type: 'string' },
-    { key: 'phone', title: 'Phone', type: 'string', cellTemplate: '0#phone' }
+    { key: 'phone', title: 'Phone', type: 'string', cellTemplate: '0#phone' },
+    {
+      key: 'isAvailable',
+      title: 'Activation Status',
+      type: 'boolean',
+      trueMessage: 'Active',
+      falseMessage: 'Deactive'
+    }
   ];
   readonly selectedManager$ = this.store.select(ManagerState.selectedManager).pipe(hasValue());
   readonly isFullPage$: Observable<boolean> = this.activatedRoute.data.pipe(
@@ -123,7 +130,21 @@ export class DetailPage {
         );
       }
     );
-    this.state.hold(this.selectStaff$, (id) => router.navigateByUrl('/staff/' + id));
-    this.state.hold(this.selectCar$, (id) => router.navigateByUrl('/car/' + id));
+    this.state.hold(
+      this.selectStaff$.pipe(hasValue(), withLatestFrom(this.id$)),
+      ([staffId, managerId]) =>
+        router.navigate(['staffs', staffId], {
+          relativeTo: this.activatedRoute,
+          queryParams: { backTo: `/manager/detail/${managerId}` }
+        })
+    );
+    this.state.hold(
+      this.selectCar$.pipe(hasValue(), withLatestFrom(this.id$)),
+      ([carId, managerId]) =>
+        router.navigate(['cars', carId], {
+          relativeTo: this.activatedRoute,
+          queryParams: { backTo: `/manager/detail/${managerId}` }
+        })
+    );
   }
 }

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { IssueReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, withLatestFrom, startWith } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Id, DynamicTableColumns } from '@shared/ui/dynamic-table';
 import { Empty, hasValue } from '@shared/util';
@@ -37,7 +37,8 @@ export class ListingPage {
   /* Side effects */
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
     debounceTime(500),
-    distinctUntilChanged()
+    distinctUntilChanged(),
+    startWith('')
   );
 
   constructor(

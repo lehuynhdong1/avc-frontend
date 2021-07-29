@@ -60,6 +60,7 @@ export class DetailPage {
     { key: 'location', title: 'Location', type: 'string' }
   ];
   readonly selectedCar$ = this.store.select(CarState.selectedCar).pipe(hasValue());
+  readonly backTo$ = this.activatedRoute.queryParams.pipe(map(({ backTo }) => backTo));
   readonly isAdmin$ = this.store.select(LoginState.account).pipe(
     map((my) => my?.role === 'Admin'),
     shareReplay(1)
@@ -138,7 +139,14 @@ export class DetailPage {
   }
 
   private selectIssueEffect() {
-    this.state.hold(this.selectIssue$, (id) => this.router.navigateByUrl('/issue/' + id));
+    this.state.hold(
+      this.selectIssue$.pipe(hasValue(), withLatestFrom(this.id$)),
+      ([issueId, carId]) =>
+        this.router.navigate(['issues', issueId], {
+          relativeTo: this.activatedRoute,
+          queryParams: { backTo: `/car/detail/${carId}` }
+        })
+    );
   }
 
   private signalrEffect() {

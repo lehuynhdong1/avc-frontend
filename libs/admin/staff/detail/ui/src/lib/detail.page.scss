@@ -56,7 +56,7 @@ aside {
     }
 
     h1 {
-      @apply text-xl w-full;
+      @apply text-xl w-full -mt-2;
 
       tui-svg {
         @apply hidden;
@@ -74,16 +74,16 @@ aside {
     main {
       @apply p-0;
       h1 {
-        @apply text-2xl;
+        @apply text-2xl mt-4;
         tui-svg {
           @apply inline-block;
         }
       }
       section.staff__information {
-        @apply md:w-1/4;
+        @apply md:w-1/6;
       }
       section.staff__information-extend {
-        @apply md:w-3/4;
+        @apply md:w-1/2 flex-grow max-w-5xl;
       }
     }
   }

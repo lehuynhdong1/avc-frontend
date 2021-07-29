@@ -25,13 +25,11 @@
     <section class="manager__information">
       <label>Full name</label>
       <h2 class="bold my-0">{{ manager.firstName }} {{ manager.lastName }}</h2>
-      <div class="p-4 relative border border-gray-900">
-        <adc-frontend-avatar
-          class="tui-space_top-2"
-          [url]="manager.avatar || ''"
-          size="xxl"
-        ></adc-frontend-avatar>
-      </div>
+      <adc-frontend-avatar
+        class="my-4"
+        [url]="manager.avatar || ''"
+        size="xxl"
+      ></adc-frontend-avatar>
 
       <label>Email</label>
       <h3 class="bold mt-0">{{ manager.email }}</h3>
@@ -84,6 +82,7 @@
           [columns]="CAR_DYNAMIC_COLUMNS"
           [array]="manager.assignedCars || []"
           [selectable]="true"
+          [paginable]="true"
           (selectRow)="selectCar$.next($event)"
         ></adc-frontend-dynamic-table>
       </ng-container>
@@ -99,6 +98,7 @@
           [columns]="STAFF_DYNAMIC_COLUMNS"
           [array]="manager.assignedStaffs || []"
           [selectable]="true"
+          [paginable]="true"
           (selectRow)="selectStaff$.next($event)"
           class="mt-1 mb-3"
         ></adc-frontend-dynamic-table>
@@ -107,6 +107,10 @@
         <h3 class="mt-0 mb-3">This manager has no staffs yet.</h3>
       </ng-template>
     </section>
+
+    <div class="px-4 md:w-1/4">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 
   <ng-template #loading
