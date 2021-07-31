@@ -52,7 +52,7 @@ export const routes: Routes = [
         children: dashboardRoutes,
         canActivate: [AdminGuard]
       },
-      { path: '', pathMatch: 'full', redirectTo: 'dashboard' }
+      { path: '', pathMatch: 'full', children: dashboardRoutes, canActivate: [AdminGuard] }
     ],
     canActivate: [IsLoggedInGuard]
   }

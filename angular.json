@@ -71,6 +71,7 @@
             "assets": [
               "apps/admin/src/favicon.ico",
               "apps/admin/src/assets",
+              "apps/admin/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "node_modules/@taiga-ui/icons/src",
