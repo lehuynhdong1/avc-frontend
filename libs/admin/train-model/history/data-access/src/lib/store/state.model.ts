@@ -7,3 +7,10 @@ export interface StateModel {
   detail?: { model?: ModelReadDto; jobLog?: string };
   errorMessage?: string;
 }
+
+export enum ModelStatus {
+  Queued = 'Queued',
+  Training = 'Training',
+  Succeeded = 'Succeeded',
+  Failed = 'Failed'
+}

@@ -88,7 +88,7 @@ export class TrainHistoryState {
         switchMap((jobId) => this.gitlabApi.getLogByJobId(jobId)),
         tap((log) => patchState({ detail: { ...getState().detail, jobLog: log } })),
         catchError((error) => {
-          console.warn(`[${STATE_NAME}] LoadLogModelById failed with error: `, error);
+          // console.warn(`[${STATE_NAME}] LoadLogModelById failed with error: `, error);
           const errorMessage = 'Load log model failed. Sorry, please try again later.';
           patchState({ errorMessage });
           return throwError(errorMessage);

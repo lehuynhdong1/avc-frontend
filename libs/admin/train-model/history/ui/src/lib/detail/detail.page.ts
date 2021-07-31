@@ -1,5 +1,5 @@
 import { TuiDialogContext, TuiDialogService, TuiNotification } from '@taiga-ui/core';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import {
   TrainHistoryState,
@@ -8,28 +8,47 @@ import {
   LoadModels,
   LoadLogModelById,
   DownloadImages,
-  DownloadLog
+  DownloadLog,
+  ModelStatus
 } from '@admin/train-model/history/data-access';
 import { TuiStatus, TuiMarkerIconMode } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, withLatestFrom, filter, take, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import {
+  map,
+  withLatestFrom,
+  filter,
+  take,
+  switchMap,
+  distinctUntilChanged,
+  startWith
+} from 'rxjs/operators';
 import { hasValue, Empty, ShowNotification } from '@shared/util';
 import { from, Subject, interval } from 'rxjs';
 import { SignalRState } from '@shared/features/signalr/data-access';
 import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
+
+const MODEL_STATUS_COLOR = {
+  Failed: TuiStatus.Error,
+  Succeeded: TuiStatus.Success,
+  Training: TuiStatus.Primary,
+  Queued: TuiStatus.Default
+};
 @Component({
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState]
 })
-export class DetailPage {
-  TUI_STATUS = {
+export class DetailPage implements OnInit {
+  readonly TUI_STATUS = {
     ERROR: TuiStatus.Error,
-    SUCCESS: TuiStatus.Success
+    SUCCESS: TuiStatus.Success,
+    INFO: TuiStatus.Primary,
+    DEFAULT: TuiStatus.Default
   };
-  TUI_MARKER_SUCCESS = TuiMarkerIconMode.Success;
+  readonly TUI_MARKER_SUCCESS = TuiMarkerIconMode.Success;
+  readonly MODEL_STATUS = ModelStatus;
 
   private id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
 
@@ -38,8 +57,8 @@ export class DetailPage {
     hasValue(),
     switchMap((log) =>
       from(import('ansi-to-html')).pipe(
-        map((converterModule: any) => {
-          const converter = new converterModule.default();
+        map((converterModule) => {
+          const converter = new (converterModule as any).default();
           return log
             ? converter.toHtml(log).replace(/<b>/gi, '<b class="text-green-400 mt-2">')
             : '';
@@ -50,6 +69,9 @@ export class DetailPage {
   );
   readonly clickApply$ = new Subject<void>();
 
+  readonly modelStatusMapper = (modelStatus: string) =>
+    MODEL_STATUS_COLOR[modelStatus as ModelStatus];
+
   /* Side effects */
   constructor(
     private store: Store,
@@ -57,16 +79,18 @@ export class DetailPage {
     private activatedRoute: ActivatedRoute,
     private state: RxState<Empty>,
     private tuiDialogService: TuiDialogService
-  ) {
-    state.hold(this.id$, (id) => this.store.dispatch(new LoadModelById({ id })));
+  ) {}
+
+  ngOnInit() {
+    this.state.hold(this.id$, (id) => this.store.dispatch(new LoadModelById({ id })));
     this.state.hold(this.clickApply$.pipe(withLatestFrom(this.id$)), ([, id]) =>
-      store.dispatch(new ApplyModelById({ id }))
+      this.store.dispatch(new ApplyModelById({ id }))
     );
     this.applySuccessEffect();
     this.applyErrorEffect();
     this.signalrEffect();
-    this.loadModelSuccessEffect();
   }
+
   private applySuccessEffect() {
     const whenApplySuccess$ = this.actions.pipe<ApplyModelById>(ofActionSuccessful(ApplyModelById));
     this.state.hold(whenApplySuccess$.pipe(withLatestFrom(this.selectedModel$)), ([, model]) =>
@@ -106,15 +130,14 @@ export class DetailPage {
     );
   }
 
-  private loadModelSuccessEffect() {
-    const whenLoadSuccess$ = this.actions.pipe<LoadModelById>(ofActionSuccessful(LoadModelById));
-    this.state.hold(whenLoadSuccess$, () => this.store.dispatch(new LoadLogModelById()));
-  }
-
   openLog(template: PolymorpheusContent<TuiDialogContext>) {
-    const intervalSubscription = interval(3500).subscribe(() =>
-      this.store.dispatch(new LoadLogModelById())
-    );
+    this.store.dispatch(new LoadLogModelById());
+    const intervalSubscription = interval(3500)
+      .pipe(
+        withLatestFrom(this.selectedModel$),
+        filter(([, { modelStatus }]) => modelStatus === ModelStatus.Training)
+      )
+      .subscribe(() => this.store.dispatch(new LoadLogModelById()));
     this.tuiDialogService
       .open(template, { size: 'page' })
       .pipe(take(1))
