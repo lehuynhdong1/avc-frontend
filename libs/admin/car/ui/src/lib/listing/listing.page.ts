@@ -144,9 +144,9 @@ export class ListingPage {
       this.store.dispatch([new LoadApprovedCars({ searchValue, isAvailable, limit: 10 })])
     );
 
-    this.store
-      .select(SignalRState.get('WhenNewCarRegistered'))
-      .pipe(hasValue())
-      .subscribe(() => this.store.dispatch(new LoadUnapprovedCars({ limit: 50 })));
+    this.state.hold(
+      this.store.select(SignalRState.get('WhenNewCarRegistered')).pipe(hasValue()),
+      () => this.store.dispatch(new LoadUnapprovedCars({ limit: 50 }))
+    );
   }
 }

@@ -4,6 +4,7 @@ import { AuthenticationService, Configuration, RolesService } from '@shared/api'
 import { STATE_NAME, INITIAL_STATE, LoginStateModel } from './login-state.model';
 import { Login, LoadRoles, UpdateProfile, LoadToken } from './login.actions';
 import { catchError, tap } from 'rxjs/operators';
+import { LogoutState } from '@shared/auth/logout/data-access';
 import { throwError } from 'rxjs';
 import { RoleNameType } from '@shared/util';
 
@@ -12,7 +13,7 @@ import { RoleNameType } from '@shared/util';
   defaults: INITIAL_STATE
 })
 @Injectable()
-export class LoginState {
+export class LoginState extends LogoutState {
   @Selector()
   static token({ token }: LoginStateModel) {
     return token;
@@ -34,7 +35,9 @@ export class LoginState {
     private authService: AuthenticationService,
     private rolesService: RolesService,
     private apiConfig: Configuration
-  ) {}
+  ) {
+    super();
+  }
 
   @Action(Login, { cancelUncompleted: true })
   login({ patchState, dispatch }: StateContext<LoginStateModel>, { payload }: Login) {

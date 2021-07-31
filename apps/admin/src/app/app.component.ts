@@ -23,6 +23,7 @@ import { StaffState } from '@shared/features/staff/data-access';
 import { TrainByImagesState } from '@admin/train-model/train-by-images/data-access';
 import { TrainByZipState } from '@admin/train-model/train-by-zip/data-access';
 import { TrainHistoryState } from '@admin/train-model/history/data-access';
+import { CarState } from '@shared/features/car/data-access';
 
 @Component({
   selector: 'adca-root',
@@ -58,22 +59,31 @@ export class AppComponent {
   }
 
   private whenLogoutSuccess(): void {
-    this.actions.pipe<Logout>(ofActionSuccessful(Logout)).subscribe(() => {
-      this.store.dispatch([
-        new StopSignalR(),
-        new StateReset(
-          LoginState,
-          DashboardState,
-          ManagerState,
-          StaffState,
-          TrainByImagesState,
-          TrainByZipState,
-          TrainHistoryState
+    this.actions
+      .pipe<Logout>(ofActionSuccessful(Logout))
+      .pipe(
+        switchMap(() => this.store.dispatch(new StopSignalR())),
+        switchMap(() =>
+          this.store.dispatch([
+            new StateReset(
+              LoginState,
+              DashboardState,
+              ManagerState,
+              StaffState,
+              CarState,
+              TrainByImagesState,
+              TrainByZipState,
+              TrainHistoryState,
+              SignalRState
+            )
+          ])
         )
-      ]);
+      )
+      .subscribe(() => {
+        console.log(localStorage);
 
-      this.router.navigateByUrl('/login');
-    });
+        this.router.navigateByUrl('/login');
+      });
   }
 
   private whenStartSignalRSuccess() {

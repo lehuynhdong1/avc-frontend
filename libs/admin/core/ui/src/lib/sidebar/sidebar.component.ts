@@ -86,11 +86,11 @@ export class SidebarComponent {
 
   toggleNotifications() {
     if (!this.my) return;
-    this.store.dispatch(
-      this.opened
-        ? new LoadUnreadCount({ receiverId: this.my.id || 0 })
-        : new LoadNotifications({ receiverId: this.my.id || 0, limit: 10 })
-    );
+    if (!this.opened)
+      this.store.dispatch([
+        new LoadUnreadCount({ receiverId: this.my.id || 0 }),
+        new LoadNotifications({ receiverId: this.my.id || 0, limit: 10 })
+      ]);
     this.opened = !this.opened;
   }
 

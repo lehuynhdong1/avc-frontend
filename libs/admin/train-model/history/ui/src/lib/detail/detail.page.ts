@@ -13,7 +13,7 @@ import {
 import { TuiStatus, TuiMarkerIconMode } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, withLatestFrom, filter, take, switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
+import { map, withLatestFrom, filter, take, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { hasValue, Empty, ShowNotification } from '@shared/util';
 import { from, Subject, interval } from 'rxjs';
 import { SignalRState } from '@shared/features/signalr/data-access';
