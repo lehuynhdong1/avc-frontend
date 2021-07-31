@@ -107,14 +107,11 @@ export class UpdatePage implements CanShowUnsavedDialog {
   }
 
   private declareUpdateSideEffects() {
-    this.state.hold(this.isAdmin$.pipe(filter((isAdmin) => isAdmin)), () =>
-      this.store.dispatch(new LoadManagers({ isAvailable: true }))
+    this.state.hold(this.isAdmin$.pipe(hasValue()), () =>
+      this.store.dispatch(new LoadManagers({ isAvailable: true, limit: 50 }))
     );
-    this.state.hold(
-      this.isManager$.pipe(
-        filter((isManager) => isManager),
-        () => this.store.dispatch(new LoadStaffs({}))
-      )
+    this.state.hold(this.isManager$.pipe(hasValue()), () =>
+      this.store.dispatch(new LoadStaffs({ limit: 50 }))
     );
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
     this.state.hold(id$, (id) => this.store.dispatch(new LoadCarById({ id })));
@@ -217,7 +214,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
         filter((event) => !!(event?.target as HTMLInputElement)?.files?.length),
         map((event) => (event?.target as HTMLInputElement).files)
       ),
-      (files) => this.form.patchValue({ avatarImage: files && files[0] })
+      (files) => this.form.patchValue({ imageFile: files && files[0] })
     );
   }
 }

@@ -10,6 +10,9 @@ export * from './cars.serviceInterface';
 export * from './check.service';
 import { CheckService } from './check.service';
 export * from './check.serviceInterface';
+export * from './dash-board.service';
+import { DashBoardService } from './dash-board.service';
+export * from './dash-board.serviceInterface';
 export * from './issue.service';
 import { IssueService } from './issue.service';
 export * from './issue.serviceInterface';
@@ -33,6 +36,7 @@ export const APIS = [
   AuthenticationService,
   CarsService,
   CheckService,
+  DashBoardService,
   IssueService,
   IssueTypesService,
   ModelService,

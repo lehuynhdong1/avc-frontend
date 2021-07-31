@@ -15,6 +15,7 @@ import { Observable } from 'rxjs';
 
 import { ModelReadDto } from '../model/models';
 import { ModelReadDtoPagingResponseDto } from '../model/models';
+import { ModelUpdateDto } from '../model/models';
 
 import { Configuration } from '../configuration';
 
@@ -41,8 +42,14 @@ export interface ApiModelIdGetRequestParams {
   id: number;
 }
 
-export interface ApiModelIdSuccessionPutRequestParams {
+export interface ApiModelIdPutRequestParams {
   id: number;
+  modelUpdateDto?: ModelUpdateDto;
+}
+
+export interface ApiModelIdSuccessionPostRequestParams {
+  id: number;
+  modelFile?: Blob;
 }
 
 export interface ApiModelIdTrainningPutRequestParams {
@@ -64,6 +71,12 @@ export interface ModelServiceInterface {
    *
    */
   apiModelApplyingGet(extraHttpRequestParams?: any): Observable<ModelReadDto>;
+
+  /**
+   *
+   *
+   */
+  apiModelApplyingidGet(extraHttpRequestParams?: any): Observable<number>;
 
   /**
    *
@@ -110,8 +123,18 @@ export interface ModelServiceInterface {
    *
    * @param requestParameters
    */
-  apiModelIdSuccessionPut(
-    requestParameters: ApiModelIdSuccessionPutRequestParams,
+  apiModelIdPut(
+    requestParameters: ApiModelIdPutRequestParams,
+    extraHttpRequestParams?: any
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param requestParameters
+   */
+  apiModelIdSuccessionPost(
+    requestParameters: ApiModelIdSuccessionPostRequestParams,
     extraHttpRequestParams?: any
   ): Observable<{}>;
 

@@ -3,7 +3,7 @@ import { tuiPure } from '@taiga-ui/cdk';
 import { RxState } from '@rx-angular/state';
 import { DynamicTableUiState, ColumnType, HasId, Id, PagingResponse } from './models';
 import { Subject } from 'rxjs';
-import { map, filter, pairwise } from 'rxjs/operators';
+import { map, filter, pairwise, tap } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DynamicTableColumns } from './models/ui-state.model';
 import { LoginState } from '@shared/auth/login/data-access';
@@ -31,6 +31,8 @@ export class DynamicTableComponent<T extends HasId> {
   myRole$ = this.store.select(LoginState.account).pipe(map((my) => my?.role));
 
   selectedId$ = this.$.select('selectedId');
+  arrayPageIndex = 0;
+
   readonly selectRow$ = new Subject<Id>();
   readonly selectNextPagination$ = new Subject<number>();
 
@@ -42,7 +44,10 @@ export class DynamicTableComponent<T extends HasId> {
   ) {
     const lastRouteChild = this.activatedRoute.children[this.activatedRoute.children.length - 1];
     if (lastRouteChild) {
-      const idFromRoute$ = lastRouteChild.params.pipe(map((params) => parseInt(params.id)));
+      const idFromRoute$ = lastRouteChild.params.pipe(
+        tap(console.warn),
+        map((params) => parseInt(params.id))
+      );
       this.$.connect('selectedId', idFromRoute$);
     }
     const routerEnd$ = this.router.events.pipe(
@@ -63,7 +68,10 @@ export class DynamicTableComponent<T extends HasId> {
       this.selectRow.emit(id);
     });
     this.$.hold(routerEnd$, () => this.$.set({ selectedId: 0 }));
-    this.$.hold(this.selectNextPagination$, (id) => this.loadPage.emit(id));
+    this.$.hold(this.selectNextPagination$, (index) => {
+      this.loadPage.emit(index);
+      if (this.array && this.paginable) this.arrayPageIndex = index;
+    });
   }
 
   @tuiPure

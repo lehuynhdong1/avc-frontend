@@ -10,9 +10,19 @@
         </ng-container>
       </tr>
     </thead>
-    <tbody tuiTbody [data]="response?.result || array || []">
+    <tbody
+      tuiTbody
+      [data]="
+        response?.result || (paginable && array.slice(arrayPageIndex, arrayPageIndex + 10)) || []
+      "
+    >
       <tr
-        *tuiRow="let item of response?.result || array || []; let index = index"
+        *tuiRow="
+          let item of response?.result ||
+            (paginable && array.slice(arrayPageIndex, arrayPageIndex + 10)) ||
+            [];
+          let index = index
+        "
         tuiTr
         [class.cursor-pointer]="selectable"
         [class.active]="item.id === (selectedId$ | async)"
@@ -20,9 +30,12 @@
       >
         <ng-container *ngIf="indexable">
           <td *tuiCell="'index'" tuiTd>
-            <b>{{
-              (getCurrentPage(response?.previousPage, response?.nextPage) - 1) * 10 + index + 1
-            }}</b>
+            <b>
+              <span *ngIf="response; else arrayIndexing">{{
+                (getCurrentPage(response?.previousPage, response?.nextPage) - 1) * 10 + index + 1
+              }}</span>
+              <ng-template #arrayIndexing>{{ arrayPageIndex * 10 + index + 1 }}</ng-template>
+            </b>
           </td>
         </ng-container>
         <ng-container *ngFor="let column of columns">

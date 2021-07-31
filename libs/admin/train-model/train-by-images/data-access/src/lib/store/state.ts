@@ -139,7 +139,7 @@ export class TrainByImagesState {
   }
 
   @Action(Train)
-  train({ dispatch, getState }: StateContext<StateModel>) {
+  train({ dispatch, getState, patchState }: StateContext<StateModel>) {
     const { zipFile, uploadedImages } = getState();
     const imageCount = uploadedImages.length;
     const now = new Date();
@@ -161,7 +161,8 @@ export class TrainByImagesState {
             zipFile: zip,
             name: `Trained by Images - ${stringifyDate(now)}`
           })
-        )
+        ),
+        tap(() => patchState(INITIAL_STATE))
       );
   }
 }

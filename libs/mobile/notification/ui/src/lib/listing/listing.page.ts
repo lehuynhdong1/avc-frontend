@@ -7,6 +7,7 @@ import { Empty, LoadNotifications, LoadUnreadCount, UtilState, hasValue } from '
 import { ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import { merge } from 'rxjs';
 import { SignalRState } from '@shared/features/signalr/data-access';
+import { take } from 'rxjs/operators';
 
 @Component({
   templateUrl: './listing.page.html',
@@ -18,23 +19,43 @@ export class ListingPage implements ViewWillEnter, ViewWillLeave {
   notifications$ = this.store.select(UtilState.notifications);
   unreadCount$ = this.store.select(UtilState.unreadCount);
 
+  private readonly my = this.store.selectSnapshot(LoginState.account);
+
   constructor(private store: Store, private state: RxState<Empty>) {
     this.whenAnyNotify();
   }
 
   ionViewWillEnter() {
-    const me = this.store.selectSnapshot(LoginState.account);
-    if (!me) return;
+    if (!this.my) return;
     this.store.dispatch([
-      new LoadNotifications({ receiverId: me.id || 0, limit: 100 }),
-      new LoadUnreadCount({ receiverId: me.id || 0 })
+      new LoadNotifications({ receiverId: this.my.id || 0, limit: 10 }),
+      new LoadUnreadCount({ receiverId: this.my.id || 0 })
     ]);
   }
 
   ionViewWillLeave() {
-    const me = this.store.selectSnapshot(LoginState.account);
-    if (!me) return;
-    this.store.dispatch(new LoadUnreadCount({ receiverId: me.id || 0 }));
+    if (!this.my) return;
+    this.store.dispatch(new LoadUnreadCount({ receiverId: this.my.id || 0 }));
+  }
+
+  loadMore(event: Event) {
+    const notifications = this.store.selectSnapshot(UtilState.notifications);
+
+    setTimeout(() => {
+      if (!this.my || !notifications) return;
+      const { nextPageNumber } = notifications;
+      if (!nextPageNumber) (event.target as any).disabled = true;
+
+      this.store
+        .dispatch(
+          new LoadNotifications(
+            { receiverId: this.my.id || 0, limit: 10, page: nextPageNumber || 0 },
+            true
+          )
+        )
+        .pipe(take(1))
+        .subscribe(() => (event.target as any)?.complete());
+    }, 500);
   }
 
   private whenAnyNotify() {

@@ -11,6 +11,5 @@
  */
 
 export interface InlineObject8 {
-  Phone?: string;
-  AvatarImage?: Blob;
+  modelFile?: Blob;
 }

@@ -63,6 +63,7 @@ export class DetailPage {
     }
   ];
   readonly selectedStaff$ = this.store.select(StaffState.selectedStaff).pipe(hasValue());
+  readonly backTo$ = this.activatedRoute.queryParams.pipe(map(({ backTo }) => backTo));
   readonly isFullPage$: Observable<boolean> = this.activatedRoute.data.pipe(
     map(({ fullPage }) => fullPage),
     shareReplay(1)
@@ -129,7 +130,14 @@ export class DetailPage {
         );
       }
     );
-    this.state.hold(this.selectCar$, (id) => router.navigateByUrl('/car/' + id));
+    this.state.hold(
+      this.selectCar$.pipe(hasValue(), withLatestFrom(this.id$)),
+      ([carId, staffId]) =>
+        router.navigate(['cars', carId], {
+          relativeTo: this.activatedRoute,
+          queryParams: { backTo: `/staff/detail/${staffId}` }
+        })
+    );
     this.signalrEffect();
   }
 

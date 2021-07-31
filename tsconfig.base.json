@@ -37,10 +37,6 @@
       "@shared/auth/login/data-access": ["libs/shared/auth/login/data-access/src/index.ts"],
       "@shared/auth/util": ["libs/shared/auth/util/src/index.ts"],
       "@shared/auth/logout/data-access": ["libs/shared/auth/logout/data-access/src/index.ts"],
-      "@shared/profile/ui": ["libs/shared/profile/ui/src/index.ts"],
-      "@shared/manage-profile/view-profile/ui": [
-        "libs/shared/manage-profile/view-profile/ui/src/index.ts"
-      ],
       "@shared/features/staff/data-access": ["libs/shared/features/staff/data-access/src/index.ts"],
       "@shared/features/car/data-access": ["libs/shared/features/car/data-access/src/index.ts"],
       "@admin/train-model/history/feature": ["libs/admin/train-model/history/feature/src/index.ts"],
@@ -150,7 +146,9 @@
       "@shared/ui/error-hint": ["libs/shared/ui/error-hint/src/index.ts"],
       "@mobile/notification/ui": ["libs/mobile/notification/ui/src/index.ts"],
       "@mobile/notification/feature": ["libs/mobile/notification/feature/src/index.ts"],
-      "@shared/timeago": ["libs/shared/timeago/src/index.ts"]
+      "@shared/timeago": ["libs/shared/timeago/src/index.ts"],
+      "@shared/ui/progress-dialog": ["libs/shared/ui/progress-dialog/src/index.ts"],
+      "@admin/dashboard/data-access": ["libs/admin/dashboard/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -6,7 +6,7 @@ import { SelectedLabelImageFile } from '@admin/train-model/train-by-images/util'
 
 @Injectable({ providedIn: 'root' })
 export class ImageDialogService extends AbstractTuiDialogService<SelectedLabelImageFile> {
-  readonly defaultOptions = {
+  readonly defaultOptions: SelectedLabelImageFile = {
     id: 'null',
     name: 'Simple default content',
     adcImage: {

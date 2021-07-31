@@ -11,7 +11,7 @@ aside {
     @apply flex flex-col flex-wrap p-5;
 
     h1 {
-      @apply text-xl w-full;
+      @apply text-xl w-full -mt-2;
     }
   }
 }
@@ -22,4 +22,9 @@ aside {
 
 .openable {
   @apply cursor-pointer hover:text-primary no-underline;
+}
+
+tui-marker-icon {
+  @apply ml-4 cursor-pointer;
+  @apply hover:bg-green-600 hover:bg-opacity-50;
 }

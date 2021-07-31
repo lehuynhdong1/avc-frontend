@@ -39,7 +39,7 @@
     "mobile:deploy:android": "cd apps/mobile/android && ./gradlew assembleDebug",
     "mobile:open:ios": "cd apps/mobile && npx cap open ios",
     "mobile:open:android": "cd apps/mobile && npx cap open android",
-    "mobile:gen:splashscreen": "cd apps/mobile && cordova-res android --resources resources --skip-config --copy  && cordova-res ios --resources resources --skip-config --copy"
+    "mobile:gen:splashscreen": "cd apps/mobile && cordova-res android --resources resources --skip-config --copy  && cordova-res ios --resources resources --skip-config --copy && rm -rf  apps/mobile/resources/android apps/mobile/resources/ios"
   },
   "private": true,
   "dependencies": {
@@ -78,6 +78,7 @@
     "@tinkoff/ng-polymorpheus": "^3.1.8",
     "ang-jsoneditor": "^1.10.5",
     "domino": "^2.1.6",
+    "ansi-to-html": "^0.7.1",
     "file-saver": "^2.0.5",
     "immer": "^3.3.0",
     "jsoneditor": "^9.5.1",

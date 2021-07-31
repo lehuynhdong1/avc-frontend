@@ -17,6 +17,14 @@ import {
 import { defer, from, merge } from 'rxjs';
 import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
+import { StateReset } from 'ngxs-reset-plugin';
+import { DashboardState } from '@admin/dashboard/data-access';
+import { ManagerState } from '@shared/features/manager/data-access';
+import { StaffState } from '@shared/features/staff/data-access';
+import { TrainByImagesState } from '@admin/train-model/train-by-images/data-access';
+import { TrainByZipState } from '@admin/train-model/train-by-zip/data-access';
+import { TrainHistoryState } from '@admin/train-model/history/data-access';
+import { CarState } from '@shared/features/car/data-access';
 
 @Component({
   selector: 'adca-root',
@@ -61,10 +69,31 @@ export class AppComponent {
   }
 
   private whenLogoutSuccess(): void {
-    this.actions.pipe<Logout>(ofActionSuccessful(Logout)).subscribe(() => {
-      this.store.dispatch(new StopSignalR());
-      this.router.navigateByUrl('/login');
-    });
+    this.actions
+      .pipe<Logout>(ofActionSuccessful(Logout))
+      .pipe(
+        switchMap(() => this.store.dispatch(new StopSignalR())),
+        switchMap(() =>
+          this.store.dispatch([
+            new StateReset(
+              LoginState,
+              DashboardState,
+              ManagerState,
+              StaffState,
+              CarState,
+              TrainByImagesState,
+              TrainByZipState,
+              TrainHistoryState,
+              SignalRState
+            )
+          ])
+        )
+      )
+      .subscribe(() => {
+        console.log(localStorage);
+
+        this.router.navigateByUrl('/login');
+      });
   }
 
   private whenStartSignalRSuccess() {
@@ -206,6 +235,22 @@ export class AppComponent {
         new LoadUnreadCount({ receiverId: me?.id || 0 })
       ]);
     });
+    this.store
+      .select(SignalRState.get('WhenNewCarRegistered'))
+      .pipe(hasValue())
+      .subscribe((message) => {
+        const me = this.store.selectSnapshot(LoginState.account);
+        this.store.dispatch([
+          new ShowNotification({
+            message,
+            options: {
+              label: 'New Car Request',
+              status: TuiNotification.Info
+            }
+          }),
+          new LoadUnreadCount({ receiverId: me?.id || 0 })
+        ]);
+      });
   }
 
   private whenCarNotify() {

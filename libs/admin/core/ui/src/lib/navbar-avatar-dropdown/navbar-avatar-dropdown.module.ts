@@ -9,12 +9,13 @@ import {
 } from '@taiga-ui/core';
 import { AvatarModule } from '@shared/ui/avatar';
 import { RouterModule } from '@angular/router';
+import { ViewProfileModule } from '@admin/manage-profile/feature';
 
 const tuiModules = [TuiHostedDropdownModule, TuiDataListModule, TuiButtonModule, TuiDialogModule];
 
 @NgModule({
   declarations: [NavbarAvatarDropdownComponent],
-  imports: [CommonModule, AvatarModule, RouterModule, tuiModules],
+  imports: [CommonModule, AvatarModule, RouterModule, tuiModules, ViewProfileModule],
   exports: [NavbarAvatarDropdownComponent]
 })
 export class NavbarAvatarDropdownModule {}

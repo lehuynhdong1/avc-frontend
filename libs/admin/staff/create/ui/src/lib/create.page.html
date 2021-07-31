@@ -104,6 +104,23 @@
       </tui-input-password>
     </div>
 
+    <div class="flex flex-col mb-4">
+      <label>Confirm Password <span class="text-red-500">*</span></label>
+      <tui-input-password
+        tuiTextfieldSize="m"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldExampleText="Confirm password here..."
+        [tuiHintContent]="confirmedPasswordInfo"
+        tuiHintDirection="top-right"
+        formControlName="confirmedPassword"
+      >
+        <span class="text-gray-300">
+          Confirm password here
+          <tui-svg src="tuiIconEdit"></tui-svg>
+        </span>
+      </tui-input-password>
+    </div>
+
     <div class="flex flex-col mb-3">
       <label>Phone</label>
       <tui-input-phone
@@ -194,4 +211,53 @@
     [errors]="this.form.get('password')?.errors"
     [errorChecks]="{minlength: true, maxlength: true}"
   ></adc-frontend-error-hint>
+</ng-template>
+
+<ng-template #confirmedPasswordInfo>
+  <section class="flex flex-col flex-wrap">
+    <div>
+      <tui-svg
+        [src]="
+          form?.get('confirmedPassword')?.errors?.required ||
+          form?.get('confirmedPassword')?.errors?.minlength
+            ? 'tuiIconCloseCircleLarge'
+            : 'tuiIconCheckCircleLarge'
+        "
+        class="size-s text-green-300"
+        [class.text-red-300]="
+          form?.get('confirmedPassword')?.errors?.required ||
+          form?.get('confirmedPassword')?.errors?.minlength
+        "
+      ></tui-svg>
+      Confirm password has 6 characters at least.
+    </div>
+    <div>
+      <tui-svg
+        [src]="
+          form?.get('confirmedPassword')?.errors?.required ||
+          form?.get('confirmedPassword')?.errors?.maxlength
+            ? 'tuiIconCloseCircleLarge'
+            : 'tuiIconCheckCircleLarge'
+        "
+        class="size-s text-green-300"
+        [class.text-red-300]="
+          form?.get('confirmedPassword')?.errors?.required ||
+          form?.get('confirmedPassword')?.errors?.maxlength
+        "
+      ></tui-svg>
+      Confirm password has 16 characters at max.
+    </div>
+    <div>
+      <tui-svg
+        [src]="
+          form?.get('confirmedPassword')?.errors?.isMatching === false
+            ? 'tuiIconCloseCircleLarge'
+            : 'tuiIconCheckCircleLarge'
+        "
+        class="size-s text-green-300"
+        [class.text-red-300]="form?.get('confirmedPassword')?.errors?.isMatching === false"
+      ></tui-svg>
+      Confirm password matches the new password.
+    </div>
+  </section>
 </ng-template>

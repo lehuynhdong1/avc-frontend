@@ -3,16 +3,19 @@
     <tui-svg
       class="top-right cursor-pointer text-red-500 hover:text-red-700"
       src="tuiIconRemoveLarge"
-      routerLink="/issue"
+      [routerLink]="(backTo$ | async) || '/issue'"
     ></tui-svg>
     <section class="p-5 flex flex-col">
-      <h1 class="text-xl w-full">Issue Detail</h1>
+      <h1 class="text-xl -mt-2 mb-6 w-full">Issue Detail</h1>
 
       <tui-avatar
-        class="mb-3"
+        class="mb-3 cursor-pointer hover:filter hover:drop-shadow-xl hover:brightness-150"
         [avatarUrl]="issue.image || 'assets/adc/icons/warning.svg'"
         size="xxl"
-      ></tui-avatar>
+        title="Click here to expand"
+        (click)="openImage(template)"
+      >
+      </tui-avatar>
       <label>Type</label>
       <h3 class="bold mt-0">{{ issue.type }}</h3>
       <label>Description</label>
@@ -31,8 +34,16 @@
       <label>Occured at</label>
       <h3 class="bold mt-0">{{ issue.createdAt | date }}</h3>
     </section>
+    <ng-template #template>
+      <h2 class="bold mt-0">{{issue.type}}</h2>
+      <p class="text-sm text-gray-600">{{ issue.description}}</p>
+      <div class="w-full flex justify-center mb-2">
+        <img [src]="issue.image" alt="" class="rounded" />
+      </div>
+    </ng-template>
   </ng-container>
-  <ng-template #loading>
-    <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
-  </ng-template>
 </aside>
+
+<ng-template #loading>
+  <div class="h-full flex justify-center items-center"><tui-loader></tui-loader></div>
+</ng-template>

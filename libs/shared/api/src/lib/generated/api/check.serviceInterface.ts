@@ -24,4 +24,10 @@ export interface CheckServiceInterface {
    *
    */
   apiCheckGet(extraHttpRequestParams?: any): Observable<{}>;
+
+  /**
+   *
+   *
+   */
+  apiCheckLogGet(extraHttpRequestParams?: any): Observable<{}>;
 }

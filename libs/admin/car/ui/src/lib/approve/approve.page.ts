@@ -19,17 +19,6 @@ import { TuiMarkerIconMode } from '@taiga-ui/kit';
 import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-access';
 import { ManagerState, LoadManagers } from '@shared/features/manager/data-access';
 
-/*
-export interface ApiCarsIdApprovementPutRequestParams {
-  id: number;
-  isApproved: boolean;
-  imageFile?: Blob;
-  name?: string;
-  configFile?: Blob;
-  managedBy?: number;
-}
-*/
-
 @Component({
   templateUrl: './approve.page.html',
   styleUrls: ['./approve.page.scss'],
@@ -45,7 +34,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
   form = this.formBuilder.group({
     imageFile: [null],
     name: ['', Validators.required],
-    managedBy: [null]
+    managedBy: [undefined]
   });
 
   idAndDeviceId$ = this.activatedRoute.queryParams.pipe(
@@ -58,6 +47,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
 
   /* Actions */
   readonly clickApprove$ = new Subject<void>();
+  readonly clickReject$ = new Subject<void>();
   readonly clickChangeAvatar$ = new Subject<Event | null>();
   readonly clickDiscard$ = new Subject<void>();
 
@@ -87,6 +77,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
 
   private declareSideEffects() {
     this.clickApproveEffects();
+    this.clickRejectEffects();
     this.clickDiscardEffects();
     this.updateErrorEffects();
     this.updateSuccessEffects();
@@ -131,7 +122,7 @@ export class ApprovePage implements CanShowUnsavedDialog {
         filter((event) => !!(event?.target as HTMLInputElement)?.files?.length),
         map((event) => (event?.target as HTMLInputElement).files)
       ),
-      (files) => this.form.patchValue({ avatarImage: files && files[0] })
+      (files) => this.form.patchValue({ imageFile: files && files[0] })
     );
   }
 
@@ -157,10 +148,16 @@ export class ApprovePage implements CanShowUnsavedDialog {
           isApproved: true,
           name,
           imageFile,
-          managedBy
+          managedBy: managedBy ?? undefined
         })
       );
     });
+  }
+  private clickRejectEffects() {
+    const whenRejectValid$ = this.clickReject$.pipe(withLatestFrom(this.idAndDeviceId$));
+    this.state.hold(whenRejectValid$, ([, { id }]) =>
+      this.store.dispatch(new ToggleApprove({ id, isApproved: false }))
+    );
   }
 
   private clickDiscardEffects() {

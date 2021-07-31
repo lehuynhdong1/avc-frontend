@@ -10,6 +10,7 @@ import {
 import { DataAccessModule as LogoutDataAccessModule } from '@shared/auth/logout/data-access';
 import { DataAccessModule as SignalRDataAccessModule } from '@shared/features/signalr/data-access';
 import { DataAccessModule as CarDataAccessModule } from '@shared/features/car/data-access';
+import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 
 const featureStates = [
   LoginDataAccessModule,
@@ -22,8 +23,13 @@ export function StateManagementModulesWithConfig(config: AppConfig) {
   return [
     NgxsModule.forRoot([], { developmentMode: !config.production }),
     NgxsStoragePluginModule.forRoot({ key: [LoginState] }),
-    NgxsLoggerPluginModule.forRoot({ disabled: config.production }),
-    NgxsReduxDevtoolsPluginModule.forRoot({ disabled: config.production }),
+    NgxsResetPluginModule.forRoot(),
+    config.production
+      ? []
+      : [
+          NgxsLoggerPluginModule.forRoot({ disabled: config.production }),
+          NgxsReduxDevtoolsPluginModule.forRoot({ disabled: config.production })
+        ],
     ...featureStates
   ];
 }

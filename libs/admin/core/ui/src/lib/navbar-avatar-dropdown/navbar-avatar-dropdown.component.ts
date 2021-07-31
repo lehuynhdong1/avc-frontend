@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { loader } from './transloco.loader';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { Store, Select } from '@ngxs/store';
-import { TuiAppearance } from '@taiga-ui/core';
+import { TuiAppearance, TuiDialogService } from '@taiga-ui/core';
 import { filter, switchMap } from 'rxjs/operators';
 import { Logout } from '@shared/auth/logout/data-access';
 import { LoginState, LoginStateModel } from '@shared/auth/login/data-access';
@@ -10,6 +10,8 @@ import { Observable, Subject } from 'rxjs';
 import { ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
 import { RxState } from '@rx-angular/state';
 import { ConfirmDialogService } from '@shared/ui/confirm-dialog';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { ViewProfilePage } from '@admin/manage-profile/ui';
 
 const confirmDialogParams: ConfirmDialogComponentParams = {
   content: 'Do you really want to log out?',
@@ -36,32 +38,40 @@ const confirmDialogParams: ConfirmDialogComponentParams = {
 })
 export class NavbarAvatarDropdownComponent {
   @Select(LoginState.account) me$: Observable<LoginStateModel['account']>;
-  readonly items = [
-    {
-      title: 'Profile',
-      link: 'profile'
-    }
-  ];
+  readonly items = [{ title: 'Profile', link: 'profile' }];
 
   /* Actions */
   readonly clickLogout$ = new Subject();
-
-  /* Side effects */
-  private openConfirmDialog$ = this.confirmDialog.open('Log out confirmation', confirmDialogParams);
-  private whenConfirmDialogOk$ = this.openConfirmDialog$.pipe(filter((response) => response === 1));
-  private whenClickLogout$ = this.clickLogout$.pipe(switchMap(() => this.whenConfirmDialogOk$));
+  readonly clickProfile$ = new Subject();
 
   constructor(
     private store: Store,
     private state: RxState<never>,
-    private confirmDialog: ConfirmDialogService
+    private confirmDialog: ConfirmDialogService,
+    private dialogService: TuiDialogService,
+    private injector: Injector
   ) {
     this.declareSideEffects();
   }
 
   private declareSideEffects() {
-    this.state.hold(this.whenClickLogout$, () => {
-      this.store.dispatch(new Logout());
-    });
+    const whenClickLogout$ = this.clickLogout$.pipe(
+      switchMap(() =>
+        this.confirmDialog
+          .open('Log out confirmation', confirmDialogParams)
+          .pipe(filter((response) => response === 1))
+      )
+    );
+    this.state.hold(whenClickLogout$, () => this.store.dispatch(new Logout()));
+
+    const whenClickProfile$ = this.clickProfile$.pipe(
+      switchMap(() =>
+        this.dialogService.open<number>(new PolymorpheusComponent(ViewProfilePage, this.injector), {
+          label: 'My Profile',
+          size: 's'
+        })
+      )
+    );
+    this.state.hold(whenClickProfile$);
   }
 }

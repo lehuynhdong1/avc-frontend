@@ -1,71 +1,82 @@
 import { Store } from '@ngxs/store';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CarState, LoadApprovedCars } from '@shared/features/car/data-access';
+import { WeekDay } from '@angular/common';
+import { DashboardState, LoadDashboard, StateModel } from '@admin/dashboard/data-access';
 import { hasValue } from '@shared/util';
-import { StaffState, LoadStaffs } from '@shared/features/staff/data-access';
-import { ManagerState, LoadManagers } from '@shared/features/manager/data-access';
-import { map } from 'rxjs/operators';
-import { AccountReadDtoPagingResponseDto } from '@shared/api';
-import { TuiDay, TuiDayLike, TuiDayRange } from '@taiga-ui/cdk';
-import { DatePipe } from '@angular/common';
-import { FormControl } from '@angular/forms';
+import { IssueState, LoadIssues } from '@shared/features/issue/data-access';
 
-function toIdAndName({ result }: AccountReadDtoPagingResponseDto) {
-  if (!result) return [];
-  return result.map(({ id, firstName, lastName }) => ({
-    id,
-    name: `${firstName} ${lastName}`
-  }));
-}
+const pieChartTitleMapper = {
+  connecting: 'Connecting',
+  disconnected: 'Disconnected',
+  rejected: 'Rejected',
+  total: 'Total',
+  unapprovedCount: 'Pending'
+};
+type PieChartKey = keyof typeof pieChartTitleMapper;
+
 @Component({
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardPage {
-  approvedCars$ = this.store.select(CarState.approvedCars).pipe(
-    hasValue(),
-    map(({ result }) => result?.map(({ createdAt, name }) => ({ createdAt, name })))
-  );
-  managers$ = this.store.select(ManagerState.managers).pipe(hasValue(), map(toIdAndName));
-  staffs$ = this.store.select(StaffState.staffs).pipe(hasValue(), map(toIdAndName));
-
-  data$ = this.store.select(CarState.approvedCars).pipe(
-    hasValue(),
-    map(({ result }) =>
-      result?.map(({ createdAt }) => ({
-        name: this.datePipe.transform(createdAt, 'dd-MM'),
-        series: result?.map(({ name }) => ({ name, value: 2132 }))
-      }))
-    )
-  );
-  readonly value = [
-    [1, 50] as const,
-    [2, 75] as const,
-    [3, 50] as const,
-    [4, 150] as const,
-    [5, 155] as const,
-    [6, 190] as const,
-    [7, 90] as const
-  ];
-
-  // options
+  viewSize: [number, number] = [innerWidth / 1.3, 400];
+  pieChartViewSize: [number, number] = [((innerWidth / 1.3) * 2) / 3, 400];
+  horizontalChartViewSize: [number, number] = [innerWidth / 1.3, 200];
 
   colorScheme = {
-    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+    domain: [
+      'var(--tui-support-08)',
+      'var(--tui-support-04)',
+      'var(--tui-support-06)',
+      'var(--tui-support-02)',
+      'var(--tui-support-10)',
+      'var(--tui-support-12)'
+    ]
   };
 
-  range = new TuiDayRange(TuiDay.currentLocal(), TuiDay.currentLocal().append({ year: 1 }));
-  dateRangeControl = new FormControl(this.range);
+  data$ = this.store.select(DashboardState.dashboard).pipe(hasValue());
+  issues$ = this.store.select(IssueState.issues);
 
-  readonly maxLength: TuiDayLike = { month: 12 };
+  readonly topFiveCarIssuesMapper = (dashboard: StateModel['dashboard'] | null) => {
+    if (!dashboard) return;
+    const { topFiveCarIssue } = dashboard;
+    const today = new Date().getDay();
+    return topFiveCarIssue?.map((car) => ({
+      ...car,
+      series: car.issues?.map((issueCount, index) => ({
+        name: WeekDay[(today + index) % 7],
+        value: issueCount
+      }))
+    }));
+  };
 
-  constructor(private store: Store, private datePipe: DatePipe) {
-    this.store.dispatch([new LoadApprovedCars(), new LoadManagers({}), new LoadStaffs({})]);
-  }
+  readonly pieChartMapper = (dashboard: StateModel['dashboard'] | null) => {
+    if (!dashboard?.pieChartCar) return;
+    const { pieChartCar } = dashboard;
+    return Object.keys(pieChartCar)
+      .filter((key) => key !== 'total')
+      .map((key) => ({
+        name: pieChartTitleMapper[key as PieChartKey],
+        value: pieChartCar[key as PieChartKey]
+      }));
+  };
 
-  onSelect(data: string): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  readonly horizontalChartMapper = (dashboard: StateModel['dashboard'] | null) => {
+    if (!dashboard?.topFiveCarIssue) return;
+    const { topFiveCarIssue } = dashboard;
+    return topFiveCarIssue
+      ?.map((car) => ({
+        name: car.name,
+        value: car.issues?.reduce((acc, issueCount) => acc + issueCount)
+      }))
+      .sort(({ value }, { value: nextValue }) => {
+        if (value && nextValue) return nextValue - value;
+        return 0;
+      });
+  };
+
+  constructor(private store: Store) {
+    this.store.dispatch([new LoadDashboard(), new LoadIssues({ limit: 5 })]);
   }
 }

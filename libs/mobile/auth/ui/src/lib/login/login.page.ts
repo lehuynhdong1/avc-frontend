@@ -11,7 +11,8 @@ import { ShowNotification } from '@shared/util';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginPage {
-  defaultInfo: Login['payload']['params'] = { email: 'isaac.ngo@gmail.com', password: '123123' };
+  // defaultInfo: Login['payload']['params'] = { email: 'isaac.ngo@gmail.com', password: '123123' };
+  defaultInfo: Login['payload']['params'] = { email: '', password: '' };
 
   constructor(private store: Store, private router: Router) {}
 

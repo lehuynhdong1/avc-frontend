@@ -41,6 +41,10 @@ export class CreatePage implements CanShowUnsavedDialog {
   readonly form = this.formBuilder.group({
     firstName: ['', Validators.required],
     password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]],
+    confirmedPassword: [
+      '',
+      [Validators.required, Validators.minLength(6), Validators.maxLength(16)]
+    ],
     email: ['', Validators.required],
     lastName: ['', Validators.required],
     avatarImage: [null],

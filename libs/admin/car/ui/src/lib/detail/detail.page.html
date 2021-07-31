@@ -15,7 +15,7 @@
       <tui-svg
         class="mx-1 cursor-pointer text-red-500 hover:text-red-700"
         src="tuiIconRemoveLarge"
-        routerLink="/car"
+        [routerLink]="(backTo$ | async) || '/car'"
       ></tui-svg>
     </div>
     <main>
@@ -70,9 +70,7 @@
 
         <b class="text-gray-600">Created at</b>
         <h3 class="mt-0 mb-3">{{ car.createdAt | date }}</h3>
-      </section>
 
-      <section class="car__information-extend">
         <b class="text-gray-600 mb-1">Connecting Status: </b>
         <tui-badge
           size="l"
@@ -82,27 +80,6 @@
         ></tui-badge>
 
         <ng-container *ngIf="isAdmin$ | async">
-          <div class="flex flex-col mb-3">
-            <b class="text-gray-600 mb-1">Approved Status</b>
-            <div class="self-start">
-              <tui-badge
-                size="l"
-                [value]="car.isApproved === (null || undefined) ? 'Pending' : car.isApproved ? 'Approved' : 'Rejected'"
-                [status]="car.isApproved === (null || undefined) ? TUI_STATUS.PRIMARY : car.isApproved ? TUI_STATUS.SUCCESS : TUI_STATUS.WARNING"
-                class="mr-2"
-              ></tui-badge>
-              <button
-                tuiButton
-                size="s"
-                appearance="outline"
-                type="button"
-                (click)="clickApprove$.next(car.isApproved || false)"
-                [class.deactivate]="car.isApproved"
-              >
-                {{ car.isApproved ? 'Reject' : 'Approve'}}
-              </button>
-            </div>
-          </div>
           <b class="text-gray-600 mb-1">Activation Status</b>
           <div class="self-start mb-3">
             <tui-badge
@@ -124,13 +101,13 @@
           </div>
         </ng-container>
       </section>
-
       <section class="car__information-table" *ngIf="(isFullPage$ | async) === true">
         <b class="text-gray-600 mb-1">Issues</b>
         <adc-frontend-dynamic-table
           *ngIf="car.issues; else carHasNoIssue"
           [columns]="DYNAMIC_COLUMNS"
           [array]="car.issues || []"
+          [paginable]="true"
           [selectable]="true"
           (selectRow)="selectIssue$.next($event)"
         ></adc-frontend-dynamic-table>
@@ -138,6 +115,9 @@
           <h3 class="mt-0 mb-3">This car has no issues yet.</h3>
         </ng-template>
       </section>
+      <div class="px-4">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </ng-container>
   <ng-template #loading> <tui-loader></tui-loader> </ng-template>

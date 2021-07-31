@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, withLatestFrom, filter } from 'rxjs/operators';
 import { hasValue, Empty } from '@shared/util';
 import { IssueReadDto } from '@shared/api';
-import { Subject, merge } from 'rxjs';
+import { Subject, merge, BehaviorSubject } from 'rxjs';
 
 @Component({
   templateUrl: './detail.page.html',
@@ -26,10 +26,12 @@ export class DetailPage {
 
   private id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
   readonly selectedCar$ = this.store.select(CarState.selectedCar).pipe(hasValue());
-  // private readonly errorMessage$ = this.store.select(CarState.errorMessage).pipe(hasValue());
 
   /* Actions */
   toggleRun$ = new Subject<void>();
+
+  private issueLimitSubject = new BehaviorSubject(5);
+  issueLimit$ = this.issueLimitSubject.asObservable();
 
   constructor(
     private store: Store,
@@ -94,5 +96,18 @@ export class DetailPage {
       })
     );
     this.state.hold(whenCarNotifyMustBack$, () => this.router.navigateByUrl('/car'));
+  }
+
+  loadMore(event: Event) {
+    const car = this.store.selectSnapshot(CarState.selectedCar);
+    const currentLimit = this.issueLimitSubject.value;
+    if (!car?.issues?.length) return;
+    if (currentLimit >= car.issues.length) {
+      (event.target as any).disabled = true;
+    }
+    setTimeout(() => {
+      this.issueLimitSubject.next(currentLimit + 5);
+      (event.target as any)?.complete();
+    }, 1000);
   }
 }

@@ -47,32 +47,33 @@
   </ng-template>
 
   <ng-template #dropdownContent>
-    <tui-data-list #list *ngIf="view.notifications?.result?.length; else whenNoNoti">
-      <ng-container *ngFor="let item of view.notifications?.result">
-        <button tuiOption [value]="item.type" size="s" class="space-x-2 !py-2">
-          <div class="max-w-18rem flex justify-between items-center">
-            <img
-              *ngIf="item | notificationIcon as iconSrc"
-              [src]="iconSrc"
-              class="w-8 h-8 p-1 -ml-1 mr-2 border border-solid border-primary rounded-full"
-              [class.border-red-500]="iconSrc.includes('error')"
-              [class.border-green-500]="iconSrc.includes('success')"
-            />
-            <section class="flex-grow flex flex-col">
-              <span class="text-sm">{{ item.message }}</span>
-              <span class="text-xs text-gray-500">{{ item.createdAt | timeago }}</span>
-            </section>
-            <tui-svg src="tuiIconCommentLarge" *ngIf="!item.isRead"></tui-svg>
-          </div>
-          <!-- <tui-avatar
-            class="avatar"
-            [autoColor]="true"
-            size="m"
-            [avatarUrl]="getIcon(item.type)"
-          ></tui-avatar> -->
-        </button>
-      </ng-container>
-    </tui-data-list>
+    <cdk-virtual-scroll-viewport
+      tuiScrollable
+      [itemSize]="view.notifications?.result?.length"
+      class="h-60 w-80 tui-zero-scrollbar"
+      (scrolledIndexChange)="handler($event)"
+    >
+      <tui-data-list #list *ngIf="view.notifications?.result?.length; else whenNoNoti">
+        <ng-container *cdkVirtualFor="let item of view.notifications?.result">
+          <button tuiOption [value]="item.type" size="s" class="space-x-2 !py-2">
+            <div class="max-w-18rem flex justify-between items-center">
+              <img
+                *ngIf="item | notificationIcon as iconSrc"
+                [src]="iconSrc"
+                class="w-8 h-8 p-1 -ml-1 mr-2 border border-solid border-primary rounded-full"
+                [class.border-red-500]="iconSrc.includes('error')"
+                [class.border-green-500]="iconSrc.includes('success')"
+              />
+              <section class="flex-grow flex flex-col">
+                <span class="text-sm">{{ item.message }}</span>
+                <span class="text-xs text-gray-500">{{ item.createdAt | timeago }}</span>
+              </section>
+              <tui-svg src="tuiIconCommentLarge" *ngIf="!item.isRead"></tui-svg>
+            </div>
+          </button>
+        </ng-container>
+      </tui-data-list>
+    </cdk-virtual-scroll-viewport>
     <ng-template #whenNoNoti>
       <section class="p-4">You don't have any notification</section>
     </ng-template>

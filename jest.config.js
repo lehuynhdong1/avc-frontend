@@ -86,6 +86,8 @@ module.exports = {
     '<rootDir>/libs/shared/ui/error-hint',
     '<rootDir>/libs/mobile/notification/ui',
     '<rootDir>/libs/mobile/notification/feature',
-    '<rootDir>/libs/shared/timeago'
+    '<rootDir>/libs/shared/timeago',
+    '<rootDir>/libs/shared/ui/progress-dialog',
+    '<rootDir>/libs/admin/dashboard/data-access'
   ]
 };

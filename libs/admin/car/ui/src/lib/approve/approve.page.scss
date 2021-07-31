@@ -20,12 +20,17 @@ tui-marker-icon.bottom-right {
 }
 
 tui-input-file {
-  @apply w-36 h-36;
+  @apply w-40 h-40;
 }
 
 :host ::ng-deep {
-  tui-input-file tui-wrapper {
-    @apply text-center;
+  tui-input-file {
+    tui-wrapper {
+      @apply text-center;
+    }
+    tui-file {
+      display: hidden !important;
+    }
   }
 
   tui-select,
@@ -33,5 +38,26 @@ tui-input-file {
     tui-wrapper {
       @apply shadow-none;
     }
+  }
+
+  button.danger tui-wrapper {
+    @apply text-red-500;
+    &:after {
+      @apply border-red-500;
+    }
+
+    &[data-state='hovered'] {
+      @apply bg-red-50;
+    }
+
+    &[data-state='pressed'] {
+      @apply bg-red-500 text-white;
+    }
+  }
+}
+
+:host ::ng-deep {
+  tui-file {
+    display: hidden !important;
   }
 }

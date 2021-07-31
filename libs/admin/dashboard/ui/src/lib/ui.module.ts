@@ -1,22 +1,24 @@
-import { TuiSvgModule } from '@taiga-ui/core';
+import { TimeagoModule } from 'ngx-timeago';
+import { TuiDataListModule, TuiSvgModule } from '@taiga-ui/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardPage } from './dashboard.page';
-import { TuiLineChartModule, TuiAxesModule, TuiLineDaysChartModule } from '@taiga-ui/addon-charts';
-import { HeatMapModule, LineChartModule } from '@swimlane/ngx-charts';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TuiInputDateRangeModule } from '@taiga-ui/kit';
+import { PieChartModule, LineChartModule, BarChartModule } from '@swimlane/ngx-charts';
+import { RouterModule } from '@angular/router';
+import { TuiMapperPipeModule } from '@taiga-ui/cdk';
 
-const tuiModules = [
-  TuiAxesModule,
-  TuiLineChartModule,
-  TuiLineDaysChartModule,
-  TuiInputDateRangeModule,
-  TuiSvgModule
-];
+const tuiModules = [TuiSvgModule, TuiMapperPipeModule, TuiDataListModule];
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, tuiModules, HeatMapModule, LineChartModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    tuiModules,
+    LineChartModule,
+    PieChartModule,
+    BarChartModule,
+    TimeagoModule
+  ],
   declarations: [DashboardPage],
   exports: [DashboardPage]
 })

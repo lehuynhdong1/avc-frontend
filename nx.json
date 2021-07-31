@@ -100,6 +100,8 @@
     "shared-ui-error-hint": { "tags": ["scope:shared"] },
     "mobile-notification-ui": { "tags": ["scope:mobile"] },
     "mobile-notification-feature": { "tags": ["scope:mobile"] },
-    "shared-timeago": { "tags": ["scope:shared"] }
+    "shared-timeago": { "tags": ["scope:shared"] },
+    "shared-ui-progress-dialog": { "tags": ["scope:shared"] },
+    "admin-dashboard-data-access": { "tags": ["scope:admin"] }
   }
 }
