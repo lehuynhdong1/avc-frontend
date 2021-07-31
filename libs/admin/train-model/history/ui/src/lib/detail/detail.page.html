@@ -35,20 +35,34 @@
         <h3 class="mt-0 mb-3">{{ model.createdAt | date }}</h3>
       </section>
 
-      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== 'QUEUED'"> Status: </b>
-      <h3 class="mt-0 mb-3">{{ model.modelStatus }}</h3>
+      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== MODEL_STATUS.Queued"> Status: </b>
+      <tui-badge
+        *ngIf="model.modelStatus"
+        size="l"
+        [value]="model.modelStatus"
+        [status]="model.modelStatus | tuiMapper: modelStatusMapper"
+        class="self-start mb-3"
+      ></tui-badge>
 
       <b class="text-gray-600 mb-1"> Training Logs: </b>
       <h3 class="mt-0 mb-3">
-        <a class="openable" *ngIf="model.modelStatus !== 'QUEUED'" (click)="openLog(logTemplate)"
+        <a
+          class="openable"
+          *ngIf="model.modelStatus !== MODEL_STATUS.Queued"
+          (click)="openLog(logTemplate)"
           >Click to open
           <tui-svg src="tuiIconOutdentLarge" class="ml-1"></tui-svg>
         </a>
       </h3>
 
-      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== 'QUEUED'"> Training Images: </b>
+      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== MODEL_STATUS.Queued">
+        Training Images:
+      </b>
       <h3 class="mt-0 mb-3">
-        <a class="openable" *ngIf="model.modelStatus !== 'QUEUED'" (click)="downloadImages()"
+        <a
+          class="openable"
+          *ngIf="model.modelStatus !== MODEL_STATUS.Queued"
+          (click)="downloadImages()"
           >Click to download
           <tui-svg src="tuiIconArrowDownLarge" class="ml-1"></tui-svg>
         </a>
@@ -69,17 +83,16 @@
         type="button"
         *ngIf="!model.isApplying"
         (click)="clickApply$.next()"
-        [disabled]="model.modelStatus !== 'Successed'"
+        [disabled]="model.modelStatus !== MODEL_STATUS.Succeeded"
       >
         Apply for all
       </button>
     </main>
   </ng-container>
-  <ng-template #loading> <tui-loader></tui-loader> </ng-template>
 </aside>
 
 <ng-template #logTemplate let-observer>
-  <section class="w-full bg-gray-800 text-gray-100 text-left pl-6 pr-10 pt-4 pb-40">
+  <section class="w-full min-h-screen bg-gray-800 text-gray-100 text-left pl-6 pr-10 pt-4 pb-40">
     <h1 class="flex items-center">
       <tui-svg src="tuiIconOutdentLarge" class="size-m"></tui-svg><b>Training Logs</b>
       <tui-marker-icon
@@ -90,5 +103,15 @@
         title="Click to download logs"
       ></tui-marker-icon>
     </h1>
-    <div class="w-full flex flex-col" [innerHTML]="selectedModelLog$ | async"></div></section
+    <div
+      class="w-full flex flex-col"
+      *ngIf="selectedModelLog$ | async as log; else loading"
+      [innerHTML]="log"
+    ></div></section
 ></ng-template>
+
+<ng-template #loading
+  ><div class="flex flex-col items-center">
+    <tui-loader class="w-10 h-10"></tui-loader> <span class="animate-pulse">Loading...</span>
+  </div></ng-template
+>

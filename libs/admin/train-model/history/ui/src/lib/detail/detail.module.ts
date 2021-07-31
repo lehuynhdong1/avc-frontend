@@ -4,13 +4,15 @@ import { DetailPage } from './detail.page';
 import { TuiBadgeModule, TuiMarkerIconModule } from '@taiga-ui/kit';
 import { TuiSvgModule, TuiButtonModule, TuiLoaderModule } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
+import { TuiMapperPipeModule } from '@taiga-ui/cdk';
 
 const tuiModules = [
   TuiBadgeModule,
   TuiSvgModule,
   TuiButtonModule,
   TuiLoaderModule,
-  TuiMarkerIconModule
+  TuiMarkerIconModule,
+  TuiMapperPipeModule
 ];
 @NgModule({
   declarations: [DetailPage],

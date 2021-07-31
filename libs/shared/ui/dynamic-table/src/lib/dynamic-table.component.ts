@@ -44,10 +44,7 @@ export class DynamicTableComponent<T extends HasId> {
   ) {
     const lastRouteChild = this.activatedRoute.children[this.activatedRoute.children.length - 1];
     if (lastRouteChild) {
-      const idFromRoute$ = lastRouteChild.params.pipe(
-        tap(console.warn),
-        map((params) => parseInt(params.id))
-      );
+      const idFromRoute$ = lastRouteChild.params.pipe(map((params) => parseInt(params.id)));
       this.$.connect('selectedId', idFromRoute$);
     }
     const routerEnd$ = this.router.events.pipe(
