@@ -1,5 +1,5 @@
 import { TuiNotification } from '@taiga-ui/core';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { LoadRoles, LoadToken, LoginState, Login } from '@shared/auth/login/data-access';
 import { Logout } from '@shared/auth/logout/data-access';
@@ -31,7 +31,7 @@ import { CarState } from '@shared/features/car/data-access';
   template: '<tui-root class="h-100"><router-outlet></router-outlet></tui-root>',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private store: Store,
     private actions: Actions,
@@ -39,16 +39,19 @@ export class AppComponent {
     private alertCtrl: AlertController,
     private router: Router,
     private swUpdate: SwUpdate
-  ) {
-    store.dispatch([new LoadToken(), new LoadRoles()]);
+  ) {}
 
-    swUpdate.available.subscribe((event) => {
-      console.log('current version is', event.current);
-      console.log('available version is', event.available);
-    });
-    swUpdate.activated.subscribe((event) => {
-      console.log('old version was', event.previous);
-      console.log('new version is', event.current);
+  ngOnInit() {
+    this.store.dispatch([new LoadToken(), new LoadRoles()]);
+
+    this.swUpdate.available.subscribe(() =>
+      this.swUpdate.activateUpdate().then(() => document.location.reload())
+    );
+    this.swUpdate.unrecoverable.subscribe((event) => {
+      alert(
+        `An error occurred that we cannot recover from:\n${event.reason}\n\n` +
+          'Please reload the page.'
+      );
     });
     this.whenNetworkChanged();
     this.whenLoginSuccess();
@@ -58,8 +61,8 @@ export class AppComponent {
 
     this.whenCarNotify();
     this.whenBeDeactivated();
-    const myId = store.selectSnapshot(LoginState.account)?.id;
-    if (myId) store.dispatch(new StartSignalR());
+    const myId = this.store.selectSnapshot(LoginState.account)?.id;
+    if (myId) this.store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {
