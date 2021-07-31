@@ -5,17 +5,19 @@ import {
   TrainHistoryState,
   LoadModelById,
   ApplyModelById,
-  LoadModels
+  LoadModels,
+  LoadLogModelById,
+  DownloadImages,
+  DownloadLog
 } from '@admin/train-model/history/data-access';
-import { TuiStatus } from '@taiga-ui/kit';
+import { TuiStatus, TuiMarkerIconMode } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import { map, withLatestFrom, filter, take } from 'rxjs/operators';
+import { map, withLatestFrom, filter, take, switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
 import { hasValue, Empty, ShowNotification } from '@shared/util';
-import { Subject } from 'rxjs';
+import { from, Subject, interval } from 'rxjs';
 import { SignalRState } from '@shared/features/signalr/data-access';
-import { PolymorpheusTemplate } from '@tinkoff/ng-polymorpheus';
-
+import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
 @Component({
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
@@ -27,10 +29,25 @@ export class DetailPage {
     ERROR: TuiStatus.Error,
     SUCCESS: TuiStatus.Success
   };
+  TUI_MARKER_SUCCESS = TuiMarkerIconMode.Success;
 
   private id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
 
   readonly selectedModel$ = this.store.select(TrainHistoryState.selectedModel).pipe(hasValue());
+  readonly selectedModelLog$ = this.store.select(TrainHistoryState.selectedModelLog).pipe(
+    hasValue(),
+    switchMap((log) =>
+      from(import('ansi-to-html')).pipe(
+        map((converterModule: any) => {
+          const converter = new converterModule.default();
+          return log
+            ? converter.toHtml(log).replace(/<b>/gi, '<b class="text-green-400 mt-2">')
+            : '';
+        })
+      )
+    ),
+    distinctUntilChanged()
+  );
   readonly clickApply$ = new Subject<void>();
 
   /* Side effects */
@@ -48,6 +65,7 @@ export class DetailPage {
     this.applySuccessEffect();
     this.applyErrorEffect();
     this.signalrEffect();
+    this.loadModelSuccessEffect();
   }
   private applySuccessEffect() {
     const whenApplySuccess$ = this.actions.pipe<ApplyModelById>(ofActionSuccessful(ApplyModelById));
@@ -88,7 +106,26 @@ export class DetailPage {
     );
   }
 
-  openLog(template: PolymorpheusTemplate<TuiDialogContext>) {
-    this.tuiDialogService.open(template, { size: 'l' }).pipe(take(1)).subscribe();
+  private loadModelSuccessEffect() {
+    const whenLoadSuccess$ = this.actions.pipe<LoadModelById>(ofActionSuccessful(LoadModelById));
+    this.state.hold(whenLoadSuccess$, () => this.store.dispatch(new LoadLogModelById()));
+  }
+
+  openLog(template: PolymorpheusContent<TuiDialogContext>) {
+    const intervalSubscription = interval(3500).subscribe(() =>
+      this.store.dispatch(new LoadLogModelById())
+    );
+    this.tuiDialogService
+      .open(template, { size: 'page' })
+      .pipe(take(1))
+      .subscribe({ complete: () => intervalSubscription.unsubscribe() });
+  }
+
+  downloadImages() {
+    this.store.dispatch(new DownloadImages());
+  }
+
+  downloadLog() {
+    this.store.dispatch(new DownloadLog());
   }
 }

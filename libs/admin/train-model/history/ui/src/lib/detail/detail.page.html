@@ -25,7 +25,7 @@
             target="_blank"
             [href]="model.statisticUrl"
             *ngIf="model.statisticUrl; else notHasStatisticUrl"
-            >Open Statistic in new tab
+            >Click to view statistic in new tab
             <tui-svg src="tuiIconExpand" tuiHint="Edit" class="mb-1"></tui-svg>
           </a>
           <ng-template #notHasStatisticUrl> None </ng-template>
@@ -35,8 +35,24 @@
         <h3 class="mt-0 mb-3">{{ model.createdAt | date }}</h3>
       </section>
 
-      <b class="text-gray-600 mb-1"> Status: </b>
+      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== 'QUEUED'"> Status: </b>
       <h3 class="mt-0 mb-3">{{ model.modelStatus }}</h3>
+
+      <b class="text-gray-600 mb-1"> Training Logs: </b>
+      <h3 class="mt-0 mb-3">
+        <a class="openable" *ngIf="model.modelStatus !== 'QUEUED'" (click)="openLog(logTemplate)"
+          >Click to open
+          <tui-svg src="tuiIconOutdentLarge" class="ml-1"></tui-svg>
+        </a>
+      </h3>
+
+      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== 'QUEUED'"> Training Images: </b>
+      <h3 class="mt-0 mb-3">
+        <a class="openable" *ngIf="model.modelStatus !== 'QUEUED'" (click)="downloadImages()"
+          >Click to download
+          <tui-svg src="tuiIconArrowDownLarge" class="ml-1"></tui-svg>
+        </a>
+      </h3>
 
       <b class="text-gray-600 mb-1">Applying Status: </b>
       <tui-badge
@@ -61,3 +77,18 @@
   </ng-container>
   <ng-template #loading> <tui-loader></tui-loader> </ng-template>
 </aside>
+
+<ng-template #logTemplate let-observer>
+  <section class="w-full bg-gray-800 text-gray-100 text-left p-4 pb-40">
+    <h1 class="flex items-center">
+      <tui-svg src="tuiIconOutdentLarge" class="size-m"></tui-svg><b>Training Logs</b>
+      <tui-marker-icon
+        src="tuiIconArrowDownLarge"
+        size="s"
+        [mode]="TUI_MARKER_SUCCESS"
+        (click)="downloadLog()"
+        title="Click to download logs"
+      ></tui-marker-icon>
+    </h1>
+    <div class="w-full flex flex-col" [innerHTML]="selectedModelLog$ | async"></div></section
+></ng-template>

@@ -16,6 +16,13 @@ import {
 } from '@shared/features/signalr/data-access';
 import { defer, from, merge } from 'rxjs';
 import { Router } from '@angular/router';
+import { StateReset } from 'ngxs-reset-plugin';
+import { DashboardState } from '@admin/dashboard/data-access';
+import { ManagerState } from '@shared/features/manager/data-access';
+import { StaffState } from '@shared/features/staff/data-access';
+import { TrainByImagesState } from '@admin/train-model/train-by-images/data-access';
+import { TrainByZipState } from '@admin/train-model/train-by-zip/data-access';
+import { TrainHistoryState } from '@admin/train-model/history/data-access';
 
 @Component({
   selector: 'adca-root',
@@ -41,7 +48,7 @@ export class AppComponent {
     this.whenCarNotify();
     this.whenBeDeactivated();
     const myId = store.selectSnapshot(LoginState.account)?.id;
-    // if (myId) store.dispatch(new StartSignalR());
+    if (myId) store.dispatch(new StartSignalR());
   }
 
   private whenLoginSuccess() {
@@ -52,7 +59,19 @@ export class AppComponent {
 
   private whenLogoutSuccess(): void {
     this.actions.pipe<Logout>(ofActionSuccessful(Logout)).subscribe(() => {
-      this.store.dispatch(new StopSignalR());
+      this.store.dispatch([
+        new StopSignalR(),
+        new StateReset(
+          LoginState,
+          DashboardState,
+          ManagerState,
+          StaffState,
+          TrainByImagesState,
+          TrainByZipState,
+          TrainHistoryState
+        )
+      ]);
+
       this.router.navigateByUrl('/login');
     });
   }

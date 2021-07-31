@@ -23,3 +23,8 @@ aside {
 .openable {
   @apply cursor-pointer hover:text-primary no-underline;
 }
+
+tui-marker-icon {
+  @apply ml-4 cursor-pointer;
+  @apply hover:bg-green-600 hover:bg-opacity-50;
+}
