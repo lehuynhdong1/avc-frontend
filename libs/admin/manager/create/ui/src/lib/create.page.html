@@ -12,7 +12,6 @@
         link="Choose an avatar"
         accept="image/*"
         formControlName="avatarImage"
-        [maxFileSize]="MAXIMUM_IMAGE_SIZE"
         *ngIf="!form.value.avatarImage"
       >
       </tui-input-file>

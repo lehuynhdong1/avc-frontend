@@ -10,8 +10,8 @@
     </ion-toolbar>
   </ion-header>
   <ion-content fullscreen="true">
-    <main class="flex flex-col flex-wrap px-4 pb-4">
-      <section class="flex items-center text-center">
+    <main class="flex flex-col flex-wrap px-2 pb-4">
+      <section class="px-2 flex items-center text-center">
         <adc-frontend-avatar
           class="tui-space_top-2"
           [url]="view.car?.image"
@@ -25,7 +25,7 @@
         </div>
       </section>
       <div class="p-2 relative border border-gray-900"></div>
-      <div class="flex justify-between infomation">
+      <div class="flex justify-between px-2 infomation">
         <div class="flex flex-col">
           <span class="text-sm text-gray-600">Device ID</span>
           <h3 class="max-w-xs">{{ view.car?.deviceId }}</h3>
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <span class="text-sm text-gray-600 mb-1">Issues</span>
+      <span class="text-sm text-gray-600 mb-1 px-2">Issues</span>
       <ng-container *ngIf="(view.car?.issues?.length || 0) > 0; else hasNoIssue">
         <ion-list *ngIf="view.car?.issues">
           <ng-container *ngFor="let issue of view.car?.issues; index as i; trackBy:trackById">
@@ -67,7 +67,10 @@
               </ion-thumbnail>
               <ion-label>
                 <h2 class="!font-semibold text-gray-700">{{issue.type}}</h2>
-                <h3 class="text-gray-600 !mb-0">{{ issue.description }}</h3>
+                <h3 class="text-gray-600 !mb-0">
+                  {{ issue.description | slice: 0:27 }} {{ (issue.description?.length || 0) > 27 ?
+                  '...' : '' }}
+                </h3>
                 <p>{{issue.createdAt | date:'h:mm:ss a, MMM dd, yyyy' }}</p>
               </ion-label>
             </ion-item>

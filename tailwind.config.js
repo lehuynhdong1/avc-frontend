@@ -18,8 +18,7 @@ module.exports = {
         sidebar: '18rem'
       },
       height: {
-        topbar: '4rem',
-        main: 'calc(100vh - 4rem)'
+        topbar: '4rem'
       },
       colors: {
         primary: {

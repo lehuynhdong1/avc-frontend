@@ -9,11 +9,5 @@
       "launchShowDuration": 0
     }
   },
-  "server": {
-    "androidScheme": "http",
-    "allowNavigation": ["http://*/*", "https://*/*", "tel:*", "sms:*", "mailto:*", "geo:*"],
-    "url": "http://0.0.0.0:4200",
-    "cleartext": true
-  },
   "cordova": {}
 }
