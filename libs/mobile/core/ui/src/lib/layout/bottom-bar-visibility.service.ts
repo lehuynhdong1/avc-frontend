@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class BottomBarVisibilityService {
   private _visibleSubject: BehaviorSubject<boolean>;
   visible$: Observable<boolean>;

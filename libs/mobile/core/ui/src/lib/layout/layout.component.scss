@@ -11,3 +11,7 @@ ion-tab-button {
   @apply text-gray-500;
   --color-selected: var(--tui-primary) !important;
 }
+
+.selected {
+  @apply text-primary;
+}

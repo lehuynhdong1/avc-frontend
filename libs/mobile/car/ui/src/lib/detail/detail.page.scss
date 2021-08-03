@@ -1,5 +1,5 @@
 ion-header,
-ion-toolbar {
+ion-header ion-toolbar {
   --background: var(--tui-primary);
   --color: var(--tui-base-01);
 
@@ -9,13 +9,6 @@ ion-toolbar {
 }
 ion-content {
   --padding-bottom: 4rem;
-}
-ion-footer {
-  position: fixed !important;
-  @apply fixed bottom-0 left-0;
-  ion-toolbar {
-    --background: var(--ion-background-color);
-  }
 }
 
 .infomation h3 {

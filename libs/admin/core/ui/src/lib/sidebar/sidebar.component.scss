@@ -18,7 +18,7 @@ nav {
     }
   }
   .nav__personal {
-    @apply flex flex-col items-center py-10;
+    @apply flex flex-col items-center pt-2 pb-10;
     .wrapper {
       @apply flex flex-col items-center;
     }
@@ -77,9 +77,6 @@ nav.collapse {
       @apply flex flex-col-reverse justify-between items-center;
       adca-navbar-avatar-dropdown {
         @apply mt-3 ml-1;
-      }
-      tui-svg {
-        @apply mt-2 mr-0;
       }
     }
   }

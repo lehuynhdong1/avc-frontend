@@ -6,7 +6,11 @@
   } as view"
 >
   <ion-tab-bar slot="bottom" class="pt-1 border-0" *ngIf="view.navbarVisible">
-    <ion-tab-button *ngFor="let item of navItems" [tab]="item.path">
+    <ion-tab-button
+      *ngFor="let item of navItems"
+      [tab]="item.path"
+      [class.selected]="view.currentItem?.path === item.path"
+    >
       <ion-icon
         [name]="view.currentItem?.path === item.path ? getFilledIcon(item.icon) : item.icon"
       ></ion-icon>

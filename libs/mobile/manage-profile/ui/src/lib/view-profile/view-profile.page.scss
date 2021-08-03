@@ -25,3 +25,7 @@ ion-content {
     }
   }
 }
+
+ion-button:focus {
+  outline: none !important;
+}

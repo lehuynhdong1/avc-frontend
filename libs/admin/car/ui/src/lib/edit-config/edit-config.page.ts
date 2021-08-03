@@ -31,6 +31,7 @@ export class EditConfigPage {
 
   @ViewChild(JsonEditorComponent) editor: JsonEditorComponent;
 
+  id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
   selectedCar$ = this.store
     .select(CarState.selectedCar)
     .pipe(hasValue(), shareReplay({ refCount: true, bufferSize: 1 }));
@@ -50,8 +51,7 @@ export class EditConfigPage {
     private http: HttpClient,
     state: RxState<Empty>
   ) {
-    const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
-    state.hold(id$, (id) => this.store.dispatch(new LoadCarById({ id })));
+    state.hold(this.id$, (id) => this.store.dispatch(new LoadCarById({ id })));
 
     state.hold(this.save$.pipe(withLatestFrom(this.selectedCar$)), ([, car]) => {
       const editorJson = this.editor.getEditor();

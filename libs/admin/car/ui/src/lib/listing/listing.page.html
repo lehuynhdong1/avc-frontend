@@ -5,17 +5,31 @@
         <tui-svg src="assets/adc/icons/car-sport.svg#car-sport" class="size-m"></tui-svg>
         Manage Cars
       </h1>
-      <button
-        tuiButton
-        type="button"
-        size="m"
-        appearance="outline"
-        icon="assets/adc/icons/wall-clock.svg#wall-clock"
-        routerLink="unapproved"
-        *ngIf="isAdmin$ | async"
-      >
-        Unapproved Cars ({{unapprovedCarsCount$ | async}})
-      </button>
+      <div>
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          appearance="outline"
+          icon="assets/adc/icons/wall-clock.svg#wall-clock"
+          routerLink="unapproved"
+          *ngIf="isAdmin$ | async"
+        >
+          Unapproved Cars ({{unapprovedCarsCount$ | async}})
+        </button>
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          appearance="outline"
+          icon="tuiIconEditLarge"
+          routerLink="edit-config"
+          class="ml-2"
+          *ngIf="isAdmin$ | async"
+        >
+          Edit Default Config
+        </button>
+      </div>
     </section>
 
     <section class="w-100 flex flex-col items-stretch">

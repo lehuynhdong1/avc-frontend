@@ -35,7 +35,10 @@ export class SidebarComponent {
     map((event) => (event as NavigationEnd).url),
     startWith(this.router.url),
     withLatestFrom(this.navItems$),
-    map(([currentUrl, navItems]) => navItems.find((item) => currentUrl.includes(item.path)))
+    map(([currentUrl, navItems]) => {
+      const matches = navItems.filter((navItem) => currentUrl.includes(navItem.path));
+      return matches[matches.length - 1];
+    })
   );
 
   opened = false;

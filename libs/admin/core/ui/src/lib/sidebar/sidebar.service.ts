@@ -26,7 +26,7 @@ export interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Dashboard',
-    path: '/dashboard',
+    path: '/',
     icon: 'assets/adc/icons/bar-chart-outline.svg#bar-chart-outline',
     description: 'Keep track your working process'
   },

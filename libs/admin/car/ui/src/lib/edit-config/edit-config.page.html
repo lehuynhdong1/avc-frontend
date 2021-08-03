@@ -5,23 +5,21 @@
     <button tuiButton appearance="outline" size="m" routerLink="..">Discard</button>
   </div>
 </header>
-<ng-container *ngIf="selectedCar$ | async as car">
-  <div class="flex flex-wrap">
-    <adc-frontend-avatar
-      [url]="car.image"
-      placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
-      placeholderImageAsset="assets/adc/icons/car-sport.svg#car-sport"
-      size="xl"
-    ></adc-frontend-avatar>
-    <section class="flex flex-col ml-3">
-      <b class="text-gray-600">Device ID</b>
-      <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
+<div class="flex flex-wrap" *ngIf="selectedCar$ | async as car">
+  <adc-frontend-avatar
+    [url]="car.image"
+    placeholderClass="!text-primary border border-solid border-primary rounded-full p-3"
+    placeholderImageAsset="assets/adc/icons/car-sport.svg#car-sport"
+    size="xl"
+  ></adc-frontend-avatar>
+  <section class="flex flex-col ml-3">
+    <b class="text-gray-600">Device ID</b>
+    <h3 class="mt-0 mb-3">{{ car.deviceId }}</h3>
 
-      <b class="text-gray-600">Managed by</b>
-      <h3 class="mt-0 mb-3">
-        {{car.managedBy ? '': 'None'}} {{ car.managedBy?.firstName }} {{ car.managedBy?.lastName }}
-      </h3>
-    </section>
-  </div>
-  <json-editor [options]="EDITOR_OPTIONS" [data]="(config$ | async) || {}" #editor></json-editor>
-</ng-container>
+    <b class="text-gray-600">Managed by</b>
+    <h3 class="mt-0 mb-3">
+      {{car.managedBy ? '': 'None'}} {{ car.managedBy?.firstName }} {{ car.managedBy?.lastName }}
+    </h3>
+  </section>
+</div>
+<json-editor [options]="EDITOR_OPTIONS" [data]="(config$ | async) || {}" #editor></json-editor>

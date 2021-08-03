@@ -30,8 +30,6 @@ export class AppComponent {
     private alertCtrl: AlertController,
     private router: Router
   ) {
-    store.dispatch([new LoadToken(), new LoadRoles()]);
-
     this.whenNetworkChanged();
     this.whenLoginSuccess();
     this.whenLogoutSuccess();
@@ -42,13 +40,13 @@ export class AppComponent {
     this.whenBeDeactivated();
     this.whenManagerDeactivated();
     const myId = store.selectSnapshot(LoginState.account)?.id;
-    if (myId) store.dispatch(new StartSignalR());
+    if (myId) store.dispatch([new LoadToken(), new LoadRoles(), new StartSignalR()]);
   }
 
   private whenLoginSuccess() {
     this.actions
       .pipe<Login>(ofActionSuccessful(Login))
-      .subscribe(() => this.store.dispatch(new StartSignalR()));
+      .subscribe(() => this.store.dispatch([new LoadToken(), new LoadRoles(), new StartSignalR()]));
   }
 
   private whenLogoutSuccess(): void {

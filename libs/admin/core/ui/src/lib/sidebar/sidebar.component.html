@@ -18,7 +18,10 @@
           tuiHintDirection="right"
         ></tui-svg>
         <div class="wrapper">
-          <div class="border-2 rounded-full p-1 relative" [class.border-solid]="view.unreadCount">
+          <div
+            class="border-2 rounded-full p-1 mt-2 relative"
+            [class.border-solid]="view.unreadCount"
+          >
             <tui-svg
               src="tuiIconBellLarge"
               class="cursor-pointer"
@@ -34,7 +37,7 @@
           </div>
           <tui-hosted-dropdown [content]="dropdown" *ngIf="view.collapse">
             <div class="w-full cursor-pointer flex justify-center items-center mt-2">
-              <adc-frontend-avatar [url]="(me$ | async)?.avatar"></adc-frontend-avatar>
+              <adc-frontend-avatar [url]="(me$ | async)?.avatar" size="s"></adc-frontend-avatar>
             </div>
           </tui-hosted-dropdown>
         </div>
@@ -64,8 +67,8 @@
           <ng-container *ngFor="let item of view.navItems">
             <li
               [routerLink]="item.path"
-              routerLinkActive="active"
               class="nav__list-item"
+              [class.active]="view.currentItem?.path === item.path"
               [tuiHint]="item.label"
               [tuiHintShowDelay]="100"
               [tuiHintHideDelay]="100"

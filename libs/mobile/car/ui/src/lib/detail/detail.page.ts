@@ -1,5 +1,5 @@
 import { StartCar, StopCar, SignalRState } from '@shared/features/signalr/data-access';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CarState, LoadCarById } from '@shared/features/car/data-access';
 import { TuiStatus } from '@taiga-ui/kit';
@@ -9,14 +9,15 @@ import { map, withLatestFrom, filter } from 'rxjs/operators';
 import { hasValue, Empty } from '@shared/util';
 import { IssueReadDto } from '@shared/api';
 import { Subject, merge, BehaviorSubject } from 'rxjs';
+import { AutoHideBottomBarService, BottomBarVisibilityService } from '@mobile/core/ui';
 
 @Component({
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [RxState]
+  providers: [RxState, AutoHideBottomBarService]
 })
-export class DetailPage {
+export class DetailPage implements OnInit {
   TUI_STATUS = {
     ERROR: TuiStatus.Error,
     WARNING: TuiStatus.Warning,
@@ -37,18 +38,24 @@ export class DetailPage {
     private store: Store,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Empty>
-  ) {
+    private state: RxState<Empty>,
+    private bottomBar: BottomBarVisibilityService,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _: AutoHideBottomBarService
+  ) {}
+
+  trackById(_: number, item: IssueReadDto) {
+    return item.id;
+  }
+
+  ngOnInit() {
     this.state.hold(this.id$, (id) => this.store.dispatch(new LoadCarById({ id })));
     this.state.hold(this.toggleRun$.pipe(withLatestFrom(this.selectedCar$)), ([, car]) => {
       if (car?.isRunning) this.store.dispatch(new StopCar(car.id || 0));
       else this.store.dispatch(new StartCar(car.id || 0));
     });
     this.signalrEffect();
-  }
-
-  trackById(_: number, item: IssueReadDto) {
-    return item.id;
+    this.bottomBar.hide();
   }
 
   private signalrEffect() {

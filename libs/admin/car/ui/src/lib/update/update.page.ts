@@ -107,10 +107,10 @@ export class UpdatePage implements CanShowUnsavedDialog {
   }
 
   private declareUpdateSideEffects() {
-    this.state.hold(this.isAdmin$.pipe(hasValue()), () =>
-      this.store.dispatch(new LoadManagers({ isAvailable: true, limit: 50 }))
-    );
-    this.state.hold(this.isManager$.pipe(hasValue()), () =>
+    this.state.hold(this.isAdmin$.pipe(filter((isAdmin) => isAdmin)), () => {
+      this.store.dispatch(new LoadManagers({ isAvailable: true, limit: 50 }));
+    });
+    this.state.hold(this.isManager$.pipe(filter((isManager) => isManager)), () =>
       this.store.dispatch(new LoadStaffs({ limit: 50 }))
     );
     const id$ = this.activatedRoute.params.pipe(map(({ id }) => parseInt(id)));
