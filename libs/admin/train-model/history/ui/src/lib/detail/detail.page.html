@@ -10,63 +10,58 @@
     <main>
       <h1>Model Detail</h1>
 
-      <section class="model__information">
-        <b class="text-gray-600">Name </b>
-        <h2 class="mt-0">{{ model.name }}</h2>
+      <b class="text-gray-600">Name </b>
+      <h2 class="mt-0">{{ model.name }}</h2>
 
-        <b class="text-gray-600">Trained Images Count</b>
-        <h3 class="mt-0 mb-3">{{ model.imageCount }}</h3>
+      <b class="text-gray-600">Trained Images Count</b>
+      <h3 class="mt-0 mb-3">{{ model.imageCount }}</h3>
 
-        <b class="text-gray-600">Statistic</b>
+      <b class="text-gray-600">Statistic</b>
+      <h3 class="mt-0 mb-3">
+        <a
+          class="openable"
+          target="_blank"
+          [href]="model.statisticUrl"
+          *ngIf="model.statisticUrl; else notHasStatisticUrl"
+          >View statistic in new tab
+        </a>
+        <ng-template #notHasStatisticUrl> None </ng-template>
+      </h3>
+
+      <b class="text-gray-600">Created at</b>
+      <h3 class="mt-0 mb-3">{{ model.createdAt | date }}</h3>
+
+      <ng-container *ngIf="model.modelStatus !== MODEL_STATUS.Queued">
+        <b class="text-gray-600 mb-1"> Training Logs: </b>
         <h3 class="mt-0 mb-3">
-          {{ model.statisticUrl }}
-          <a
-            class="openable"
-            target="_blank"
-            [href]="model.statisticUrl"
-            *ngIf="model.statisticUrl; else notHasStatisticUrl"
-            >Click to view statistic in new tab
-            <tui-svg src="tuiIconExpand" tuiHint="Edit" class="mb-1"></tui-svg>
+          <a class="openable" (click)="openLog(logTemplate)"
+            >Click to open
+            <tui-svg src="tuiIconOutdentLarge" class="ml-1"></tui-svg>
           </a>
-          <ng-template #notHasStatisticUrl> None </ng-template>
         </h3>
 
-        <b class="text-gray-600">Created at</b>
-        <h3 class="mt-0 mb-3">{{ model.createdAt | date }}</h3>
-      </section>
+        <b class="text-gray-600 mb-1"> Training Images: </b>
+        <h3 class="mt-0 mb-3">
+          <a class="openable" (click)="downloadImages()"
+            >Click to download
+            <tui-svg
+              src="assets/adc/icons/cloud-download-outline.svg#cloud-download-outline"
+              class="ml-1"
+            ></tui-svg>
+          </a>
+        </h3>
+      </ng-container>
 
-      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== MODEL_STATUS.Queued"> Status: </b>
+      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== MODEL_STATUS.Queued"
+        >Training Status:
+      </b>
       <tui-badge
         *ngIf="model.modelStatus"
         size="l"
         [value]="model.modelStatus"
         [status]="model.modelStatus | tuiMapper: modelStatusMapper"
-        class="self-start mb-3"
+        class="self-start mb-2"
       ></tui-badge>
-
-      <b class="text-gray-600 mb-1"> Training Logs: </b>
-      <h3 class="mt-0 mb-3">
-        <a
-          class="openable"
-          *ngIf="model.modelStatus !== MODEL_STATUS.Queued"
-          (click)="openLog(logTemplate)"
-          >Click to open
-          <tui-svg src="tuiIconOutdentLarge" class="ml-1"></tui-svg>
-        </a>
-      </h3>
-
-      <b class="text-gray-600 mb-1" *ngIf="model.modelStatus !== MODEL_STATUS.Queued">
-        Training Images:
-      </b>
-      <h3 class="mt-0 mb-3">
-        <a
-          class="openable"
-          *ngIf="model.modelStatus !== MODEL_STATUS.Queued"
-          (click)="downloadImages()"
-          >Click to download
-          <tui-svg src="tuiIconArrowDownLarge" class="ml-1"></tui-svg>
-        </a>
-      </h3>
 
       <b class="text-gray-600 mb-1">Applying Status: </b>
       <tui-badge

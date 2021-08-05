@@ -7,7 +7,8 @@ import {
   ApiCarsIdPutRequestParams,
   ApiCarsIdAssignPutRequestParams,
   ApiCarsIdConfigurationPutRequestParams,
-  ApiCarsIdImagePutRequestParams
+  ApiCarsIdImagePutRequestParams,
+  ApiCarsDefaultconfigPutRequestParams
 } from '@shared/api';
 
 const ACTIONS = {
@@ -16,7 +17,10 @@ const ACTIONS = {
   LOAD_CAR_BY_ID: `[${STATE_NAME}] Load car by ID`,
   UPDATE_CAR: `[${STATE_NAME}] Update car by id & manager id includes (name, managedBy, assignedTo, config)`,
   TOGGLE_ACTIVATION: `[${STATE_NAME}] Toggle activation of a car`,
-  TOGGLE_APPROVE: `[${STATE_NAME}] Toggle approve a car`
+  TOGGLE_APPROVE: `[${STATE_NAME}] Toggle approve a car`,
+  LOAD_DEFAULT_CONFIG: `[${STATE_NAME}] Load default configuration`,
+  UPDATE_DEFAULT_CONFIG: `[${STATE_NAME}] Update default configuration`,
+  CLEAR_DEFAULT_CONFIG: `[${STATE_NAME}] Clear default configuration`
 };
 
 export class LoadApprovedCars {
@@ -56,4 +60,17 @@ export class ToggleActivation {
 export class ToggleApprove {
   static readonly type = ACTIONS.TOGGLE_APPROVE;
   constructor(public readonly params: ApiCarsIdApprovementPutRequestParams) {}
+}
+
+export class LoadDefaultConfig {
+  static readonly type = ACTIONS.LOAD_DEFAULT_CONFIG;
+}
+
+export class UpdateDefaultConfig {
+  static readonly type = ACTIONS.UPDATE_DEFAULT_CONFIG;
+  constructor(public readonly params: ApiCarsDefaultconfigPutRequestParams) {}
+}
+
+export class ClearDefaultConfig {
+  static readonly type = ACTIONS.CLEAR_DEFAULT_CONFIG;
 }

@@ -6,13 +6,16 @@ import {
   LoadCarById,
   UpdateCar,
   ToggleActivation,
-  ToggleApprove
+  ToggleApprove,
+  LoadDefaultConfig,
+  UpdateDefaultConfig
 } from './actions';
 import { CarsService } from '@shared/api';
 import { tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { forkJoin, throwError } from 'rxjs';
 import { LoginState } from '@shared/auth/login/data-access';
+import { ClearDefaultConfig } from './actions';
 
 @State<StateModel>({
   name: STATE_NAME,
@@ -31,6 +34,10 @@ export class CarState {
   @Selector()
   static selectedCar({ detail }: StateModel) {
     return detail;
+  }
+  @Selector()
+  static defaultConfig({ defaultConfig }: StateModel) {
+    return defaultConfig;
   }
   @Selector()
   static errorMessage({ errorMessage }: StateModel) {
@@ -126,6 +133,7 @@ export class CarState {
         })
       );
   }
+
   @Action(ToggleApprove, { cancelUncompleted: true })
   toggleApprove({ patchState }: StateContext<StateModel>, { params }: ToggleApprove) {
     return this.carsService.apiCarsIdApprovementPut(params).pipe(
@@ -136,5 +144,29 @@ export class CarState {
         return throwError(errorMessage);
       })
     );
+  }
+
+  @Action(LoadDefaultConfig, { cancelUncompleted: true })
+  LoadDefaultConfig({ patchState }: StateContext<StateModel>) {
+    return this.carsService
+      .apiCarsDefaultconfigGet()
+      .pipe(tap((defaultConfig) => patchState({ defaultConfig })));
+  }
+
+  @Action(UpdateDefaultConfig, { cancelUncompleted: true })
+  UpdateDefaultConfig({ patchState }: StateContext<StateModel>, { params }: UpdateDefaultConfig) {
+    return this.carsService.apiCarsDefaultconfigPut(params).pipe(
+      catchError((error) => {
+        // console.warn(`[${STATE_NAME}] ${UpdateDefaultConfig.name} failed with error: `, error);
+        const errorMessage = `Processing failed. Sorry, please try again later.`;
+        patchState({ errorMessage });
+        return throwError(errorMessage);
+      })
+    );
+  }
+
+  @Action(ClearDefaultConfig, { cancelUncompleted: true })
+  ClearDefaultConfig({ patchState }: StateContext<StateModel>) {
+    patchState({ defaultConfig: undefined });
   }
 }

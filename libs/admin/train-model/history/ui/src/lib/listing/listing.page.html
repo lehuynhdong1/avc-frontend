@@ -1,16 +1,27 @@
 <main class="flex">
   <section class="flex-grow">
-    <h1>
-      <tui-svg
-        src="assets/adc/icons/newspaper-outline.svg#newspaper-outline"
-        class="size-m"
-      ></tui-svg>
-      Training History
-    </h1>
-
+    <section class="flex justify-between items-center">
+      <h1>
+        <tui-svg
+          src="assets/adc/icons/newspaper-outline.svg#newspaper-outline"
+          class="size-m"
+        ></tui-svg>
+        Training History
+      </h1>
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="outline"
+        [showLoader]="(loading$ | async) || false"
+        (click)="clickViewApplyingModel$.next()"
+      >
+        View Applying Model
+      </button>
+    </section>
     <section class="w-100 flex flex-col items-stretch">
       <section class="flex">
-        <tui-input tuiTextfieldSize="l" [formControl]="searchControl" class="flex-grow pr-4 mb-4">
+        <tui-input tuiTextfieldSize="l" [formControl]="searchControl" class="flex-grow mb-4">
           Search by model name ...
         </tui-input>
       </section>

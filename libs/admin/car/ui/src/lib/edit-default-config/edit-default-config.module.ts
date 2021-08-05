@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EditConfigPage } from './edit-config.page';
+import { EditDefaultConfigPage } from './edit-default-config.page';
 import { AvatarModule } from '@shared/ui/avatar';
 import { EditConfigComponentModule } from '../shared/edit-config';
 
 @NgModule({
-  declarations: [EditConfigPage],
+  declarations: [EditDefaultConfigPage],
   imports: [CommonModule, AvatarModule, EditConfigComponentModule],
-  exports: [EditConfigPage]
+  exports: [EditDefaultConfigPage]
 })
-export class EditConfigModule {}
+export class EditDefaultConfigModule {}

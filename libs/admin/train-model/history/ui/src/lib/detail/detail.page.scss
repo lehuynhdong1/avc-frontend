@@ -21,7 +21,7 @@ aside {
 }
 
 .openable {
-  @apply cursor-pointer hover:text-primary no-underline;
+  @apply cursor-pointer text-gray-800 hover:text-primary-hover no-underline;
 }
 
 tui-marker-icon {

@@ -1,13 +1,17 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { LoadModels, TrainHistoryState } from '@admin/train-model/history/data-access';
+import {
+  LoadApplyingModel,
+  LoadModels,
+  TrainHistoryState
+} from '@admin/train-model/history/data-access';
 import { Subject } from 'rxjs';
 import { ModelReadDto } from '@shared/api';
 import { RxState } from '@rx-angular/state';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, startWith, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Empty, hasValue } from '@shared/util';
+import { hasValue } from '@shared/util';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { withLatestFrom } from 'rxjs/operators';
 import { SignalRState } from '@shared/features/signalr/data-access';
@@ -37,9 +41,12 @@ export class ListingPage {
 
   /* Attribute Streams */
   readonly models$ = this.store.select(TrainHistoryState.models);
+  readonly loading$ = this.state.select('loading');
+
   /* Action Streams */
   readonly selectRow$ = new Subject<Id>();
   readonly loadPage$ = new Subject<number>();
+  readonly clickViewApplyingModel$ = new Subject<void>();
 
   /* Side effects */
   readonly changeSearchValue$ = this.searchControl.valueChanges.pipe(
@@ -52,7 +59,7 @@ export class ListingPage {
     private store: Store,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private state: RxState<Empty>
+    private state: RxState<{ loading: boolean }>
   ) {
     this.whenFilterChangedEffects();
     this.whenLoadPageEffects();
@@ -63,6 +70,15 @@ export class ListingPage {
   private declareSideEffects() {
     this.state.hold(this.selectRow$, (id) =>
       this.router.navigate([id], { relativeTo: this.activatedRoute })
+    );
+    this.state.hold(
+      this.clickViewApplyingModel$.pipe(
+        tap(() => this.state.set({ loading: true })),
+        switchMap(() => this.store.dispatch(new LoadApplyingModel())),
+        withLatestFrom(this.store.select(TrainHistoryState.applyingModelId)),
+        tap(() => this.state.set({ loading: false }))
+      ),
+      ([, id]) => this.router.navigate([id], { relativeTo: this.activatedRoute })
     );
   }
 

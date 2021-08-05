@@ -91,7 +91,7 @@
           >
             <div class="max-w-18rem flex justify-between items-center w-full">
               <div
-                class="w-10 h-10 mr-2 overflow-hidden border border-solid border-primary rounded-full"
+                class="w-16 h-16 mr-2 flex-shrink-0 overflow-hidden border border-solid border-primary rounded-full"
               >
                 <img
                   [src]="item.image || 'assets/adc/icons/warning.svg'"
@@ -100,7 +100,10 @@
               </div>
               <section class="flex-grow flex flex-col">
                 <span class="text-base">{{ item.type }}</span>
-                <span class="text-sm text-gray-500">{{ item.description }}</span>
+                <span class="text-sm text-gray-500">
+                  {{ item.description | slice: 0:54 }} {{ (item.description?.length || 0) > 54 ?
+                  '...' : '' }}</span
+                >
                 <span class="text-xs text-gray-500">{{ item.createdAt | timeago }}</span>
               </section>
               <tui-svg src="tuiIconChevronRightLarge" [routerLink]="'/issue/'+item.id"></tui-svg>

@@ -1,9 +1,10 @@
-import { CarListReadDtoPagingResponseDto, CarReadDto } from '@shared/api';
+import { CarListReadDtoPagingResponseDto, CarReadDto, DefaultCarConfigDto } from '@shared/api';
 
 export interface StateModel {
   approvedListing: CarListReadDtoPagingResponseDto | null;
   unapprovedListing: CarListReadDtoPagingResponseDto | null;
   detail: CarReadDto | null;
+  defaultConfig?: DefaultCarConfigDto;
   errorMessage?: string;
 }
 

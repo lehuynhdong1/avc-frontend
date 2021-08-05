@@ -5,6 +5,7 @@ export const INITIAL_STATE: StateModel = {};
 export interface StateModel {
   listing?: ModelReadDtoPagingResponseDto;
   detail?: { model?: ModelReadDto; jobLog?: string };
+  applyingModelId?: number;
   errorMessage?: string;
 }
 

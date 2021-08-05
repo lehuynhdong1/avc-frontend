@@ -7,7 +7,8 @@ import {
   LoadModels,
   ApplyModelById,
   LoadLogModelById,
-  DownloadImages
+  DownloadImages,
+  LoadApplyingModel
 } from './actions';
 import { tap, catchError, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -32,6 +33,10 @@ export class TrainHistoryState {
   @Selector()
   static selectedModelLog({ detail }: StateModel) {
     return detail?.jobLog;
+  }
+  @Selector()
+  static applyingModelId({ applyingModelId }: StateModel) {
+    return applyingModelId;
   }
 
   constructor(private modelService: ModelService, private gitlabApi: GitlabApiService) {}
@@ -117,5 +122,12 @@ export class TrainHistoryState {
     if (!model || !jobLog) return;
     const file = new Blob([jobLog]);
     return saveAs(file, `train-logs-${model?.id}.txt`);
+  }
+
+  @Action(LoadApplyingModel, { cancelUncompleted: true })
+  LoadApplyingModel({ patchState }: StateContext<StateModel>) {
+    return this.modelService
+      .apiModelApplyingidGet()
+      .pipe(tap((id) => patchState({ applyingModelId: id })));
   }
 }

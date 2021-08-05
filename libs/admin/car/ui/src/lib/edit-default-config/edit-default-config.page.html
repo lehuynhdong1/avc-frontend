@@ -1,0 +1,6 @@
+<adca-edit-config
+  *ngIf="defaultConfigUrl$ | async as defaultConfigUrl"
+  [configUrl]="defaultConfigUrl"
+  (save)="save$.next($event)"
+>
+</adca-edit-config>

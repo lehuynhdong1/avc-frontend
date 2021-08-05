@@ -8,6 +8,7 @@ import {
 const ACTIONS = {
   LOAD_MODELS: `[${STATE_NAME}] Load models`,
   LOAD_MODEL_BY_ID: `[${STATE_NAME}] Load model by ID`,
+  LOAD_APPLYING_MODEL: `[${STATE_NAME}] Load applying model`,
   APPLY_MODEL_BY_ID: `[${STATE_NAME}] Apply model by ID`,
   LOAD_LOG_MODEL_BY_ID: `[${STATE_NAME}] Load log of selected model`,
   DOWNLOAD_IMAGES: `[${STATE_NAME}] Download images of selected model`,
@@ -39,4 +40,8 @@ export class DownloadImages {
 
 export class DownloadLog {
   static readonly type = ACTIONS.DOWNLOAD_LOG;
+}
+
+export class LoadApplyingModel {
+  static readonly type = ACTIONS.LOAD_APPLYING_MODEL;
 }
