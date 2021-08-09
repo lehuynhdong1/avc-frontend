@@ -11,7 +11,7 @@ export class ErrorHintComponent {
   @Input() name: string;
   @Input() errors: ValidationErrors | null | undefined = null;
   @Input() errorChecks:
-    | { required?: boolean; minlength?: boolean; maxlength?: boolean }
+    | { required?: boolean; minlength?: boolean; maxlength?: boolean; email?: boolean }
     | null
     | undefined = null;
 }

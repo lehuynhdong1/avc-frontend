@@ -45,11 +45,11 @@ export class CreatePage implements CanShowUnsavedDialog {
       '',
       [Validators.required, Validators.minLength(6), Validators.maxLength(16)]
     ],
-    email: ['', Validators.required],
+    email: ['', [Validators.email, Validators.required]],
     lastName: ['', Validators.required],
     avatarImage: [null],
     phone: [''],
-    managedBy: [null, Validators.required],
+    managedBy: [''],
     clearWhenSuccess: [true, Validators.required]
   });
 
@@ -108,9 +108,9 @@ export class CreatePage implements CanShowUnsavedDialog {
           password,
           email,
           lastName,
-          avatarImage,
+          avatarImage: avatarImage ? avatarImage : undefined,
           phone: phone ? phone.replace('+84', '') : undefined,
-          managedBy
+          managedBy: managedBy ? managedBy : undefined
         })
       );
     });

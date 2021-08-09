@@ -7,6 +7,16 @@
     ></tui-svg>
     {{ name }} is required.
   </div>
+  <div *ngIf="errorChecks?.email">
+    <tui-svg
+      [src]="
+        errors?.required || errors?.email ? 'tuiIconCloseCircleLarge' : 'tuiIconCheckCircleLarge'
+      "
+      class="size-s text-green-300"
+      [class.text-red-300]="errors?.required || errors?.email"
+    ></tui-svg>
+    {{ name }} must be an email address.
+  </div>
   <div *ngIf="errorChecks?.minlength">
     <tui-svg
       [src]="
