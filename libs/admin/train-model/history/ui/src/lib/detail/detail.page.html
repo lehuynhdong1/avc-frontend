@@ -20,10 +20,9 @@
       <h3 class="mt-0 mb-3">
         <a
           class="openable"
-          target="_blank"
-          [href]="model.statisticUrl"
           *ngIf="model.statisticUrl; else notHasStatisticUrl"
-          >View statistic in new tab
+          (click)="openImage(template)"
+          >Click to view statistic
         </a>
         <ng-template #notHasStatisticUrl> None </ng-template>
       </h3>
@@ -83,6 +82,13 @@
         Apply for all
       </button>
     </main>
+
+    <ng-template #template>
+      <h2 class="bold mt-0">{{model.name}}</h2>
+      <div class="w-full flex justify-center mb-2 min-h-[45rem]">
+        <img [src]="model.statisticUrl" alt="" class="rounded w-full" />
+      </div>
+    </ng-template>
   </ng-container>
 </aside>
 

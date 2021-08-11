@@ -14,15 +14,7 @@ import {
 import { TuiStatus, TuiMarkerIconMode } from '@taiga-ui/kit';
 import { RxState } from '@rx-angular/state';
 import { ActivatedRoute } from '@angular/router';
-import {
-  map,
-  withLatestFrom,
-  filter,
-  take,
-  switchMap,
-  distinctUntilChanged,
-  startWith
-} from 'rxjs/operators';
+import { map, withLatestFrom, filter, take, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { hasValue, Empty, ShowNotification } from '@shared/util';
 import { from, Subject, interval } from 'rxjs';
 import { SignalRState } from '@shared/features/signalr/data-access';
@@ -78,7 +70,7 @@ export class DetailPage implements OnInit {
     private actions: Actions,
     private activatedRoute: ActivatedRoute,
     private state: RxState<Empty>,
-    private tuiDialogService: TuiDialogService
+    private tuiDialog: TuiDialogService
   ) {}
 
   ngOnInit() {
@@ -138,7 +130,7 @@ export class DetailPage implements OnInit {
         filter(([, { modelStatus }]) => modelStatus === ModelStatus.Training)
       )
       .subscribe(() => this.store.dispatch(new LoadLogModelById()));
-    this.tuiDialogService
+    this.tuiDialog
       .open(template, { size: 'page' })
       .pipe(take(1))
       .subscribe({ complete: () => intervalSubscription.unsubscribe() });
@@ -150,5 +142,9 @@ export class DetailPage implements OnInit {
 
   downloadLog() {
     this.store.dispatch(new DownloadLog());
+  }
+
+  openImage(template: PolymorpheusContent<TuiDialogContext>) {
+    this.tuiDialog.open(template, { size: 'l' }).pipe(take(1)).subscribe();
   }
 }
