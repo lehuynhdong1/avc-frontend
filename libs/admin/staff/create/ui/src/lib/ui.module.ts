@@ -4,7 +4,6 @@ import { CreatePage } from './create.page';
 import {
   TuiInputModule,
   TuiInputFileModule,
-  TuiInputPasswordModule,
   TuiSelectModule,
   TuiDataListWrapperModule,
   TuiMarkerIconModule,
@@ -33,7 +32,6 @@ const tuiModules = [
   TuiInputModule,
   TuiInputFileModule,
   TuiInputPhoneModule,
-  TuiInputPasswordModule,
   TuiTextfieldControllerModule,
   TuiSelectModule,
   TuiLetModule,

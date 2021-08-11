@@ -50,6 +50,7 @@ export interface ApiModelIdPutRequestParams {
 export interface ApiModelIdSuccessionPostRequestParams {
   id: number;
   modelFile?: Blob;
+  statisticFile?: Blob;
 }
 
 export interface ApiModelIdTrainningPutRequestParams {

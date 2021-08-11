@@ -699,6 +699,7 @@ export class ModelService implements ModelServiceInterface {
       );
     }
     const modelFile = requestParameters.modelFile;
+    const statisticFile = requestParameters.statisticFile;
 
     let headers = this.defaultHeaders;
 
@@ -732,6 +733,9 @@ export class ModelService implements ModelServiceInterface {
     // use FormData to transmit files using content-type "multipart/form-data"
     // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
     useForm = canConsumeForm;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+    useForm = canConsumeForm;
     if (useForm) {
       formParams = new FormData();
     } else {
@@ -740,6 +744,9 @@ export class ModelService implements ModelServiceInterface {
 
     if (modelFile !== undefined) {
       formParams = (formParams.append('modelFile', <any>modelFile) as any) || formParams;
+    }
+    if (statisticFile !== undefined) {
+      formParams = (formParams.append('statisticFile', <any>statisticFile) as any) || formParams;
     }
 
     let responseType: 'text' | 'json' = 'json';

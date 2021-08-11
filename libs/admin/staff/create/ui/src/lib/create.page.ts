@@ -15,7 +15,6 @@ import { MAXIMUM_IMAGE_SIZE } from '@admin/train-model/train-by-images/data-acce
 
 const INIT_FORM_VALUE = {
   firstName: '',
-  password: '',
   email: '',
   lastName: '',
   avatarImage: undefined,
@@ -40,11 +39,6 @@ export class CreatePage implements CanShowUnsavedDialog {
 
   readonly form = this.formBuilder.group({
     firstName: ['', Validators.required],
-    password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]],
-    confirmedPassword: [
-      '',
-      [Validators.required, Validators.minLength(6), Validators.maxLength(16)]
-    ],
     email: ['', [Validators.email, Validators.required]],
     lastName: ['', Validators.required],
     avatarImage: [null],
@@ -101,11 +95,10 @@ export class CreatePage implements CanShowUnsavedDialog {
     );
     this.state.hold(whenCreateValid$, (form) => {
       this.state.set({ loading: true });
-      const { firstName, password, email, lastName, avatarImage, phone, managedBy } = form;
+      const { firstName, email, lastName, avatarImage, phone, managedBy } = form;
       this.store.dispatch(
         new CreateStaff({
           firstName,
-          password,
           email,
           lastName,
           avatarImage: avatarImage ? avatarImage : undefined,

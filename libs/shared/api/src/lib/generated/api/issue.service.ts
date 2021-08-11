@@ -396,7 +396,13 @@ export class IssueService implements IssueServiceInterface {
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' }
   ): Observable<any> {
     const typeId = requestParameters.typeId;
+    if (typeId === null || typeId === undefined) {
+      throw new Error('Required parameter typeId was null or undefined when calling apiIssuePost.');
+    }
     const carId = requestParameters.carId;
+    if (carId === null || carId === undefined) {
+      throw new Error('Required parameter carId was null or undefined when calling apiIssuePost.');
+    }
     const description = requestParameters.description;
     const location = requestParameters.location;
     const image = requestParameters.image;

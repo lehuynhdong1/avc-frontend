@@ -37,8 +37,8 @@ export interface ApiIssueIdPatchRequestParams {
 }
 
 export interface ApiIssuePostRequestParams {
-  typeId?: number;
-  carId?: number;
+  typeId: number;
+  carId: number;
   description?: string;
   location?: string;
   image?: Blob;

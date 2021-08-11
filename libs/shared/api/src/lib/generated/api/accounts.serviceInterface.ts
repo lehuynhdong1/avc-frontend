@@ -45,7 +45,6 @@ export interface ApiAccountsManagerIdGetRequestParams {
 
 export interface ApiAccountsManagerPostRequestParams {
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
   avatarImage?: Blob;
@@ -65,7 +64,6 @@ export interface ApiAccountsStaffIdGetRequestParams {
 
 export interface ApiAccountsStaffPostRequestParams {
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
   avatarImage?: Blob;

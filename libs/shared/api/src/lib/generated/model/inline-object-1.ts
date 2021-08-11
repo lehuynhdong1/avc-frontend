@@ -13,7 +13,6 @@
 export interface InlineObject1 {
   AvatarImage?: Blob;
   Email: string;
-  Password: string;
   FirstName: string;
   LastName: string;
   Phone?: string;

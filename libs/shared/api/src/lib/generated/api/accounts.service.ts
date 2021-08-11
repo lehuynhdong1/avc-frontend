@@ -506,12 +506,6 @@ export class AccountsService implements AccountsServiceInterface {
         'Required parameter email was null or undefined when calling apiAccountsManagerPost.'
       );
     }
-    const password = requestParameters.password;
-    if (password === null || password === undefined) {
-      throw new Error(
-        'Required parameter password was null or undefined when calling apiAccountsManagerPost.'
-      );
-    }
     const firstName = requestParameters.firstName;
     if (firstName === null || firstName === undefined) {
       throw new Error(
@@ -570,9 +564,6 @@ export class AccountsService implements AccountsServiceInterface {
     }
     if (email !== undefined) {
       formParams = (formParams.append('Email', <any>email) as any) || formParams;
-    }
-    if (password !== undefined) {
-      formParams = (formParams.append('Password', <any>password) as any) || formParams;
     }
     if (firstName !== undefined) {
       formParams = (formParams.append('FirstName', <any>firstName) as any) || formParams;
@@ -801,12 +792,6 @@ export class AccountsService implements AccountsServiceInterface {
         'Required parameter email was null or undefined when calling apiAccountsStaffPost.'
       );
     }
-    const password = requestParameters.password;
-    if (password === null || password === undefined) {
-      throw new Error(
-        'Required parameter password was null or undefined when calling apiAccountsStaffPost.'
-      );
-    }
     const firstName = requestParameters.firstName;
     if (firstName === null || firstName === undefined) {
       throw new Error(
@@ -866,9 +851,6 @@ export class AccountsService implements AccountsServiceInterface {
     }
     if (email !== undefined) {
       formParams = (formParams.append('Email', <any>email) as any) || formParams;
-    }
-    if (password !== undefined) {
-      formParams = (formParams.append('Password', <any>password) as any) || formParams;
     }
     if (firstName !== undefined) {
       formParams = (formParams.append('FirstName', <any>firstName) as any) || formParams;

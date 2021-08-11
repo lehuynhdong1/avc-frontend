@@ -11,8 +11,8 @@
  */
 
 export interface InlineObject6 {
-  TypeId?: number;
-  CarId?: number;
+  TypeId: number;
+  CarId: number;
   Description?: string;
   Location?: string;
   image?: Blob;

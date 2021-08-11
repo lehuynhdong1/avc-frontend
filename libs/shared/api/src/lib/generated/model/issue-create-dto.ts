@@ -11,8 +11,8 @@
  */
 
 export interface IssueCreateDto {
-  typeId?: number;
-  carId?: number;
+  typeId: number;
+  carId: number;
   description?: string | null;
   location?: string | null;
 }

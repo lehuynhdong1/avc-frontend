@@ -12,4 +12,5 @@
 
 export interface InlineObject8 {
   modelFile?: Blob;
+  statisticFile?: Blob;
 }
