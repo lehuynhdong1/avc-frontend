@@ -22,8 +22,7 @@ export class ListingPage {
   DYNAMIC_COLUMNS: DynamicTableColumns<IssueReadDto> = [
     { key: 'type', title: 'Type', type: 'string' },
     { key: 'createdAt', title: 'Created at', type: 'date' },
-    { key: 'description', title: 'Description', type: 'string' },
-    { key: 'location', title: 'Location', type: 'string' }
+    { key: 'description', title: 'Description', type: 'string' }
   ];
   readonly searchControl = new FormControl('');
 
