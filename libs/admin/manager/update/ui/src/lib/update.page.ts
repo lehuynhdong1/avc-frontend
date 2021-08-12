@@ -43,7 +43,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
   form = this.formBuilder.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    phone: [''],
+    phone: ['', Validators.pattern('([+]84)?[1-9][0-9]{8}')],
     roleId: ['', Validators.required]
   });
 
@@ -143,7 +143,7 @@ export class UpdatePage implements CanShowUnsavedDialog {
           accountUpdateDto: {
             firstName,
             lastName,
-            phone: phone ? phone.replace('+84', '') : undefined,
+            phone: phone ? phone.replace('+84', '') : '',
             roleId
           }
         })

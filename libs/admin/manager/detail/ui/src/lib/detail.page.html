@@ -35,7 +35,9 @@
       <h3 class="bold mt-0">{{ manager.email }}</h3>
 
       <label>Phone</label>
-      <h3 class="bold mt-0">{{ (manager.phone || '') | tuiFormatPhone:'+84':'### ###-###' }}</h3>
+      <h3 class="bold mt-0">
+        {{ manager.phone ? (manager.phone | tuiFormatPhone:'+84':'### ###-###') : 'None' }}
+      </h3>
 
       <b class="text-gray-600 text-sm mb-1">Activation Status</b>
       <div class="self-start mb-3">

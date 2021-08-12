@@ -30,7 +30,9 @@
       <label>Email</label>
       <h3 class="bold mt-0">{{ staff.email }}</h3>
       <label>Phone</label>
-      <h3 class="bold mt-0">{{ (staff.phone || '') | tuiFormatPhone:'+84':'### ###-###'}}</h3>
+      <h3 class="bold mt-0">
+        {{ staff.phone ? (staff.phone | tuiFormatPhone:'+84':'### ###-###'): 'None'}}
+      </h3>
       <label>Managed by</label>
       <h3 class="bold mt-0">
         <ng-container *ngIf="staff.managedBy; else notHasManagedBy">

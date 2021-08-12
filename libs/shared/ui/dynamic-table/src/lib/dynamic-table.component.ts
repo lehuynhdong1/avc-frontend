@@ -3,7 +3,7 @@ import { tuiPure } from '@taiga-ui/cdk';
 import { RxState } from '@rx-angular/state';
 import { DynamicTableUiState, ColumnType, HasId, Id, PagingResponse } from './models';
 import { Subject } from 'rxjs';
-import { map, filter, pairwise, tap } from 'rxjs/operators';
+import { map, filter, pairwise } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DynamicTableColumns } from './models/ui-state.model';
 import { LoginState } from '@shared/auth/login/data-access';
