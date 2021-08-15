@@ -18,7 +18,7 @@ import { IssueReadDto } from '@shared/api';
 import { DynamicTableColumns, Id } from '@shared/ui/dynamic-table';
 import { ConfirmDialogService, ConfirmDialogComponentParams } from '@shared/ui/confirm-dialog';
 import { LoginState } from '@shared/auth/login/data-access';
-import { SignalRState } from '@shared/features/signalr/data-access';
+import { SignalRState, StopCar } from '@shared/features/signalr/data-access';
 
 const getConfirmDialogParams: (isActivated: boolean) => ConfirmDialogComponentParams = (
   isActivated
@@ -74,6 +74,7 @@ export class DetailPage {
   /* Actions */
   readonly clickActivate$ = new Subject<boolean>();
   readonly selectIssue$ = new Subject<Id>();
+  readonly clickStop$ = new Subject<void>();
 
   /* Side effects */
   constructor(
@@ -87,6 +88,7 @@ export class DetailPage {
     this.state.hold(this.id$, (id) => this.store.dispatch(new LoadCarById({ id })));
 
     this.clickActivationEffects();
+    this.clickStopEffect();
     this.toggleActivationAndApproveSuccessEffects();
     this.toggleActivationFailedEffects();
     this.selectIssueEffect();
@@ -145,6 +147,12 @@ export class DetailPage {
           relativeTo: this.activatedRoute,
           queryParams: { backTo: `/car/detail/${carId}` }
         })
+    );
+  }
+
+  private clickStopEffect() {
+    this.state.hold(this.clickStop$.pipe(withLatestFrom(this.id$)), ([, id]) =>
+      this.store.dispatch(new StopCar(id))
     );
   }
 

@@ -79,6 +79,25 @@
           class="self-start mb-3"
         ></tui-badge>
 
+        <b class="text-gray-600 mb-1">Running Status</b>
+        <div class="self-start mb-3">
+          <tui-badge
+            size="l"
+            [value]="car.isRunning ? 'Running' : 'Stopped'"
+            [status]="car.isRunning ? TUI_STATUS.SUCCESS : TUI_STATUS.ERROR"
+            class="mr-2"
+          ></tui-badge>
+          <button
+            tuiButton
+            size="s"
+            appearance="outline"
+            type="button"
+            (click)="clickStop$.next()"
+            *ngIf="(isAdmin$ | async) === false && car.isRunning"
+          >
+            Stop immediately
+          </button>
+        </div>
         <ng-container *ngIf="isAdmin$ | async">
           <b class="text-gray-600 mb-1">Activation Status</b>
           <div class="self-start mb-3">

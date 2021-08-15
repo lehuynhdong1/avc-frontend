@@ -44,6 +44,13 @@ export class ListingPage {
       falseMessage: 'Disconnected'
     },
     {
+      key: 'isRunning',
+      title: 'Running Status',
+      type: 'boolean',
+      trueMessage: 'Running',
+      falseMessage: 'Stopped'
+    },
+    {
       key: 'isAvailable',
       title: 'Activation Status',
       type: 'boolean',
@@ -119,6 +126,8 @@ export class ListingPage {
     type WhenCarNotify =
       | 'WhenCarConnected'
       | 'WhenCarDisconnected'
+      | 'WhenCarRunning'
+      | 'WhenCarStopping'
       | 'WhenManagerChangeAssignedCar'
       | 'WhenAdminChangeCarManagedBy'
       | 'WhenCarDeactivated';
@@ -126,6 +135,8 @@ export class ListingPage {
     const carNotifys = [
       'WhenCarConnected',
       'WhenCarDisconnected',
+      'WhenCarRunning',
+      'WhenCarStopping',
       'WhenAdminChangeCarManagedBy',
       'WhenManagerChangeAssignedCar',
       'WhenCarDeactivated'
